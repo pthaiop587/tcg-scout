@@ -413,6 +413,10 @@ JS  = JS.replace("__ROWS__", json.dumps(rows, separators=(",", ":"))) \
         .replace("__CARDS__", CARDS_JSON) \
         .replace("__BUILT__", json.dumps(TODAY.isoformat())) \
         .replace("__THUMBS__", THUMBS_JSON) \
+        .replace("__PTYPES__", json.dumps(
+            [{"t": lab, "re": pat, "blurb": blurb, "ship": ship,
+              "st": next((s for s in pt_stats if s["t"] == lab), None)}
+             for lab, pat, ship, blurb in PTYPES], separators=(",", ":"))) \
         .replace("__UNPRICED__", json.dumps(
             [{"d": _dt.date(*map(int, iso.split("-"))).strftime("%d %b"),
               "n": name, "l": line, "days": _days(iso)}
@@ -437,6 +441,7 @@ BODY = f'''<title>Card Run HQ</title>
     <p class="lbl">Buy &mdash; scouting</p>
     <button class="navlink" role="tab" id="t-drops" aria-controls="p-drops" aria-selected="true"><i></i>Drops</button>
     <button class="navlink" role="tab" id="t-shelf" aria-controls="p-shelf" aria-selected="false"><i></i>Shelf check</button>
+    <button class="navlink" role="tab" id="t-pc"    aria-controls="p-pc"    aria-selected="false"><i></i>Price check anything</button>
     <button class="navlink" role="tab" id="t-types" aria-controls="p-types" aria-selected="false"><i></i>Box types &amp; ROI</button>
     <button class="navlink" role="tab" id="t-shops" aria-controls="p-shops" aria-selected="false"><i></i>Online shops</button>
     <button class="navlink" role="tab" id="t-pre"   aria-controls="p-pre"   aria-selected="false"><i></i>Preorders</button>
@@ -579,6 +584,37 @@ BODY = f'''<title>Card Run HQ</title>
  <section>
   <div class="note warn"><b>A high multiple usually means it&rsquo;s already gone.</b> Prismatic Evolutions sits at 4&times; precisely because shelves got cleared. A &ldquo;grab it instantly if you see it&rdquo; list, not a shopping list.</div>
   <div class="note"><b>Where you can buy it.</b> <span class="wtag w-store">store</span> Target / Walmart / card shops. <span class="wtag w-online">online</span> Pok&eacute;mon Center only. <span class="wtag w-preorder">preorder</span> not released, price is a guess.</div>
+ </section>
+</div>
+
+<!-- ============ PRICE CHECK ANYTHING ============ -->
+<div role="tabpanel" id="p-pc" aria-labelledby="t-pc" hidden>
+ <section>
+  <h2>Price check anything</h2>
+  <div class="searchbar sticky2">
+   <input id="pc-q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Any box, tin, single or sports product&hellip;">
+   <button class="btn2" id="pc-clear">Clear</button>
+  </div>
+  <div id="pc-out"></div>
+ </section>
+
+ <section><h2>Why these six</h2>
+  <div class="teach">
+   <p><b>PriceCharting</b> is the closest thing to one site that prices everything &mdash; TCG, sports, sealed boxes and singles, raw and graded, free to browse. Checked 15 Aug 2026: its TMNT Draft Night reads <b>$81.22</b> against this dashboard&rsquo;s <b>$79.79</b>, which is a reassuring independent agreement.</p>
+   <p><b>eBay sold</b> is the ground truth &mdash; actual completed sales, not asking prices. It is the only free way to see real sports numbers, because every sports price API is paid.</p>
+   <p><b>TCGplayer</b> is the feed this dashboard prices from, so it will always match the Shelf check numbers.</p>
+   <p style="margin-bottom:0"><b>Cardboard Connection</b> is not a price site &mdash; it is where you find <b>what is inside a box and at what odds</b>, which is the other half of deciding whether to open something.</p></div>
+ </section>
+
+ <section><h2>Reading a sealed product before you buy it</h2>
+  <div class="teach"><ol class="steps">
+   <li><div><b>Price it sealed first.</b> If it resells above the shelf tag, the decision is made and nothing else matters.</div></li>
+   <li><div><b>Then look at the odds, not the ceiling.</b> Every box advertises its best possible card. The number that matters is how often that happens &mdash; &ldquo;1:425&rdquo; on a 10-pack box means roughly one in forty boxes.</div></li>
+   <li><div><b>Check the base-card print run.</b> A 380,000-copy veteran base card is worth nothing no matter how good the box looked. Scarce rookie or chrome base is where retail products hold value.</div></li>
+   <li><div><b>Compare to buying the single.</b> You can almost always buy the exact card you are chasing for less than the boxes it would take to pull it.</div></li>
+  </ol>
+  <p style="margin-top:12px;margin-bottom:0"><b>Which is the whole argument for flipping sealed.</b> Opening is a bet against a house edge that the publisher printed on the side of the box.</p></div>
  </section>
 </div>
 

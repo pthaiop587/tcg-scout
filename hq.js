@@ -118,6 +118,102 @@ function checkLinks(product, game){
               c.s + '</a>').join('') + '</span>';
 }
 
+/* ================= PRICE CHECK =================
+   Type anything -- including things this dashboard has never heard of, like a
+   sports mega box -- and get every price source in one tap, plus the local
+   breakdown when it IS something we know about.
+
+   PriceCharting is the one site that covers TCG, sports AND sealed boxes in a
+   single free guide. Verified 15 Aug 2026: its TMNT Draft Night reads $81.22
+   against this dashboard's $79.79, which is a useful independent check.       */
+const PTYPES = __PTYPES__;
+
+const SOURCES = [
+  {k:'PriceCharting', d:'Everything: TCG, sports, sealed, graded', hot:true,
+   u:q => 'https://www.pricecharting.com/search-products?q=' + q + '&type=prices'},
+  {k:'eBay sold', d:'What it actually sold for, last 90 days', hot:true,
+   u:q => 'https://www.ebay.com/sch/i.html?_nkw=' + q + '&LH_Sold=1&LH_Complete=1&_sop=13'},
+  {k:'TCGplayer', d:'The TCG market price this dashboard uses',
+   u:q => 'https://www.tcgplayer.com/search/all/product?q=' + q},
+  {k:'SportsCardsPro', d:'Sports only \u2014 PSA, BGS and raw',
+   u:q => 'https://www.sportscardspro.com/search-products?q=' + q + '&type=prices'},
+  {k:'130point', d:'Sold comps across eBay, Goldin and PWCC',
+   u:q => 'https://130point.com/sales/'},
+  {k:'Cardboard Connection', d:'Box contents, odds and checklists',
+   u:q => 'https://www.cardboardconnection.com/?s=' + q},
+];
+
+function typeOf(name){
+  const n = (name || '').toLowerCase();
+  for (const p of PTYPES){ if (new RegExp(p.re).test(n)) return p; }
+  return null;
+}
+
+const pcEl = document.getElementById('pc-q');
+if (pcEl) {
+  const money2 = v => (v < 0 ? '\u2212$' : '$') + Math.abs(v).toFixed(2);
+  let pcT = null;
+  const render = () => {
+    const raw = pcEl.value.trim();
+    const box = document.getElementById('pc-out');
+    if (raw.length < 2){
+      box.innerHTML = '<p class="hint">Type a product name \u2014 a box, a tin, a single, ' +
+        'a sports mega box, anything. It does not have to be something this page tracks.</p>';
+      return;
+    }
+    const q = encodeURIComponent(raw);
+    let html = '<div class="srcgrid">' + SOURCES.map(s =>
+      '<a class="srccard' + (s.hot ? ' hot' : '') + '" href="' + s.u(q) +
+      '" target="_blank" rel="noopener nofollow"><b>' + esc(s.k) + '</b>' +
+      '<span>' + esc(s.d) + '</span></a>').join('') + '</div>';
+
+    /* does the local catalogue know this thing? */
+    const t = raw.toLowerCase();
+    const hits = ROWS.filter(r => (r.p + ' ' + r.s + ' ' + r.g).toLowerCase().includes(t))
+                     .slice(0, 6);
+    if (hits.length){
+      html += '<h2 style="margin-top:20px">What this page already knows ' +
+              '<span class="hint">' + hits.length + ' match' + (hits.length===1?'':'es') + '</span></h2>';
+      html += hits.map(r => {
+        const pt = typeOf(r.p);
+        const st = pt && pt.st;
+        const up = r.x != null
+          ? '<span class="tag">shelf</span><span class="rp">' + money(r.r) + '</span>' +
+            '<span class="arrow">\u2192</span><span class="tag">worth</span>' +
+            '<span class="mp">' + money(r.m) + '</span><span class="xx">' + r.x.toFixed(2) + '\u00d7</span>'
+          : '<span class="tag">market</span><span class="mp">' + money(r.m) + '</span>' +
+            '<span class="xx">no published MSRP</span>';
+        const tone = r.x == null ? 'flag' : (r.x >= 2 ? 'buy' : (r.x >= 1.5 ? 'watch' : 'skip'));
+        const typeInfo = pt
+          ? '<div class="shopmeta"><span><b>Type</b> ' + esc(pt.t) + '</span>' +
+            (st ? '<span><b>Typical net</b> ' + money2(st.net) + '</span>' +
+                  '<span><b>Return</b> ' + Math.round(st.pct) + '%</span>' +
+                  '<span><b>Sample</b> ' + st.n + '</span>' : '') + '</div>' +
+            '<p class="shopnote">' + pt.blurb + '</p>'
+          : '';
+        return '<article class="card ' + tone + '"><div class="pad">' +
+          '<span class="game">' + esc(r.g) + ' \u00b7 ' + esc(r.s) + '</span>' +
+          '<b class="pname">' + esc(r.p) + '</b>' +
+          '<div class="prices mono">' + up + '</div>' + typeInfo +
+          '<div class="linkrow">' + buyLinks(r.p, r.g) + checkLinks(r.p, r.g) + '</div>' +
+          '</div></article>';
+      }).join('');
+    } else {
+      html += '<div class="note" style="margin-top:16px"><b>Not in this page\u2019s catalogue.</b> ' +
+        'That is expected for sports and for anything outside the eleven games tracked here \u2014 ' +
+        'the links above still work on it.</div>';
+    }
+    box.innerHTML = html;
+  };
+  pcEl.addEventListener('input', () => { clearTimeout(pcT); pcT = setTimeout(render, 130); });
+  document.getElementById('pc-clear').addEventListener('click', () => {
+    pcEl.value = ''; render(); pcEl.focus();
+  });
+  /* deferred: render() reads ROWS, which is declared further down this file and
+     would still be in its temporal dead zone if called inline */
+  setTimeout(render, 0);
+}
+
 /* ---- fill the per-card link rows on the tiered shelf lists ---- */
 document.querySelectorAll('.linkrow[data-links]').forEach(el => {
   el.innerHTML = buyLinks(el.dataset.links, el.dataset.game) +
