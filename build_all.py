@@ -167,6 +167,98 @@ def tier_card(r, tone):
             f'<div class="linkrow" data-links="{esc(r["p"])}" data-game="{esc(r["g"])}"></div>'
             f'{ch}{why}</div></article>')
 
+# ------------------------------------------------------------ online shops
+# Researched 15 Aug 2026. Shipping thresholds and restock behaviour change --
+# every row says where the claim came from so a stale one is obvious.
+SHOPS = [
+ dict(n="Pok&eacute;mon Center", u="https://www.pokemoncenter.com/category/trading-card-game",
+      price="MSRP", tone="buy", ship="Free over $20 (promos vary; preorders sometimes excluded)",
+      restock="Drops at release, then irregular restocks",
+      note="The publisher's own store, so it is MSRP by definition, and it carries exclusives nobody else gets. <b>Falls over under load on big drops</b> &mdash; carts have been lost mid-checkout.",
+      games="Pok&eacute;mon only"),
+ dict(n="Target", u="https://www.target.com/c/trading-cards/-/N-5tdv0",
+      price="MSRP", tone="buy", ship="Free over $35",
+      restock="In-store Tue &amp; Fri overnight; online drops irregular",
+      note="MSRP when it is actually in stock, which is the whole problem. Online listings are frequently third-party sellers marked &ldquo;not sold in stores&rdquo; &mdash; check before you order.",
+      games="All"),
+ dict(n="Walmart", u="https://www.walmart.com/browse/trading-cards/4171_4210_1229257",
+      price="MSRP", tone="buy", ship="Free over $35",
+      restock="In-store Wed 6&ndash;9 PM; online irregular",
+      note="<b>Has a preorder price guarantee</b> &mdash; if the price drops before your order ships you pay the lower one, and if it rises you keep yours.",
+      games="All"),
+ dict(n="Best Buy", u="https://www.bestbuy.com/site/searchpage.jsp?st=pokemon+trading+cards",
+      price="MSRP", tone="watch", ship="Varies",
+      restock="<b>Invitation lottery</b> since late 2025",
+      note="First big-box retailer to gate hot TCG behind invites specifically to stop bots. <b>Request an invite on the product page early</b>; they pick buyers at release and you get a 24-hour window. There is no way to rush this and no point trying.",
+      games="Mostly Pok&eacute;mon"),
+ dict(n="GameStop", u="https://www.gamestop.com/toys-collectibles/trading-cards",
+      price="MSRP", tone="buy", ship="Free over $54 for Pro members",
+      restock="Release day",
+      note="The one big-box that reliably carries <b>Bushiroad</b>, so this is where Palworld shows up. Standing preorders are worth setting up here.",
+      games="All incl. Palworld"),
+ dict(n="Amazon", u="https://www.amazon.com/s?k=pokemon+tcg+sealed",
+      price="Often above MSRP", tone="watch", ship="Free over $35 / Prime",
+      restock="Continuous, mixed sellers",
+      note="<b>Pre-Order Price Guarantee</b>: you are charged the lowest price Amazon offered between ordering and release, automatically. But third-party sellers dominate sealed TCG and mark it up hard &mdash; check the seller is Amazon itself.",
+      games="All"),
+ dict(n="Costco / Sam's Club", u="https://www.costco.com/CatalogSearch?keyword=pokemon%20trading%20cards",
+      price="Below MSRP per pack", tone="buy", ship="Membership; varies",
+      restock="Irregular pallet drops",
+      note="Cheapest per pack when it lands and gone the same day. Bulk multi-packs and big collection boxes only &mdash; no single ETBs.",
+      games="Mostly Pok&eacute;mon"),
+ dict(n="Barnes &amp; Noble", u="https://www.barnesandnoble.com/s/pokemon%20trading%20cards",
+      price="MSRP", tone="buy", ship="Varies; free for members",
+      restock="Irregular",
+      note="Genuinely overlooked. Limited range &mdash; mostly ETBs and gift sets &mdash; but it is MSRP and far less picked over than Target.",
+      games="Pok&eacute;mon, some Lorcana"),
+ dict(n="DA Card World", u="https://www.dacardworld.com/gaming",
+      price="Near MSRP", tone="buy", ship="Free over $199",
+      restock="Preorders open early; allocation-limited",
+      note="Proper hobby distributor. Preorders tend to open here before the big-box sites list anything.",
+      games="All + sports"),
+ dict(n="Troll and Toad", u="https://www.trollandtoad.com/",
+      price="Varies", tone="watch", ship="Free over $100",
+      restock="Allocation-limited",
+      note="Deep catalogue including older sealed. Prices move with the market rather than sitting at MSRP.",
+      games="All"),
+ dict(n="Miniature Market", u="https://www.miniaturemarket.com/",
+      price="Varies", tone="watch", ship="Free over $75",
+      restock="Allocation-limited",
+      note="Board-game shop that also carries TCG. Lowest free-shipping bar of the hobby shops.",
+      games="All"),
+ dict(n="TCGplayer", u="https://www.tcgplayer.com/search/all/product?productLineName=pokemon",
+      price="<b>Market price</b>, above MSRP", tone="skip", ship="Varies by seller",
+      restock="Always in stock",
+      note="This is where you <b>sell</b>, not where you buy at retail. Useful as the price reference &mdash; it is the same feed this dashboard prices from.",
+      games="All TCG"),
+]
+
+# Cards, not a table: the useful column here is a paragraph, and a paragraph in
+# a table cell either gets crushed or scrolls off the right edge.
+shop_rows = "".join(
+    f'<article class="card {s["tone"]} shop"><div class="pad">'
+    f'<div class="shophead">'
+    f'<a class="shopname" href="{s["u"]}" target="_blank" rel="noopener">{s["n"]} &rarr;</a>'
+    f'<span class="pill {s["tone"]}">{s["price"]}</span></div>'
+    f'<div class="shopmeta">'
+    f'<span><b>Ships free</b> {s["ship"]}</span>'
+    f'<span><b>Restock</b> {s["restock"]}</span>'
+    f'<span><b>Carries</b> {s["games"]}</span></div>'
+    f'<p class="shopnote">{s["note"]}</p>'
+    f'</div></article>' for s in SHOPS)
+
+# ------------------------------------------------------------ preorders
+_pre = [(iso, name, line) for iso, name, line in CALENDAR if _days(iso) > 0]
+pre_cards = "".join(
+    f'<article class="card {"buy" if _days(iso) > 21 else "watch"}"><div class="pad">'
+    f'<span class="game">{line} &middot; {_datelabel(iso)}</span>'
+    f'<b class="pname">{name}</b>'
+    f'<div class="prices mono"><span class="tag">releases in</span>'
+    f'<span class="mp">{_days(iso)} days</span>'
+    f'<span class="xx">{"preorder window open" if _days(iso) > 21 else "closing soon"}</span></div>'
+    f'<div class="linkrow" data-links="{esc(name)}" data-game="{esc(line)}"></div>'
+    f'</div></article>' for iso, name, line in _pre)
+
 _grab = [r for r in shelf_rows if r["x"] >= GRAB]
 _look = [r for r in shelf_rows if LOOK <= r["x"] < GRAB]
 _skip = sorted([r for r in shelf_rows if r["x"] < LOOK], key=lambda r: r["x"])
@@ -231,6 +323,8 @@ BODY = f'''<title>Card Run HQ</title>
     <p class="lbl">Buy &mdash; scouting</p>
     <button class="navlink" role="tab" id="t-drops" aria-controls="p-drops" aria-selected="true"><i></i>Drops</button>
     <button class="navlink" role="tab" id="t-shelf" aria-controls="p-shelf" aria-selected="false"><i></i>Shelf check</button>
+    <button class="navlink" role="tab" id="t-shops" aria-controls="p-shops" aria-selected="false"><i></i>Online shops</button>
+    <button class="navlink" role="tab" id="t-pre"   aria-controls="p-pre"   aria-selected="false"><i></i>Preorders</button>
     <button class="navlink" role="tab" id="t-map"   aria-controls="p-map"   aria-selected="false"><i></i>Map</button>
     <button class="navlink" role="tab" id="t-chase" aria-controls="p-chase" aria-selected="false"><i></i>Chase cards</button>
     <button class="navlink" role="tab" id="t-learn" aria-controls="p-learn" aria-selected="false"><i></i>Learn</button>
@@ -364,6 +458,68 @@ BODY = f'''<title>Card Run HQ</title>
  <section>
   <div class="note warn"><b>A high multiple usually means it&rsquo;s already gone.</b> Prismatic Evolutions sits at 4&times; precisely because shelves got cleared. A &ldquo;grab it instantly if you see it&rdquo; list, not a shopping list.</div>
   <div class="note"><b>Where you can buy it.</b> <span class="wtag w-store">store</span> Target / Walmart / card shops. <span class="wtag w-online">online</span> Pok&eacute;mon Center only. <span class="wtag w-preorder">preorder</span> not released, price is a guess.</div>
+ </section>
+</div>
+
+<!-- ============ ONLINE SHOPS ============ -->
+<div role="tabpanel" id="p-shops" aria-labelledby="t-shops" hidden>
+ <section>
+  <h2>Who sells it online</h2>
+  <div class="rule"><p class="big">Twelve places, one table, so you stop tab-hopping</p>
+   <p>Every name links straight into its own TCG section. The column that matters is <b>price</b> &mdash; only some of these actually sell at MSRP, and the rest are just the market with extra steps.</p></div>
+  {shop_rows}
+ </section>
+
+ <section><h2>The thing that actually limits you</h2>
+  <div class="teach">
+   <p><b>Allocation, not price.</b> Distributors get a fixed case count per set, each retailer gets a fixed slice, and once a set hits its cap a reorder takes <b>6&ndash;10 weeks</b> to arrive. That is why a set can be sold out everywhere and still not be &ldquo;rare&rdquo;.</p>
+   <p><b>What that does to the price curve:</b> hot sets run <b>1.5&ndash;3&times; MSRP</b> in the first weeks, then settle to roughly <b>5&ndash;25% over MSRP</b> once restocks land in months two to six.</p>
+   <p style="margin-bottom:0">Which is the same conclusion the Learn tab reaches from the other direction: <b>your edge is access, not prediction.</b></p></div>
+ </section>
+
+ <section><h2>Getting told about a restock</h2>
+  <div class="teach">
+   <p>None of these retailers publish stock data &mdash; Target's inventory API refuses scripts outright &mdash; so this dashboard cannot show you live availability, and neither can anything else that is free. What works is a watcher that pings you:</p>
+   <ul>
+    <li><b>Restock Discords</b> (PokeAlerts and similar) &mdash; volunteers and monitors posting drops in real time. Free, and the fastest of these.</li>
+    <li><b>Page watchers</b> &mdash; Visualping or PageCrawl on a specific product URL, which emails you when the page changes. Free tiers are limited but fine for a handful of products.</li>
+    <li><b>Retailer accounts</b> &mdash; Best Buy invites and Pok&eacute;mon Center account alerts are the sanctioned routes, and on Best Buy it is the <i>only</i> route.</li>
+   </ul>
+   <p style="margin-bottom:0">Hot drops sell out in under a minute, so refreshing a page by hand almost never catches one. A notification is the whole game.</p></div>
+ </section>
+</div>
+
+<!-- ============ PREORDERS ============ -->
+<div role="tabpanel" id="p-pre" aria-labelledby="t-pre" hidden>
+ <section>
+  <h2>Preorders</h2>
+  <div class="rule"><p class="big">The only reliable way to pay MSRP</p>
+   <p>A preorder locks a unit out of the allocation before the scramble starts, at the sticker price, with no premium. Everything else on this dashboard is about reacting fast; this is the one route where being early costs you nothing.</p></div>
+  {pre_cards}
+ </section>
+
+ <section><h2>How preorders actually work</h2>
+  <div class="teach"><ol class="steps">
+   <li><div><b>A listing goes live, often months ahead.</b> Hobby distributors like DA Card World usually list before the big-box sites do.</div></li>
+   <li><div><b>Commit inside the first 48 hours.</b> That is the window that matters &mdash; allocation-limited sets sell through their preorder pool in days. Terastal Fest ex went in under three weeks in 2026.</div></li>
+   <li><div><b>You are charged at or near release</b>, not usually at order time, and the allocation is held for you.</div></li>
+   <li><div><b>It ships on street date.</b> If the set is hot, it is already trading above MSRP by the time your box lands.</div></li>
+  </ol></div>
+ </section>
+
+ <section><h2>Price guarantees &mdash; worth knowing which</h2>
+  <div class="scroll"><table><thead><tr><th>Retailer</th><th>What happens if the price moves</th></tr></thead>
+   <tbody>
+    <tr><td><b>Walmart</b></td><td>Price drops before your order ships &rarr; <b>you pay the lower one automatically</b>. Price rises &rarr; you keep yours.</td></tr>
+    <tr><td><b>Amazon</b></td><td><b>Pre-Order Price Guarantee</b> &mdash; charged the lowest price offered between ordering and release. No claim to file.</td></tr>
+    <tr><td><b>Most hobby shops</b></td><td>Price is <b>final at purchase</b>. No refund if it drops, no surcharge if it rises.</td></tr>
+    <tr><td><b>Pok&eacute;mon Center</b></td><td>MSRP by definition, so there is nothing to guarantee.</td></tr>
+   </tbody></table></div>
+  <div class="note"><b>Two things to check before committing.</b> That the retailer ships <b>sealed product</b> rather than singles pulled from cases, and what the cancellation terms are &mdash; a preorder you cannot cancel is a bet, not a reservation.</div>
+ </section>
+
+ <section><h2>Preordering at a card shop beats all of it</h2>
+  <div class="note"><b>A standing preorder at a local shop is the single most reliable way to buy at MSRP</b>, and it is the one channel no bot and no lottery can outrun. The Map tab lists <b>nine card shops</b> within 20 miles and OpenStreetMap under-counts them, so the real number is higher. Phone them and get on the list &mdash; it costs nothing and it is the highest-value thing on this whole dashboard.</div>
  </section>
 </div>
 
