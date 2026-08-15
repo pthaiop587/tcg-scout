@@ -214,6 +214,74 @@ if (pcEl) {
   setTimeout(render, 0);
 }
 
+/* ================= RESTOCK WINDOWS =================
+   Researched 15 Aug 2026, converted from Eastern to Pacific because every
+   guide quotes ET and he is in Upland. days: 0=Sun .. 6=Sat, null = any weekday.
+   Times are local Pacific, 24h.                                            */
+const DROPS = [
+  {n:'Pok\u00e9mon Center', days:[1,2,3,4,5], from:7.0, to:10.25, peak:8.0,
+   note:'Queue opens somewhere in this band, most often around <b>8am</b>. The old ' +
+        '"Tuesday and Thursday" rule is wrong \u2014 2026 data has Wednesday as the ' +
+        'busiest day by far. Surprise restocks hit any weekday.', tone:'buy'},
+  {n:'Target.com', days:[0,1,2,3,4,5,6], from:22.0, to:24.0,
+   note:'Overnight, when their distribution centres process inventory and site ' +
+        'traffic is low. Sells out in <b>under two minutes</b>.', tone:'watch'},
+  {n:'Walmart.com', days:[3], from:17.0, to:19.0,
+   note:'Wednesday evening \u2014 about <b>87%</b> of drops land Wednesday. Gone in ' +
+        'seconds. Note this is the evening, not the morning most guides claim.', tone:'watch'},
+  {n:'GameStop.com', days:null, from:null, to:null,
+   note:'No fixed window \u2014 it drops when distributor allocation arrives. But it ' +
+        'stays live <b>5\u201320 minutes</b> instead of under two, which makes it the ' +
+        'one you can realistically catch by hand.', tone:'buy'},
+  {n:'Best Buy', days:null, from:null, to:null,
+   note:'<b>Invitation lottery.</b> No window to watch and no speed advantage to be ' +
+        'had \u2014 request an invite on the product page and wait for the draw.', tone:'flag'},
+];
+
+const dropBox = document.getElementById('dropwins');
+if (dropBox) {
+  const DAYN = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const hhmm = h => {
+    const H = Math.floor(h) % 24, M = Math.round((h - Math.floor(h)) * 60);
+    const ap = H < 12 ? 'am' : 'pm', h12 = H % 12 === 0 ? 12 : H % 12;
+    return h12 + (M ? ':' + String(M).padStart(2, '0') : '') + ap;
+  };
+  /* hours until the next time this window opens, in the viewer's own clock */
+  function nextOpen(d){
+    if (d.from === null || !d.days) return null;
+    const now = new Date();
+    for (let add = 0; add < 8; add++){
+      const c = new Date(now); c.setDate(now.getDate() + add);
+      if (!d.days.includes(c.getDay())) continue;
+      c.setHours(Math.floor(d.from), Math.round((d.from % 1) * 60), 0, 0);
+      if (c > now) return (c - now) / 3600000;
+    }
+    return null;
+  }
+  const label = hrs => hrs == null ? '' :
+    hrs < 1 ? Math.round(hrs * 60) + ' min' :
+    hrs < 24 ? Math.round(hrs) + ' hr' : Math.round(hrs / 24) + ' days';
+
+  const render = () => {
+    dropBox.innerHTML = DROPS.map(d => {
+      const when = d.from === null
+        ? '<span class="tag">no fixed window</span>'
+        : '<span class="tag">' + (d.days.length === 7 ? 'daily'
+            : d.days.length === 5 ? 'weekdays' : d.days.map(x => DAYN[x]).join(', ')) +
+          '</span><span class="mp">' + hhmm(d.from) + ' \u2013 ' + hhmm(d.to) + '</span>' +
+          (d.peak ? '<span class="tag">peak</span><span class="rp">' + hhmm(d.peak) + '</span>' : '');
+      const nx = nextOpen(d);
+      const cd = nx == null ? '' : '<span class="xx">in ' + label(nx) + '</span>';
+      return '<article class="card ' + d.tone + '"><div class="pad">' +
+        '<b class="pname">' + d.n + '</b>' +
+        '<div class="prices mono">' + when + cd + '</div>' +
+        '<p class="shopnote">' + d.note + '</p></div></article>';
+    }).join('');
+  };
+  render();
+  setInterval(render, 60000);   /* keep the countdowns honest */
+}
+
 /* ---- fill the per-card link rows on the tiered shelf lists ---- */
 document.querySelectorAll('.linkrow[data-links]').forEach(el => {
   el.innerHTML = buyLinks(el.dataset.links, el.dataset.game) +

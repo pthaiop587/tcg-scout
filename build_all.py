@@ -445,6 +445,7 @@ BODY = f'''<title>Card Run HQ</title>
     <button class="navlink" role="tab" id="t-types" aria-controls="p-types" aria-selected="false"><i></i>Box types &amp; ROI</button>
     <button class="navlink" role="tab" id="t-shops" aria-controls="p-shops" aria-selected="false"><i></i>Online shops</button>
     <button class="navlink" role="tab" id="t-pre"   aria-controls="p-pre"   aria-selected="false"><i></i>Preorders</button>
+    <button class="navlink" role="tab" id="t-drop"  aria-controls="p-drop"  aria-selected="false"><i></i>Restock windows</button>
     <button class="navlink" role="tab" id="t-map"   aria-controls="p-map"   aria-selected="false"><i></i>Map</button>
     <button class="navlink" role="tab" id="t-chase" aria-controls="p-chase" aria-selected="false"><i></i>Chase cards</button>
     <button class="navlink" role="tab" id="t-learn" aria-controls="p-learn" aria-selected="false"><i></i>Learn</button>
@@ -711,6 +712,47 @@ BODY = f'''<title>Card Run HQ</title>
 
  <section><h2>Preordering at a card shop beats all of it</h2>
   <div class="note"><b>A standing preorder at a local shop is the single most reliable way to buy at MSRP</b>, and it is the one channel no bot and no lottery can outrun. The Map tab lists <b>nine card shops</b> within 20 miles and OpenStreetMap under-counts them, so the real number is higher. Phone them and get on the list &mdash; it costs nothing and it is the highest-value thing on this whole dashboard.</div>
+ </section>
+</div>
+
+<!-- ============ RESTOCK WINDOWS ============ -->
+<div role="tabpanel" id="p-drop" aria-labelledby="t-drop" hidden>
+ <section>
+  <h2>When each store actually drops</h2>
+  <div class="rule"><p class="big">All times Pacific &mdash; yours, not the article's</p>
+   <p>Nearly every guide quotes Eastern. These are converted, so what you read is when to actually be looking.</p></div>
+  <div id="dropwins"></div>
+ </section>
+
+ <section><h2>The launch-day order</h2>
+  <div class="teach">
+   <p>On a new set, allocation lands in a fairly consistent sequence:</p>
+   <p class="mono" style="background:var(--surface2);padding:10px 13px;border-radius:6px;font-size:12.5px">Pok&eacute;mon Center &rarr; Best Buy + Target (30&ndash;90 min later) &rarr; Walmart (variable) &rarr; GameStop (usually last)</p>
+   <p style="margin-bottom:0">GameStop being last is <b>good news, not bad</b> &mdash; it is the least contested and the slowest to sell out.</p></div>
+ </section>
+
+ <section><h2>Why a bot would not help at Pok&eacute;mon Center</h2>
+  <div class="note warn"><b>The queue is randomised.</b> Pok&eacute;mon Center puts everyone into a lottery when a major drop opens, and position is assigned at random &mdash; there is no first-come advantage to win and nothing for speed to beat. Arriving in 5 milliseconds and arriving at 9:59am get the same treatment.
+  <br><br>What <i>does</i> move the odds is unglamorous: <b>be logged in, have payment and address saved, and be on the site before the queue opens.</b> And a bad queue number is not a loss &mdash; drops stay live for hours and the line keeps moving as people abandon carts and hit purchase limits.</div>
+ </section>
+
+ <section><h2>Where a person can genuinely win</h2>
+  <div class="teach">
+   <p><b>GameStop.</b> Hot product lasts <b>5&ndash;20 minutes</b> there, against under two minutes at Target or Walmart. That is a window a human with a notification can actually hit.</p>
+   <p><b>Card shops.</b> A standing preorder is allocation reserved in your name. Nothing to race.</p>
+   <p><b>Best Buy.</b> The invite lottery is the only route &mdash; request one on the product page early. Speed is irrelevant there by design.</p>
+   <p style="margin-bottom:0"><b>Barnes &amp; Noble and Costco.</b> Barely contested online, because almost nobody thinks to look.</p></div>
+ </section>
+
+ <section><h2>Getting the alert in time</h2>
+  <div class="teach">
+   <p>Hot drops at Target and Walmart clear in under two minutes, so a notification is the whole game &mdash; manual refreshing does not catch those.</p>
+   <ul>
+    <li><b>Restock Discords</b> &mdash; monitors posting drops the second they go live. The fastest free option.</li>
+    <li><b>Page watchers</b> &mdash; Visualping or PageCrawl on a specific product URL. Fine for a handful of items you care about.</li>
+    <li><b>Retailer alerts</b> &mdash; Pok&eacute;mon Center account notifications and Best Buy invites. Slower, but sanctioned and they never get you banned.</li>
+   </ul>
+   <p style="margin-bottom:0">Then have the checkout ready before you need it: account logged in, card saved, address confirmed. <b>Most losses are checkout friction, not arrival time.</b></p></div>
  </section>
 </div>
 
