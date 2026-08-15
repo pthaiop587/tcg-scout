@@ -293,6 +293,14 @@ font-weight:650;cursor:pointer;font-family:inherit}
 .hint{font-size:11.5px;color:var(--ink3);margin:0}
 .scroll{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
 table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:560px}
+/* The shelf table carries two link columns on top of the numbers. Give it room
+   and let .scroll do the scrolling, rather than crushing every column: product
+   names were wrapping to three lines and the chips were stacking 3 deep. */
+#p-shelf .scroll table{min-width:1000px}
+#p-shelf #tb td{padding:11px}
+#p-shelf #tb td:first-child{min-width:190px}
+#p-shelf #tb .chasecell{min-width:165px;max-width:210px}
+td .buys{flex-wrap:nowrap}          /* one row of chips in a cell; cards still wrap */
 th{text-align:left;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);
 font-weight:700;padding:9px 11px;border-bottom:1px solid var(--line);background:var(--surface2);white-space:nowrap}
 td{padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}

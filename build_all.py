@@ -357,7 +357,7 @@ BODY = f'''<title>Card Run HQ</title>
   </div>
   <div class="scroll"><table><thead><tr><th>Product</th><th>Where</th><th class="num">Shelf &middot; MSRP</th>
    <th class="num">Worth &middot; TCGplayer</th><th class="num">Upcharge</th><th>Buy at MSRP</th>
-   <th>What it sells for</th><th>Best card in set</th></tr></thead>
+   <th>Sells for</th><th>Best card in set</th></tr></thead>
    <tbody id="tb"></tbody></table></div>
   <div class="empty" id="empty" hidden>Nothing matches. Try a shorter word.</div>
  </section>
