@@ -1,7 +1,7 @@
 """Card Run HQ - tabbed dashboard generator.
 Usage: python build_all.py <scratchdir> <out.html>
 Re-runnable: this is what the daily refresh calls after pull_shelf.py."""
-import json, io, math, os, sys, html
+import json, io, math, os, re, sys, html
 
 SP, OUT = sys.argv[1], sys.argv[2]
 TODAY = __import__("datetime").date.today()
@@ -168,6 +168,104 @@ def tier_card(r, tone):
             f'<span class="xx">{r["x"]:.2f}&times;</span></div>'
             f'<div class="linkrow" data-links="{esc(r["p"])}" data-game="{esc(r["g"])}"></div>'
             f'{ch}{why}</div></article>')
+
+# ------------------------------------------------------- product types / ROI
+# Which KIND of sealed product actually pays? Measured from the live shelf data
+# rather than asserted, so it re-answers itself on every 4x-daily rebuild.
+# Shipping is per size class -- sealed goes as a parcel, and a $15 box eats a
+# multiple that looks fine on paper.
+PTYPES = [
+ ("Elite Trainer Box", r"elite trainer box", 12.00,
+  "Pok&eacute;mon only. Around 9 packs plus 65 sleeves, dice, counters and a storage box. <b>The most common thing on a Target shelf.</b>"),
+ ("Booster bundle", r"booster bundle", 9.00,
+  "Pok&eacute;mon. Six packs in a small box. No accessories, no promo &mdash; just packs at a slight discount."),
+ ("Booster box / display", r"booster box|booster display", 15.00,
+  "The case a shop opens to sell single packs from. Pok&eacute;mon 36 packs, One Piece and Lorcana 24, Magic Play Boosters 30. <b>The classic resale unit.</b>"),
+ ("Draft Night", r"draft night", 15.00,
+  "Magic. 12 Play Boosters, 1 Collector Booster and 90 lands &mdash; a self-contained draft for four people."),
+ ("Illumineer's Trove", r"illumineer'?s trove", 12.00,
+  "Lorcana's answer to the ETB. Eight packs plus accessories and a storage box."),
+ ("Super-Premium Collection", r"super.?premium collection", 14.00,
+  "The big one. A figure or oversized card plus a stack of packs, usually with exclusive art."),
+ ("Premium Collection", r"premium collection", 12.00,
+  "A promo card or pin plus roughly 6&ndash;8 packs in a display box."),
+ ("Mini tin", r"mini tin", 6.00,
+  "Small metal tin, 2&ndash;3 packs and a promo card. The impulse buy by the till."),
+ ("Tin", r"\btin\b", 7.00,
+  "Larger tin &mdash; 4&ndash;5 packs plus a foil promo, often a full-art one."),
+ ("Blister (3-pack)", r"3.?pack blister|checklane|blister", 5.00,
+  "Three packs on a hanging card with a promo and usually a coin. <b>The thing dangling in the checkout lane.</b>"),
+ ("Bundle", r"\bbundle\b", 9.00,
+  "Magic. Roughly nine Play Boosters plus lands, a spindown die and a box."),
+ ("Starter / Commander deck", r"starter deck|commander deck|theme deck|\bdeck\b", 7.00,
+  "A ready-to-play deck. Sealed, but built to be opened rather than held."),
+ ("Prerelease pack", r"prerelease", 7.00,
+  "Event kit &mdash; 5&ndash;6 packs and a promo, sold around release weekend."),
+ ("Collection box", r"collection|box set|gift set", 12.00,
+  "Catch-all for themed boxes: a promo or two plus packs."),
+ ("Booster pack (single)", r"booster pack|\bpack\b", 1.00,
+  "One sealed pack. Pok&eacute;mon 10 cards, One Piece and Lorcana 12, Magic Play Booster 14."),
+]
+FVF_R, ORDER_F = 0.1325, 0.40
+
+def _ptype(name):
+    n = name.lower()
+    for label, pat, ship, blurb in PTYPES:
+        if re.search(pat, n):
+            return label, ship, blurb
+    return None, None, None
+
+_pt = {}
+for r in shelf_data["rows"]:
+    if r["ratio"] is None:
+        continue
+    label, ship, blurb = _ptype(r["product"])
+    if not label:
+        continue
+    gross = r["market"] + ship          # buyer pays postage at cost
+    net = gross - gross * FVF_R - ORDER_F - ship - r["retail"]
+    b = _pt.setdefault(label, {"ship": ship, "blurb": blurb, "nets": [],
+                               "costs": [], "ratios": []})
+    b["nets"].append(net); b["costs"].append(r["retail"]); b["ratios"].append(r["ratio"])
+
+def _med(v):
+    v = sorted(v); n = len(v)
+    return v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2
+
+pt_stats = []
+for label, b in _pt.items():
+    cost, net = _med(b["costs"]), _med(b["nets"])
+    pt_stats.append(dict(t=label, n=len(b["nets"]), cost=cost, ship=b["ship"],
+                         ratio=_med(b["ratios"]), net=net, pct=net / cost * 100,
+                         losers=sum(1 for x in b["nets"] if x <= 0), blurb=b["blurb"]))
+pt_stats.sort(key=lambda x: -x["pct"])
+
+def _usd(v):
+    return ("&minus;$" if v < 0 else "$") + f"{abs(v):,.2f}"
+
+def _pt_row(s):
+    thin = ' <span class="pill watch">thin sample</span>' if s["n"] < 5 else ""
+    lose = (f'<div class="ch"><b>{s["losers"]} of {s["n"]}</b> lose money after fees.</div>'
+            if s["losers"] else "")
+    tone = "buy" if s["pct"] >= 100 else ("watch" if s["pct"] > 0 else "skip")
+    return (f'<article class="card {tone}"><div class="pad">'
+            f'<b class="pname">{s["t"]}{thin}</b>'
+            f'<div class="prices mono"><span class="tag">typical cost</span>'
+            f'<span class="rp">${s["cost"]:,.2f}</span><span class="arrow">&rarr;</span>'
+            f'<span class="tag">net</span><span class="mp">{_usd(s["net"])}</span>'
+            f'<span class="xx">{s["pct"]:,.0f}%</span></div>'
+            f'<div class="shopmeta"><span><b>Sample</b> {s["n"]} products</span>'
+            f'<span><b>Median upcharge</b> {s["ratio"]:.2f}&times;</span>'
+            f'<span><b>Postage assumed</b> ${s["ship"]:.2f}</span></div>'
+            f'<p class="shopnote">{s["blurb"]}</p>{lose}</div></article>')
+
+pt_cards = "".join(_pt_row(s) for s in pt_stats)
+_best_cash = max(pt_stats, key=lambda s: s["net"] if s["n"] >= 5 else -1e9)
+# Percentages this close are the same answer: mini tin 188.79% vs ETB 188.70%.
+# Bucket to the nearest 10 points, then let dollars per unit break the tie, so
+# the headline does not crown a $19 item over a $94 one on a rounding artefact.
+_best_pct = max(pt_stats,
+                key=lambda s: (round(s["pct"], -1), s["net"]) if s["n"] >= 5 else (-1e9, -1e9))
 
 # ------------------------------------------------------------ online shops
 # Researched 15 Aug 2026. Shipping thresholds and restock behaviour change --
@@ -339,6 +437,7 @@ BODY = f'''<title>Card Run HQ</title>
     <p class="lbl">Buy &mdash; scouting</p>
     <button class="navlink" role="tab" id="t-drops" aria-controls="p-drops" aria-selected="true"><i></i>Drops</button>
     <button class="navlink" role="tab" id="t-shelf" aria-controls="p-shelf" aria-selected="false"><i></i>Shelf check</button>
+    <button class="navlink" role="tab" id="t-types" aria-controls="p-types" aria-selected="false"><i></i>Box types &amp; ROI</button>
     <button class="navlink" role="tab" id="t-shops" aria-controls="p-shops" aria-selected="false"><i></i>Online shops</button>
     <button class="navlink" role="tab" id="t-pre"   aria-controls="p-pre"   aria-selected="false"><i></i>Preorders</button>
     <button class="navlink" role="tab" id="t-map"   aria-controls="p-map"   aria-selected="false"><i></i>Map</button>
@@ -480,6 +579,40 @@ BODY = f'''<title>Card Run HQ</title>
  <section>
   <div class="note warn"><b>A high multiple usually means it&rsquo;s already gone.</b> Prismatic Evolutions sits at 4&times; precisely because shelves got cleared. A &ldquo;grab it instantly if you see it&rdquo; list, not a shopping list.</div>
   <div class="note"><b>Where you can buy it.</b> <span class="wtag w-store">store</span> Target / Walmart / card shops. <span class="wtag w-online">online</span> Pok&eacute;mon Center only. <span class="wtag w-preorder">preorder</span> not released, price is a guess.</div>
+ </section>
+</div>
+
+<!-- ============ BOX TYPES & ROI ============ -->
+<div role="tabpanel" id="p-types" aria-labelledby="t-types" hidden>
+ <section>
+  <h2>Why there are so many kinds of box</h2>
+  <div class="teach">
+   <p>They exist to hit <b>price points</b>, not to be different products. Publishers want something at $5, $10, $25, $50 and $145, so the same packs get repackaged with different amounts of plastic around them. A mini tin and a booster box contain the same cards &mdash; one has three packs and a promo, the other has thirty-six.</p>
+   <p style="margin-bottom:0">Which means the interesting question is not what is inside. It is <b>which wrapper returns the most on the cash you put in</b>, and that is answerable from your own shelf data.</p></div>
+ </section>
+
+ <section>
+  <h2>The short answer</h2>
+  <div class="rule"><p class="big">Best return on cash: {_best_pct["t"]} &mdash; {_best_pct["pct"]:,.0f}%</p>
+   <p>Roughly <b>${_best_pct["cost"]:,.2f}</b> in, <b>{_usd(_best_pct["net"])}</b> net out after eBay's cut and postage. Mini tins match it on percentage but return about a fifth as much per unit, so you would be doing five times the handling for the same money.</p></div>
+  <div class="rule"><p class="big">Most dollars per unit: {_best_cash["t"]} &mdash; {_usd(_best_cash["net"])}</p>
+   <p>But it ties up <b>${_best_cash["cost"]:,.2f}</b> a unit to do it. Fewer, bigger bets.</p></div>
+  <div class="note warn"><b>Multiple and profit are not the same thing, and this is where people get it wrong.</b> A mini tin at 3.3&times; sounds better than a booster box at 2.1&times;. But the tin returns about $19 and the box about $98. The multiple tells you how efficient the cash is; the dollars tell you whether it was worth the drive, the packing and the trip to the post office.</div>
+ </section>
+
+ <section>
+  <h2>Every type, ranked by return on cash</h2>
+  <p class="hint">Median across the {len([r for r in shelf_data["rows"] if r["ratio"] is not None])} shelf products that have a verified MSRP. Net is after a {FVF_R:.2%} final value fee, the ${ORDER_F:.2f} order fee and postage &mdash; buyer pays postage at cost, so it is a wash on the way in and a cost on the way out.</p>
+  {pt_cards}
+ </section>
+
+ <section>
+  <h2>What the numbers do not say</h2>
+  <div class="teach">
+   <p><b>Postage is an estimate per size class</b>, shown on each card. Weigh a real box and correct it if you want the figures exact &mdash; on cheap items the postage is most of the decision.</p>
+   <p><b>Sell-through is not modelled.</b> A booster box at 68% that sells in a week beats a premium collection at 362% that sits for six months. Nothing here can see how fast something moves.</p>
+   <p><b>Small samples are flagged.</b> Where a type has fewer than five products behind it, treat the number as a hint rather than a finding.</p>
+   <p style="margin-bottom:0"><b>Every figure assumes you paid MSRP.</b> Pay above the sticker and the whole table stops applying &mdash; which is the point of the Shelf check tab.</p></div>
  </section>
 </div>
 
