@@ -1,0 +1,62 @@
+name: Refresh Card Run HQ
+
+# Four times a day, Pacific. GitHub's cron is UTC, and PDT is UTC-7, so
+# 01/07/13/19 UTC lands at 6pm / midnight / 6am / noon local.
+# Minute 13 rather than 0 -- everyone schedules :00 and the runners queue.
+on:
+  schedule:
+    - cron: '13 1,7,13,19 * * *'
+  workflow_dispatch:        # gives you a "Run workflow" button for a manual pull
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # pull_shelf.py hits tcgcsv.com ~140 times. A GitHub runner has ordinary
+      # internet access, which is the whole reason this works here and cannot
+      # work from a Claude cloud agent.
+      - name: Pull sealed prices from TCGCSV
+        run: python pull_shelf.py shelf.json
+
+      # build into _site so Pages serves only the page, not the source tree
+      - name: Build the dashboard
+        run: |
+          mkdir -p _site
+          python build_all.py . _site/index.html
+
+      - name: Fail loudly if the build produced something implausible
+        run: |
+          test -f _site/index.html
+          SIZE=$(stat -c%s _site/index.html)
+          echo "index.html is $SIZE bytes"
+          # a real build is megabytes; anything tiny means a stage silently no-oped
+          test "$SIZE" -gt 300000
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
