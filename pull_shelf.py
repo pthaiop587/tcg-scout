@@ -3,11 +3,24 @@ prices and the set's chase card. Output feeds the in-store lookup dashboard."""
 import json, urllib.request, datetime, sys, re
 
 BASE = "https://tcgcsv.com/tcgplayer"
-CATS = {3: "Pokemon", 68: "One Piece", 71: "Lorcana", 1: "Magic"}
+CATS = {3: "Pokemon", 68: "One Piece", 71: "Lorcana", 1: "Magic",
+        # everything else on a GameStop / Target card wall
+        2: "YuGiOh", 63: "Digimon", 79: "Star Wars Unlimited",
+        80: "Dragon Ball Fusion World", 81: "Union Arena",
+        86: "Gundam", 89: "Riftbound"}
 CUTOFF = "2025-01-01"          # ~19 months back: realistic shelf life
 # Magic prints far more sets than the others; a tighter window keeps the pull
-# (and the 4x-daily CI build) from ballooning.
-CUTOFF_BY_GAME = {"Magic": "2026-01-01"}
+# (and the 4x-daily CI build) from ballooning. Same for the newer additions.
+CUTOFF_BY_GAME = {"Magic": "2026-01-01", "YuGiOh": "2025-06-01",
+                  "Digimon": "2025-06-01", "Star Wars Unlimited": "2025-06-01",
+                  "Dragon Ball Fusion World": "2025-06-01",
+                  "Union Arena": "2025-06-01", "Gundam": "2025-06-01",
+                  "Riftbound": "2025-06-01"}
+
+# Games with a verified MSRP table below. Everything else comes through as
+# market-price-only -- still useful in a shop, where you compare the market
+# figure to the tag in front of you.
+MSRP_GAMES = {"Pokemon", "One Piece", "Lorcana"}
 TODAY = datetime.date.today()
 JUNK = ("pop series", "miscellaneous", "alternate art promos", "nintendo promos",
         "trainer kit", "blister exclusives", "first partner pack", "prerelease",
@@ -157,7 +170,7 @@ for cat, game in CATS.items():
             # publishes none: market price plus links beats omitting the product.
             # Everywhere else a missing MSRP means we could not verify it, and a
             # row with no sticker and no ratio would just be noise.
-            if not retail and game != "Magic":
+            if not retail and game in MSRP_GAMES:
                 continue
             rows.append({
                 "game": game, "set": sname, "released": rel, "age": age,

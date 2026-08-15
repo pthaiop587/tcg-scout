@@ -153,6 +153,23 @@ cursor:pointer;font-family:inherit}
 border-radius:999px;background:var(--buy);color:#fff;font-size:12.5px;font-weight:700;
 opacity:0;transform:translateY(6px);transition:opacity .18s,transform .18s;pointer-events:none}
 .added.show{opacity:1;transform:none}
+/* ---- shelf check: search first, everything else folded away ----
+   This tab is used standing in a shop. The search box was six sections and
+   ~1,500px down the page; now it is the first thing on screen and sticks
+   while you scroll the results. */
+#p-shelf .searchfirst{order:-1}
+.tools.sticky{position:sticky;top:0;z-index:15;background:var(--bg);
+padding:9px 0;margin-top:-9px}
+@media (max-width:899px){.tools.sticky{top:57px}}   /* clear the mobile topbar */
+.tierfold{margin:0}
+.tierfold>summary{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;
+color:var(--ink2);font-weight:700}
+.tierfold[open]>summary{color:var(--ink);margin-bottom:4px}
+.tierfold .cnt{font-family:ui-monospace,monospace;font-size:11px;font-weight:700;
+color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1px 8px;
+letter-spacing:0}
+.tierfold>*+*{margin-top:11px}
+
 .fold{border:1px solid var(--line);border-radius:9px;background:var(--surface);padding:0 14px}
 .fold[open]{padding-bottom:12px}
 .fold>summary{cursor:pointer;padding:11px 0;font-size:13px;font-weight:700;color:var(--ink2)}

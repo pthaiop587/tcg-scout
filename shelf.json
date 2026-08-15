@@ -3652,6 +3652,5193 @@
    "chase": "Crystalline Entity",
    "chasePrice": 99.95,
    "chaseRarity": "M"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Battles of Legend: Monster Mayhem",
+   "released": "2025-06-13",
+   "age": 428,
+   "product": "Battles of Legend: Monster Mayhem Booster Box [1st Edition]",
+   "retail": null,
+   "market": 50.84,
+   "ratio": null,
+   "chase": "Blue-Eyes White Dragon (Starlight Rare)",
+   "chasePrice": 162.07,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Battles of Legend: Monster Mayhem",
+   "released": "2025-06-13",
+   "age": 428,
+   "product": "Battles of Legend: Monster Mayhem Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 3.08,
+   "ratio": null,
+   "chase": "Blue-Eyes White Dragon (Starlight Rare)",
+   "chasePrice": 162.07,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Battles of Legend: Monster Mayhem",
+   "released": "2025-06-13",
+   "age": 428,
+   "product": "Battles of Legend: Monster Mayhem Tuck Box (Retail Exclusive)",
+   "retail": null,
+   "market": 17.0,
+   "ratio": null,
+   "chase": "Blue-Eyes White Dragon (Starlight Rare)",
+   "chasePrice": 162.07,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Duelist's Advance",
+   "released": "2025-07-04",
+   "age": 407,
+   "product": "Duelist's Advance Booster Box [1st Edition]",
+   "retail": null,
+   "market": 34.62,
+   "ratio": null,
+   "chase": "Sky Striker Ace = Zero (Starlight Rare)",
+   "chasePrice": 237.96,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Duelist's Advance",
+   "released": "2025-07-04",
+   "age": 407,
+   "product": "Duelist's Advance Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 2.52,
+   "ratio": null,
+   "chase": "Sky Striker Ace = Zero (Starlight Rare)",
+   "chasePrice": 237.96,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Duelist's Advance",
+   "released": "2025-07-04",
+   "age": 407,
+   "product": "Duelist's Advance Sleeved Booster Pack",
+   "retail": null,
+   "market": 3.5,
+   "ratio": null,
+   "chase": "Sky Striker Ace = Zero (Starlight Rare)",
+   "chasePrice": 237.96,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Justice Hunters",
+   "released": "2025-08-01",
+   "age": 379,
+   "product": "Justice Hunters Booster Box [1st Edition]",
+   "retail": null,
+   "market": 47.04,
+   "ratio": null,
+   "chase": "K9-17 Izuna (Starlight Rare)",
+   "chasePrice": 26.99,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Justice Hunters",
+   "released": "2025-08-01",
+   "age": 379,
+   "product": "Justice Hunters Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 2.26,
+   "ratio": null,
+   "chase": "K9-17 Izuna (Starlight Rare)",
+   "chasePrice": 26.99,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Justice Hunters",
+   "released": "2025-08-01",
+   "age": 379,
+   "product": "Justice Hunters Field Center Card Box (Retail Exclusive)",
+   "retail": null,
+   "market": 17.75,
+   "ratio": null,
+   "chase": "K9-17 Izuna (Starlight Rare)",
+   "chasePrice": 26.99,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Retro Pack 2 (2020 Date Reprint)",
+   "released": "2025-08-22",
+   "age": 358,
+   "product": "Retro Pack 2 (2020 Date Reprint) Booster Pack",
+   "retail": null,
+   "market": 5.84,
+   "ratio": null,
+   "chase": "Blue-Eyes Shining Dragon",
+   "chasePrice": 32.1,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Retro Pack 2 (2020 Date Reprint)",
+   "released": "2025-08-22",
+   "age": 358,
+   "product": "Retro Pack 2 (2020 Date Reprint) 4-Pack Box",
+   "retail": null,
+   "market": 26.02,
+   "ratio": null,
+   "chase": "Blue-Eyes Shining Dragon",
+   "chasePrice": 32.1,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Retro Pack 2 (2020 Date Reprint)",
+   "released": "2025-08-22",
+   "age": 358,
+   "product": "Retro Pack 2 (2020 Date Reprint) Booster Box",
+   "retail": null,
+   "market": 120.07,
+   "ratio": null,
+   "chase": "Blue-Eyes Shining Dragon",
+   "chasePrice": 32.1,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Limited Pack World Championship 2025",
+   "released": "2025-08-30",
+   "age": 350,
+   "product": "Limited Pack World Championship 2025 Pack",
+   "retail": null,
+   "market": 5.16,
+   "ratio": null,
+   "chase": "Exodia the Forbidden One (EUR)",
+   "chasePrice": 85.6,
+   "chaseRarity": "Emblazoned Ultra Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Limited Pack World Championship 2025",
+   "released": "2025-08-30",
+   "age": 350,
+   "product": "Limited Pack World Championship 2025 Box",
+   "retail": null,
+   "market": 38.83,
+   "ratio": null,
+   "chase": "Exodia the Forbidden One (EUR)",
+   "chasePrice": 85.6,
+   "chaseRarity": "Emblazoned Ultra Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "2025 Mega-Pack",
+   "released": "2025-09-05",
+   "age": 344,
+   "product": "2025 Mega-Pack Bundle",
+   "retail": null,
+   "market": 12.8,
+   "ratio": null,
+   "chase": "Dominus Impulse",
+   "chasePrice": 30.87,
+   "chaseRarity": "Prismatic Secret Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "2025 Mega-Pack",
+   "released": "2025-09-05",
+   "age": 344,
+   "product": "2025 Mega-Pack Mega Pack",
+   "retail": null,
+   "market": 4.88,
+   "ratio": null,
+   "chase": "Dominus Impulse",
+   "chasePrice": 30.87,
+   "chaseRarity": "Prismatic Secret Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "2025 Mega-Pack",
+   "released": "2025-09-05",
+   "age": 344,
+   "product": "2025 Mega-Pack Tin",
+   "retail": null,
+   "market": 29.17,
+   "ratio": null,
+   "chase": "Dominus Impulse",
+   "chasePrice": 30.87,
+   "chaseRarity": "Prismatic Secret Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "2025 Mega-Pack",
+   "released": "2025-09-05",
+   "age": 344,
+   "product": "2025 Mega-Pack Bundle Display",
+   "retail": null,
+   "market": 103.64,
+   "ratio": null,
+   "chase": "Dominus Impulse",
+   "chasePrice": 30.87,
+   "chaseRarity": "Prismatic Secret Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Doom of Dimensions",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Doom of Dimensions Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 2.18,
+   "ratio": null,
+   "chase": "MarshmaoYummy (Starlight Rare)",
+   "chasePrice": 76.18,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Doom of Dimensions",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Doom of Dimensions Booster Box [1st Edition]",
+   "retail": null,
+   "market": 42.9,
+   "ratio": null,
+   "chase": "MarshmaoYummy (Starlight Rare)",
+   "chasePrice": 76.18,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Doom of Dimensions",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Doom of Dimensions Booster Box [1st Edition] Mini Box (Retail Exclusive)",
+   "retail": null,
+   "market": 23.02,
+   "ratio": null,
+   "chase": "MarshmaoYummy (Starlight Rare)",
+   "chasePrice": 76.18,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary Collection Kaiba (2020 Date Reprint)",
+   "released": "2025-10-09",
+   "age": 310,
+   "product": "Legendary Collection Kaiba Box Set [Unlimited] (2020 Date Reprint)",
+   "retail": null,
+   "market": 30.99,
+   "ratio": null,
+   "chase": "Blue-Eyes White Dragon (Version 2)",
+   "chasePrice": 10.68,
+   "chaseRarity": "Ultra Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary Collection Kaiba (2020 Date Reprint)",
+   "released": "2025-10-09",
+   "age": 310,
+   "product": "Legendary Collection Kaiba Mega Pack [Unlimited] (2020 Date Reprint)",
+   "retail": null,
+   "market": 7.96,
+   "ratio": null,
+   "chase": "Blue-Eyes White Dragon (Version 2)",
+   "chasePrice": 10.68,
+   "chaseRarity": "Ultra Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "THE CHRONICLES DECK: The Fallen & The Virtuous (All-Foil Edition)",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "THE CHRONICLES DECK: The Fallen & the Virtuous (All-Foil Edition) Deck",
+   "retail": null,
+   "market": 24.7,
+   "ratio": null,
+   "chase": "The Fallen & The Virtuous (Starlight Rare)",
+   "chasePrice": 126.72,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "THE CHRONICLES DECK: The Fallen & The Virtuous (All-Foil Edition)",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "THE CHRONICLES DECK: The Fallen & the Virtuous (All-Foil Edition) Deck Display",
+   "retail": null,
+   "market": 120.83,
+   "ratio": null,
+   "chase": "The Fallen & The Virtuous (Starlight Rare)",
+   "chasePrice": 126.72,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary 5D's Decks",
+   "released": "2025-11-21",
+   "age": 267,
+   "product": "Legendary 5D's: Box Set",
+   "retail": null,
+   "market": 30.1,
+   "ratio": null,
+   "chase": "Mulcharmy Fuwalos",
+   "chasePrice": 8.91,
+   "chaseRarity": "Common"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Phantom Revenge",
+   "released": "2025-12-19",
+   "age": 239,
+   "product": "Phantom Revenge Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 2.44,
+   "ratio": null,
+   "chase": "Kewl Tune Synchro (Starlight Rare)",
+   "chasePrice": 28.69,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Phantom Revenge",
+   "released": "2025-12-19",
+   "age": 239,
+   "product": "Phantom Revenge Booster Box [1st Edition]",
+   "retail": null,
+   "market": 45.61,
+   "ratio": null,
+   "chase": "Kewl Tune Synchro (Starlight Rare)",
+   "chasePrice": 28.69,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Phantom Revenge",
+   "released": "2025-12-19",
+   "age": 239,
+   "product": "Phantom Revenge Tuck Box (Retail Exclusive)",
+   "retail": null,
+   "market": 21.1,
+   "ratio": null,
+   "chase": "Kewl Tune Synchro (Starlight Rare)",
+   "chasePrice": 28.69,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "THE CHRONICLES DECK: Spirit Charmers (All-Foil Edition)",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "THE CHRONICLES DECK: Spirit Charmers (All-Foil Edition) Deck",
+   "retail": null,
+   "market": 10.96,
+   "ratio": null,
+   "chase": "Charmers of the Grand Circle (Starlight Rare)",
+   "chasePrice": 47.91,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "THE CHRONICLES DECK: Spirit Charmers (All-Foil Edition)",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "THE CHRONICLES DECK: Spirit Charmers (All-Foil Edition) Deck Display",
+   "retail": null,
+   "market": 54.21,
+   "ratio": null,
+   "chase": "Charmers of the Grand Circle (Starlight Rare)",
+   "chasePrice": 47.91,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Burst Protocol",
+   "released": "2026-02-06",
+   "age": 190,
+   "product": "Burst Protocol Booster Box [1st Edition]",
+   "retail": null,
+   "market": 79.55,
+   "ratio": null,
+   "chase": "Forbidden Crown (Starlight Rare)",
+   "chasePrice": 235.5,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Burst Protocol",
+   "released": "2026-02-06",
+   "age": 190,
+   "product": "Burst Protocol Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 2.94,
+   "ratio": null,
+   "chase": "Forbidden Crown (Starlight Rare)",
+   "chasePrice": 235.5,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Burst Protocol",
+   "released": "2026-02-06",
+   "age": 190,
+   "product": "Burst Protocol Sleeved Booster Pack",
+   "retail": null,
+   "market": 11.22,
+   "ratio": null,
+   "chase": "Forbidden Crown (Starlight Rare)",
+   "chasePrice": 235.5,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Maze of Muertos",
+   "released": "2026-02-20",
+   "age": 176,
+   "product": "Maze of Muertos Booster Box [1st Edition]",
+   "retail": null,
+   "market": 89.99,
+   "ratio": null,
+   "chase": "Dark Magician of Destruction (Collector's Rare)",
+   "chasePrice": 143.94,
+   "chaseRarity": "Collector's Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Maze of Muertos",
+   "released": "2026-02-20",
+   "age": 176,
+   "product": "Maze of Muertos Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 4.91,
+   "ratio": null,
+   "chase": "Dark Magician of Destruction (Collector's Rare)",
+   "chasePrice": 143.94,
+   "chaseRarity": "Collector's Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary Modern Decks 2026",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Legendary Modern Decks: Box Set",
+   "retail": null,
+   "market": 38.04,
+   "ratio": null,
+   "chase": "Reinforcement of the Army (Alternate Art) (Starlight Rare)",
+   "chasePrice": 263.74,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Rarity Collection 5",
+   "released": "2026-04-17",
+   "age": 120,
+   "product": "Rarity Collection 5 Booster Box",
+   "retail": null,
+   "market": 123.51,
+   "ratio": null,
+   "chase": "Red-Eyes Dark Dragoon (Starlight Rare)",
+   "chasePrice": 565.18,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Rarity Collection 5",
+   "released": "2026-04-17",
+   "age": 120,
+   "product": "Rarity Collection 5 Booster Pack",
+   "retail": null,
+   "market": 6.11,
+   "ratio": null,
+   "chase": "Red-Eyes Dark Dragoon (Starlight Rare)",
+   "chasePrice": 565.18,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Rarity Collection 5",
+   "released": "2026-04-17",
+   "age": 120,
+   "product": "Rarity Collection 5 Mini Booster Box (Retail Exclusive)",
+   "retail": null,
+   "market": 44.82,
+   "ratio": null,
+   "chase": "Red-Eyes Dark Dragoon (Starlight Rare)",
+   "chasePrice": 565.18,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Blazing Dominion Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 3.07,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Blazing Dominion Booster Box [1st Edition]",
+   "retail": null,
+   "market": 55.07,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Blazing Dominion Mini Booster Box (Retail Exclusive)",
+   "retail": null,
+   "market": 29.77,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Token: Jack Atlas & Red Dragon Archfiend",
+   "retail": null,
+   "market": 1.14,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Token: Soulburner & Salamangreat Heatleo",
+   "retail": null,
+   "market": 4.0,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Token: Anna Kaboom & Superdreadnought Rail Cannon Gustav Max",
+   "retail": null,
+   "market": 1.75,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Token: Yuri & Starving Venom Fusion Dragon",
+   "retail": null,
+   "market": 0.64,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Token: Syrus Truesdale (Sho) & Super Vehicroid",
+   "retail": null,
+   "market": 0.45,
+   "ratio": null,
+   "chase": "Fydraulis Harmonia (Starlight Rare)",
+   "chasePrice": 188.4,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Battles of Legend: Glorious Gallery",
+   "released": "2026-06-05",
+   "age": 71,
+   "product": "Battles of Legend: Glorious Gallery Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 4.52,
+   "ratio": null,
+   "chase": "Dragon Master Magia (Starlight Rare)",
+   "chasePrice": 1186.75,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Battles of Legend: Glorious Gallery",
+   "released": "2026-06-05",
+   "age": 71,
+   "product": "Battles of Legend: Glorious Gallery Booster Box [1st Edition]",
+   "retail": null,
+   "market": 70.88,
+   "ratio": null,
+   "chase": "Dragon Master Magia (Starlight Rare)",
+   "chasePrice": 1186.75,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Chaos Origins",
+   "released": "2026-07-03",
+   "age": 43,
+   "product": "Chaos Origins Booster Box [1st Edition]",
+   "retail": null,
+   "market": 77.43,
+   "ratio": null,
+   "chase": "Magician of Dark Chaos - Black Chaos (Starlight Rare) (Extended Art)",
+   "chasePrice": 576.73,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Chaos Origins",
+   "released": "2026-07-03",
+   "age": 43,
+   "product": "Chaos Origins Booster Pack [1st Edition]",
+   "retail": null,
+   "market": 4.08,
+   "ratio": null,
+   "chase": "Magician of Dark Chaos - Black Chaos (Starlight Rare) (Extended Art)",
+   "chasePrice": 576.73,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary Arc-V Decks",
+   "released": "2026-08-07",
+   "age": 8,
+   "product": "Legendary Arc-V Decks: Box Set",
+   "retail": null,
+   "market": 19.95,
+   "ratio": null,
+   "chase": "Odd-Eyes Solblaze Dragon (Starlight Rare)",
+   "chasePrice": 99.92,
+   "chaseRarity": "Starlight Rare"
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Limited Pack World Championship 2026",
+   "released": "2026-08-29",
+   "age": -14,
+   "product": "Limited Pack World Championship 2026 Pack",
+   "retail": null,
+   "market": 5.99,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Limited Pack World Championship 2026",
+   "released": "2026-08-29",
+   "age": -14,
+   "product": "Limited Pack World Championship 2026 Box",
+   "retail": null,
+   "market": 51.32,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Magnificent Monsters",
+   "released": "2026-09-04",
+   "age": -20,
+   "product": "Magnificent Monsters Display",
+   "retail": null,
+   "market": 519.37,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Magnificent Monsters",
+   "released": "2026-09-04",
+   "age": -20,
+   "product": "Magnificent Monsters Booster Pack",
+   "retail": null,
+   "market": 38.04,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Magnificent Monsters",
+   "released": "2026-09-04",
+   "age": -20,
+   "product": "Magnificent Monsters Box",
+   "retail": null,
+   "market": 48.68,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Beyond the Brave",
+   "released": "2026-10-09",
+   "age": -55,
+   "product": "Beyond the Brave Booster Box [1st Edition]",
+   "retail": null,
+   "market": 107.7,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Digimon",
+   "set": "Versus Monsters",
+   "released": "2025-06-26",
+   "age": 415,
+   "product": "Versus Monsters Booster Pack",
+   "retail": null,
+   "market": 4.49,
+   "ratio": null,
+   "chase": "Machinedramon (Rare Pull)",
+   "chasePrice": 178.18,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Versus Monsters",
+   "released": "2025-06-26",
+   "age": 415,
+   "product": "Versus Monsters Booster Box",
+   "retail": null,
+   "market": 65.53,
+   "ratio": null,
+   "chase": "Machinedramon (Rare Pull)",
+   "chasePrice": 178.18,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Cyber Eden Release Event Cards",
+   "released": "2025-07-18",
+   "age": 393,
+   "product": "Cyber Eden Release Event Pack",
+   "retail": null,
+   "market": 1.87,
+   "ratio": null,
+   "chase": "Unique Emblem: Poseidia Lagoon",
+   "chasePrice": 10.88,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Digimon",
+   "set": "Cyber Eden",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "Cyber Eden Booster Pack",
+   "retail": null,
+   "market": 3.98,
+   "ratio": null,
+   "chase": "Nokia Shiramine (SP)",
+   "chasePrice": 500.0,
+   "chaseRarity": "Special Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Cyber Eden",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "Cyber Eden Booster Box",
+   "retail": null,
+   "market": 79.23,
+   "ratio": null,
+   "chase": "Nokia Shiramine (SP)",
+   "chasePrice": 500.0,
+   "chaseRarity": "Special Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Cyber Eden",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "Familiar (Token)",
+   "retail": null,
+   "market": 6.91,
+   "ratio": null,
+   "chase": "Nokia Shiramine (SP)",
+   "chasePrice": 500.0,
+   "chaseRarity": "Special Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Sinister Order",
+   "released": "2025-09-19",
+   "age": 330,
+   "product": "Sinister Order Booster Pack",
+   "retail": null,
+   "market": 4.96,
+   "ratio": null,
+   "chase": "BlackWarGreymon ACE (Rare Pull)",
+   "chasePrice": 361.94,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Sinister Order",
+   "released": "2025-09-19",
+   "age": 330,
+   "product": "Sinister Order Booster Box",
+   "retail": null,
+   "market": 55.58,
+   "ratio": null,
+   "chase": "BlackWarGreymon ACE (Rare Pull)",
+   "chasePrice": 361.94,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Hackers' Slumber Release Event Cards",
+   "released": "2025-10-17",
+   "age": 302,
+   "product": "Hackers' Slumber Release Event Pack",
+   "retail": null,
+   "market": 3.99,
+   "ratio": null,
+   "chase": "Angewomon",
+   "chasePrice": 22.49,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Digimon",
+   "set": "Hackers' Slumber",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Hackers' Slumber Booster Pack",
+   "retail": null,
+   "market": 4.02,
+   "ratio": null,
+   "chase": "Mastemon (Rare Pull)",
+   "chasePrice": 467.04,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Hackers' Slumber",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Hackers' Slumber Booster Box",
+   "retail": null,
+   "market": 48.52,
+   "ratio": null,
+   "chase": "Mastemon (Rare Pull)",
+   "chasePrice": 467.04,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Hackers' Slumber",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Atho, Rene & Por (Token)",
+   "retail": null,
+   "market": 2.26,
+   "ratio": null,
+   "chase": "Mastemon (Rare Pull)",
+   "chasePrice": 467.04,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Limited Card Pack -Billion Bullet-",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Limited Card Pack -Billion Bullet- (Sealed Promotional Pack)",
+   "retail": null,
+   "market": 57.94,
+   "ratio": null,
+   "chase": "Ukkomon",
+   "chasePrice": 18.68,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 22: Amethyst Mandala Advanced Deck Set",
+   "released": "2025-12-05",
+   "age": 253,
+   "product": "Amethyst Mandala Advanced Starter Deck",
+   "retail": null,
+   "market": 14.11,
+   "ratio": null,
+   "chase": "Renamon (Rare Pull)",
+   "chasePrice": 132.77,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 22: Amethyst Mandala Advanced Deck Set",
+   "released": "2025-12-05",
+   "age": 253,
+   "product": "Amethyst Mandala Advanced Starter Deck Display",
+   "retail": null,
+   "market": 94.78,
+   "ratio": null,
+   "chase": "Renamon (Rare Pull)",
+   "chasePrice": 132.77,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 22: Amethyst Mandala Advanced Deck Set",
+   "released": "2025-12-05",
+   "age": 253,
+   "product": "Pipe Fox",
+   "retail": null,
+   "market": 2.17,
+   "ratio": null,
+   "chase": "Renamon (Rare Pull)",
+   "chasePrice": 132.77,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 22: Amethyst Mandala Advanced Deck Set",
+   "released": "2025-12-05",
+   "age": 253,
+   "product": "Uka no Mitama",
+   "retail": null,
+   "market": 0.56,
+   "ratio": null,
+   "chase": "Renamon (Rare Pull)",
+   "chasePrice": 132.77,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 22: Amethyst Mandala Advanced Deck Set Release Event Cards",
+   "released": "2025-12-05",
+   "age": 253,
+   "product": "Welcome Tamers Pack (ST-22)",
+   "retail": null,
+   "market": 12.65,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Digimon",
+   "set": "Time Stranger",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "Time Stranger Booster Pack",
+   "retail": null,
+   "market": 4.26,
+   "ratio": null,
+   "chase": "Homeros (Rare Pull)",
+   "chasePrice": 300.85,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Time Stranger",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "Time Stranger Booster Box",
+   "retail": null,
+   "market": 83.74,
+   "ratio": null,
+   "chase": "Homeros (Rare Pull)",
+   "chasePrice": 300.85,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Time Stranger",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "Petrification (Box Topper)",
+   "retail": null,
+   "market": 2.54,
+   "ratio": null,
+   "chase": "Homeros (Rare Pull)",
+   "chasePrice": 300.85,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Time Stranger",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "Time Stranger Promo Pack",
+   "retail": null,
+   "market": 6.45,
+   "ratio": null,
+   "chase": "Homeros (Rare Pull)",
+   "chasePrice": 300.85,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Dawn of Liberator",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Dawn of Liberator Booster Pack",
+   "retail": null,
+   "market": 4.11,
+   "ratio": null,
+   "chase": "Medusamon (SP)",
+   "chasePrice": 550.22,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Dawn of Liberator",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Dawn of Liberator Booster Box",
+   "retail": null,
+   "market": 87.17,
+   "ratio": null,
+   "chase": "Medusamon (SP)",
+   "chasePrice": 550.22,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Limited Card Pack -Another Knight-",
+   "released": "2026-03-06",
+   "age": 162,
+   "product": "Limited Card Pack -Another Knight- (Sealed Promotional Pack)",
+   "retail": null,
+   "market": 64.12,
+   "ratio": null,
+   "chase": "Treadmill Training",
+   "chasePrice": 14.69,
+   "chaseRarity": "Promo"
+  },
+  {
+   "game": "Digimon",
+   "set": "Advanced Booster Digimon Generation",
+   "released": "2026-03-27",
+   "age": 141,
+   "product": "Advanced Booster Digimon Generation Booster Box",
+   "retail": null,
+   "market": 89.23,
+   "ratio": null,
+   "chase": "Omnimon - AD1-025 (Rare Pull)",
+   "chasePrice": 676.52,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 23: Beatbreak Release Event Cards",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Welcome Tamers Pack Vol.2 (ST-23 & ST-24)",
+   "retail": null,
+   "market": 13.99,
+   "ratio": null,
+   "chase": "Cougarmon (Welcome Tamers Pack Vol.2)",
+   "chasePrice": 26.36,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Digimon",
+   "set": "Dual Revolution Release Event Cards",
+   "released": "2026-05-15",
+   "age": 92,
+   "product": "Dual Revolution Release Event Pack",
+   "retail": null,
+   "market": 6.61,
+   "ratio": null,
+   "chase": "Lunamon",
+   "chasePrice": 12.96,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 23: Beatbreak",
+   "released": "2026-05-15",
+   "age": 92,
+   "product": "Beatbreak Starter Deck",
+   "retail": null,
+   "market": 15.09,
+   "ratio": null,
+   "chase": "Gekkomon (Rare Pull)",
+   "chasePrice": 195.95,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 23: Beatbreak",
+   "released": "2026-05-15",
+   "age": 92,
+   "product": "Beatbreak Starter Deck Display",
+   "retail": null,
+   "market": 146.66,
+   "ratio": null,
+   "chase": "Gekkomon (Rare Pull)",
+   "chasePrice": 195.95,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 24: Data Squad",
+   "released": "2026-05-15",
+   "age": 92,
+   "product": "Data Squad Starter Deck",
+   "retail": null,
+   "market": 12.79,
+   "ratio": null,
+   "chase": "Agumon (Rare Pull)",
+   "chasePrice": 177.14,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 24: Data Squad",
+   "released": "2026-05-15",
+   "age": 92,
+   "product": "Data Squad Starter Deck Display",
+   "retail": null,
+   "market": 175.0,
+   "ratio": null,
+   "chase": "Agumon (Rare Pull)",
+   "chasePrice": 177.14,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Dual Revolution",
+   "released": "2026-05-22",
+   "age": 85,
+   "product": "Dual Revolution Booster Pack",
+   "retail": null,
+   "market": 4.62,
+   "ratio": null,
+   "chase": "BeelStarmon // Fly Bullet (SP)",
+   "chasePrice": 651.54,
+   "chaseRarity": "Ultimate Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Dual Revolution",
+   "released": "2026-05-22",
+   "age": 85,
+   "product": "Dual Revolution Booster Box",
+   "retail": null,
+   "market": 95.3,
+   "ratio": null,
+   "chase": "BeelStarmon // Fly Bullet (SP)",
+   "chasePrice": 651.54,
+   "chaseRarity": "Ultimate Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Digital World Shambala",
+   "released": "2026-07-03",
+   "age": 43,
+   "product": "Digital World Shambala Booster Pack",
+   "retail": null,
+   "market": 7.65,
+   "ratio": null,
+   "chase": "Amaterasumon (SP)",
+   "chasePrice": 421.04,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Digital World Shambala",
+   "released": "2026-07-03",
+   "age": 43,
+   "product": "Digital World Shambala Booster Box",
+   "retail": null,
+   "market": 109.84,
+   "ratio": null,
+   "chase": "Amaterasumon (SP)",
+   "chasePrice": 421.04,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Limited Card Pack -Final Crest-",
+   "released": "2026-08-07",
+   "age": 8,
+   "product": "Limited Card Pack -Final Crest- (Sealed Promotional Pack)",
+   "retail": null,
+   "market": 37.3,
+   "ratio": null,
+   "chase": "MedievalGallantmon",
+   "chasePrice": 21.46,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Digimon",
+   "set": "Timeless Bonds",
+   "released": "2026-09-04",
+   "age": -20,
+   "product": "Timeless Bonds Booster Box",
+   "retail": null,
+   "market": 137.23,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Sector and Regional Promos: Season 1",
+   "released": "2025-07-01",
+   "age": 410,
+   "product": "Season 1 Regional Event Pack: Black",
+   "retail": null,
+   "market": 187.5,
+   "ratio": null,
+   "chase": "Anakin Skywalker - Champion of Mortis",
+   "chasePrice": 316.57,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force - Booster Pack",
+   "retail": null,
+   "market": 3.64,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force - Booster Display",
+   "retail": null,
+   "market": 43.47,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force - Prerelease Kit",
+   "retail": null,
+   "market": 16.46,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force - Spotlight Deck: Qui-Gon Jinn",
+   "retail": null,
+   "market": 16.64,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force - Spotlight Deck: Darth Maul",
+   "retail": null,
+   "market": 19.4,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force - Spotlight Deck Display",
+   "retail": null,
+   "market": 85.68,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force - Spotlight Deck Pair: Qui-Gon Jinn & Darth Maul",
+   "retail": null,
+   "market": 48.18,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force Carbonite Edition - Booster Box",
+   "retail": null,
+   "market": 166.34,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Legends of the Force Carbonite Edition - Booster Pack",
+   "retail": null,
+   "market": 26.08,
+   "ratio": null,
+   "chase": "Yoda - My Ally is the Force (Serialized)",
+   "chasePrice": 787.47,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "2025 Convention Exclusive",
+   "released": "2025-07-24",
+   "age": 387,
+   "product": "2025 Convention Exclusive Promo Pack",
+   "retail": null,
+   "market": 148.94,
+   "ratio": null,
+   "chase": "R2-D2 - Artooooooooo!",
+   "chasePrice": 59.05,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Intro Battle: Hoth",
+   "released": "2025-10-03",
+   "age": 316,
+   "product": "Intro Battle: Hoth - Learn to Play Kit",
+   "retail": null,
+   "market": 25.22,
+   "ratio": null,
+   "chase": "Watch This",
+   "chasePrice": 19.51,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "2025 Gift Box",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Star Wars: Unlimited 2025 Gift Box",
+   "retail": null,
+   "market": 27.51,
+   "ratio": null,
+   "chase": "Obi-Wan Kenobi - Protective Padawan",
+   "chasePrice": 3.98,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Booster Pack",
+   "retail": null,
+   "market": 3.71,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Booster Display",
+   "retail": null,
+   "market": 43.58,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power Carbonite Edition - Booster Display",
+   "retail": null,
+   "market": 117.24,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power Carbonite Edition - Booster Pack",
+   "retail": null,
+   "market": 15.45,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Prerelease Kit",
+   "retail": null,
+   "market": 15.43,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Spotlight Deck Display",
+   "retail": null,
+   "market": 97.99,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Spotlight Deck: Padme Amidala",
+   "retail": null,
+   "market": 19.06,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Spotlight Deck: Chancellor Palpatine",
+   "retail": null,
+   "market": 12.39,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Spotlight Deck Pair: Chancellor Palpatine & Padme Amidala",
+   "retail": null,
+   "market": 30.34,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Secrets of Power - Sleeved Booster Pack",
+   "retail": null,
+   "market": 6.0,
+   "ratio": null,
+   "chase": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+   "chasePrice": 350.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Cantwell Arrestor Cruiser",
+   "retail": null,
+   "market": 0.25,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Bo-Katan Kryze - Alone",
+   "retail": null,
+   "market": 2.8,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Lando Calrissian - Trust Me",
+   "retail": null,
+   "market": 2.17,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Armor of Fortune",
+   "retail": null,
+   "market": 0.12,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "The Eye of Aldhani",
+   "retail": null,
+   "market": 0.83,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Cruel Commandos",
+   "retail": null,
+   "market": 0.15,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "C-3PO - Anything I Might Do?",
+   "retail": null,
+   "market": 0.23,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Jar Jar Binks - Mesa Propose",
+   "retail": null,
+   "market": 0.26,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Kino Loy - You Answer to Me",
+   "retail": null,
+   "market": 0.15,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Ferrix Uprising",
+   "retail": null,
+   "market": 0.1,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "The Elite Squad - Neutralizing Insurgents",
+   "retail": null,
+   "market": 0.44,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Fulminatrix - Fleet Killer",
+   "retail": null,
+   "market": 0.96,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Kazuda Xiono - I'm Not A Spy",
+   "retail": null,
+   "market": 0.18,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Oppression Breeds Rebellion",
+   "retail": null,
+   "market": 0.19,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Corellian Hounds",
+   "retail": null,
+   "market": 0.11,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Lurking Snub Fighter",
+   "retail": null,
+   "market": 0.16,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Bail Organa - Responding to Catastrophe",
+   "retail": null,
+   "market": 0.21,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Bravo Squadron Fighter",
+   "retail": null,
+   "market": 0.14,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "B2EMO - That's Two Lies",
+   "retail": null,
+   "market": 0.2,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Grassroots Resistance",
+   "retail": null,
+   "market": 0.14,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Cantwell Arrestor Cruiser (Foil)",
+   "retail": null,
+   "market": 0.34,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Bo-Katan Kryze - Alone (Foil)",
+   "retail": null,
+   "market": 2.99,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Lando Calrissian - Trust Me (Foil)",
+   "retail": null,
+   "market": 6.38,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Armor of Fortune (Foil)",
+   "retail": null,
+   "market": 0.14,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "The Eye of Aldhani (Foil)",
+   "retail": null,
+   "market": 1.71,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Cruel Commandos (Foil)",
+   "retail": null,
+   "market": 0.2,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "C-3PO - Anything I Might Do? (Foil)",
+   "retail": null,
+   "market": 0.22,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Jar Jar Binks - Mesa Propose (Foil)",
+   "retail": null,
+   "market": 0.51,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Kino Loy - You Answer to Me (Foil)",
+   "retail": null,
+   "market": 0.28,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Ferrix Uprising (Foil)",
+   "retail": null,
+   "market": 0.18,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "The Elite Squad - Neutralizing Insurgents (Foil)",
+   "retail": null,
+   "market": 0.55,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Fulminatrix - Fleet Killer (Foil)",
+   "retail": null,
+   "market": 2.01,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Kazuda Xiono - I'm Not A Spy (Foil)",
+   "retail": null,
+   "market": 0.24,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Oppression Breeds Rebellion (Foil)",
+   "retail": null,
+   "market": 0.27,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Corellian Hounds (Foil)",
+   "retail": null,
+   "market": 0.15,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Lurking Snub Fighter (Foil)",
+   "retail": null,
+   "market": 0.27,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Bail Organa - Responding to Catastrophe (Foil)",
+   "retail": null,
+   "market": 0.34,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Bravo Squadron Fighter (Foil)",
+   "retail": null,
+   "market": 0.17,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "B2EMO - That's Two Lies (Foil)",
+   "retail": null,
+   "market": 0.26,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "product": "Grassroots Resistance (Foil)",
+   "retail": null,
+   "market": 0.19,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time - Booster Display",
+   "retail": null,
+   "market": 79.05,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time - Booster Pack",
+   "retail": null,
+   "market": 5.94,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time Carbonite Edition - Booster Display",
+   "retail": null,
+   "market": 176.21,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time Carbonite Edition - Booster Pack",
+   "retail": null,
+   "market": 22.26,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time - Prerelease Kit",
+   "retail": null,
+   "market": 23.62,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time - Spotlight Deck Display",
+   "retail": null,
+   "market": 109.36,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time - Spotlight Deck: Leia Organa",
+   "retail": null,
+   "market": 21.05,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time - Spotlight Deck: Jabba the Hutt",
+   "retail": null,
+   "market": 20.34,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "A Lawless Time - Spotlight Deck Pair: Leia Organa & Jabba the Hutt",
+   "retail": null,
+   "market": 41.05,
+   "ratio": null,
+   "chase": "Lando Calrissian - Full Sabacc (Showcase)",
+   "chasePrice": 331.86,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Twin Suns",
+   "released": "2026-05-29",
+   "age": 78,
+   "product": "Twin Suns - Aggressive Negotiations Deck",
+   "retail": null,
+   "market": 38.29,
+   "ratio": null,
+   "chase": "Jendirian Valley - Refugee Freighter",
+   "chasePrice": 28.62,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Twin Suns",
+   "released": "2026-05-29",
+   "age": 78,
+   "product": "Twin Suns - Blood Brothers Deck",
+   "retail": null,
+   "market": 40.1,
+   "ratio": null,
+   "chase": "Jendirian Valley - Refugee Freighter",
+   "chasePrice": 28.62,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Twin Suns",
+   "released": "2026-05-29",
+   "age": 78,
+   "product": "Twin Suns - Against the Odds Deck",
+   "retail": null,
+   "market": 32.06,
+   "ratio": null,
+   "chase": "Jendirian Valley - Refugee Freighter",
+   "chasePrice": 28.62,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Twin Suns",
+   "released": "2026-05-29",
+   "age": 78,
+   "product": "Twin Suns - 4 Deck Bundle",
+   "retail": null,
+   "market": 109.28,
+   "ratio": null,
+   "chase": "Jendirian Valley - Refugee Freighter",
+   "chasePrice": 28.62,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "2026 Convention Exclusive",
+   "released": "2026-07-01",
+   "age": 45,
+   "product": "2026 Convention Exclusive Promo Pack",
+   "retail": null,
+   "market": 165.69,
+   "ratio": null,
+   "chase": "The Mandalorian - Let's See The Puck",
+   "chasePrice": 68.0,
+   "chaseRarity": "Legendary"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Galactic Championship 2026",
+   "released": "2026-07-01",
+   "age": 45,
+   "product": "Galactic Championship 2026 Promo Pack: Black",
+   "retail": null,
+   "market": 120.0,
+   "ratio": null,
+   "chase": "Count Dooku - Offering Aid",
+   "chasePrice": 250.0,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Galactic Championship 2026",
+   "released": "2026-07-01",
+   "age": 45,
+   "product": "Galactic Championship 2026 Promo Pack: Silver",
+   "retail": null,
+   "market": 55.92,
+   "ratio": null,
+   "chase": "Count Dooku - Offering Aid",
+   "chasePrice": 250.0,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire - Prerelease Kit",
+   "retail": null,
+   "market": 22.54,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire Carbonite Edition - Booster Display",
+   "retail": null,
+   "market": 202.47,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire Carbonite Edition - Booster Pack",
+   "retail": null,
+   "market": 28.92,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire - Booster Display",
+   "retail": null,
+   "market": 75.41,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire - Booster Pack",
+   "retail": null,
+   "market": 7.03,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire - Spotlight Deck: Luke Skywalker",
+   "retail": null,
+   "market": 24.82,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire - Spotlight Deck: Emperor Palpatine",
+   "retail": null,
+   "market": 23.48,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire - Spotlight Deck Pair: Emperor Palpatine & Luke Skywalker",
+   "retail": null,
+   "market": 40.0,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "product": "Ashes of the Empire - Spotlight Deck Display",
+   "retail": null,
+   "market": 156.61,
+   "ratio": null,
+   "chase": "Luke Skywalker - I Can Save Him (Showcase)",
+   "chasePrice": 385.54,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck 10: Giblet",
+   "released": "2025-06-13",
+   "age": 428,
+   "product": "Starter Deck 10: Giblet",
+   "retail": null,
+   "market": 70.56,
+   "ratio": null,
+   "chase": "Broly : BR (Bonus Pack Alternate Art)",
+   "chasePrice": 266.21,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck 10: Giblet",
+   "released": "2025-06-13",
+   "age": 428,
+   "product": "Starter Deck 10: Giblet Display",
+   "retail": null,
+   "market": 320.0,
+   "ratio": null,
+   "chase": "Broly : BR (Bonus Pack Alternate Art)",
+   "chasePrice": 266.21,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck 9: Shallot",
+   "released": "2025-06-13",
+   "age": 428,
+   "product": "Starter Deck 9: Shallot",
+   "retail": null,
+   "market": 86.71,
+   "ratio": null,
+   "chase": "Son Goku (Bonus Pack Alternate Art)",
+   "chasePrice": 353.84,
+   "chaseRarity": "Super Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 01",
+   "released": "2025-06-27",
+   "age": 414,
+   "product": "Manga Booster 01 Booster Pack",
+   "retail": null,
+   "market": 63.15,
+   "ratio": null,
+   "chase": "Son Goku - FB05-119 (Super Alternate Art)",
+   "chasePrice": 699.99,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 01",
+   "released": "2025-06-27",
+   "age": 414,
+   "product": "Manga Booster 01 Booster Box",
+   "retail": null,
+   "market": 1710.96,
+   "ratio": null,
+   "chase": "Son Goku - FB05-119 (Super Alternate Art)",
+   "chasePrice": 699.99,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 01",
+   "released": "2025-06-27",
+   "age": 414,
+   "product": "Manga Booster 01 Sleeved Booster Pack",
+   "retail": null,
+   "market": 59.39,
+   "ratio": null,
+   "chase": "Son Goku - FB05-119 (Super Alternate Art)",
+   "chasePrice": 699.99,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 01 Release Event Cards",
+   "released": "2025-06-27",
+   "age": 414,
+   "product": "SB01 Mange Booster 01 Release Event Pack",
+   "retail": null,
+   "market": 18.17,
+   "ratio": null,
+   "chase": "Bulma - FB06-035",
+   "chasePrice": 13.85,
+   "chaseRarity": "Common"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Wish For Shenron Release Event Cards",
+   "released": "2025-09-12",
+   "age": 337,
+   "product": "FB07 Wish For Shenron Release Event Pack",
+   "retail": null,
+   "market": 5.9,
+   "ratio": null,
+   "chase": "Bulma - FB07-115",
+   "chasePrice": 16.33,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Wish For Shenron",
+   "released": "2025-09-19",
+   "age": 330,
+   "product": "Wish For Shenron Booster Box",
+   "retail": null,
+   "market": 336.37,
+   "ratio": null,
+   "chase": "Son Gohan : SH - FB07-121 (Super Alternate Art)",
+   "chasePrice": 962.5,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Wish For Shenron",
+   "released": "2025-09-19",
+   "age": 330,
+   "product": "Wish For Shenron Booster Pack",
+   "retail": null,
+   "market": 10.72,
+   "ratio": null,
+   "chase": "Son Gohan : SH - FB07-121 (Super Alternate Art)",
+   "chasePrice": 962.5,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 02",
+   "released": "2025-11-14",
+   "age": 274,
+   "product": "Manga Booster 02 Booster Box",
+   "retail": null,
+   "market": 909.74,
+   "ratio": null,
+   "chase": "Trunks : Future - SB02-010 (Alternate Art)",
+   "chasePrice": 262.92,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 02",
+   "released": "2025-11-14",
+   "age": 274,
+   "product": "Manga Booster 02 Booster Pack",
+   "retail": null,
+   "market": 31.92,
+   "ratio": null,
+   "chase": "Trunks : Future - SB02-010 (Alternate Art)",
+   "chasePrice": 262.92,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 02 Release Event Cards",
+   "released": "2025-11-14",
+   "age": 274,
+   "product": "SB02 Mange Booster 02 Release Event Pack",
+   "retail": null,
+   "market": 24.72,
+   "ratio": null,
+   "chase": "Solar Flare!!!!",
+   "chasePrice": 16.32,
+   "chaseRarity": "Common"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Saiyan's Pride",
+   "released": "2025-12-12",
+   "age": 246,
+   "product": "Saiyan's Pride Booster Box",
+   "retail": null,
+   "market": 235.0,
+   "ratio": null,
+   "chase": "Broly - FB08-088 (Alternate Art)",
+   "chasePrice": 93.32,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Saiyan's Pride",
+   "released": "2025-12-12",
+   "age": 246,
+   "product": "Saiyan's Pride Booster Pack",
+   "retail": null,
+   "market": 10.91,
+   "ratio": null,
+   "chase": "Broly - FB08-088 (Alternate Art)",
+   "chasePrice": 93.32,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Saiyan's Pride Release Event Cards",
+   "released": "2025-12-19",
+   "age": 239,
+   "product": "FB08 Saiyan's Pride Release Event Pack",
+   "retail": null,
+   "market": 7.64,
+   "ratio": null,
+   "chase": "Broly - FB08-088",
+   "chasePrice": 7.99,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Dual Evolution",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Dual Evolution Booster Box",
+   "retail": null,
+   "market": 494.5,
+   "ratio": null,
+   "chase": "Gogeta : BR - FB09-121 (Super Alternate Art)",
+   "chasePrice": 1785.76,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Dual Evolution",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Dual Evolution Booster Pack",
+   "retail": null,
+   "market": 12.14,
+   "ratio": null,
+   "chase": "Gogeta : BR - FB09-121 (Super Alternate Art)",
+   "chasePrice": 1785.76,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Dual Evolution",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Dual Evolution Sleeved Booster Pack",
+   "retail": null,
+   "market": 17.52,
+   "ratio": null,
+   "chase": "Gogeta : BR - FB09-121 (Super Alternate Art)",
+   "chasePrice": 1785.76,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Dual Evolution Release Event Cards",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "FB09 Dual Evolution Release Event Pack",
+   "retail": null,
+   "market": 8.5,
+   "ratio": null,
+   "chase": "Paikuhan - FB09-088",
+   "chasePrice": 15.88,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck EX: The Beat of Ki",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Starter Deck EX: The Beat of Ki",
+   "retail": null,
+   "market": 25.38,
+   "ratio": null,
+   "chase": "Son Goku - FS12-01 (Gold)",
+   "chasePrice": 65.66,
+   "chaseRarity": "Leader"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck EX: The Beat of Ki",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Starter Deck EX: The Beat of Ki Display",
+   "retail": null,
+   "market": 137.8,
+   "ratio": null,
+   "chase": "Son Goku - FS12-01 (Gold)",
+   "chasePrice": 65.66,
+   "chaseRarity": "Leader"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck EX: The Phase of Evolution",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Starter Deck EX: The Phase of Evolution",
+   "retail": null,
+   "market": 37.88,
+   "ratio": null,
+   "chase": "Son Goku - FS11-01 (Gold)",
+   "chasePrice": 92.46,
+   "chaseRarity": "Leader"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck EX: The Phase of Evolution",
+   "released": "2026-03-13",
+   "age": 155,
+   "product": "Starter Deck EX: The Phase of Evolution Display",
+   "retail": null,
+   "market": 138.0,
+   "ratio": null,
+   "chase": "Son Goku - FS11-01 (Gold)",
+   "chasePrice": 92.46,
+   "chaseRarity": "Leader"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force",
+   "released": "2026-06-19",
+   "age": 57,
+   "product": "Cross Force Booster Box",
+   "retail": null,
+   "market": 215.48,
+   "ratio": null,
+   "chase": "Cell - FB10-123 (Super Alternate Art)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force",
+   "released": "2026-06-19",
+   "age": 57,
+   "product": "Cross Force Booster Pack",
+   "retail": null,
+   "market": 8.87,
+   "ratio": null,
+   "chase": "Cell - FB10-123 (Super Alternate Art)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force",
+   "released": "2026-06-19",
+   "age": 57,
+   "product": "Cross Force Sleeved Booster Pack [Son Goku and Vegeta]",
+   "retail": null,
+   "market": 11.5,
+   "ratio": null,
+   "chase": "Cell - FB10-123 (Super Alternate Art)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force",
+   "released": "2026-06-19",
+   "age": 57,
+   "product": "Cross Force Sleeved Booster Pack [Cell]",
+   "retail": null,
+   "market": 13.65,
+   "ratio": null,
+   "chase": "Cell - FB10-123 (Super Alternate Art)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force",
+   "released": "2026-06-19",
+   "age": 57,
+   "product": "Cross Force Sleeved Booster Pack [Son Gohan and Piccolo]",
+   "retail": null,
+   "market": 14.99,
+   "ratio": null,
+   "chase": "Cell - FB10-123 (Super Alternate Art)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force",
+   "released": "2026-06-19",
+   "age": 57,
+   "product": "Cross Force Sleeved Booster Pack [SS Son Goku]",
+   "retail": null,
+   "market": 13.78,
+   "ratio": null,
+   "chase": "Cell - FB10-123 (Super Alternate Art)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Secret Rare"
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Story Booster 01",
+   "released": "2026-08-21",
+   "age": -6,
+   "product": "Story Booster 01 Booster Box",
+   "retail": null,
+   "market": 565.95,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Brightness of Hope",
+   "released": "2026-10-16",
+   "age": -62,
+   "product": "Brightness of Hope Booster Box",
+   "retail": null,
+   "market": 399.84,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Brightness of Hope",
+   "released": "2026-10-16",
+   "age": -62,
+   "product": "Brightness of Hope Booster Pack",
+   "retail": null,
+   "market": 84.69,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX02BT: Jujutsu Kaisen Vol.2 Release Event Cards",
+   "released": "2025-06-20",
+   "age": 421,
+   "product": "Jujutsu Kaisen Vol.2 - Release Event Pack",
+   "retail": null,
+   "market": 3.09,
+   "ratio": null,
+   "chase": "Kento Nanami (Release Event Winner)",
+   "chasePrice": 6.35,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX02BT: Jujutsu Kaisen Vol.2",
+   "released": "2025-06-27",
+   "age": 414,
+   "product": "Jujutsu Kaisen Vol.2 - Booster Pack",
+   "retail": null,
+   "market": 11.04,
+   "ratio": null,
+   "chase": "Sukuna (015) (SR***)",
+   "chasePrice": 500.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX02BT: Jujutsu Kaisen Vol.2",
+   "released": "2025-06-27",
+   "age": 414,
+   "product": "Jujutsu Kaisen Vol.2 - Booster Box",
+   "retail": null,
+   "market": 127.28,
+   "ratio": null,
+   "chase": "Sukuna (015) (SR***)",
+   "chasePrice": 500.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX02BT: Jujutsu Kaisen Vol.2",
+   "released": "2025-06-27",
+   "age": 414,
+   "product": "Jujutsu Kaisen Vol.2 - Box Promotion Pack",
+   "retail": null,
+   "market": 5.0,
+   "ratio": null,
+   "chase": "Sukuna (015) (SR***)",
+   "chasePrice": 500.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09BT: FULLMETAL ALCHEMIST Release Event Cards",
+   "released": "2025-07-18",
+   "age": 393,
+   "product": "FULLMETAL ALCHEMIST - Release Event Pack",
+   "retail": null,
+   "market": 2.43,
+   "ratio": null,
+   "chase": "Riza Hawkeye (049)",
+   "chasePrice": 9.0,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09ST: FULLMETAL ALCHEMIST Starter Deck",
+   "released": "2025-07-18",
+   "age": 393,
+   "product": "FULLMETAL ALCHEMIST - Starter Deck",
+   "retail": null,
+   "market": 11.3,
+   "ratio": null,
+   "chase": "Roy Mustang (111) (R*)",
+   "chasePrice": 11.87,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09ST: FULLMETAL ALCHEMIST Starter Deck",
+   "released": "2025-07-18",
+   "age": 393,
+   "product": "FULLMETAL ALCHEMIST - Starter Deck Display",
+   "retail": null,
+   "market": 35.76,
+   "ratio": null,
+   "chase": "Roy Mustang (111) (R*)",
+   "chasePrice": 11.87,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09BT: FULLMETAL ALCHEMIST",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "FULLMETAL ALCHEMIST - Booster Pack",
+   "retail": null,
+   "market": 4.54,
+   "ratio": null,
+   "chase": "Roy Mustang (055) (SR***)",
+   "chasePrice": 632.97,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09BT: FULLMETAL ALCHEMIST",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "FULLMETAL ALCHEMIST - Booster Box",
+   "retail": null,
+   "market": 75.83,
+   "ratio": null,
+   "chase": "Roy Mustang (055) (SR***)",
+   "chasePrice": 632.97,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09BT: FULLMETAL ALCHEMIST",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "FULLMETAL ALCHEMIST - Box Promotion Pack",
+   "retail": null,
+   "market": 3.74,
+   "ratio": null,
+   "chase": "Roy Mustang (055) (SR***)",
+   "chasePrice": 632.97,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10BT: Attack on Titan Release Event Cards",
+   "released": "2025-08-22",
+   "age": 358,
+   "product": "Attack on Titan - Release Event Pack",
+   "retail": null,
+   "market": 1.24,
+   "ratio": null,
+   "chase": "You Call That Clean?! Do It All Again.",
+   "chasePrice": 8.03,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX03BT: CODE GEASS: Lelouch of the Rebellion Vol.2 Release Event Cards",
+   "released": "2025-08-22",
+   "age": 358,
+   "product": "CODE GEASS: Lelouch of the Rebellion - Release Event Pack",
+   "retail": null,
+   "market": 0.68,
+   "ratio": null,
+   "chase": "Action Point Card (Release Event Winner)",
+   "chasePrice": 7.22,
+   "chaseRarity": "Action Point"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10BT: Attack on Titan",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "Attack on Titan - Booster Pack",
+   "retail": null,
+   "market": 6.05,
+   "ratio": null,
+   "chase": "Mikasa Ackermann (089) (SR**)",
+   "chasePrice": 136.75,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10BT: Attack on Titan",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "Attack on Titan - Booster Box",
+   "retail": null,
+   "market": 98.91,
+   "ratio": null,
+   "chase": "Mikasa Ackermann (089) (SR**)",
+   "chasePrice": 136.75,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10BT: Attack on Titan",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "Attack on Titan - Box Promotion Pack",
+   "retail": null,
+   "market": 2.41,
+   "ratio": null,
+   "chase": "Mikasa Ackermann (089) (SR**)",
+   "chasePrice": 136.75,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10ST: Attack on Titan Starter Deck",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "Attack on Titan - Starter Deck",
+   "retail": null,
+   "market": 8.02,
+   "ratio": null,
+   "chase": "Levi",
+   "chasePrice": 6.18,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10ST: Attack on Titan Starter Deck",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "Attack on Titan - Starter Deck Display",
+   "retail": null,
+   "market": 33.0,
+   "ratio": null,
+   "chase": "Levi",
+   "chasePrice": 6.18,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX03BT: CODE GEASS: Lelouch of the Rebellion Vol.2",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "CODE GEASS: Lelouch of the Rebellion Vol.2 - Booster Pack",
+   "retail": null,
+   "market": 4.69,
+   "ratio": null,
+   "chase": "C.C. (066) (SR**)",
+   "chasePrice": 195.37,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX03BT: CODE GEASS: Lelouch of the Rebellion Vol.2",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "CODE GEASS: Lelouch of the Rebellion Vol.2 - Booster Box",
+   "retail": null,
+   "market": 59.0,
+   "ratio": null,
+   "chase": "C.C. (066) (SR**)",
+   "chasePrice": 195.37,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX03BT: CODE GEASS: Lelouch of the Rebellion Vol.2",
+   "released": "2025-08-29",
+   "age": 351,
+   "product": "CODE GEASS: Lelouch of the Rebellion Vol.2 - Box Promotion Pack",
+   "retail": null,
+   "market": 2.47,
+   "ratio": null,
+   "chase": "C.C. (066) (SR**)",
+   "chasePrice": 195.37,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11BT: Rurouni Kenshin Release Event Cards",
+   "released": "2025-09-19",
+   "age": 330,
+   "product": "Rurouni Kenshin - Release Event Pack",
+   "retail": null,
+   "market": 1.07,
+   "ratio": null,
+   "chase": "Kenshin Himura (Release Event Winner)",
+   "chasePrice": 6.84,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX04BT: HUNTER X HUNTER Vol.2 Release Event Cards",
+   "released": "2025-09-19",
+   "age": 330,
+   "product": "HUNTER X HUNTER Vol.2 - Release Event Pack",
+   "retail": null,
+   "market": 0.92,
+   "ratio": null,
+   "chase": "Action Point Card (Release Event Winner)",
+   "chasePrice": 7.88,
+   "chaseRarity": "Action Point"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11BT: Rurouni Kenshin",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Rurouni Kenshin - Booster Pack",
+   "retail": null,
+   "market": 4.7,
+   "ratio": null,
+   "chase": "Kenshin Himura (090) (SR***)",
+   "chasePrice": 451.24,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11BT: Rurouni Kenshin",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Rurouni Kenshin - Booster Box",
+   "retail": null,
+   "market": 74.83,
+   "ratio": null,
+   "chase": "Kenshin Himura (090) (SR***)",
+   "chasePrice": 451.24,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11BT: Rurouni Kenshin",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Rurouni Kenshin - Box Promotion Pack",
+   "retail": null,
+   "market": 1.76,
+   "ratio": null,
+   "chase": "Kenshin Himura (090) (SR***)",
+   "chasePrice": 451.24,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11ST: Rurouni Kenshin Starter Deck",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Rurouni Kenshin - Starter Deck",
+   "retail": null,
+   "market": 11.58,
+   "ratio": null,
+   "chase": "Aoshi Shinomori (R*)",
+   "chasePrice": 4.2,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11ST: Rurouni Kenshin Starter Deck",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Rurouni Kenshin - Starter Deck Display",
+   "retail": null,
+   "market": 45.17,
+   "ratio": null,
+   "chase": "Aoshi Shinomori (R*)",
+   "chasePrice": 4.2,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX04BT: HUNTER X HUNTER Vol.2",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "HUNTER X HUNTER Vol.2 - Booster Pack",
+   "retail": null,
+   "market": 4.99,
+   "ratio": null,
+   "chase": "Gon Freecss (016) (SR**)",
+   "chasePrice": 161.41,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX04BT: HUNTER X HUNTER Vol.2",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "HUNTER X HUNTER Vol.2 - Booster Box",
+   "retail": null,
+   "market": 69.57,
+   "ratio": null,
+   "chase": "Gon Freecss (016) (SR**)",
+   "chasePrice": 161.41,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX04BT: HUNTER X HUNTER Vol.2",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "HUNTER X HUNTER Vol.2 - Box Promotion Pack",
+   "retail": null,
+   "market": 1.57,
+   "ratio": null,
+   "chase": "Gon Freecss (016) (SR**)",
+   "chasePrice": 161.41,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE12BT: Kaiju No. 8 Release Event Cards",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Kaiju No. 8 - Release Event Pack",
+   "retail": null,
+   "market": 1.9,
+   "ratio": null,
+   "chase": "Now Leave the Rest to Me",
+   "chasePrice": 8.69,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE13BT: Yu Yu Hakusho: Ghost Files Release Event Cards",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Yu Yu Hakusho: Ghost Files - Release Event Pack",
+   "retail": null,
+   "market": 2.65,
+   "ratio": null,
+   "chase": "Yusuke Urameshi (Release Event Winner)",
+   "chasePrice": 11.62,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE01NC: New Card Selection: BLEACH: Thousand-Year Blood War",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "New Card Selection: BLEACH: Thousand-Year Blood War",
+   "retail": null,
+   "market": 177.41,
+   "ratio": null,
+   "chase": "Kenpachi Zaraki",
+   "chasePrice": 44.77,
+   "chaseRarity": "Special"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE12BT: Kaiju No. 8",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Kaiju No. 8 - Booster Pack",
+   "retail": null,
+   "market": 6.52,
+   "ratio": null,
+   "chase": "Kikoru Shinomiya (020) (SR**)",
+   "chasePrice": 176.77,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE12BT: Kaiju No. 8",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Kaiju No. 8 - Booster Box",
+   "retail": null,
+   "market": 113.03,
+   "ratio": null,
+   "chase": "Kikoru Shinomiya (020) (SR**)",
+   "chasePrice": 176.77,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE12BT: Kaiju No. 8",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Kaiju No. 8 - Box Promotion Pack",
+   "retail": null,
+   "market": 3.94,
+   "ratio": null,
+   "chase": "Kikoru Shinomiya (020) (SR**)",
+   "chasePrice": 176.77,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE13BT: Yu Yu Hakusho: Ghost Files",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Yu Yu Hakusho: Ghost Files - Booster Pack",
+   "retail": null,
+   "market": 5.52,
+   "ratio": null,
+   "chase": "Yusuke Urameshi (038) (SR***)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE13BT: Yu Yu Hakusho: Ghost Files",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Yu Yu Hakusho: Ghost Files - Booster Box",
+   "retail": null,
+   "market": 71.94,
+   "ratio": null,
+   "chase": "Yusuke Urameshi (038) (SR***)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE13BT: Yu Yu Hakusho: Ghost Files",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Yu Yu Hakusho: Ghost Files - Box Promotion Pack",
+   "retail": null,
+   "market": 3.99,
+   "ratio": null,
+   "chase": "Yusuke Urameshi (038) (SR***)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE14BT: GODDESS OF VICTORY: NIKKE Release Event Cards",
+   "released": "2025-11-21",
+   "age": 267,
+   "product": "GODDESS OF VICTORY: NIKKE - Release Event Pack",
+   "retail": null,
+   "market": 7.74,
+   "ratio": null,
+   "chase": "Rapunzel (Release Event Winner)",
+   "chasePrice": 15.27,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE14BT: GODDESS OF VICTORY: NIKKE",
+   "released": "2025-11-28",
+   "age": 260,
+   "product": "GODDESS OF VICTORY: NIKKE - Booster Pack",
+   "retail": null,
+   "market": 5.13,
+   "ratio": null,
+   "chase": "Modernia (019) (SR***)",
+   "chasePrice": 453.33,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE14BT: GODDESS OF VICTORY: NIKKE",
+   "released": "2025-11-28",
+   "age": 260,
+   "product": "GODDESS OF VICTORY: NIKKE - Booster Box",
+   "retail": null,
+   "market": 70.45,
+   "ratio": null,
+   "chase": "Modernia (019) (SR***)",
+   "chasePrice": 453.33,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE14BT: GODDESS OF VICTORY: NIKKE",
+   "released": "2025-11-28",
+   "age": 260,
+   "product": "GODDESS OF VICTORY: NIKKE - NIKKE Premium Pack: Limited First Edition",
+   "retail": null,
+   "market": 8.2,
+   "ratio": null,
+   "chase": "Modernia (019) (SR***)",
+   "chasePrice": 453.33,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX05BT: Demon Slayer: Kimetsu no Yaiba Vol.2 Release Event Cards",
+   "released": "2025-12-05",
+   "age": 253,
+   "product": "Demon Slayer: Kimetsu no Yaiba Vol.2 - Release Event Pack",
+   "retail": null,
+   "market": 4.05,
+   "ratio": null,
+   "chase": "Action Point Card (Release Event Winner)",
+   "chasePrice": 7.2,
+   "chaseRarity": "Action Point"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX05BT: Demon Slayer: Kimetsu no Yaiba Vol.2",
+   "released": "2025-12-12",
+   "age": 246,
+   "product": "Demon Slayer: Kimetsu no Yaiba Vol.2 - Booster Pack",
+   "retail": null,
+   "market": 8.35,
+   "ratio": null,
+   "chase": "Nezuko Kamado (021) (SR***)",
+   "chasePrice": 1323.62,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX05BT: Demon Slayer: Kimetsu no Yaiba Vol.2",
+   "released": "2025-12-12",
+   "age": 246,
+   "product": "Demon Slayer: Kimetsu no Yaiba Vol.2 - Booster Box",
+   "retail": null,
+   "market": 136.6,
+   "ratio": null,
+   "chase": "Nezuko Kamado (021) (SR***)",
+   "chasePrice": 1323.62,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX05BT: Demon Slayer: Kimetsu no Yaiba Vol.2",
+   "released": "2025-12-12",
+   "age": 246,
+   "product": "Demon Slayer: Kimetsu no Yaiba Vol.2 - Box Promotion Pack",
+   "retail": null,
+   "market": 1.95,
+   "ratio": null,
+   "chase": "Nezuko Kamado (021) (SR***)",
+   "chasePrice": 1323.62,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15BT: Evangelion: New Theatrical Edition Release Event Cards",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "Evangelion: New Theatrical Edition - Release Event Pack",
+   "retail": null,
+   "market": 5.19,
+   "ratio": null,
+   "chase": "A Hot Bath Lets You Wash Your Life and Begin Anew",
+   "chasePrice": 16.77,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX06BT: Sword Art Online Vol.2 Release Event Cards",
+   "released": "2026-01-23",
+   "age": 204,
+   "product": "Sword Art Online Vol.2 - Release Event Pack",
+   "retail": null,
+   "market": 3.5,
+   "ratio": null,
+   "chase": "Bath",
+   "chasePrice": 13.93,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15BT: Evangelion: New Theatrical Edition",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Evangelion: New Theatrical Edition - Booster Pack",
+   "retail": null,
+   "market": 7.41,
+   "ratio": null,
+   "chase": "Evangelion Test Type-01 Pseudo DMS Phase (SR***)",
+   "chasePrice": 403.65,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15BT: Evangelion: New Theatrical Edition",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Evangelion: New Theatrical Edition - Booster Box",
+   "retail": null,
+   "market": 139.54,
+   "ratio": null,
+   "chase": "Evangelion Test Type-01 Pseudo DMS Phase (SR***)",
+   "chasePrice": 403.65,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15BT: Evangelion: New Theatrical Edition",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Evangelion: New Theatrical Edition - Box Promotion Pack",
+   "retail": null,
+   "market": 3.26,
+   "ratio": null,
+   "chase": "Evangelion Test Type-01 Pseudo DMS Phase (SR***)",
+   "chasePrice": 403.65,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15ST: Evangelion: New Theatrical Edition Starter Deck",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Evangelion: New Theatrical Edition - Starter Deck",
+   "retail": null,
+   "market": 12.66,
+   "ratio": null,
+   "chase": "Rei Ayanami (110) (R*)",
+   "chasePrice": 11.64,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15ST: Evangelion: New Theatrical Edition Starter Deck",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Evangelion: New Theatrical Edition - Starter Deck Display",
+   "retail": null,
+   "market": 65.35,
+   "ratio": null,
+   "chase": "Rei Ayanami (110) (R*)",
+   "chasePrice": 11.64,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX06BT: Sword Art Online Vol.2",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Sword Art Online Vol.2 - Booster Pack",
+   "retail": null,
+   "market": 5.59,
+   "ratio": null,
+   "chase": "Asuna (042) (SR***)",
+   "chasePrice": 1104.33,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX06BT: Sword Art Online Vol.2",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Sword Art Online Vol.2 - Booster Box",
+   "retail": null,
+   "market": 86.66,
+   "ratio": null,
+   "chase": "Asuna (042) (SR***)",
+   "chasePrice": 1104.33,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX06BT: Sword Art Online Vol.2",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Sword Art Online Vol.2 - Box Promotion Pack",
+   "retail": null,
+   "market": 4.92,
+   "ratio": null,
+   "chase": "Asuna (042) (SR***)",
+   "chasePrice": 1104.33,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE16BT: KAGURABACHI",
+   "released": "2026-02-27",
+   "age": 169,
+   "product": "KAGURABACHI - Booster Pack",
+   "retail": null,
+   "market": 21.51,
+   "ratio": null,
+   "chase": "Chihiro Rokuhira (060) (SR**)",
+   "chasePrice": 680.92,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE16BT: KAGURABACHI",
+   "released": "2026-02-27",
+   "age": 169,
+   "product": "KAGURABACHI - Booster Box",
+   "retail": null,
+   "market": 388.69,
+   "ratio": null,
+   "chase": "Chihiro Rokuhira (060) (SR**)",
+   "chasePrice": 680.92,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE16BT: KAGURABACHI",
+   "released": "2026-02-27",
+   "age": 169,
+   "product": "KAGURABACHI - Box Promotion Pack",
+   "retail": null,
+   "market": 6.01,
+   "ratio": null,
+   "chase": "Chihiro Rokuhira (060) (SR**)",
+   "chasePrice": 680.92,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE16BT: KAGURABACHI Release Event Cards",
+   "released": "2026-02-27",
+   "age": 169,
+   "product": "KAGURABACHI - Release Event Pack",
+   "retail": null,
+   "market": 7.07,
+   "ratio": null,
+   "chase": "Chihiro Rokuhira (Release Event Winner)",
+   "chasePrice": 115.55,
+   "chaseRarity": "Common"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE17BT: SOLO LEVELING",
+   "released": "2026-03-20",
+   "age": 148,
+   "product": "SOLO LEVELING - Booster Pack (First Edition)",
+   "retail": null,
+   "market": 14.17,
+   "ratio": null,
+   "chase": "Cha Hae-in (058) (SR**)",
+   "chasePrice": 300.04,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE17BT: SOLO LEVELING",
+   "released": "2026-03-20",
+   "age": 148,
+   "product": "SOLO LEVELING - Booster Box (First Edition)",
+   "retail": null,
+   "market": 227.98,
+   "ratio": null,
+   "chase": "Cha Hae-in (058) (SR**)",
+   "chasePrice": 300.04,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE17BT: SOLO LEVELING",
+   "released": "2026-03-20",
+   "age": 148,
+   "product": "SOLO LEVELING - Box Promotion Pack",
+   "retail": null,
+   "market": 7.24,
+   "ratio": null,
+   "chase": "Cha Hae-in (058) (SR**)",
+   "chasePrice": 300.04,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE17BT: SOLO LEVELING Release Event Cards",
+   "released": "2026-03-20",
+   "age": 148,
+   "product": "SOLO LEVELING - Premium Release Event Pack",
+   "retail": null,
+   "market": 24.57,
+   "ratio": null,
+   "chase": "Shadow Soldiers (C*)",
+   "chasePrice": 217.27,
+   "chaseRarity": "Common 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18BT: Tokyo Ghoul Release Event Cards",
+   "released": "2026-04-17",
+   "age": 120,
+   "product": "Tokyo Ghoul - Release Event Pack",
+   "retail": null,
+   "market": 3.72,
+   "ratio": null,
+   "chase": "Yoshimura",
+   "chasePrice": 9.25,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18BT: Tokyo Ghoul",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Tokyo Ghoul - Booster Pack",
+   "retail": null,
+   "market": 9.69,
+   "ratio": null,
+   "chase": "Ken Kaneki (042) (SR**)",
+   "chasePrice": 638.07,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18BT: Tokyo Ghoul",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Tokyo Ghoul - Booster Box",
+   "retail": null,
+   "market": 118.52,
+   "ratio": null,
+   "chase": "Ken Kaneki (042) (SR**)",
+   "chasePrice": 638.07,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18BT: Tokyo Ghoul",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Tokyo Ghoul - Box Promotion Pack",
+   "retail": null,
+   "market": 3.07,
+   "ratio": null,
+   "chase": "Ken Kaneki (042) (SR**)",
+   "chasePrice": 638.07,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18ST: Tokyo Ghoul Starter Deck",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Tokyo Ghoul - Starter Deck",
+   "retail": null,
+   "market": 17.3,
+   "ratio": null,
+   "chase": "Ken Kaneki (112) (R*)",
+   "chasePrice": 6.82,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18ST: Tokyo Ghoul Starter Deck",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Tokyo Ghoul - Starter Deck Display",
+   "retail": null,
+   "market": 97.9,
+   "ratio": null,
+   "chase": "Ken Kaneki (112) (R*)",
+   "chasePrice": 6.82,
+   "chaseRarity": "Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE19BT: SAKAMOTO DAYS Release Event Cards",
+   "released": "2026-05-22",
+   "age": 85,
+   "product": "SAKAMOTO DAYS - Release Event Pack",
+   "retail": null,
+   "market": 4.99,
+   "ratio": null,
+   "chase": "Taro Sakamoto (023)",
+   "chasePrice": 9.77,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE19BT: SAKAMOTO DAYS",
+   "released": "2026-05-29",
+   "age": 78,
+   "product": "SAKAMOTO DAYS - Booster Pack",
+   "retail": null,
+   "market": 7.24,
+   "ratio": null,
+   "chase": "Taro Sakamoto (026) (SR***)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE19BT: SAKAMOTO DAYS",
+   "released": "2026-05-29",
+   "age": 78,
+   "product": "SAKAMOTO DAYS - Booster Box",
+   "retail": null,
+   "market": 78.74,
+   "ratio": null,
+   "chase": "Taro Sakamoto (026) (SR***)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE19BT: SAKAMOTO DAYS",
+   "released": "2026-05-29",
+   "age": 78,
+   "product": "SAKAMOTO DAYS - Box Promotion Pack",
+   "retail": null,
+   "market": 3.98,
+   "ratio": null,
+   "chase": "Taro Sakamoto (026) (SR***)",
+   "chasePrice": 900.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE20BT: That Time I Got Reincarnated as a Slime Release Event Cards",
+   "released": "2026-06-19",
+   "age": 57,
+   "product": "That Time I Got Reincarnated as a Slime - Release Event Pack",
+   "retail": null,
+   "market": 6.48,
+   "ratio": null,
+   "chase": "Shizu (015)",
+   "chasePrice": 8.0,
+   "chaseRarity": "Uncommon"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE20BT: That Time I Got Reincarnated as a Slime",
+   "released": "2026-06-26",
+   "age": 50,
+   "product": "That Time I Got Reincarnated as a Slime - Booster Pack",
+   "retail": null,
+   "market": 7.91,
+   "ratio": null,
+   "chase": "Rimuru (044) (SR***)",
+   "chasePrice": 899.99,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE20BT: That Time I Got Reincarnated as a Slime",
+   "released": "2026-06-26",
+   "age": 50,
+   "product": "That Time I Got Reincarnated as a Slime - Booster Box",
+   "retail": null,
+   "market": 122.39,
+   "ratio": null,
+   "chase": "Rimuru (044) (SR***)",
+   "chasePrice": 899.99,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE20BT: That Time I Got Reincarnated as a Slime",
+   "released": "2026-06-26",
+   "age": 50,
+   "product": "That Time I got Reincarnated as a Slime - Box Promotion Pack",
+   "retail": null,
+   "market": 10.97,
+   "ratio": null,
+   "chase": "Rimuru (044) (SR***)",
+   "chasePrice": 899.99,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE21BT: The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You",
+   "released": "2026-07-10",
+   "age": 36,
+   "product": "The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You - Booster Pack",
+   "retail": null,
+   "market": 8.94,
+   "ratio": null,
+   "chase": "Shizuka Yoshimoto (067) (SR**)",
+   "chasePrice": 449.96,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE21BT: The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You",
+   "released": "2026-07-10",
+   "age": 36,
+   "product": "The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You - Booster Box",
+   "retail": null,
+   "market": 121.95,
+   "ratio": null,
+   "chase": "Shizuka Yoshimoto (067) (SR**)",
+   "chasePrice": 449.96,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE21BT: The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You",
+   "released": "2026-07-10",
+   "age": 36,
+   "product": "The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You - Box Promotion Pack",
+   "retail": null,
+   "market": 13.0,
+   "ratio": null,
+   "chase": "Shizuka Yoshimoto (067) (SR**)",
+   "chasePrice": 449.96,
+   "chaseRarity": "Super Rare 2-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE22BT: CHAINSAW MAN Release Event",
+   "released": "2026-07-24",
+   "age": 22,
+   "product": "CHAINSAW MAN - Release Event Pack",
+   "retail": null,
+   "market": 14.0,
+   "ratio": null,
+   "chase": "Reze (Release Event Winner)",
+   "chasePrice": 75.76,
+   "chaseRarity": "Common"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE22BT: CHAINSAW MAN",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "CHAINSAW MAN - Booster Box",
+   "retail": null,
+   "market": 163.89,
+   "ratio": null,
+   "chase": "Makima (024) (SR***)",
+   "chasePrice": 2474.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE22BT: CHAINSAW MAN",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "CHAINSAW MAN - Booster Pack",
+   "retail": null,
+   "market": 10.81,
+   "ratio": null,
+   "chase": "Makima (024) (SR***)",
+   "chasePrice": 2474.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE22BT: CHAINSAW MAN",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "CHAINSAW MAN - Box Promotion Pack",
+   "retail": null,
+   "market": 33.0,
+   "ratio": null,
+   "chase": "Makima (024) (SR***)",
+   "chasePrice": 2474.0,
+   "chaseRarity": "Super Rare 3-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE23BT: Inuyasha",
+   "released": "2026-08-14",
+   "age": 1,
+   "product": "Inuyasha - Booster Box",
+   "retail": null,
+   "market": 127.49,
+   "ratio": null,
+   "chase": "Kagome Higurashi (066) (SR*) (Box Topper Gold Foil)",
+   "chasePrice": 399.99,
+   "chaseRarity": "Super Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE23BT: Inuyasha",
+   "released": "2026-08-14",
+   "age": 1,
+   "product": "Inuyasha - Booster Pack",
+   "retail": null,
+   "market": 11.95,
+   "ratio": null,
+   "chase": "Kagome Higurashi (066) (SR*) (Box Topper Gold Foil)",
+   "chasePrice": 399.99,
+   "chaseRarity": "Super Rare 1-Star"
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE24BT: Re:ZERO -Starting Life in Another World-",
+   "released": "2026-09-18",
+   "age": -34,
+   "product": "Re:ZERO -Starting Life in Another World- - Booster Box",
+   "retail": null,
+   "market": 299.99,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE24ST: Re:ZERO -Starting Life in Another World- Starter Deck",
+   "released": "2026-09-18",
+   "age": -34,
+   "product": "Re:ZERO -Starting Life in Another World- - Starter Deck",
+   "retail": null,
+   "market": 44.31,
+   "ratio": null,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 01: Heroic Beginnings",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 01: Heroic Beginnings",
+   "retail": null,
+   "market": 72.3,
+   "ratio": null,
+   "chase": "Gundam (LR+)",
+   "chasePrice": 173.19,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 01: Heroic Beginnings",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 01: Heroic Beginnings - Gundam Assemble Starter Set",
+   "retail": null,
+   "market": 102.6,
+   "ratio": null,
+   "chase": "Gundam (LR+)",
+   "chasePrice": 173.19,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 01: Heroic Beginnings",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 01: Heroic Beginnings Display",
+   "retail": null,
+   "market": 368.33,
+   "ratio": null,
+   "chase": "Gundam (LR+)",
+   "chasePrice": 173.19,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 02: Wings of Advance",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 02: Wings of Advance",
+   "retail": null,
+   "market": 42.65,
+   "ratio": null,
+   "chase": "Wing Gundam (LR+)",
+   "chasePrice": 147.4,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 02: Wings of Advance",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 02: Wings of Advance - Gundam Assemble Starter Set",
+   "retail": null,
+   "market": 86.11,
+   "ratio": null,
+   "chase": "Wing Gundam (LR+)",
+   "chasePrice": 147.4,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 02: Wings of Advance",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 02: Wings of Advance Display",
+   "retail": null,
+   "market": 390.47,
+   "ratio": null,
+   "chase": "Wing Gundam (LR+)",
+   "chasePrice": 147.4,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 03: Zeon's Rush",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 03: Zeon's Rush",
+   "retail": null,
+   "market": 42.94,
+   "ratio": null,
+   "chase": "Char's Zaku II (LR+)",
+   "chasePrice": 116.85,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 03: Zeon's Rush",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 03: Zeon's Rush Display",
+   "retail": null,
+   "market": 222.5,
+   "ratio": null,
+   "chase": "Char's Zaku II (LR+)",
+   "chasePrice": 116.85,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 03: Zeon's Rush",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 03: Zeon's Rush - Gundam Assemble Starter Set",
+   "retail": null,
+   "market": 95.53,
+   "ratio": null,
+   "chase": "Char's Zaku II (LR+)",
+   "chasePrice": 116.85,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 03: Zeon's Rush",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 03: Zeon's Rush - Gundam Assemble Starter Set Display",
+   "retail": null,
+   "market": 374.99,
+   "ratio": null,
+   "chase": "Char's Zaku II (LR+)",
+   "chasePrice": 116.85,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 03: Zeon's Rush",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck: Zeon's Rush Bonus Pack",
+   "retail": null,
+   "market": 25.78,
+   "ratio": null,
+   "chase": "Char's Zaku II (LR+)",
+   "chasePrice": 116.85,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 04: SEED Strike",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 04: SEED Strike",
+   "retail": null,
+   "market": 46.43,
+   "ratio": null,
+   "chase": "Aile Strike Gundam (LR+)",
+   "chasePrice": 116.29,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 04: SEED Strike",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 04: SEED Strike Display",
+   "retail": null,
+   "market": 216.66,
+   "ratio": null,
+   "chase": "Aile Strike Gundam (LR+)",
+   "chasePrice": 116.29,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 04: SEED Strike",
+   "released": "2025-07-11",
+   "age": 400,
+   "product": "Starter Deck 04: SEED Strike - Gundam Assemble Starter Set",
+   "retail": null,
+   "market": 78.85,
+   "ratio": null,
+   "chase": "Aile Strike Gundam (LR+)",
+   "chasePrice": 116.29,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Newtype Rising",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "Newtype Rising Booster Pack",
+   "retail": null,
+   "market": 19.37,
+   "ratio": null,
+   "chase": "Gundam (GD01-001) (LR++)",
+   "chasePrice": 1850.85,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Newtype Rising",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "Newtype Rising Booster Box",
+   "retail": null,
+   "market": 440.78,
+   "ratio": null,
+   "chase": "Gundam (GD01-001) (LR++)",
+   "chasePrice": 1850.85,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Newtype Rising",
+   "released": "2025-07-25",
+   "age": 386,
+   "product": "Newtype Rising Sleeved Booster Pack",
+   "retail": null,
+   "market": 23.43,
+   "ratio": null,
+   "chase": "Gundam (GD01-001) (LR++)",
+   "chasePrice": 1850.85,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 05: Iron Bloom",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Starter Deck 05: Iron Bloom",
+   "retail": null,
+   "market": 24.43,
+   "ratio": null,
+   "chase": "Gundam Barbatos 4th Form (LR+)",
+   "chasePrice": 80.53,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 05: Iron Bloom",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Starter Deck 05: Iron Bloom Display",
+   "retail": null,
+   "market": 160.26,
+   "ratio": null,
+   "chase": "Gundam Barbatos 4th Form (LR+)",
+   "chasePrice": 80.53,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 05: Iron Bloom",
+   "released": "2025-09-26",
+   "age": 323,
+   "product": "Starter Deck: Iron Bloom Bonus Pack",
+   "retail": null,
+   "market": 25.0,
+   "ratio": null,
+   "chase": "Gundam Barbatos 4th Form (LR+)",
+   "chasePrice": 80.53,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Dual Impact",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Dual Impact Booster Pack",
+   "retail": null,
+   "market": 8.23,
+   "ratio": null,
+   "chase": "Gundam Barbatos 1st Form (LR++)",
+   "chasePrice": 970.86,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Dual Impact",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Dual Impact Booster Box",
+   "retail": null,
+   "market": 147.97,
+   "ratio": null,
+   "chase": "Gundam Barbatos 1st Form (LR++)",
+   "chasePrice": 970.86,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Dual Impact",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Dual Impact Sleeved Booster Pack",
+   "retail": null,
+   "market": 7.08,
+   "ratio": null,
+   "chase": "Gundam Barbatos 1st Form (LR++)",
+   "chasePrice": 970.86,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 06: Clan Unity",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Starter Deck 06: Clan Unity",
+   "retail": null,
+   "market": 18.97,
+   "ratio": null,
+   "chase": "GQuuuuuuX (Omega Psycommu) (LR+)",
+   "chasePrice": 34.0,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 06: Clan Unity",
+   "released": "2025-10-24",
+   "age": 295,
+   "product": "Starter Deck 06: Clan Unity Display",
+   "retail": null,
+   "market": 127.97,
+   "ratio": null,
+   "chase": "GQuuuuuuX (Omega Psycommu) (LR+)",
+   "chasePrice": 34.0,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 07: Celestial Drive",
+   "released": "2026-01-16",
+   "age": 211,
+   "product": "Starter Deck 07: Celestial Drive",
+   "retail": null,
+   "market": 21.95,
+   "ratio": null,
+   "chase": "Gundam Exia (ST07-001) (LR+)",
+   "chasePrice": 63.78,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 07: Celestial Drive",
+   "released": "2026-01-16",
+   "age": 211,
+   "product": "Starter Deck 07: Celestial Drive Display",
+   "retail": null,
+   "market": 90.52,
+   "ratio": null,
+   "chase": "Gundam Exia (ST07-001) (LR+)",
+   "chasePrice": 63.78,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 07: Celestial Drive",
+   "released": "2026-01-16",
+   "age": 211,
+   "product": "Starter Deck: Celestial Drive Bonus Pack",
+   "retail": null,
+   "market": 20.33,
+   "ratio": null,
+   "chase": "Gundam Exia (ST07-001) (LR+)",
+   "chasePrice": 63.78,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 08: Flash of Radiance",
+   "released": "2026-01-16",
+   "age": 211,
+   "product": "Starter Deck 08: Flash of Radiance",
+   "retail": null,
+   "market": 19.72,
+   "ratio": null,
+   "chase": "Xi Gundam (ST08-001) (LR+)",
+   "chasePrice": 41.77,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 08: Flash of Radiance",
+   "released": "2026-01-16",
+   "age": 211,
+   "product": "Starter Deck 08: Flash of Radiance Display",
+   "retail": null,
+   "market": 75.18,
+   "ratio": null,
+   "chase": "Xi Gundam (ST08-001) (LR+)",
+   "chasePrice": 41.77,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Steel Requiem",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Steel Requiem Booster Pack",
+   "retail": null,
+   "market": 6.08,
+   "ratio": null,
+   "chase": "GFreD (LR++)",
+   "chasePrice": 436.56,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Steel Requiem",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Steel Requiem Booster Box",
+   "retail": null,
+   "market": 121.89,
+   "ratio": null,
+   "chase": "GFreD (LR++)",
+   "chasePrice": 436.56,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Steel Requiem",
+   "released": "2026-01-30",
+   "age": 197,
+   "product": "Steel Requiem Sleeved Booster Pack",
+   "retail": null,
+   "market": 8.52,
+   "ratio": null,
+   "chase": "GFreD (LR++)",
+   "chasePrice": 436.56,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 09: Destiny Ignition",
+   "released": "2026-03-27",
+   "age": 141,
+   "product": "Starter Deck 09: Destiny Ignition",
+   "retail": null,
+   "market": 60.83,
+   "ratio": null,
+   "chase": "Freedom Gundam (LR+)",
+   "chasePrice": 85.92,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 09: Destiny Ignition",
+   "released": "2026-03-27",
+   "age": 141,
+   "product": "Starter Deck 09: Destiny Ignition Display",
+   "retail": null,
+   "market": 326.87,
+   "ratio": null,
+   "chase": "Freedom Gundam (LR+)",
+   "chasePrice": 85.92,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Phantom Aria",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Phantom Aria Booster Pack",
+   "retail": null,
+   "market": 5.15,
+   "ratio": null,
+   "chase": "Destiny Gundam (LR++)",
+   "chasePrice": 1078.98,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Phantom Aria",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Phantom Aria Booster Box",
+   "retail": null,
+   "market": 110.06,
+   "ratio": null,
+   "chase": "Destiny Gundam (LR++)",
+   "chasePrice": 1078.98,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Phantom Aria",
+   "released": "2026-04-24",
+   "age": 113,
+   "product": "Phantom Aria Sleeved Booster Pack",
+   "retail": null,
+   "market": 9.07,
+   "ratio": null,
+   "chase": "Destiny Gundam (LR++)",
+   "chasePrice": 1078.98,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Eternal Nexus",
+   "released": "2026-06-26",
+   "age": 50,
+   "product": "Eternal Nexus Booster Pack",
+   "retail": null,
+   "market": 5.93,
+   "ratio": null,
+   "chase": "Phoenix Gundam (Power Unleashed) (EX) (LR++)",
+   "chasePrice": 1104.51,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Eternal Nexus",
+   "released": "2026-06-26",
+   "age": 50,
+   "product": "Eternal Nexus Booster Box",
+   "retail": null,
+   "market": 124.71,
+   "ratio": null,
+   "chase": "Phoenix Gundam (Power Unleashed) (EX) (LR++)",
+   "chasePrice": 1104.51,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 10: Generation Pulse",
+   "released": "2026-06-26",
+   "age": 50,
+   "product": "Starter Deck 10: Generation Pulse",
+   "retail": null,
+   "market": 17.37,
+   "ratio": null,
+   "chase": "Zeta Gundam (EX) (LR+)",
+   "chasePrice": 34.1,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 10: Generation Pulse",
+   "released": "2026-06-26",
+   "age": 50,
+   "product": "Starter Deck 10: Generation Pulse Display",
+   "retail": null,
+   "market": 146.59,
+   "ratio": null,
+   "chase": "Zeta Gundam (EX) (LR+)",
+   "chasePrice": 34.1,
+   "chaseRarity": "LR+"
+  },
+  {
+   "game": "Gundam",
+   "set": "Deck Build Box Freedom Ascension",
+   "released": "2026-07-24",
+   "age": 22,
+   "product": "Freedom Ascension Deck Build Box",
+   "retail": null,
+   "market": 55.87,
+   "ratio": null,
+   "chase": "Gundam",
+   "chasePrice": 6.04,
+   "chaseRarity": "Legend Rare"
+  },
+  {
+   "game": "Gundam",
+   "set": "Freedom Ascension",
+   "released": "2026-07-24",
+   "age": 22,
+   "product": "Freedom Ascension Booster Pack",
+   "retail": null,
+   "market": 9.01,
+   "ratio": null,
+   "chase": "Wing Gundam Zero (EW) (LR++)",
+   "chasePrice": 3687.46,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Freedom Ascension",
+   "released": "2026-07-24",
+   "age": 22,
+   "product": "Freedom Ascension Booster Box",
+   "retail": null,
+   "market": 191.47,
+   "ratio": null,
+   "chase": "Wing Gundam Zero (EW) (LR++)",
+   "chasePrice": 3687.46,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Gundam",
+   "set": "Freedom Ascension",
+   "released": "2026-07-24",
+   "age": 22,
+   "product": "Freedom Ascension Sleeved Booster Pack",
+   "retail": null,
+   "market": 11.46,
+   "ratio": null,
+   "chase": "Wing Gundam Zero (EW) (LR++)",
+   "chasePrice": 3687.46,
+   "chaseRarity": "LR++"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Secret Garden",
+   "released": "2025-07-30",
+   "age": 381,
+   "product": "Secret Garden Box",
+   "retail": null,
+   "market": 231.96,
+   "ratio": null,
+   "chase": "Ultrasoft Poro",
+   "chasePrice": 93.33,
+   "chaseRarity": "Promo"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Booster Pack",
+   "retail": null,
+   "market": 14.58,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Booster Display",
+   "retail": null,
+   "market": 242.38,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Champion Deck (Jinx)",
+   "retail": null,
+   "market": 30.82,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Champion Deck (Jinx) Display",
+   "retail": null,
+   "market": 120.1,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Champion Deck (Viktor) Display",
+   "retail": null,
+   "market": 237.49,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Champion Deck (Viktor)",
+   "retail": null,
+   "market": 62.98,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Champion Deck (Lee Sin)",
+   "retail": null,
+   "market": 46.13,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Sleeved Booster Pack",
+   "retail": null,
+   "market": 14.65,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Buff",
+   "retail": null,
+   "market": 0.19,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Nexus Night Promo Pack",
+   "retail": null,
+   "market": 46.88,
+   "ratio": null,
+   "chase": "Kai'Sa, Daughter of the Void (Signature)",
+   "chasePrice": 3085.16,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins: Proving Grounds",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Origins - Proving Grounds Box Set",
+   "retail": null,
+   "market": 63.41,
+   "ratio": null,
+   "chase": "Master Yi, Wuju Bladesman (Starter)",
+   "chasePrice": 18.51,
+   "chaseRarity": "Rare"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Riftbound Promotional Cards",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Riftbound: League of Legends Arcane Box Set",
+   "retail": null,
+   "market": 568.52,
+   "ratio": null,
+   "chase": "Teemo, Swift Scout (Alternate Art)",
+   "chasePrice": 685.25,
+   "chaseRarity": "Promo"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Riftbound Promotional Cards",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Riftbound: Worlds Bundle 2025",
+   "retail": null,
+   "market": 1131.23,
+   "ratio": null,
+   "chase": "Teemo, Swift Scout (Alternate Art)",
+   "chasePrice": 685.25,
+   "chaseRarity": "Promo"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Riftbound Promotional Cards",
+   "released": "2025-10-31",
+   "age": 288,
+   "product": "Buff // Buff (Fist Bump Promo)",
+   "retail": null,
+   "market": 139.0,
+   "ratio": null,
+   "chase": "Teemo, Swift Scout (Alternate Art)",
+   "chasePrice": 685.25,
+   "chaseRarity": "Promo"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Booster Display",
+   "retail": null,
+   "market": 187.09,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Champion Deck (Rumble)",
+   "retail": null,
+   "market": 24.37,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Champion Deck (Fiora)",
+   "retail": null,
+   "market": 33.78,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Champion Deck (Rumble) Display",
+   "retail": null,
+   "market": 69.51,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Champion Deck (Fiora) Display",
+   "retail": null,
+   "market": 96.05,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Booster Pack",
+   "retail": null,
+   "market": 7.97,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Riftbound: Bulk Runes",
+   "retail": null,
+   "market": 23.75,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Pre-Rift Event Kit",
+   "retail": null,
+   "market": 329.58,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Sleeved Booster Pack",
+   "retail": null,
+   "market": 9.23,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Pre-Rift Kit",
+   "retail": null,
+   "market": 70.41,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "product": "Spiritforged - Nexus Night Promo Pack",
+   "retail": null,
+   "market": 13.61,
+   "ratio": null,
+   "chase": "Ahri, Inquisitive (Signature)",
+   "chasePrice": 3249.05,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Booster Pack",
+   "retail": null,
+   "market": 6.35,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Booster Display",
+   "retail": null,
+   "market": 151.39,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Champion Deck (Vex) Display",
+   "retail": null,
+   "market": 66.44,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Champion Deck (Vi) Display",
+   "retail": null,
+   "market": 52.07,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Champion Deck (Vex)",
+   "retail": null,
+   "market": 25.33,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Champion Deck (Vi)",
+   "retail": null,
+   "market": 13.2,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Pre-Rift Event Kit",
+   "retail": null,
+   "market": 568.57,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Vault Bundle",
+   "retail": null,
+   "market": 55.31,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Pre-Rift Kit",
+   "retail": null,
+   "market": 36.16,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Nexus Night Promo Pack",
+   "retail": null,
+   "market": 10.21,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "product": "Unleashed - Sleeved Booster Pack",
+   "retail": null,
+   "market": 7.34,
+   "ratio": null,
+   "chase": "Baron Nashor (Ultimate)",
+   "chasePrice": 1634.89,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Booster Pack",
+   "retail": null,
+   "market": 6.38,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Booster Display",
+   "retail": null,
+   "market": 144.62,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Pre-Rift Kit",
+   "retail": null,
+   "market": 32.17,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Vault Bundle",
+   "retail": null,
+   "market": 41.48,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Showdown Decks: Zed vs Shen",
+   "retail": null,
+   "market": 17.37,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Showdown Decks: Zed vs Shen Display",
+   "retail": null,
+   "market": 53.07,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Pre-Rift Event Kit",
+   "retail": null,
+   "market": 623.69,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "product": "Vendetta - Nexus Night Promo Pack",
+   "retail": null,
+   "market": 11.99,
+   "ratio": null,
+   "chase": "Akali, Rogue Assassin (Signature)",
+   "chasePrice": 2831.55,
+   "chaseRarity": "Showcase"
   }
  ],
  "sets": [
@@ -4537,6 +9724,1837 @@
    "set": "Star Trek: Stardates",
    "released": "2026-11-13",
    "age": -90,
+   "chase": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Yu-Gi-Oh! Championship Series 2025 Prize Cards",
+   "released": "2025-06-08",
+   "age": 433,
+   "chase": {
+    "name": "Blue-Eyes White Dragon (World Championship Qualifier)",
+    "price": 700.0,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Battles of Legend: Monster Mayhem",
+   "released": "2025-06-13",
+   "age": 428,
+   "chase": {
+    "name": "Blue-Eyes White Dragon (Starlight Rare)",
+    "price": 162.07,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "OTS Tournament Pack 28",
+   "released": "2025-06-18",
+   "age": 423,
+   "chase": {
+    "name": "Blue-Eyes White Dragon",
+    "price": 136.33,
+    "rarity": "Ultimate Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Duelist's Advance",
+   "released": "2025-07-04",
+   "age": 407,
+   "chase": {
+    "name": "Sky Striker Ace = Zero (Starlight Rare)",
+    "price": 237.96,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Justice Hunters",
+   "released": "2025-08-01",
+   "age": 379,
+   "chase": {
+    "name": "K9-17 Izuna (Starlight Rare)",
+    "price": 26.99,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Retro Pack 2 (2020 Date Reprint)",
+   "released": "2025-08-22",
+   "age": 358,
+   "chase": {
+    "name": "Blue-Eyes Shining Dragon",
+    "price": 32.1,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Limited Pack World Championship 2025",
+   "released": "2025-08-30",
+   "age": 350,
+   "chase": {
+    "name": "Exodia the Forbidden One (EUR)",
+    "price": 85.6,
+    "rarity": "Emblazoned Ultra Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "2025 Mega-Pack",
+   "released": "2025-09-05",
+   "age": 344,
+   "chase": {
+    "name": "Dominus Impulse",
+    "price": 30.87,
+    "rarity": "Prismatic Secret Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Doom of Dimensions",
+   "released": "2025-09-26",
+   "age": 323,
+   "chase": {
+    "name": "MarshmaoYummy (Starlight Rare)",
+    "price": 76.18,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "eFootball Collaboration Promos",
+   "released": "2025-09-27",
+   "age": 322,
+   "chase": {
+    "name": "Token: NEYMAR JR",
+    "price": 6.65,
+    "rarity": "Parallel Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary Collection Kaiba (2020 Date Reprint)",
+   "released": "2025-10-09",
+   "age": 310,
+   "chase": {
+    "name": "Blue-Eyes White Dragon (Version 2)",
+    "price": 10.68,
+    "rarity": "Ultra Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "OTS Tournament Pack 29",
+   "released": "2025-10-15",
+   "age": 304,
+   "chase": {
+    "name": "K9-66a Jokul",
+    "price": 6.18,
+    "rarity": "Ultimate Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "THE CHRONICLES DECK: The Fallen & The Virtuous (All-Foil Edition)",
+   "released": "2025-10-24",
+   "age": 295,
+   "chase": {
+    "name": "The Fallen & The Virtuous (Starlight Rare)",
+    "price": 126.72,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary 5D's Decks",
+   "released": "2025-11-21",
+   "age": 267,
+   "chase": {
+    "name": "Mulcharmy Fuwalos",
+    "price": 8.91,
+    "rarity": "Common"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Phantom Revenge",
+   "released": "2025-12-19",
+   "age": 239,
+   "chase": {
+    "name": "Kewl Tune Synchro (Starlight Rare)",
+    "price": 28.69,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "THE CHRONICLES DECK: Spirit Charmers (All-Foil Edition)",
+   "released": "2026-01-23",
+   "age": 204,
+   "chase": {
+    "name": "Charmers of the Grand Circle (Starlight Rare)",
+    "price": 47.91,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Burst Protocol",
+   "released": "2026-02-06",
+   "age": 190,
+   "chase": {
+    "name": "Forbidden Crown (Starlight Rare)",
+    "price": 235.5,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "OTS Tournament Pack 30",
+   "released": "2026-02-11",
+   "age": 185,
+   "chase": {
+    "name": "Super Starslayer TY-PHON - Sky Crisis",
+    "price": 10.61,
+    "rarity": "Ultimate Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Maze of Muertos",
+   "released": "2026-02-20",
+   "age": 176,
+   "chase": {
+    "name": "Dark Magician of Destruction (Collector's Rare)",
+    "price": 143.94,
+    "rarity": "Collector's Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary Modern Decks 2026",
+   "released": "2026-03-13",
+   "age": 155,
+   "chase": {
+    "name": "Reinforcement of the Army (Alternate Art) (Starlight Rare)",
+    "price": 263.74,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Rarity Collection 5",
+   "released": "2026-04-17",
+   "age": 120,
+   "chase": {
+    "name": "Red-Eyes Dark Dragoon (Starlight Rare)",
+    "price": 565.18,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Blazing Dominion",
+   "released": "2026-05-08",
+   "age": 99,
+   "chase": {
+    "name": "Fydraulis Harmonia (Starlight Rare)",
+    "price": 188.4,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Battles of Legend: Glorious Gallery",
+   "released": "2026-06-05",
+   "age": 71,
+   "chase": {
+    "name": "Dragon Master Magia (Starlight Rare)",
+    "price": 1186.75,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Chaos Origins",
+   "released": "2026-07-03",
+   "age": 43,
+   "chase": {
+    "name": "Magician of Dark Chaos - Black Chaos (Starlight Rare) (Extended Art)",
+    "price": 576.73,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Ultimate Tournament Pack 1",
+   "released": "2026-07-08",
+   "age": 38,
+   "chase": {
+    "name": "Ash Blossom & Joyous Spring",
+    "price": 145.28,
+    "rarity": "Ultimate Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Winner's Pack 2026-2027",
+   "released": "2026-07-15",
+   "age": 31,
+   "chase": {
+    "name": "Medius the Pure (OTS Stamp)",
+    "price": 70.0,
+    "rarity": "Ultra Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Legendary Arc-V Decks",
+   "released": "2026-08-07",
+   "age": 8,
+   "chase": {
+    "name": "Odd-Eyes Solblaze Dragon (Starlight Rare)",
+    "price": 99.92,
+    "rarity": "Starlight Rare"
+   }
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Limited Pack World Championship 2026",
+   "released": "2026-08-29",
+   "age": -14,
+   "chase": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Magnificent Monsters",
+   "released": "2026-09-04",
+   "age": -20,
+   "chase": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Beyond the Brave",
+   "released": "2026-10-09",
+   "age": -55,
+   "chase": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Ultimate Tournament Pack 2",
+   "released": "2026-11-04",
+   "age": -81,
+   "chase": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Magnificent Maestros",
+   "released": "2026-11-13",
+   "age": -90,
+   "chase": null
+  },
+  {
+   "game": "YuGiOh",
+   "set": "Glorious Victors",
+   "released": "2026-12-04",
+   "age": -111,
+   "chase": null
+  },
+  {
+   "game": "Digimon",
+   "set": "Versus Monsters",
+   "released": "2025-06-26",
+   "age": 415,
+   "chase": {
+    "name": "Machinedramon (Rare Pull)",
+    "price": 178.18,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Cyber Eden Release Event Cards",
+   "released": "2025-07-18",
+   "age": 393,
+   "chase": {
+    "name": "Unique Emblem: Poseidia Lagoon",
+    "price": 10.88,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Cyber Eden",
+   "released": "2025-07-25",
+   "age": 386,
+   "chase": {
+    "name": "Nokia Shiramine (SP)",
+    "price": 500.0,
+    "rarity": "Special Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Sinister Order",
+   "released": "2025-09-19",
+   "age": 330,
+   "chase": {
+    "name": "BlackWarGreymon ACE (Rare Pull)",
+    "price": 361.94,
+    "rarity": "Super Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Hackers' Slumber Release Event Cards",
+   "released": "2025-10-17",
+   "age": 302,
+   "chase": {
+    "name": "Angewomon",
+    "price": 22.49,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Hackers' Slumber",
+   "released": "2025-10-24",
+   "age": 295,
+   "chase": {
+    "name": "Mastemon (Rare Pull)",
+    "price": 467.04,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Limited Card Pack -Billion Bullet-",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Ukkomon",
+    "price": 18.68,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 22: Amethyst Mandala Advanced Deck Set",
+   "released": "2025-12-05",
+   "age": 253,
+   "chase": {
+    "name": "Renamon (Rare Pull)",
+    "price": 132.77,
+    "rarity": "Super Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 22: Amethyst Mandala Advanced Deck Set Release Event Cards",
+   "released": "2025-12-05",
+   "age": 253,
+   "chase": null
+  },
+  {
+   "game": "Digimon",
+   "set": "Time Stranger Release Event Cards",
+   "released": "2026-01-16",
+   "age": 211,
+   "chase": {
+    "name": "Blimpmon",
+    "price": 10.06,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Time Stranger",
+   "released": "2026-01-23",
+   "age": 204,
+   "chase": {
+    "name": "Homeros (Rare Pull)",
+    "price": 300.85,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Dawn of Liberator",
+   "released": "2026-02-13",
+   "age": 183,
+   "chase": {
+    "name": "Medusamon (SP)",
+    "price": 550.22,
+    "rarity": "Super Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Limited Card Pack -Another Knight-",
+   "released": "2026-03-06",
+   "age": 162,
+   "chase": {
+    "name": "Treadmill Training",
+    "price": 14.69,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Advanced Booster Digimon Generation",
+   "released": "2026-03-27",
+   "age": 141,
+   "chase": {
+    "name": "Omnimon - AD1-025 (Rare Pull)",
+    "price": 676.52,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 23: Beatbreak Release Event Cards",
+   "released": "2026-05-08",
+   "age": 99,
+   "chase": {
+    "name": "Cougarmon (Welcome Tamers Pack Vol.2)",
+    "price": 26.36,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 24: Data Squad Release Event Cards",
+   "released": "2026-05-08",
+   "age": 99,
+   "chase": {
+    "name": "GeoGreymon (Welcome Tamers Pack Vol.2)",
+    "price": 13.46,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Dual Revolution Release Event Cards",
+   "released": "2026-05-15",
+   "age": 92,
+   "chase": {
+    "name": "Lunamon",
+    "price": 12.96,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 23: Beatbreak",
+   "released": "2026-05-15",
+   "age": 92,
+   "chase": {
+    "name": "Gekkomon (Rare Pull)",
+    "price": 195.95,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Starter Deck 24: Data Squad",
+   "released": "2026-05-15",
+   "age": 92,
+   "chase": {
+    "name": "Agumon (Rare Pull)",
+    "price": 177.14,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Dual Revolution",
+   "released": "2026-05-22",
+   "age": 85,
+   "chase": {
+    "name": "BeelStarmon // Fly Bullet (SP)",
+    "price": 651.54,
+    "rarity": "Ultimate Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Digital World Shambala",
+   "released": "2026-07-03",
+   "age": 43,
+   "chase": {
+    "name": "Amaterasumon (SP)",
+    "price": 421.04,
+    "rarity": "Super Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Limited Card Pack -Final Crest-",
+   "released": "2026-08-07",
+   "age": 8,
+   "chase": {
+    "name": "MedievalGallantmon",
+    "price": 21.46,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Digimon",
+   "set": "Timeless Bonds",
+   "released": "2026-09-04",
+   "age": -20,
+   "chase": null
+  },
+  {
+   "game": "Digimon",
+   "set": "Chivalrous XIII",
+   "released": "2026-10-02",
+   "age": -48,
+   "chase": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Sector and Regional Promos: Season 1",
+   "released": "2025-07-01",
+   "age": 410,
+   "chase": {
+    "name": "Anakin Skywalker - Champion of Mortis",
+    "price": 316.57,
+    "rarity": "Legendary"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force",
+   "released": "2025-07-11",
+   "age": 400,
+   "chase": {
+    "name": "Yoda - My Ally is the Force (Serialized)",
+    "price": 787.47,
+    "rarity": "Legendary"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Legends of the Force: Weekly Play Promos",
+   "released": "2025-07-11",
+   "age": 400,
+   "chase": {
+    "name": "Yoda - My Ally is the Force (Foil)",
+    "price": 12.94,
+    "rarity": "Legendary"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "2025 Convention Exclusive",
+   "released": "2025-07-24",
+   "age": 387,
+   "chase": {
+    "name": "R2-D2 - Artooooooooo!",
+    "price": 59.05,
+    "rarity": "Special"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Intro Battle: Hoth",
+   "released": "2025-10-03",
+   "age": 316,
+   "chase": {
+    "name": "Watch This",
+    "price": 19.51,
+    "rarity": "Special"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "2025 Gift Box",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Obi-Wan Kenobi - Protective Padawan",
+    "price": 3.98,
+    "rarity": "Special"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power",
+   "released": "2025-11-07",
+   "age": 281,
+   "chase": {
+    "name": "Grand Admiral Thrawn - Grand Schemer (Serialized)",
+    "price": 350.0,
+    "rarity": "Legendary"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Secrets of Power: Weekly Play Promos",
+   "released": "2025-11-07",
+   "age": 281,
+   "chase": null
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time",
+   "released": "2026-03-13",
+   "age": 155,
+   "chase": {
+    "name": "Lando Calrissian - Full Sabacc (Showcase)",
+    "price": 331.86,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "A Lawless Time: Weekly Play Promos",
+   "released": "2026-03-13",
+   "age": 155,
+   "chase": {
+    "name": "Maz Kanata - Where's My Boyfriend? (Foil)",
+    "price": 15.49,
+    "rarity": "Legendary"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Twin Suns",
+   "released": "2026-05-29",
+   "age": 78,
+   "chase": {
+    "name": "Jendirian Valley - Refugee Freighter",
+    "price": 28.62,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "2026 Convention Exclusive",
+   "released": "2026-07-01",
+   "age": 45,
+   "chase": {
+    "name": "The Mandalorian - Let's See The Puck",
+    "price": 68.0,
+    "rarity": "Legendary"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Galactic Championship 2026",
+   "released": "2026-07-01",
+   "age": 45,
+   "chase": {
+    "name": "Count Dooku - Offering Aid",
+    "price": 250.0,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire",
+   "released": "2026-07-17",
+   "age": 29,
+   "chase": {
+    "name": "Luke Skywalker - I Can Save Him (Showcase)",
+    "price": 385.54,
+    "rarity": "Special"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Ashes of the Empire - Weekly Play Promos",
+   "released": "2026-07-17",
+   "age": 29,
+   "chase": {
+    "name": "The Darksaber - Icon of Leadership",
+    "price": 17.58,
+    "rarity": "Legendary"
+   }
+  },
+  {
+   "game": "Star Wars Unlimited",
+   "set": "Homeworlds",
+   "released": "2026-10-09",
+   "age": -55,
+   "chase": null
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck 10: Giblet",
+   "released": "2025-06-13",
+   "age": 428,
+   "chase": {
+    "name": "Broly : BR (Bonus Pack Alternate Art)",
+    "price": 266.21,
+    "rarity": "Super Rare"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck 9: Shallot",
+   "released": "2025-06-13",
+   "age": 428,
+   "chase": {
+    "name": "Son Goku (Bonus Pack Alternate Art)",
+    "price": 353.84,
+    "rarity": "Super Rare"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 01",
+   "released": "2025-06-27",
+   "age": 414,
+   "chase": {
+    "name": "Son Goku - FB05-119 (Super Alternate Art)",
+    "price": 699.99,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 01 Release Event Cards",
+   "released": "2025-06-27",
+   "age": 414,
+   "chase": {
+    "name": "Bulma - FB06-035",
+    "price": 13.85,
+    "rarity": "Common"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Wish For Shenron Release Event Cards",
+   "released": "2025-09-12",
+   "age": 337,
+   "chase": {
+    "name": "Bulma - FB07-115",
+    "price": 16.33,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Wish For Shenron",
+   "released": "2025-09-19",
+   "age": 330,
+   "chase": {
+    "name": "Son Gohan : SH - FB07-121 (Super Alternate Art)",
+    "price": 962.5,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 02",
+   "released": "2025-11-14",
+   "age": 274,
+   "chase": {
+    "name": "Trunks : Future - SB02-010 (Alternate Art)",
+    "price": 262.92,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Manga Booster 02 Release Event Cards",
+   "released": "2025-11-14",
+   "age": 274,
+   "chase": {
+    "name": "Solar Flare!!!!",
+    "price": 16.32,
+    "rarity": "Common"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Saiyan's Pride",
+   "released": "2025-12-12",
+   "age": 246,
+   "chase": {
+    "name": "Broly - FB08-088 (Alternate Art)",
+    "price": 93.32,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Saiyan's Pride Release Event Cards",
+   "released": "2025-12-19",
+   "age": 239,
+   "chase": {
+    "name": "Broly - FB08-088",
+    "price": 7.99,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Dual Evolution",
+   "released": "2026-03-13",
+   "age": 155,
+   "chase": {
+    "name": "Gogeta : BR - FB09-121 (Super Alternate Art)",
+    "price": 1785.76,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Dual Evolution Release Event Cards",
+   "released": "2026-03-13",
+   "age": 155,
+   "chase": {
+    "name": "Paikuhan - FB09-088",
+    "price": 15.88,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck EX: The Beat of Ki",
+   "released": "2026-03-13",
+   "age": 155,
+   "chase": {
+    "name": "Son Goku - FS12-01 (Gold)",
+    "price": 65.66,
+    "rarity": "Leader"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Starter Deck EX: The Phase of Evolution",
+   "released": "2026-03-13",
+   "age": 155,
+   "chase": {
+    "name": "Son Goku - FS11-01 (Gold)",
+    "price": 92.46,
+    "rarity": "Leader"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force Release Event Cards",
+   "released": "2026-06-12",
+   "age": 64,
+   "chase": {
+    "name": "Vegito Blue's Arrival",
+    "price": 14.08,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Cross Force",
+   "released": "2026-06-19",
+   "age": 57,
+   "chase": {
+    "name": "Cell - FB10-123 (Super Alternate Art)",
+    "price": 900.0,
+    "rarity": "Secret Rare"
+   }
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Story Booster 01",
+   "released": "2026-08-21",
+   "age": -6,
+   "chase": null
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Brightness of Hope",
+   "released": "2026-10-16",
+   "age": -62,
+   "chase": null
+  },
+  {
+   "game": "Dragon Ball Fusion World",
+   "set": "Reach the God",
+   "released": "2026-12-11",
+   "age": -118,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX02BT: Jujutsu Kaisen Vol.2 Release Event Cards",
+   "released": "2025-06-20",
+   "age": 421,
+   "chase": {
+    "name": "Kento Nanami (Release Event Winner)",
+    "price": 6.35,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX02BT: Jujutsu Kaisen Vol.2",
+   "released": "2025-06-27",
+   "age": 414,
+   "chase": {
+    "name": "Sukuna (015) (SR***)",
+    "price": 500.0,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09BT: FULLMETAL ALCHEMIST Release Event Cards",
+   "released": "2025-07-18",
+   "age": 393,
+   "chase": {
+    "name": "Riza Hawkeye (049)",
+    "price": 9.0,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09ST: FULLMETAL ALCHEMIST Starter Deck",
+   "released": "2025-07-18",
+   "age": 393,
+   "chase": {
+    "name": "Roy Mustang (111) (R*)",
+    "price": 11.87,
+    "rarity": "Rare 1-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE09BT: FULLMETAL ALCHEMIST",
+   "released": "2025-07-25",
+   "age": 386,
+   "chase": {
+    "name": "Roy Mustang (055) (SR***)",
+    "price": 632.97,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10BT: Attack on Titan Release Event Cards",
+   "released": "2025-08-22",
+   "age": 358,
+   "chase": {
+    "name": "You Call That Clean?! Do It All Again.",
+    "price": 8.03,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX03BT: CODE GEASS: Lelouch of the Rebellion Vol.2 Release Event Cards",
+   "released": "2025-08-22",
+   "age": 358,
+   "chase": {
+    "name": "Action Point Card (Release Event Winner)",
+    "price": 7.22,
+    "rarity": "Action Point"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10BT: Attack on Titan",
+   "released": "2025-08-29",
+   "age": 351,
+   "chase": {
+    "name": "Mikasa Ackermann (089) (SR**)",
+    "price": 136.75,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10ST: Attack on Titan Starter Deck",
+   "released": "2025-08-29",
+   "age": 351,
+   "chase": {
+    "name": "Levi",
+    "price": 6.18,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX03BT: CODE GEASS: Lelouch of the Rebellion Vol.2",
+   "released": "2025-08-29",
+   "age": 351,
+   "chase": {
+    "name": "C.C. (066) (SR**)",
+    "price": 195.37,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11BT: Rurouni Kenshin Release Event Cards",
+   "released": "2025-09-19",
+   "age": 330,
+   "chase": {
+    "name": "Kenshin Himura (Release Event Winner)",
+    "price": 6.84,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX04BT: HUNTER X HUNTER Vol.2 Release Event Cards",
+   "released": "2025-09-19",
+   "age": 330,
+   "chase": {
+    "name": "Action Point Card (Release Event Winner)",
+    "price": 7.88,
+    "rarity": "Action Point"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11BT: Rurouni Kenshin",
+   "released": "2025-09-26",
+   "age": 323,
+   "chase": {
+    "name": "Kenshin Himura (090) (SR***)",
+    "price": 451.24,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE11ST: Rurouni Kenshin Starter Deck",
+   "released": "2025-09-26",
+   "age": 323,
+   "chase": {
+    "name": "Aoshi Shinomori (R*)",
+    "price": 4.2,
+    "rarity": "Rare 1-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX04BT: HUNTER X HUNTER Vol.2",
+   "released": "2025-09-26",
+   "age": 323,
+   "chase": {
+    "name": "Gon Freecss (016) (SR**)",
+    "price": 161.41,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE12BT: Kaiju No. 8 Release Event Cards",
+   "released": "2025-10-24",
+   "age": 295,
+   "chase": {
+    "name": "Now Leave the Rest to Me",
+    "price": 8.69,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE13BT: Yu Yu Hakusho: Ghost Files Release Event Cards",
+   "released": "2025-10-24",
+   "age": 295,
+   "chase": {
+    "name": "Yusuke Urameshi (Release Event Winner)",
+    "price": 11.62,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE01NC: New Card Selection: BLEACH: Thousand-Year Blood War",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Kenpachi Zaraki",
+    "price": 44.77,
+    "rarity": "Special"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE12BT: Kaiju No. 8",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Kikoru Shinomiya (020) (SR**)",
+    "price": 176.77,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE13BT: Yu Yu Hakusho: Ghost Files",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Yusuke Urameshi (038) (SR***)",
+    "price": 900.0,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE14BT: GODDESS OF VICTORY: NIKKE Release Event Cards",
+   "released": "2025-11-21",
+   "age": 267,
+   "chase": {
+    "name": "Rapunzel (Release Event Winner)",
+    "price": 15.27,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE14BT: GODDESS OF VICTORY: NIKKE",
+   "released": "2025-11-28",
+   "age": 260,
+   "chase": {
+    "name": "Modernia (019) (SR***)",
+    "price": 453.33,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX05BT: Demon Slayer: Kimetsu no Yaiba Vol.2 Release Event Cards",
+   "released": "2025-12-05",
+   "age": 253,
+   "chase": {
+    "name": "Action Point Card (Release Event Winner)",
+    "price": 7.2,
+    "rarity": "Action Point"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX05BT: Demon Slayer: Kimetsu no Yaiba Vol.2",
+   "released": "2025-12-12",
+   "age": 246,
+   "chase": {
+    "name": "Nezuko Kamado (021) (SR***)",
+    "price": 1323.62,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15BT: Evangelion: New Theatrical Edition Release Event Cards",
+   "released": "2026-01-23",
+   "age": 204,
+   "chase": {
+    "name": "A Hot Bath Lets You Wash Your Life and Begin Anew",
+    "price": 16.77,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX06BT: Sword Art Online Vol.2 Release Event Cards",
+   "released": "2026-01-23",
+   "age": 204,
+   "chase": {
+    "name": "Bath",
+    "price": 13.93,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15BT: Evangelion: New Theatrical Edition",
+   "released": "2026-01-30",
+   "age": 197,
+   "chase": {
+    "name": "Evangelion Test Type-01 Pseudo DMS Phase (SR***)",
+    "price": 403.65,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE15ST: Evangelion: New Theatrical Edition Starter Deck",
+   "released": "2026-01-30",
+   "age": 197,
+   "chase": {
+    "name": "Rei Ayanami (110) (R*)",
+    "price": 11.64,
+    "rarity": "Rare 1-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX06BT: Sword Art Online Vol.2",
+   "released": "2026-01-30",
+   "age": 197,
+   "chase": {
+    "name": "Asuna (042) (SR***)",
+    "price": 1104.33,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE16BT: KAGURABACHI",
+   "released": "2026-02-27",
+   "age": 169,
+   "chase": {
+    "name": "Chihiro Rokuhira (060) (SR**)",
+    "price": 680.92,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE16BT: KAGURABACHI Release Event Cards",
+   "released": "2026-02-27",
+   "age": 169,
+   "chase": {
+    "name": "Chihiro Rokuhira (Release Event Winner)",
+    "price": 115.55,
+    "rarity": "Common"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE17BT: SOLO LEVELING",
+   "released": "2026-03-20",
+   "age": 148,
+   "chase": {
+    "name": "Cha Hae-in (058) (SR**)",
+    "price": 300.04,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE17BT: SOLO LEVELING Release Event Cards",
+   "released": "2026-03-20",
+   "age": 148,
+   "chase": {
+    "name": "Shadow Soldiers (C*)",
+    "price": 217.27,
+    "rarity": "Common 1-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18BT: Tokyo Ghoul Release Event Cards",
+   "released": "2026-04-17",
+   "age": 120,
+   "chase": {
+    "name": "Yoshimura",
+    "price": 9.25,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18BT: Tokyo Ghoul",
+   "released": "2026-04-24",
+   "age": 113,
+   "chase": {
+    "name": "Ken Kaneki (042) (SR**)",
+    "price": 638.07,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE18ST: Tokyo Ghoul Starter Deck",
+   "released": "2026-04-24",
+   "age": 113,
+   "chase": {
+    "name": "Ken Kaneki (112) (R*)",
+    "price": 6.82,
+    "rarity": "Rare 1-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE19BT: SAKAMOTO DAYS Release Event Cards",
+   "released": "2026-05-22",
+   "age": 85,
+   "chase": {
+    "name": "Taro Sakamoto (023)",
+    "price": 9.77,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE19BT: SAKAMOTO DAYS",
+   "released": "2026-05-29",
+   "age": 78,
+   "chase": {
+    "name": "Taro Sakamoto (026) (SR***)",
+    "price": 900.0,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE20BT: That Time I Got Reincarnated as a Slime Release Event Cards",
+   "released": "2026-06-19",
+   "age": 57,
+   "chase": {
+    "name": "Shizu (015)",
+    "price": 8.0,
+    "rarity": "Uncommon"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE20BT: That Time I Got Reincarnated as a Slime",
+   "released": "2026-06-26",
+   "age": 50,
+   "chase": {
+    "name": "Rimuru (044) (SR***)",
+    "price": 899.99,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE21BT: The 100 Girlfriends Who Really, Really, Really, Really, REALLY Love You",
+   "released": "2026-07-10",
+   "age": 36,
+   "chase": {
+    "name": "Shizuka Yoshimoto (067) (SR**)",
+    "price": 449.96,
+    "rarity": "Super Rare 2-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE22BT: CHAINSAW MAN Release Event",
+   "released": "2026-07-24",
+   "age": 22,
+   "chase": {
+    "name": "Reze (Release Event Winner)",
+    "price": 75.76,
+    "rarity": "Common"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE22BT: CHAINSAW MAN",
+   "released": "2026-07-31",
+   "age": 15,
+   "chase": {
+    "name": "Makima (024) (SR***)",
+    "price": 2474.0,
+    "rarity": "Super Rare 3-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE23BT: Inuyasha",
+   "released": "2026-08-14",
+   "age": 1,
+   "chase": {
+    "name": "Kagome Higurashi (066) (SR*) (Box Topper Gold Foil)",
+    "price": 399.99,
+    "rarity": "Super Rare 1-Star"
+   }
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE23BT: Inuyasha Release Event Cards",
+   "released": "2026-08-14",
+   "age": 1,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE24BT: Re:ZERO -Starting Life in Another World-",
+   "released": "2026-09-18",
+   "age": -34,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE24ST: Re:ZERO -Starting Life in Another World- Starter Deck",
+   "released": "2026-09-18",
+   "age": -34,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX07BT: Attack on Titan Vol. 2",
+   "released": "2026-09-18",
+   "age": -34,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UP01BT: GODDESS OF VICTORY: NIKKE Precious Booster",
+   "released": "2026-10-23",
+   "age": -69,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE10DC: Bleach: Thousand Year Blood War Advanced Deck",
+   "released": "2026-11-06",
+   "age": -83,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UEX08BT: BLEACH: Thousand-Year Blood War Vol.3",
+   "released": "2026-11-13",
+   "age": -90,
+   "chase": null
+  },
+  {
+   "game": "Union Arena",
+   "set": "UE26BT: GURREN LAGANN",
+   "released": "2027-01-22",
+   "age": -160,
+   "chase": null
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 01: Heroic Beginnings",
+   "released": "2025-07-11",
+   "age": 400,
+   "chase": {
+    "name": "Gundam (LR+)",
+    "price": 173.19,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 02: Wings of Advance",
+   "released": "2025-07-11",
+   "age": 400,
+   "chase": {
+    "name": "Wing Gundam (LR+)",
+    "price": 147.4,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 03: Zeon's Rush",
+   "released": "2025-07-11",
+   "age": 400,
+   "chase": {
+    "name": "Char's Zaku II (LR+)",
+    "price": 116.85,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 04: SEED Strike",
+   "released": "2025-07-11",
+   "age": 400,
+   "chase": {
+    "name": "Aile Strike Gundam (LR+)",
+    "price": 116.29,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Newtype Rising",
+   "released": "2025-07-25",
+   "age": 386,
+   "chase": {
+    "name": "Gundam (GD01-001) (LR++)",
+    "price": 1850.85,
+    "rarity": "LR++"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 05: Iron Bloom",
+   "released": "2025-09-26",
+   "age": 323,
+   "chase": {
+    "name": "Gundam Barbatos 4th Form (LR+)",
+    "price": 80.53,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Dual Impact",
+   "released": "2025-10-24",
+   "age": 295,
+   "chase": {
+    "name": "Gundam Barbatos 1st Form (LR++)",
+    "price": 970.86,
+    "rarity": "LR++"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 06: Clan Unity",
+   "released": "2025-10-24",
+   "age": 295,
+   "chase": {
+    "name": "GQuuuuuuX (Omega Psycommu) (LR+)",
+    "price": 34.0,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 07: Celestial Drive",
+   "released": "2026-01-16",
+   "age": 211,
+   "chase": {
+    "name": "Gundam Exia (ST07-001) (LR+)",
+    "price": 63.78,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 08: Flash of Radiance",
+   "released": "2026-01-16",
+   "age": 211,
+   "chase": {
+    "name": "Xi Gundam (ST08-001) (LR+)",
+    "price": 41.77,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Steel Requiem",
+   "released": "2026-01-30",
+   "age": 197,
+   "chase": {
+    "name": "GFreD (LR++)",
+    "price": 436.56,
+    "rarity": "LR++"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 09: Destiny Ignition",
+   "released": "2026-03-27",
+   "age": 141,
+   "chase": {
+    "name": "Freedom Gundam (LR+)",
+    "price": 85.92,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Phantom Aria",
+   "released": "2026-04-24",
+   "age": 113,
+   "chase": {
+    "name": "Destiny Gundam (LR++)",
+    "price": 1078.98,
+    "rarity": "LR++"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Eternal Nexus",
+   "released": "2026-06-26",
+   "age": 50,
+   "chase": {
+    "name": "Phoenix Gundam (Power Unleashed) (EX) (LR++)",
+    "price": 1104.51,
+    "rarity": "LR++"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 10: Generation Pulse",
+   "released": "2026-06-26",
+   "age": 50,
+   "chase": {
+    "name": "Zeta Gundam (EX) (LR+)",
+    "price": 34.1,
+    "rarity": "LR+"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Deck Build Box Freedom Ascension",
+   "released": "2026-07-24",
+   "age": 22,
+   "chase": {
+    "name": "Gundam",
+    "price": 6.04,
+    "rarity": "Legend Rare"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Freedom Ascension",
+   "released": "2026-07-24",
+   "age": 22,
+   "chase": {
+    "name": "Wing Gundam Zero (EW) (LR++)",
+    "price": 3687.46,
+    "rarity": "LR++"
+   }
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 11: Aquatic Assault",
+   "released": "2026-09-25",
+   "age": -41,
+   "chase": null
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 12: Raging Onslaught",
+   "released": "2026-09-25",
+   "age": -41,
+   "chase": null
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 13: Silent Barrage",
+   "released": "2026-09-25",
+   "age": -41,
+   "chase": null
+  },
+  {
+   "game": "Gundam",
+   "set": "Starter Deck 14: Heavy Dominion",
+   "released": "2026-09-25",
+   "age": -41,
+   "chase": null
+  },
+  {
+   "game": "Gundam",
+   "set": "Stardust Trails",
+   "released": "2026-10-30",
+   "age": -76,
+   "chase": null
+  },
+  {
+   "game": "Riftbound",
+   "set": "Secret Garden",
+   "released": "2025-07-30",
+   "age": 381,
+   "chase": {
+    "name": "Ultrasoft Poro",
+    "price": 93.33,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Riftbound Worlds Bundle 2025",
+   "released": "2025-10-28",
+   "age": 291,
+   "chase": null
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Kai'Sa, Daughter of the Void (Signature)",
+    "price": 3085.16,
+    "rarity": "Showcase"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Origins: Proving Grounds",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Master Yi, Wuju Bladesman (Starter)",
+    "price": 18.51,
+    "rarity": "Rare"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Riftbound Organized Play Promotional Cards",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Teemo, Swift Scout (Metal) (Prize Wall)",
+    "price": 4800.0,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Riftbound Promotional Cards",
+   "released": "2025-10-31",
+   "age": 288,
+   "chase": {
+    "name": "Teemo, Swift Scout (Alternate Art)",
+    "price": 685.25,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Riftbound Judge Promotional Cards",
+   "released": "2025-12-01",
+   "age": 257,
+   "chase": {
+    "name": "Heimerdinger, Inventor",
+    "price": 366.4,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Spiritforged",
+   "released": "2026-02-13",
+   "age": 183,
+   "chase": {
+    "name": "Ahri, Inquisitive (Signature)",
+    "price": 3249.05,
+    "rarity": "Showcase"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Unleashed",
+   "released": "2026-05-08",
+   "age": 99,
+   "chase": {
+    "name": "Baron Nashor (Ultimate)",
+    "price": 1634.89,
+    "rarity": "Showcase"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Vendetta",
+   "released": "2026-07-31",
+   "age": 15,
+   "chase": {
+    "name": "Akali, Rogue Assassin (Signature)",
+    "price": 2831.55,
+    "rarity": "Showcase"
+   }
+  },
+  {
+   "game": "Riftbound",
+   "set": "Radiance",
+   "released": "2026-10-23",
+   "age": -69,
    "chase": null
   }
  ]

@@ -534,26 +534,26 @@ BODY = f'''<title>Card Run HQ</title>
    <b>Shelf</b> is the verified MSRP &middot; <b>Worth</b> is the TCGplayer market price &middot;
    <b>Multiple</b> is worth &divide; shelf, which is the upcharge. <a href="#src">Full sources &rarr;</a></p>
  </section>
- <section><h2>Grab it &mdash; 2&times; and up <span class="hint">{len(_grab)} on shelves</span></h2>
+ <details class="fold tierfold" open><summary>Grab it &mdash; 2&times; and up &nbsp;<span class="cnt">{len(_grab)}</span></summary>
   <p class="hint">If you see any of these at the shelf price, take it. Every one clears fees comfortably.</p>
   {tier_grab}
- </section>
+ </details>
 
- <section><h2>Worth a look &mdash; 1.5&times; to 2&times; <span class="hint">{len(_look)} on shelves</span></h2>
+ <details class="fold tierfold"><summary>Worth a look &mdash; 1.5&times; to 2&times; &nbsp;<span class="cnt">{len(_look)}</span></summary>
   <p class="hint">Real margin, but not enough to fight over. Buy if it&rsquo;s in front of you and priced right.</p>
   {tier_look}
- </section>
+ </details>
 
- <section><h2>Why these are still sitting there <span class="hint">{len(_skip)} below 1.5&times;</span></h2>
+ <details class="fold tierfold"><summary>Why these are still sitting there &nbsp;<span class="cnt">{len(_skip)}</span></summary>
   <p class="hint">The stock nobody clears. Useful to recognise so you stop picking it up &mdash; each one says what&rsquo;s wrong with it.</p>
   {tier_skip}
- </section>
+ </details>
 
- <section><h2>Magic &mdash; market price only <span class="hint">{len(_nomsrp)} products</span></h2>
-  <div class="note warn"><b>Magic has no MSRP to compare against.</b> Wizards of the Coast stopped publishing one &mdash; retailers set their own price, so there is no sticker to divide by and no honest upcharge to show. Checked again 15 Aug 2026.
-  <br><br>So these show the <b>TCGplayer market price</b> instead. Compare it to whatever the shelf tag says in front of you: <b>if the tag is under the market price, that is your margin.</b> The one exception is <b>Draft Night</b>, which does carry a published $119.99 list price and so appears in the tiers above.</div>
+ <details class="fold tierfold"><summary>No published MSRP &mdash; market price only &nbsp;<span class="cnt">{len(_nomsrp)}</span></summary>
+  <div class="note warn"><b>Most games outside Pok&eacute;mon, One Piece and Lorcana have no MSRP to compare against.</b> Wizards stopped publishing one for Magic, and the smaller publishers never did &mdash; retailers set their own price, so there is no sticker to divide by and no honest upcharge to show.
+  <br><br>So these show the <b>TCGplayer market price</b> instead. Compare it to the tag in front of you: <b>if the tag is under the market price, that is your margin.</b></div>
   {tier_nomsrp}
- </section>
+ </details>
 
  <section><h2>Tracked but not priced</h2>
   <div class="note warn"><b>Sports cards have no free price feed anywhere &mdash; I checked again on 15 Aug 2026.</b> TCGplayer is trading-card-games only, so there is no Topps or Panini category to read, and every sports-specific API (SportsCardsPro CSV, Card Hedger, Zyla, Ximilar) is a paid subscription. <b>Palworld</b> has no TCGplayer listing either.
@@ -562,9 +562,9 @@ BODY = f'''<title>Card Run HQ</title>
    <th>Buy at MSRP</th><th>What it sells for</th></tr></thead>
    <tbody id="unpriced"></tbody></table></div>
  </section>
- <section>
+ <section class="searchfirst">
   <h2>Search everything &mdash; {len(rows)} products</h2>
-  <div class="tools">
+  <div class="tools sticky">
    <input id="q" type="search" placeholder="Type what&rsquo;s on the shelf &mdash; prismatic, umbreon, fabled" autocomplete="off">
    <button class="chipbtn" id="f-store" aria-pressed="true">In stores only</button>
    <button class="chipbtn" id="f-buy" aria-pressed="false">2&times; and up</button>
