@@ -1,28 +1,98 @@
-/* ---------------- tabs ---------------- */
-const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+/* ---------------- sidebar nav ---------------- */
+const tabs    = Array.from(document.querySelectorAll('[role="tab"]'));
+const sideEl  = document.getElementById('sidebar');
+const scrimEl = document.getElementById('scrim');
+const titleEl = document.getElementById('barTitle');
+
+function closeNav(){
+  if(!sideEl) return;
+  sideEl.classList.remove('open');
+  if(scrimEl) scrimEl.classList.remove('on');
+}
+function openNav(){
+  if(!sideEl) return;
+  sideEl.classList.add('open');
+  if(scrimEl) scrimEl.classList.add('on');
+}
 function show(id){
   tabs.forEach(t => {
     const on = t.id === id;
     t.setAttribute('aria-selected', on ? 'true' : 'false');
-    document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    const panel = document.getElementById(t.getAttribute('aria-controls'));
+    if(panel) panel.hidden = !on;
+    if(on && titleEl) titleEl.textContent = t.dataset.title || t.textContent.trim();
   });
   try { history.replaceState(null, '', '#' + id.slice(2)); } catch(e){}
+  closeNav();
+  window.scrollTo(0, 0);
 }
 tabs.forEach(t => t.addEventListener('click', () => show(t.id)));
-document.querySelector('[role="tablist"]').addEventListener('keydown', e => {
+const listEl = document.querySelector('[role="tablist"]');
+if(listEl) listEl.addEventListener('keydown', e => {
   const i = tabs.indexOf(document.activeElement);
   if (i < 0) return;
   let n = null;
-  if (e.key === 'ArrowRight') n = (i + 1) % tabs.length;
-  if (e.key === 'ArrowLeft')  n = (i - 1 + tabs.length) % tabs.length;
+  if (e.key === 'ArrowDown'  || e.key === 'ArrowRight') n = (i + 1) % tabs.length;
+  if (e.key === 'ArrowUp'    || e.key === 'ArrowLeft')  n = (i - 1 + tabs.length) % tabs.length;
+  if (e.key === 'Home') n = 0;
+  if (e.key === 'End')  n = tabs.length - 1;
   if (n === null) return;
   e.preventDefault(); tabs[n].focus(); show(tabs[n].id);
 });
-const start = (location.hash || '').slice(1);
-if (start && document.getElementById('t-' + start)) show('t-' + start);
+const menuBtn = document.getElementById('menuBtn');
+if(menuBtn) menuBtn.addEventListener('click', () =>
+  sideEl.classList.contains('open') ? closeNav() : openNav());
+if(scrimEl) scrimEl.addEventListener('click', closeNav);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeNav(); });
+
+/* price-age chips are on several tabs; stamp them once the DOM exists */
+setTimeout(() => { try { stampPriceAge(); } catch(e){} }, 0);
+
+function showFromHash(fallback){
+  const h = (location.hash || '').slice(1);
+  const id = document.getElementById('t-' + h) ? 't-' + h : fallback;
+  if (id) show(id);
+}
+/* respond to hash changes too, not just first load - the runbook documents
+   bookmarking straight to a section, and that must work from any tab */
+window.addEventListener('hashchange', () => showFromHash(null));
+showFromHash(tabs[0].id);
 
 const esc = s => (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const money = n => '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+
+/* ---------------- where to buy it at MSRP ----------------
+   Deep links into each retailer's own search. No API, no key, nothing to
+   break -- and no live stock, because none of these publish it (Target 403s
+   scripts outright). One tap each instead of one tap plus typing.        */
+const RETAILERS = [
+  {k:'Target',   s:'T',  u:q => 'https://www.target.com/s?searchTerm=' + q},
+  {k:'Walmart',  s:'W',  u:q => 'https://www.walmart.com/search?q=' + q},
+  {k:'Best Buy', s:'BB', u:q => 'https://www.bestbuy.com/site/searchpage.jsp?st=' + q},
+  {k:'GameStop', s:'GS', u:q => 'https://www.gamestop.com/search/?q=' + q},
+  {k:'Pokemon Center', s:'PC', pokemonOnly:true,
+   u:q => 'https://www.pokemoncenter.com/search/' + q},
+  {k:'TCGplayer', s:'TP', u:q => 'https://www.tcgplayer.com/search/all/product?q=' + q},
+];
+
+/* retailers list the product, not the set - drop set prefixes and punctuation */
+function buyQuery(product, game){
+  const t = (product || '')
+    .replace(/\[[^\]]*\]/g, ' ')
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/[^\w\s&']/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+  return encodeURIComponent(((game || '') + ' ' + t).trim());
+}
+
+function buyLinks(product, game){
+  const q = buyQuery(product, game);
+  const pk = /pok/i.test(game || '');
+  return '<span class="buys">' + RETAILERS
+    .filter(r => !r.pokemonOnly || pk)
+    .map(r => '<a class="buylink" href="' + r.u(q) + '" target="_blank" rel="noopener nofollow" ' +
+              'title="Search ' + r.k + '">' + r.s + '</a>').join('') + '</span>';
+}
 
 /* ---------------- shelf search ---------------- */
 const ROWS = __ROWS__;
@@ -49,6 +119,7 @@ function renderShelf(){
       +'<td><span class="wtag w-'+r.w+'">'+r.w+'</span></td>'
       +'<td class="num mono">'+money(r.r)+'</td><td class="num mono">'+money(r.m)+'</td>'
       +'<td class="num mono xcell '+cls+'">'+r.x.toFixed(2)+'&times;</td>'
+      +'<td>'+buyLinks(r.p, r.g)+'</td>'
       +'<td class="chasecell mono">'+ch+'</td></tr>';
   }).join('');
 }
@@ -120,3 +191,631 @@ radBtns.forEach(b=>b.addEventListener('click',()=>{
   renderMap();
 }));
 renderMap();
+
+/* ---------------- sell: pricing + fee engine ----------------
+   Mirrors SPEC.md 7.6 exactly. Change one, change the other.   */
+const TIERS = [
+  {max:2.00,  pct:130, note:'fees dominate &mdash; ask high or lot it'},
+  {max:5.00,  pct:115, note:''},
+  {max:20.00, pct:105, note:''},
+  {max:100.00,pct:98,  note:''},
+  {max:null,  pct:92,  note:'move value fast'}
+];
+const COND = {NM:1.00, LP:0.85, MP:0.70, HP:0.55, DMG:0.35};
+const CONDNAME = {NM:'Near Mint', LP:'Lightly Played', MP:'Moderately Played',
+                  HP:'Heavily Played', DMG:'Damaged'};
+const MARGIN_GUARD = 1.15;   /* never list below cost x 1.15 */
+const FLOOR_NET    = 0.50;   /* below this net, route to a bulk lot */
+const STORES_TIER  = {
+  none : {fvf:0.1325, allow:250,  sub:0},
+  basic: {fvf:0.1235, allow:1000, sub:27.95}
+};
+
+/* 4.37 -> 4.49, 12.10 -> 11.99 */
+function psych99(x){
+  let v = Math.round(x*2)/2 - 0.01;
+  return v < 0.49 ? 0.49 : v;
+}
+function tierFor(market){
+  for(const t of TIERS){ if(t.max === null || market < t.max) return t; }
+  return TIERS[TIERS.length-1];
+}
+function priceCard(o){
+  const tier  = tierFor(o.market);
+  const base  = o.market * tier.pct / 100;
+  const adj   = base * (COND[o.cond] !== undefined ? COND[o.cond] : 1);
+  const guard = Math.max(adj, o.cost * MARGIN_GUARD);
+  const ask   = psych99(guard);
+  const gross = ask + o.ship;
+  const fvf   = gross * o.fvf;
+  const order = gross <= 10 ? 0.30 : 0.40;
+  const post  = ask < 20 ? o.ese : o.parcel;
+  const ins   = o.vol > o.allow ? 0.35 : 0;
+  const net   = gross - fvf - order - post - ins - o.cost;
+  return {tier, base, adj, guard, ask, gross, fvf, order, post, ins, net,
+          guarded: guard > adj + 1e-9};
+}
+
+const calcEls = ['c-market','c-cond','c-cost','c-ship','c-store','c-vol']
+                  .map(id => document.getElementById(id));
+if (calcEls.every(Boolean)) {
+  const [mkI, cdI, coI, shI, stI, vlI] = calcEls;
+  const num = (el, dflt) => { const v = parseFloat(el.value); return isFinite(v) && v >= 0 ? v : dflt; };
+
+  function renderCalc(){
+    const st = STORES_TIER[stI.value] || STORES_TIER.none;
+    const r  = priceCard({
+      market: num(mkI, 0), cond: cdI.value, cost: num(coI, 0),
+      ship:   num(shI, 0), vol: num(vlI, 0),
+      fvf: st.fvf, allow: st.allow, ese: 0.85, parcel: 4.50
+    });
+    const m = n => '$' + n.toFixed(2);
+    document.getElementById('o-ask').textContent = m(r.ask);
+    document.getElementById('o-fees').textContent = m(r.fvf + r.order + r.ins);
+    const netEl = document.getElementById('o-net');
+    netEl.textContent = m(r.net);
+    netEl.style.color = r.net >= FLOOR_NET ? 'var(--buy)' : (r.net > 0 ? 'var(--watch)' : 'var(--skip)');
+    document.getElementById('o-tier').textContent = r.tier.pct + '%';
+
+    const v = document.getElementById('o-verdict');
+    if (r.net >= FLOOR_NET){
+      v.className = 'verdict v-list';
+      v.innerHTML = '<b>List it individually</b>Nets ' + m(r.net) +
+        ', clearing the ' + m(FLOOR_NET) + ' floor.';
+    } else if (r.net > 0){
+      v.className = 'verdict v-lot';
+      v.innerHTML = '<b>Send it to a bulk lot</b>Only nets ' + m(r.net) +
+        ' &mdash; under the ' + m(FLOOR_NET) + ' floor. Technically positive, but not worth the handling.';
+    } else {
+      v.className = 'verdict v-bad';
+      v.innerHTML = '<b>Bulk lot &mdash; this one loses money</b>Nets ' + m(r.net) +
+        '. Listing it individually costs you more than it returns.';
+    }
+
+    const ln = (k, val, neg) => '<div class="ln' + (neg ? ' neg' : '') + '"><span>' + k +
+                                '</span><span>' + (neg ? '&minus;' : '') + m(Math.abs(val)) + '</span></div>';
+    let rows = '';
+    rows += ln('Market price (Near Mint)', num(mkI,0));
+    rows += ln('&times; tier ' + r.tier.pct + '%', r.base);
+    rows += ln('&times; ' + (CONDNAME[cdI.value]||cdI.value) + ' ' + COND[cdI.value].toFixed(2) + '&times;', r.adj);
+    if (r.guarded) rows += ln('&uarr; margin guard (cost &times; 1.15)', r.guard);
+    rows += ln('Ask, rounded to .99', r.ask);
+    rows += ln('+ buyer-paid shipping', num(shI,0));
+    rows += ln('Final value fee', r.fvf, true);
+    rows += ln('Per-order fee', r.order, true);
+    rows += ln('Postage (' + (r.ask < 20 ? 'eBay Standard Envelope' : 'parcel') + ')', r.post, true);
+    rows += ln(r.ins ? 'Insertion fee (past your free ' + STORES_TIER[stI.value].allow + ')'
+                     : 'Insertion fee (within free allowance)', r.ins, r.ins > 0);
+    rows += ln('Your cost basis', num(coI,0), true);
+    rows += ln('Net in your pocket', r.net);
+    document.getElementById('o-brk').innerHTML = rows;
+  }
+  calcEls.forEach(el => { el.addEventListener('input', renderCalc); el.addEventListener('change', renderCalc); });
+  renderCalc();
+
+  /* tier table rendered from the same constants, so they cannot drift */
+  const tb2 = document.getElementById('tierbody');
+  if (tb2) tb2.innerHTML = TIERS.map((t,i) => {
+    /* tiers are exclusive of their max, so show the real top of each band */
+    const lo = (i === 0 ? 0 : TIERS[i-1].max).toFixed(2);
+    const band = t.max === null ? '$' + lo + ' and up'
+                                : '$' + lo + ' &ndash; $' + (t.max - 0.01).toFixed(2);
+    return '<tr><td class="mono">' + band + '</td><td class="num mono"><b>' + t.pct +
+           '%</b></td><td>' + (t.note || '&mdash;') + '</td></tr>';
+  }).join('');
+  const cb = document.getElementById('condbody');
+  if (cb) cb.innerHTML = Object.keys(COND).map(k =>
+    '<tr><td><b>' + k + '</b> &middot; ' + CONDNAME[k] + '</td><td class="num mono">' +
+    COND[k].toFixed(2) + '&times;</td></tr>').join('');
+}
+
+/* ---------------- sell: which channel ----------------
+   TCGplayer verified 2026: 10.75% commission (L1-L4, up from 10.25% on
+   10 Feb 2026) + 2.5% + $0.30 transaction fee, charged PER ORDER.
+   The per-order part is the whole story - see SPEC.md 2.               */
+const TCG = {commission:0.1075, txnPct:0.025, txnFlat:0.30};
+
+function tcgNet(o){
+  const commission = o.ask * TCG.commission;
+  const txnPct     = o.ask * TCG.txnPct;
+  const txnFlat    = TCG.txnFlat / o.orderSize;   /* amortised across the order */
+  const ship       = o.shipPerOrder / o.orderSize;
+  return {commission, txnPct, txnFlat, ship,
+          net: o.ask - commission - txnPct - txnFlat - ship - o.cost};
+}
+
+/* eBay with shipping passed through to the buyer at cost, which is what a real
+   seller does. A flat buyer-paid $1 would unfairly penalise eBay on a $100 card
+   that actually ships as a $4.50 parcel.
+   Top level so the channel tab and the card desk share one implementation. */
+function ebaySide(market, cond, cost, vol){
+  const st = STORES_TIER.none;
+  const r = priceCard({market, cond, cost, ship: 0, vol,
+                       fvf: st.fvf, allow: st.allow, ese: 0.85, parcel: 4.50});
+  const gross = r.ask + r.post;
+  const fvf   = gross * st.fvf;
+  const order = gross <= 10 ? 0.30 : 0.40;
+  const net   = gross - fvf - order - r.post - r.ins - cost;
+  return {...r, gross, fvf, order, net};
+}
+
+/* one card -> the better channel and its net */
+function routeCard(market, cond, cost, vol, orderSize, shipPerOrder){
+  const e = ebaySide(market, cond, cost, vol);
+  const t = tcgNet({ask: e.ask, cost, orderSize, shipPerOrder});
+  const best = Math.max(e.net, t.net);
+  const decision = best < FLOOR_NET ? 'lot' : (t.net >= e.net ? 'tcgplayer' : 'ebay');
+  return {ask: e.ask, tier: e.tier, ebay: e, tcg: t, best, decision};
+}
+
+const chEls = ['h-market','h-cond','h-cost','h-order','h-ship','h-vol']
+                .map(id => document.getElementById(id));
+if (chEls.every(Boolean)) {
+  const [mk, cd, co, or_, sh, vl] = chEls;
+  const n = (el, d) => { const v = parseFloat(el.value); return isFinite(v) && v >= 0 ? v : d; };
+  /* negatives read as -$0.01, never $-0.01 */
+  const m = x => (x < 0 ? '-$' : '$') + Math.abs(x).toFixed(2);
+
+  function renderChannels(){
+    const market = n(mk, 0), cost = n(co, 0);
+    const orderSize = Math.max(1, Math.round(n(or_, 1))), shipPerOrder = n(sh, 1.00), vol = n(vl, 0);
+
+    /* same ask on both sides - identical rule, identical market price.
+       any difference in net is purely the fee structures.                */
+    const e = ebaySide(market, cd.value, cost, vol);
+    const t = tcgNet({ask: e.ask, cost, orderSize, shipPerOrder});
+
+    document.getElementById('h-ask').textContent = m(e.ask);
+    document.getElementById('h-tier').textContent = e.tier.pct + '%';
+
+    const paint = (pfx, net, lines, win) => {
+      const box = document.getElementById(pfx + '-box');
+      box.className = 'chan' + (win ? ' win' : '');
+      box.querySelector('.big').textContent = m(net);
+      box.querySelector('.big').style.color = net >= FLOOR_NET ? 'var(--buy)'
+                                            : (net > 0 ? 'var(--watch)' : 'var(--skip)');
+      const badge = box.querySelector('.badge');
+      badge.textContent = win ? 'Best net' : '';
+      badge.style.display = win ? '' : 'none';   /* an empty badge still draws a pill */
+      box.querySelector('.lines').innerHTML = lines.map(l =>
+        '<div class="li' + (l[2] ? ' tot' : '') + '"><span>' + l[0] +
+        '</span><span>' + l[1] + '</span></div>').join('');
+    };
+
+    const eWin = e.net >= t.net;
+    paint('e', e.net, [
+      ['Ask + ' + m(e.post) + ' shipping, buyer pays', m(e.gross)],
+      ['Final value fee 13.25%', '&minus;' + m(e.fvf)],
+      ['Order fee &mdash; this card IS the order', '&minus;' + m(e.order)],
+      ['Postage', '&minus;' + m(e.post)],
+      ['Insertion', e.ins ? '&minus;' + m(e.ins) : m(0)],
+      ['Cost basis', '&minus;' + m(cost)],
+      ['Net', m(e.net), true]
+    ], eWin);
+    paint('t', t.net, [
+      ['Ask', m(e.ask)],
+      ['Commission 10.75%', '&minus;' + m(t.commission)],
+      ['Transaction 2.5%', '&minus;' + m(t.txnPct)],
+      ['$0.30 order fee &divide; ' + orderSize, '&minus;' + m(t.txnFlat)],
+      ['Postage &divide; ' + orderSize, '&minus;' + m(t.ship)],
+      ['Cost basis', '&minus;' + m(cost)],
+      ['Net', m(t.net), true]
+    ], !eWin);
+
+    const best = Math.max(e.net, t.net);
+    const v = document.getElementById('h-verdict');
+    const diff = Math.abs(e.net - t.net);
+    if (best < FLOOR_NET){
+      v.className = 'verdict v-lot';
+      v.innerHTML = '<b>Bulk lot &mdash; neither channel clears the floor</b>Best is ' +
+        m(best) + ', under ' + m(FLOOR_NET) + '. This is the card the lot builder exists for.';
+    } else if (eWin){
+      v.className = 'verdict v-list';
+      v.innerHTML = '<b>List it on eBay</b>Nets ' + m(e.net) + ', which is ' + m(diff) +
+        ' better than TCGplayer at an order size of ' + orderSize + '.';
+    } else {
+      v.className = 'verdict v-list';
+      v.innerHTML = '<b>List it on TCGplayer</b>Nets ' + m(t.net) + ', which is ' + m(diff) +
+        ' better than eBay &mdash; because the fixed fees split across ' + orderSize + ' cards instead of landing on one.';
+    }
+
+    /* The useful question is not "at what price" but "at what basket size".
+       Order size is the variable that actually moves, so scan that.        */
+    let flip = null;
+    for (let k = 1; k <= 40; k++){
+      if (tcgNet({ask: e.ask, cost, orderSize: k, shipPerOrder}).net >= e.net){ flip = k; break; }
+    }
+    const cross = document.getElementById('h-cross');
+    if (flip === null){
+      cross.className = 'note warn';
+      cross.innerHTML = '<b>eBay wins at any realistic basket size for this card.</b> Even a 40-card ' +
+        'TCGplayer order does not catch it &mdash; send this one to eBay.';
+    } else if (flip === 1){
+      cross.className = 'note';
+      cross.innerHTML = '<b>TCGplayer wins even on a single-card order.</b> There is no basket size ' +
+        'at which eBay is the better net for this card.';
+    } else {
+      cross.className = 'note';
+      cross.innerHTML = 'TCGplayer overtakes eBay once an order carries <b>' + flip + ' cards or more</b>. ' +
+        'Below that, eBay nets more. Your typical basket is the number that decides it &mdash; ' +
+        'reconciliation will replace this guess with your real average.';
+    }
+  }
+  chEls.forEach(el => { el.addEventListener('input', renderChannels); el.addEventListener('change', renderChannels); });
+  renderChannels();
+}
+
+/* ================= CARD DESK =================
+   One screen. Search a card by name, tap it, done. No set codes to look up,
+   no modifiers to learn, no staging step. Shorthand still works for anyone
+   who knows it, but nothing requires it.
+   Stock lives in this browser; the real app is local (see RUNBOOK.md).   */
+const CATALOG = __CARDS__;
+const BUILT = __BUILT__;
+const CD_KEY = 'carddesk.v1';
+
+/* How old is this snapshot? Every price on the page is frozen at build time --
+   a published page is blocked from reaching tcgcsv.com, so it cannot refresh
+   itself. Say so rather than let a stale number look live. */
+function priceAgeDays(){
+  const d = Math.floor((Date.now() - Date.parse(BUILT + 'T00:00:00')) / 86400000);
+  return isFinite(d) && d >= 0 ? d : 0;
+}
+function stampPriceAge(){
+  const days = priceAgeDays();
+  const label = days === 0 ? 'today' : days === 1 ? 'yesterday' : days + ' days ago';
+  const cls = days <= 2 ? 'fresh' : days <= 7 ? 'aging' : 'stale';
+  document.querySelectorAll('[data-priceage]').forEach(el => {
+    el.className = 'agechip ' + cls;
+    el.innerHTML = '<b>TCGplayer</b> prices, pulled ' + label;
+  });
+  document.querySelectorAll('[data-agedays]').forEach(el => { el.textContent = days; });
+}
+
+/* remote images are blocked by the published page's CSP -- they work in the
+   local preview and simply vanish online, rather than leaving broken icons */
+function imgFallback(){
+  document.querySelectorAll('img[data-thumb]').forEach(im => {
+    if (im.dataset.wired) return;
+    im.dataset.wired = '1';
+    im.addEventListener('error', () => { im.closest('.thumbwrap')?.classList.add('nothumb'); });
+  });
+}
+const CD_CONDS = ['NM', 'LP', 'MP', 'HP', 'DMG'];
+const CD_CONDNAME = {NM:'Near Mint', LP:'Lightly Played', MP:'Moderately Played',
+                     HP:'Heavily Played', DMG:'Damaged'};
+const CD_PRINT = {f:'Holofoil', foil:'Holofoil', holo:'Holofoil', h:'Holofoil',
+                  rh:'Reverse Holofoil', rev:'Reverse Holofoil',
+                  n:'Normal', normal:'Normal'};
+const CD_COND_TOK = {nm:'NM', m:'NM', mint:'NM', lp:'LP', mp:'MP', hp:'HP',
+                     dmg:'DMG', d:'DMG', poor:'DMG'};
+
+/* Thumbnails ride inside the page as data URIs -- the published page's CSP
+   blocks remote images, so a CDN URL would silently show nothing. A handful of
+   products have no image on the CDN at all; those return null and the slot is
+   dropped rather than left as a broken box. */
+const THUMBS = __THUMBS__;
+const cdSetOf = c => CATALOG.sets[c.s] || {n:'', a:'', g:''};
+const cdThumb = c => THUMBS[c.i] || null;
+const cdM = n => '$' + n.toFixed(2);
+
+/* ---- search: a name, or the old shorthand, in one box ---- */
+function cdShorthand(q){
+  const toks = q.trim().split(/\s+/).filter(Boolean);
+  if (toks.length < 2) return null;
+  const out = {set:toks[0], number:null, printing:null, condition:'NM', qty:1};
+  let sawNumber = false;
+  for (const tok of toks.slice(1)){
+    const low = tok.toLowerCase();
+    if (low[0] === '*' && CD_PRINT[low.slice(1)]){ out.printing = CD_PRINT[low.slice(1)]; continue; }
+    let m = low.match(/^(?:x(\d{1,4})|(\d{1,4})x)$/);
+    if (m){ out.qty = +(m[1] || m[2]); continue; }
+    if (CD_COND_TOK[low]){ out.condition = CD_COND_TOK[low]; continue; }
+    if (!sawNumber && /^\d{1,4}(\/\d{1,4})?[a-z]?$/.test(low)){ out.number = tok; sawNumber = true; continue; }
+  }
+  return out.number ? out : null;
+}
+
+function cdVariants(n){
+  const head = String(n).split('/')[0];
+  return [...new Set([String(n), head, head.replace(/^0+/, '') || '0', head.padStart(3,'0')])];
+}
+
+function cdSearch(q){
+  q = (q || '').trim();
+  if (q.length < 2) return {mode:'idle', hits:[]};
+
+  const sh = cdShorthand(q);
+  if (sh){
+    const code = sh.set.toLowerCase();
+    const hits = [];
+    CATALOG.cards.forEach((c, i) => {
+      const s = cdSetOf(c);
+      if ((s.a || '').toLowerCase() !== code && !s.n.toLowerCase().startsWith(code)) return;
+      const num = c['#'] || '';
+      const want = cdVariants(sh.number);
+      if (want.includes(num) || want.includes(num.split('/')[0])) hits.push(i);
+    });
+    if (hits.length) return {mode:'code', hits, pre: sh};
+    return {mode:'code-miss', hits:[], pre: sh};
+  }
+
+  const t = q.toLowerCase();
+  const starts = [], contains = [];
+  for (let i = 0; i < CATALOG.cards.length; i++){
+    const n = CATALOG.cards[i].n.toLowerCase();
+    const at = n.indexOf(t);
+    if (at === 0) starts.push(i);
+    else if (at > 0) contains.push(i);
+    if (starts.length + contains.length > 400) break;
+  }
+  return {mode:'name', hits: starts.concat(contains).slice(0, 40),
+          more: Math.max(0, starts.length + contains.length - 40)};
+}
+
+/* ---- storage ---- */
+let CD_STOCK = [];
+let CD_PERSISTS = false;
+
+function cdLoad(){
+  try {
+    const raw = localStorage.getItem(CD_KEY);
+    CD_PERSISTS = true;
+    CD_STOCK = raw ? (JSON.parse(raw).cards || []) : [];
+  } catch(e){ CD_PERSISTS = false; CD_STOCK = []; }
+}
+function cdSave(){
+  if (!CD_PERSISTS) return;
+  try { localStorage.setItem(CD_KEY, JSON.stringify({cards: CD_STOCK, at: Date.now()})); }
+  catch(e){ CD_PERSISTS = false; cdStatus(); }
+}
+function cdStatus(){
+  const el = document.getElementById('cd-status');
+  if (!el) return;
+  el.className = 'note' + (CD_PERSISTS ? '' : ' warn');
+  el.innerHTML = CD_PERSISTS
+    ? 'Stock is saved in this browser and will still be here next time. It is <b>separate from the desktop app</b> \u2014 export the CSV to move it across.'
+    : '<b>This browser is blocking storage.</b> Anything you add here disappears when the tab closes \u2014 export before you go.';
+}
+
+/* ---- pricing, using the settings on "Where to sell it" ---- */
+function cdSettings(){
+  const g = (id, d) => { const el = document.getElementById(id);
+    const v = el ? parseFloat(el.value) : NaN; return isFinite(v) && v >= 0 ? v : d; };
+  return {vol: g('h-vol', 300), orderSize: Math.max(1, Math.round(g('h-order', 12))),
+          ship: g('h-ship', 1.00)};
+}
+function cdPrice(market, cond){
+  const s = cdSettings();
+  return routeCard(market, cond, 0, s.vol, s.orderSize, s.ship);
+}
+const cdBadge = d => d === 'tcgplayer' ? '<span class="pill buy">TCGplayer</span>'
+                   : d === 'ebay'      ? '<span class="pill flag">eBay</span>'
+                                       : '<span class="pill watch">Bulk lot</span>';
+
+/* ---- results ---- */
+function cdRenderResults(){
+  const box = document.getElementById('cd-results');
+  const note = document.getElementById('cd-resnote');
+  if (!box) return;
+  const q = document.getElementById('cd-q').value;
+  const r = cdSearch(q);
+
+  if (r.mode === 'idle'){
+    box.innerHTML = '';
+    note.innerHTML = 'Start typing a card name \u2014 <b>umbreon</b>, <b>charizard</b>, <b>pikachu</b>.';
+    return;
+  }
+  if (!r.hits.length){
+    box.innerHTML = '';
+    note.innerHTML = r.mode === 'code-miss'
+      ? 'No card <b>#' + esc(r.pre.number) + '</b> in a set called <b>' + esc(r.pre.set) + '</b>. Try the card\u2019s name instead.'
+      : 'Nothing matches <b>' + esc(q.trim()) + '</b>. Only the ' +
+        CATALOG.sets.length + ' sets listed below are built into this page.';
+    return;
+  }
+
+  note.innerHTML = r.mode === 'code'
+    ? 'Matched by set and number. Tap a price to add it.'
+    : r.hits.length + ' match' + (r.hits.length === 1 ? '' : 'es') +
+      (r.more ? ' (showing the first 40 \u2014 keep typing to narrow it)' : '') +
+      ' \u2014 tap a price to add it.';
+
+  box.innerHTML = r.hits.map(i => {
+    const c = CATALOG.cards[i], s = cdSetOf(c);
+    const chips = Object.keys(c.p).map(pr =>
+      '<button class="printchip" data-add="' + i + '" data-pr="' + esc(pr) + '">' +
+        '<span class="pn">' + esc(pr.replace('Reverse Holofoil','Reverse').replace('Holofoil','Foil')) +
+        '</span><span class="pp">' + cdM(c.p[pr]) + '</span></button>').join('');
+    const th = cdThumb(c);
+    return '<div class="hit">' +
+      (th ? '<span class="thumbwrap"><img loading="lazy" data-thumb src="' + th + '" alt=""></span>'
+          : '<span class="thumbwrap noart" aria-hidden="true">?</span>') +
+      '<div class="hitmain"><div class="hitname">' + esc(c.n) + '</div>' +
+      '<div class="hitmeta">' + esc(s.n) + ' \u00b7 #' + esc(c['#']) +
+        (c.r ? ' \u00b7 ' + esc(c.r) : '') + '</div>' +
+      '<div class="chips">' + chips + '</div></div></div>';
+  }).join('');
+
+  box.querySelectorAll('[data-add]').forEach(b => b.addEventListener('click', () => {
+    cdAdd(+b.dataset.add, b.dataset.pr, r.pre);
+  }));
+  imgFallback();
+}
+
+/* ---- add / edit stock ---- */
+function cdAdd(idx, printing, pre){
+  const cond = (pre && pre.condition) || 'NM';
+  const qty  = (pre && pre.qty) || 1;
+  const hit = CD_STOCK.find(e => e.i === idx && e.pr === printing && e.c === cond);
+  if (hit) hit.q += qty;
+  else CD_STOCK.unshift({i: idx, pr: printing, c: cond, q: qty});
+  cdSave(); cdRenderStock();
+
+  const c = CATALOG.cards[idx];
+  const msg = document.getElementById('cd-added');
+  msg.textContent = (hit ? 'Another ' : 'Added ') + c.n + (qty > 1 ? ' x' + qty : '');
+  msg.classList.add('show');
+  clearTimeout(cdAdd._t);
+  cdAdd._t = setTimeout(() => msg.classList.remove('show'), 2200);
+}
+
+function cdRenderStock(){
+  const tb = document.getElementById('cd-stock');
+  if (!tb) return;
+  let mkt = 0, net = 0, qty = 0;
+  const split = {tcgplayer:0, ebay:0, lot:0};
+
+  tb.innerHTML = CD_STOCK.map((e, i) => {
+    const c = CATALOG.cards[e.i];
+    if (!c) return '';
+    const s = cdSetOf(c);
+    const market = c.p[e.pr];
+    const p = cdPrice(market, e.c);
+    mkt += market * e.q; net += p.best * e.q; qty += e.q;
+    split[p.decision] += e.q;
+    const conds = CD_CONDS.map(k =>
+      '<option value="' + k + '"' + (k === e.c ? ' selected' : '') + '>' + k + '</option>').join('');
+    return '<tr>' +
+      '<td><div class="srow">' +
+        (cdThumb(c) ? '<span class="thumbwrap sm"><img loading="lazy" data-thumb src="' +
+          cdThumb(c) + '" alt=""></span>' : '') +
+        '<div><b>' + esc(c.n) + '</b><br><span class="setname">' + esc(s.a || s.n) +
+        ' \u00b7 #' + esc(c['#']) + ' \u00b7 ' + esc(e.pr) + '</span></div></div></td>' +
+      '<td><div class="qty"><button class="qbtn" data-dec="' + i + '">\u2212</button>' +
+        '<span class="mono">' + e.q + '</span>' +
+        '<button class="qbtn" data-inc="' + i + '">+</button></div></td>' +
+      '<td><select class="condsel" data-cond="' + i + '">' + conds + '</select></td>' +
+      '<td class="num mono">' + cdM(market) + '</td>' +
+      '<td class="num mono">' + cdM(p.ask) + '</td>' +
+      '<td class="num mono">' + cdM(p.best) + '</td>' +
+      '<td>' + cdBadge(p.decision) + '</td>' +
+      '<td class="num"><button class="linkbtn" data-rm="' + i + '">remove</button></td></tr>';
+  }).join('');
+
+  document.getElementById('cd-empty').hidden = CD_STOCK.length > 0;
+  document.getElementById('cd-s-lines').textContent = CD_STOCK.length;
+  document.getElementById('cd-s-qty').textContent = qty;
+  document.getElementById('cd-s-mkt').textContent = cdM(mkt);
+  document.getElementById('cd-s-net').textContent = cdM(net);
+  document.getElementById('cd-s-split').textContent =
+    split.tcgplayer + ' TCGplayer \u00b7 ' + split.ebay + ' eBay \u00b7 ' + split.lot + ' bulk lot';
+  document.getElementById('cd-export').disabled = !CD_STOCK.length;
+  document.getElementById('cd-wipe').disabled = !CD_STOCK.length;
+
+  tb.querySelectorAll('[data-inc]').forEach(b => b.onclick = () => {
+    CD_STOCK[+b.dataset.inc].q++; cdSave(); cdRenderStock(); });
+  tb.querySelectorAll('[data-dec]').forEach(b => b.onclick = () => {
+    const e = CD_STOCK[+b.dataset.dec];
+    if (--e.q < 1) CD_STOCK.splice(+b.dataset.dec, 1);
+    cdSave(); cdRenderStock(); });
+  tb.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => {
+    CD_STOCK.splice(+b.dataset.rm, 1); cdSave(); cdRenderStock(); });
+  tb.querySelectorAll('[data-cond]').forEach(sel => sel.onchange = () => {
+    CD_STOCK[+sel.dataset.cond].c = sel.value; cdSave(); cdRenderStock(); });
+  imgFallback();
+}
+
+function cdCsv(){
+  const rows = [['sku','set','set_code','card','number','rarity','printing',
+                 'condition','qty','market_usd','ask_usd','best_net_usd','route']];
+  CD_STOCK.forEach((e, i) => {
+    const c = CATALOG.cards[e.i]; if (!c) return;
+    const s = cdSetOf(c), market = c.p[e.pr], p = cdPrice(market, e.c);
+    rows.push(['CD-W' + (i + 1), s.n, s.a || '', c.n, c['#'], c.r || '', e.pr, e.c,
+               e.q, market.toFixed(2), p.ask.toFixed(2), p.best.toFixed(2), p.decision]);
+  });
+  return rows.map(r => r.map(v => {
+    const t = String(v);
+    return /[",\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
+  }).join(',')).join('\n');
+}
+
+/* ---- wiring ---- */
+if (document.getElementById('cd-q')) {
+  cdLoad(); cdStatus();
+
+  const q = document.getElementById('cd-q');
+  let qt = null;
+  q.addEventListener('input', () => { clearTimeout(qt); qt = setTimeout(cdRenderResults, 110); });
+  document.getElementById('cd-clearq').addEventListener('click', () => {
+    q.value = ''; cdRenderResults(); q.focus();
+  });
+
+  document.getElementById('cd-wipe').addEventListener('click', () => {
+    if (!confirm('Remove everything saved in this browser?')) return;
+    CD_STOCK = []; cdSave(); cdRenderStock();
+  });
+
+  document.getElementById('cd-export').addEventListener('click', async () => {
+    const btn = document.getElementById('cd-export');
+    const msg = document.getElementById('cd-exmsg');
+    btn.disabled = true; msg.textContent = 'Preparing\u2026';
+    const csv = cdCsv();
+    const stamp = new Date().toISOString().slice(0, 10);
+    try {
+      const dl = await window.claude.use('downloads');
+      if (!dl) throw {code: 'unavailable'};
+      try {
+        await dl.save({filename: 'card-desk-' + stamp + '.csv', data: csv});
+        msg.textContent = 'Saved.';
+      } catch (err) {
+        if (err && err.code === 'extension_not_enabled'){
+          await dl.save({filename: 'card-desk-' + stamp + '.csv.txt', data: csv});
+          msg.textContent = 'Saved as .txt \u2014 rename it to .csv.';
+        } else if (err && err.code === 'declined'){ msg.textContent = 'Cancelled.'; }
+        else { throw err; }
+      }
+    } catch (err) {
+      msg.textContent = 'Downloads are not available here \u2014 copy the text below.';
+      const ta = document.getElementById('cd-fallback');
+      ta.hidden = false; ta.value = csv; ta.select();
+    } finally {
+      btn.disabled = false;
+      setTimeout(() => { if (msg.textContent === 'Saved.') msg.textContent = ''; }, 3500);
+    }
+  });
+
+  ['h-vol','h-order','h-ship'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', cdRenderStock);
+  });
+
+  const setsBody = document.getElementById('cd-sets');
+  if (setsBody && CATALOG.sets){
+    setsBody.innerHTML = CATALOG.sets.map(s =>
+      '<tr><td><b>' + esc(s.a || '\u2014') + '</b></td><td>' + esc(s.n) +
+      '</td><td>' + esc(s.g) + '</td><td class="mono">' + esc(s.d) + '</td></tr>').join('');
+    document.getElementById('cd-setcount').textContent =
+      CATALOG.sets.length + ' sets \u00b7 ' + CATALOG.cards.length.toLocaleString() + ' cards';
+  }
+
+  cdRenderResults(); cdRenderStock();
+}
+
+/* ---------------- sell: store break-even ---------------- */
+const beVol = document.getElementById('be-vol'), beGross = document.getElementById('be-gross');
+if (beVol && beGross) {
+  function renderBE(){
+    const N = Math.max(0, parseInt(beVol.value, 10) || 0);
+    const G = Math.max(0, parseFloat(beGross.value) || 0);
+    const none  = Math.max(0, N - 250)  * 0.35 + G * 0.1325;
+    const basic = 27.95 + Math.max(0, N - 1000) * 0.35 + G * 0.1235;
+    const diff  = none - basic;
+    const m = n => '$' + n.toFixed(2);
+    document.getElementById('be-none').textContent  = m(none);
+    document.getElementById('be-basic').textContent = m(basic);
+    const out = document.getElementById('be-out');
+    if (diff > 0){
+      out.className = 'verdict v-list';
+      out.innerHTML = '<b>A Basic Store saves you ' + m(diff) + '/mo</b>At ' + N +
+        ' listings and ' + m(G) + ' gross, the subscription pays for itself.';
+    } else {
+      out.className = 'verdict v-lot';
+      out.innerHTML = '<b>Stay storeless &mdash; a Store would cost you ' + m(-diff) + '/mo extra</b>At ' +
+        N + ' listings and ' + m(G) + ' gross, you are better off on the free 250.';
+    }
+  }
+  [beVol, beGross].forEach(el => el.addEventListener('input', renderBE));
+  renderBE();
+}

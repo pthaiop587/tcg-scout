@@ -1,0 +1,2773 @@
+{
+ "rows": [
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin [Zapdos]",
+   "retail": 9.99,
+   "market": 99.55,
+   "ratio": 9.96,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin [Day Pikachu]",
+   "retail": 9.99,
+   "market": 98.66,
+   "ratio": 9.88,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin [Umbreon]",
+   "retail": 9.99,
+   "market": 92.41,
+   "ratio": 9.25,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin [Mew]",
+   "retail": 9.99,
+   "market": 90.88,
+   "ratio": 9.1,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Pokemon Center Elite Trainer Box",
+   "retail": 59.99,
+   "market": 529.15,
+   "ratio": 8.82,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin [Espeon]",
+   "retail": 9.99,
+   "market": 88.12,
+   "ratio": 8.82,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV10: Destined Rivals",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Destined Rivals Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 516.9,
+   "ratio": 8.62,
+   "chase": "Team Rocket's Mewtwo ex - 231/182",
+   "chasePrice": 506.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin [Mewtwo]",
+   "retail": 9.99,
+   "market": 85.96,
+   "ratio": 8.6,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 464.18,
+   "ratio": 7.74,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 436.36,
+   "ratio": 7.27,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin [Lapras]",
+   "retail": 9.99,
+   "market": 71.69,
+   "ratio": 7.18,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck EX: Gear 5",
+   "released": "2025-03-14",
+   "age": 517,
+   "product": "Starter Deck EX: Gear 5",
+   "retail": 11.99,
+   "market": 83.16,
+   "ratio": 6.94,
+   "chase": "Monkey.D.Luffy (001) (Parallel)",
+   "chasePrice": 121.51,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Fabled",
+   "released": "2025-08-29",
+   "age": 349,
+   "product": "Disney Lorcana: Fabled Illumineer's Trove",
+   "retail": 49.99,
+   "market": 325.11,
+   "ratio": 6.5,
+   "chase": "Minnie Mouse - Sweetheart Princess (Iconic)",
+   "chasePrice": 1808.22,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Fabled",
+   "released": "2025-08-29",
+   "age": 349,
+   "product": "Disney Lorcana: Fabled Booster Box",
+   "retail": 143.76,
+   "market": 928.94,
+   "ratio": 6.46,
+   "chase": "Minnie Mouse - Sweetheart Princess (Iconic)",
+   "chasePrice": 1808.22,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Ditto Premium Collection",
+   "retail": 39.99,
+   "market": 228.85,
+   "ratio": 5.72,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Mini Tin Display",
+   "retail": 79.92,
+   "market": 450.2,
+   "ratio": 5.63,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Focused Fighters Premium Collection (Sam's Club)",
+   "retail": 39.99,
+   "market": 223.76,
+   "ratio": 5.6,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "A Fist of Divine Speed",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "A Fist of Divine Speed Booster Box",
+   "retail": 119.76,
+   "market": 647.26,
+   "ratio": 5.4,
+   "chase": "Monkey.D.Luffy (119) (SP) (Gold)",
+   "chasePrice": 13000.0,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME02: Phantasmal Flames",
+   "released": "2025-11-14",
+   "age": 272,
+   "product": "Phantasmal Flames Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 297.75,
+   "ratio": 4.96,
+   "chase": "Mega Charizard X ex - 125/094",
+   "chasePrice": 703.54,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck EX: Gear 5",
+   "released": "2025-03-14",
+   "age": 517,
+   "product": "Starter Deck EX: Gear 5 Bonus Pack",
+   "retail": 11.99,
+   "market": 59.41,
+   "ratio": 4.95,
+   "chase": "Monkey.D.Luffy (001) (Parallel)",
+   "chasePrice": 121.51,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Black Bolt Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 286.15,
+   "ratio": 4.77,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Fabled",
+   "released": "2025-08-29",
+   "age": 349,
+   "product": "Disney Lorcana: Fabled Booster Pack",
+   "retail": 5.99,
+   "market": 28.03,
+   "ratio": 4.68,
+   "chase": "Minnie Mouse - Sweetheart Princess (Iconic)",
+   "chasePrice": 1808.22,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Heavy Hitters Premium Collection",
+   "retail": 39.99,
+   "market": 183.39,
+   "ratio": 4.59,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: White Flare",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "White Flare Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 258.47,
+   "ratio": 4.31,
+   "chase": "Victini - 172/086",
+   "chasePrice": 560.28,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Umbreon]",
+   "retail": 9.99,
+   "market": 41.54,
+   "ratio": 4.16,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution Pokemon Center Elite Trainer Box (Exclusive) [Mega Lucario]",
+   "retail": 59.99,
+   "market": 243.93,
+   "ratio": 4.07,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Sylveon]",
+   "retail": 9.99,
+   "market": 40.6,
+   "ratio": 4.06,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Elite Trainer Box (Dollar General Exclusive)",
+   "retail": 49.99,
+   "market": 200.01,
+   "ratio": 4.0,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 23: RED Shanks",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "Starter Deck 23: RED Shanks",
+   "retail": 11.99,
+   "market": 46.16,
+   "ratio": 3.85,
+   "chase": "Uta",
+   "chasePrice": 10.56,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Elite Trainer Box",
+   "retail": 49.99,
+   "market": 191.61,
+   "ratio": 3.83,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Espeon]",
+   "retail": 9.99,
+   "market": 38.11,
+   "ratio": 3.81,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Vaporeon]",
+   "retail": 9.99,
+   "market": 37.94,
+   "ratio": 3.8,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Mini Tin Display",
+   "retail": 79.92,
+   "market": 303.42,
+   "ratio": 3.8,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "The World's Strongest Warriors",
+   "released": "2026-08-28",
+   "age": -15,
+   "product": "The World's Strongest Warriors Booster Pack",
+   "retail": 4.99,
+   "market": 18.84,
+   "ratio": 3.78,
+   "chase": "Loki",
+   "chasePrice": 79.99,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "One Piece",
+   "set": "Carrying On His Will",
+   "released": "2025-11-07",
+   "age": 279,
+   "product": "Carrying On His Will Booster Box",
+   "retail": 119.76,
+   "market": 439.34,
+   "ratio": 3.67,
+   "chase": "Sabo (120) (Red Super Alternate Art)",
+   "chasePrice": 4800.0,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Black Bolt Booster Bundle",
+   "retail": 26.94,
+   "market": 96.76,
+   "ratio": 3.59,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution Pokemon Center Elite Trainer Box (Exclusive) [Mega Gardevoir]",
+   "retail": 59.99,
+   "market": 212.81,
+   "ratio": 3.55,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Glaceon]",
+   "retail": 9.99,
+   "market": 35.28,
+   "ratio": 3.53,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Mini Tin [Clefairy & Chikorita]",
+   "retail": 9.99,
+   "market": 34.97,
+   "ratio": 3.5,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Leafeon]",
+   "retail": 9.99,
+   "market": 34.7,
+   "ratio": 3.47,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Mini Tin [Pikachu & Tepig]",
+   "retail": 9.99,
+   "market": 34.63,
+   "ratio": 3.47,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 27: BLACK Marshall.D.Teach",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "Starter Deck 27: BLACK Marshall.D.Teach",
+   "retail": 11.99,
+   "market": 41.52,
+   "ratio": 3.46,
+   "chase": "Kuzan",
+   "chasePrice": 0.94,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "product": "30th Celebration Booster Bundle",
+   "retail": 26.94,
+   "market": 92.93,
+   "ratio": 3.45,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Mini Tin [Togepi & Totodile]",
+   "retail": 9.99,
+   "market": 34.31,
+   "ratio": 3.43,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Jolteon]",
+   "retail": 9.99,
+   "market": 34.15,
+   "ratio": 3.42,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Black Bolt Elite Trainer Box",
+   "retail": 49.99,
+   "market": 170.07,
+   "ratio": 3.4,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Elite Trainer Box",
+   "retail": 49.99,
+   "market": 170.11,
+   "ratio": 3.4,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "product": "Journey Together Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 203.36,
+   "ratio": 3.39,
+   "chase": "Lillie's Clefairy ex - 184/159",
+   "chasePrice": 110.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 26: PURPLE/BLACK Monkey.D.Luffy",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "Starter Deck 26: PURPLE/BLACK Monkey.D.Luffy",
+   "retail": 11.99,
+   "market": 40.4,
+   "ratio": 3.37,
+   "chase": "Monkey.D.Luffy (OP09-061)",
+   "chasePrice": 8.8,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 25: BLUE Buggy",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "Starter Deck 25: BLUE Buggy",
+   "retail": 11.99,
+   "market": 40.03,
+   "ratio": 3.34,
+   "chase": "Buggy (OP09-042)",
+   "chasePrice": 1.39,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "One Piece",
+   "set": "Premium Booster -The Best- Vol. 2",
+   "released": "2025-10-03",
+   "age": 314,
+   "product": "Premium Booster Vol. 2 - Booster Box",
+   "retail": 119.76,
+   "market": 395.23,
+   "ratio": 3.3,
+   "chase": "Sanji - OP06-119 (Manga)",
+   "chasePrice": 2262.72,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: White Flare",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "White Flare Booster Bundle",
+   "retail": 26.94,
+   "market": 87.79,
+   "ratio": 3.26,
+   "chase": "Victini - 172/086",
+   "chasePrice": 560.28,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin [Flareon]",
+   "retail": 9.99,
+   "market": 32.37,
+   "ratio": 3.24,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Elite Trainer Box",
+   "retail": 49.99,
+   "market": 161.69,
+   "ratio": 3.23,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution 3 Pack Blister [Psyduck]",
+   "retail": 13.99,
+   "market": 44.96,
+   "ratio": 3.21,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Heroes Mini Tin Display",
+   "retail": 79.92,
+   "market": 256.48,
+   "ratio": 3.21,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Booster Bundle",
+   "retail": 26.94,
+   "market": 86.33,
+   "ratio": 3.2,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV10: Destined Rivals",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Destined Rivals Booster Box",
+   "retail": 143.64,
+   "market": 459.82,
+   "ratio": 3.2,
+   "chase": "Team Rocket's Mewtwo ex - 231/182",
+   "chasePrice": 506.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Mini Tin Display",
+   "retail": 79.92,
+   "market": 254.3,
+   "ratio": 3.18,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Mini Tin [Riolu & Darumaka]",
+   "retail": 9.99,
+   "market": 31.61,
+   "ratio": 3.16,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: White Flare",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "White Flare Elite Trainer Box",
+   "retail": 49.99,
+   "market": 156.41,
+   "ratio": 3.13,
+   "chase": "Victini - 172/086",
+   "chasePrice": 560.28,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 29: Egghead",
+   "released": "2026-01-16",
+   "age": 209,
+   "product": "Starter Deck 29: Egghead",
+   "retail": 11.99,
+   "market": 37.08,
+   "ratio": 3.09,
+   "chase": "Nico Robin (Full Art)",
+   "chasePrice": 28.16,
+   "chaseRarity": "C"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Mini Tin [Zorua & Cramorant]",
+   "retail": 9.99,
+   "market": 30.57,
+   "ratio": 3.06,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "The World's Strongest Warriors",
+   "released": "2026-08-28",
+   "age": -15,
+   "product": "The World's Strongest Warriors Booster Box",
+   "retail": 119.76,
+   "market": 366.33,
+   "ratio": 3.06,
+   "chase": "Loki",
+   "chasePrice": 79.99,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "product": "Prismatic Evolutions Super-Premium Collection",
+   "retail": 89.99,
+   "market": 273.72,
+   "ratio": 3.04,
+   "chase": "Umbreon ex - 161/131",
+   "chasePrice": 1494.97,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin Display",
+   "retail": 79.92,
+   "market": 243.07,
+   "ratio": 3.04,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "product": "Ascended Heroes Booster Bundle",
+   "retail": 26.94,
+   "market": 81.33,
+   "ratio": 3.02,
+   "chase": "Mega Gengar ex - 284/217",
+   "chasePrice": 1108.52,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME02: Phantasmal Flames",
+   "released": "2025-11-14",
+   "age": 272,
+   "product": "Phantasmal Flames Booster Bundle",
+   "retail": 26.94,
+   "market": 80.7,
+   "ratio": 3.0,
+   "chase": "Mega Charizard X ex - 125/094",
+   "chasePrice": 703.54,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME02: Phantasmal Flames",
+   "released": "2025-11-14",
+   "age": 272,
+   "product": "Phantasmal Flames Elite Trainer Box",
+   "retail": 49.99,
+   "market": 149.56,
+   "ratio": 2.99,
+   "chase": "Mega Charizard X ex - 125/094",
+   "chasePrice": 703.54,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck EX: Luffy & Ace",
+   "released": "2026-06-12",
+   "age": 62,
+   "product": "Starter Deck EX: Luffy & Ace",
+   "retail": 11.99,
+   "market": 35.88,
+   "ratio": 2.99,
+   "chase": "Luffy & Ace (Parallel)",
+   "chasePrice": 89.02,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 28: GREEN/YELLOW Yamato",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "Starter Deck 28: GREEN/YELLOW Yamato",
+   "retail": 11.99,
+   "market": 35.51,
+   "ratio": 2.96,
+   "chase": "Yamato (OP06-022)",
+   "chasePrice": 2.03,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Chandelure & Zorua]",
+   "retail": 9.99,
+   "market": 29.51,
+   "ratio": 2.95,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Hyperia City",
+   "released": "2026-10-16",
+   "age": -64,
+   "product": "Disney Lorcana: Hyperia City Illumineer's Trove",
+   "retail": 49.99,
+   "market": 146.48,
+   "ratio": 2.93,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck EX: Luffy & Ace",
+   "released": "2026-06-12",
+   "age": 62,
+   "product": "Starter Deck EX: Luffy & Ace Bonus Pack",
+   "retail": 11.99,
+   "market": 34.0,
+   "ratio": 2.84,
+   "chase": "Luffy & Ace (Parallel)",
+   "chasePrice": 89.02,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 24: GREEN Jewelry Bonney",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "Starter Deck 24: GREEN Jewelry Bonney",
+   "retail": 11.99,
+   "market": 32.5,
+   "ratio": 2.71,
+   "chase": "Law & Bepo",
+   "chasePrice": 10.52,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 31: RED Monkey.D.Luffy",
+   "released": "2026-07-31",
+   "age": 13,
+   "product": "Starter Deck 31: RED Monkey.D.Luffy",
+   "retail": 11.99,
+   "market": 32.21,
+   "ratio": 2.69,
+   "chase": "Thousand Sunny",
+   "chasePrice": 9.15,
+   "chaseRarity": "C"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Krookodile & Excadrill]",
+   "retail": 9.99,
+   "market": 26.46,
+   "ratio": 2.65,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME02: Phantasmal Flames",
+   "released": "2025-11-14",
+   "age": 272,
+   "product": "Phantasmal Flames Booster Box",
+   "retail": 143.64,
+   "market": 374.05,
+   "ratio": 2.6,
+   "chase": "Mega Charizard X ex - 125/094",
+   "chasePrice": 703.54,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 32: GREEN Roronoa Zoro",
+   "released": "2026-07-31",
+   "age": 13,
+   "product": "Starter Deck 32: GREEN Roronoa Zoro",
+   "retail": 11.99,
+   "market": 31.12,
+   "ratio": 2.6,
+   "chase": "Kouzuki Oden",
+   "chasePrice": 9.12,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "product": "Journey Together Elite Trainer Box",
+   "retail": 49.99,
+   "market": 128.93,
+   "ratio": 2.58,
+   "chase": "Lillie's Clefairy ex - 184/159",
+   "chasePrice": 110.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Premium Booster -The Best- Vol. 2",
+   "released": "2025-10-03",
+   "age": 314,
+   "product": "Premium Booster Vol. 2 - Booster Pack",
+   "retail": 4.99,
+   "market": 12.82,
+   "ratio": 2.57,
+   "chase": "Sanji - OP06-119 (Manga)",
+   "chasePrice": 2262.72,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV10: Destined Rivals",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Destined Rivals Booster Bundle",
+   "retail": 26.94,
+   "market": 68.52,
+   "ratio": 2.54,
+   "chase": "Team Rocket's Mewtwo ex - 231/182",
+   "chasePrice": 506.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "A Fist of Divine Speed",
+   "released": "2025-06-06",
+   "age": 433,
+   "product": "A Fist of Divine Speed Booster Pack",
+   "retail": 4.99,
+   "market": 12.52,
+   "ratio": 2.51,
+   "chase": "Monkey.D.Luffy (119) (SP) (Gold)",
+   "chasePrice": 13000.0,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 29: Egghead",
+   "released": "2026-01-16",
+   "age": 209,
+   "product": "Starter Deck 29: Egghead Bonus Pack",
+   "retail": 11.99,
+   "market": 29.37,
+   "ratio": 2.45,
+   "chase": "Nico Robin (Full Art)",
+   "chasePrice": 28.16,
+   "chaseRarity": "C"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Garbodor & Amoonguss]",
+   "retail": 9.99,
+   "market": 24.42,
+   "ratio": 2.44,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Lilligant & Whimsicot]",
+   "retail": 9.99,
+   "market": 24.16,
+   "ratio": 2.42,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Alomomola & Axew]",
+   "retail": 9.99,
+   "market": 23.96,
+   "ratio": 2.4,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV10: Destined Rivals",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Destined Rivals Elite Trainer Box",
+   "retail": 49.99,
+   "market": 118.96,
+   "ratio": 2.38,
+   "chase": "Team Rocket's Mewtwo ex - 231/182",
+   "chasePrice": 506.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution Elite Trainer Box [Mega Lucario]",
+   "retail": 49.99,
+   "market": 118.74,
+   "ratio": 2.38,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution Booster Bundle",
+   "retail": 26.94,
+   "market": 63.63,
+   "ratio": 2.36,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution 3 Pack Blister [Golduck]",
+   "retail": 13.99,
+   "market": 32.2,
+   "ratio": 2.3,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME04: Chaos Rising",
+   "released": "2026-05-22",
+   "age": 83,
+   "product": "Chaos Rising Pokemon Center Elite Trainer Box",
+   "retail": 59.99,
+   "market": 137.71,
+   "ratio": 2.3,
+   "chase": "Mega Greninja ex - 116/086",
+   "chasePrice": 212.63,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Legacy of the Master",
+   "released": "2025-08-22",
+   "age": 356,
+   "product": "Legacy of the Master Booster Box",
+   "retail": 119.76,
+   "market": 275.75,
+   "ratio": 2.3,
+   "chase": "Marshall.D.Teach (SP) (Gold)",
+   "chasePrice": 1894.05,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution Elite Trainer Box [Mega Gardevoir]",
+   "retail": 49.99,
+   "market": 113.83,
+   "ratio": 2.28,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Elektross & Galvantula]",
+   "retail": 9.99,
+   "market": 22.66,
+   "ratio": 2.27,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution Booster Box",
+   "retail": 143.64,
+   "market": 325.57,
+   "ratio": 2.27,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Volcarona & Emolga]",
+   "retail": 9.99,
+   "market": 22.6,
+   "ratio": 2.26,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "product": "Unova Mini Tin [Mienshao & Klinklang]",
+   "retail": 9.99,
+   "market": 22.58,
+   "ratio": 2.26,
+   "chase": "Zekrom ex - 172/086",
+   "chasePrice": 605.75,
+   "chaseRarity": "Black White Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Carrying On His Will",
+   "released": "2025-11-07",
+   "age": 279,
+   "product": "Carrying On His Will Booster Pack",
+   "retail": 4.99,
+   "market": 11.3,
+   "ratio": 2.26,
+   "chase": "Sabo (120) (Red Super Alternate Art)",
+   "chasePrice": 4800.0,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Heroes Mini Tin [Mega Lucario]",
+   "retail": 9.99,
+   "market": 22.03,
+   "ratio": 2.21,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "The Azure Sea's Seven",
+   "released": "2026-01-16",
+   "age": 209,
+   "product": "The Azure Sea's Seven Booster Box",
+   "retail": 119.76,
+   "market": 260.51,
+   "ratio": 2.18,
+   "chase": "Buggy - OP09-051 (SP) (Gold)",
+   "chasePrice": 1638.69,
+   "chaseRarity": "R"
+  },
+  {
+   "game": "One Piece",
+   "set": "Adventure on Kami's Island",
+   "released": "2026-04-03",
+   "age": 132,
+   "product": "Adventure on Kami's Island Booster Box",
+   "retail": 119.76,
+   "market": 261.46,
+   "ratio": 2.18,
+   "chase": "Enel (OP15-118) (Manga)",
+   "chasePrice": 1051.34,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Evolution Enhanced Booster Box",
+   "retail": 143.64,
+   "market": 309.37,
+   "ratio": 2.15,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME05: Pitch Black",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Pitch Black Pokemon Center Elite Trainer Box (Exclusive)",
+   "retail": 59.99,
+   "market": 128.2,
+   "ratio": 2.14,
+   "chase": "Mega Darkrai ex - 116/084",
+   "chasePrice": 229.66,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "product": "Journey Together Booster Box",
+   "retail": 143.64,
+   "market": 300.32,
+   "ratio": 2.09,
+   "chase": "Lillie's Clefairy ex - 184/159",
+   "chasePrice": 110.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Heroes Mini Tin [Mega Venusaur]",
+   "retail": 9.99,
+   "market": 20.83,
+   "ratio": 2.09,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV10: Destined Rivals",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Destined Rivals Half Booster Box",
+   "retail": 143.64,
+   "market": 296.0,
+   "ratio": 2.06,
+   "chase": "Team Rocket's Mewtwo ex - 231/182",
+   "chasePrice": 506.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Heroes Mini Tin [Mega Latias]",
+   "retail": 9.99,
+   "market": 20.55,
+   "ratio": 2.06,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Royal Blood",
+   "released": "2025-03-21",
+   "age": 510,
+   "product": "Royal Blood Booster Box",
+   "retail": 119.76,
+   "market": 245.67,
+   "ratio": 2.05,
+   "chase": "Trafalgar Law (119) (Manga)",
+   "chasePrice": 710.67,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME03: Perfect Order",
+   "released": "2026-03-27",
+   "age": 139,
+   "product": "Perfect Order Pokemon Center Elite Trainer Box",
+   "retail": 59.99,
+   "market": 121.22,
+   "ratio": 2.02,
+   "chase": "Mega Zygarde ex - 124/088",
+   "chasePrice": 132.89,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Heroes Mini Tin [Mega Kangaskhan]",
+   "retail": 9.99,
+   "market": 19.37,
+   "ratio": 1.94,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "product": "Mega Heroes Mini Tin [Mega Gardevoir]",
+   "retail": 9.99,
+   "market": 19.27,
+   "ratio": 1.93,
+   "chase": "Mega Lucario ex - 188/132",
+   "chasePrice": 271.87,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 34: PURPLE Charlotte Katakuri",
+   "released": "2026-07-31",
+   "age": 13,
+   "product": "Starter Deck 34: PURPLE Charlotte Katakuri",
+   "retail": 11.99,
+   "market": 22.97,
+   "ratio": 1.92,
+   "chase": "Charlotte Linlin",
+   "chasePrice": 8.01,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "product": "Journey Together 3 Pack Blister [Scrafty]",
+   "retail": 13.99,
+   "market": 25.87,
+   "ratio": 1.85,
+   "chase": "Lillie's Clefairy ex - 184/159",
+   "chasePrice": 110.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "The Time of Battle",
+   "released": "2026-06-12",
+   "age": 62,
+   "product": "The Time of Battle Booster Box",
+   "retail": 119.76,
+   "market": 220.44,
+   "ratio": 1.84,
+   "chase": "Sakazuki (Manga)",
+   "chasePrice": 1224.82,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Wilds Unknown",
+   "released": "2026-05-08",
+   "age": 97,
+   "product": "Disney Lorcana: Wilds Unknown Illumineer's Trove",
+   "retail": 49.99,
+   "market": 91.87,
+   "ratio": 1.84,
+   "chase": "Buzz Lightyear - Jungle Ranger (Iconic)",
+   "chasePrice": 3632.28,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "product": "Journey Together Enhanced Booster Box",
+   "retail": 143.64,
+   "market": 260.28,
+   "ratio": 1.81,
+   "chase": "Lillie's Clefairy ex - 184/159",
+   "chasePrice": 110.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "product": "Journey Together 3 Pack Blister [Yanmega]",
+   "retail": 13.99,
+   "market": 25.01,
+   "ratio": 1.79,
+   "chase": "Lillie's Clefairy ex - 184/159",
+   "chasePrice": 110.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 36: YELLOW Eustass\"Captain\"Kid",
+   "released": "2026-07-31",
+   "age": 13,
+   "product": "Starter Deck 36: YELLOW Eustass\u201dCaptain\u201dKid",
+   "retail": 11.99,
+   "market": 21.34,
+   "ratio": 1.78,
+   "chase": "Eustass\"Captain\"Kid (ST36-005)",
+   "chasePrice": 3.57,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "One Piece",
+   "set": "Royal Blood",
+   "released": "2025-03-21",
+   "age": 510,
+   "product": "Royal Blood Booster Pack",
+   "retail": 4.99,
+   "market": 8.79,
+   "ratio": 1.76,
+   "chase": "Trafalgar Law (119) (Manga)",
+   "chasePrice": 710.67,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "One Piece",
+   "set": "Legacy of the Master",
+   "released": "2025-08-22",
+   "age": 356,
+   "product": "Legacy of the Master Booster Pack",
+   "retail": 4.99,
+   "market": 8.77,
+   "ratio": 1.76,
+   "chase": "Marshall.D.Teach (SP) (Gold)",
+   "chasePrice": 1894.05,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Winterspell",
+   "released": "2026-02-13",
+   "age": 181,
+   "product": "Disney Lorcana: Winterspell Illumineer's Trove",
+   "retail": 49.99,
+   "market": 87.32,
+   "ratio": 1.75,
+   "chase": "Moana - Curious Explorer (Iconic)",
+   "chasePrice": 1142.98,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Hyperia City",
+   "released": "2026-10-16",
+   "age": -64,
+   "product": "Disney Lorcana: Hyperia City Booster Box",
+   "retail": 143.76,
+   "market": 248.46,
+   "ratio": 1.73,
+   "chase": null,
+   "chasePrice": null,
+   "chaseRarity": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "product": "Journey Together Booster Bundle",
+   "retail": 26.94,
+   "market": 45.97,
+   "ratio": 1.71,
+   "chase": "Lillie's Clefairy ex - 184/159",
+   "chasePrice": 110.89,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME05: Pitch Black",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Pitch Black 3-Pack Blister [Binacle]",
+   "retail": 13.99,
+   "market": 23.39,
+   "ratio": 1.67,
+   "chase": "Mega Darkrai ex - 116/084",
+   "chasePrice": 229.66,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 33: BLUE Kuzan",
+   "released": "2026-07-31",
+   "age": 13,
+   "product": "Starter Deck 33: BLUE Kuzan",
+   "retail": 11.99,
+   "market": 20.04,
+   "ratio": 1.67,
+   "chase": "Borsalino",
+   "chasePrice": 4.6,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Wilds Unknown",
+   "released": "2026-05-08",
+   "age": 97,
+   "product": "Disney Lorcana: Wilds Unknown Booster Pack",
+   "retail": 5.99,
+   "market": 9.87,
+   "ratio": 1.65,
+   "chase": "Buzz Lightyear - Jungle Ranger (Iconic)",
+   "chasePrice": 3632.28,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 22: Ace & Newgate",
+   "released": "2025-09-05",
+   "age": 342,
+   "product": "Starter Deck 22: Ace & Newgate",
+   "retail": 11.99,
+   "market": 19.72,
+   "ratio": 1.64,
+   "chase": "Ace & Newgate (Parallel)",
+   "chasePrice": 23.25,
+   "chaseRarity": "L"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Whispers in the Well",
+   "released": "2025-11-07",
+   "age": 279,
+   "product": "Disney Lorcana: Whispers in the Well Illumineer's Trove",
+   "retail": 49.99,
+   "market": 80.84,
+   "ratio": 1.62,
+   "chase": "Ariel - Ethereal Voice (Iconic)",
+   "chasePrice": 1344.77,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Attack of the Vine!",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Disney Lorcana: Attack of the Vine! Illumineer's Trove",
+   "retail": 49.99,
+   "market": 80.17,
+   "ratio": 1.6,
+   "chase": "Belle & Beast - Certain as the Sun (Iconic)",
+   "chasePrice": 2188.63,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Whispers in the Well",
+   "released": "2025-11-07",
+   "age": 279,
+   "product": "Disney Lorcana: Whispers in the Well Booster Pack",
+   "retail": 5.99,
+   "market": 9.48,
+   "ratio": 1.58,
+   "chase": "Ariel - Ethereal Voice (Iconic)",
+   "chasePrice": 1344.77,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Winterspell",
+   "released": "2026-02-13",
+   "age": 181,
+   "product": "Disney Lorcana: Winterspell Booster Pack",
+   "retail": 5.99,
+   "market": 9.44,
+   "ratio": 1.58,
+   "chase": "Moana - Curious Explorer (Iconic)",
+   "chasePrice": 1142.98,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Wilds Unknown",
+   "released": "2026-05-08",
+   "age": 97,
+   "product": "Disney Lorcana: Wilds Unknown Booster Box",
+   "retail": 143.76,
+   "market": 222.66,
+   "ratio": 1.55,
+   "chase": "Buzz Lightyear - Jungle Ranger (Iconic)",
+   "chasePrice": 3632.28,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME03: Perfect Order",
+   "released": "2026-03-27",
+   "age": 139,
+   "product": "Perfect Order 3 Pack Blister [Chikorita]",
+   "retail": 13.99,
+   "market": 20.61,
+   "ratio": 1.47,
+   "chase": "Mega Zygarde ex - 124/088",
+   "chasePrice": 132.89,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME03: Perfect Order",
+   "released": "2026-03-27",
+   "age": 139,
+   "product": "Perfect Order Booster Bundle",
+   "retail": 26.94,
+   "market": 39.39,
+   "ratio": 1.46,
+   "chase": "Mega Zygarde ex - 124/088",
+   "chasePrice": 132.89,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "The Azure Sea's Seven",
+   "released": "2026-01-16",
+   "age": 209,
+   "product": "The Azure Sea's Seven Booster Pack",
+   "retail": 4.99,
+   "market": 7.28,
+   "ratio": 1.46,
+   "chase": "Buggy - OP09-051 (SP) (Gold)",
+   "chasePrice": 1638.69,
+   "chaseRarity": "R"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME04: Chaos Rising",
+   "released": "2026-05-22",
+   "age": 83,
+   "product": "Chaos Rising 3-Pack Blister [Charmeleon]",
+   "retail": 13.99,
+   "market": 20.24,
+   "ratio": 1.45,
+   "chase": "Mega Greninja ex - 116/086",
+   "chasePrice": 212.63,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME05: Pitch Black",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Pitch Black Booster Bundle",
+   "retail": 26.94,
+   "market": 39.11,
+   "ratio": 1.45,
+   "chase": "Mega Darkrai ex - 116/084",
+   "chasePrice": 229.66,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Adventure on Kami's Island",
+   "released": "2026-04-03",
+   "age": 132,
+   "product": "Adventure on Kami's Island Booster Pack",
+   "retail": 4.99,
+   "market": 7.22,
+   "ratio": 1.45,
+   "chase": "Enel (OP15-118) (Manga)",
+   "chasePrice": 1051.34,
+   "chaseRarity": "SEC"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Attack of the Vine!",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Disney Lorcana: Attack of the Vine! Booster Pack",
+   "retail": 5.99,
+   "market": 8.61,
+   "ratio": 1.44,
+   "chase": "Belle & Beast - Certain as the Sun (Iconic)",
+   "chasePrice": 2188.63,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME03: Perfect Order",
+   "released": "2026-03-27",
+   "age": 139,
+   "product": "Perfect Order Elite Trainer Box",
+   "retail": 49.99,
+   "market": 71.48,
+   "ratio": 1.43,
+   "chase": "Mega Zygarde ex - 124/088",
+   "chasePrice": 132.89,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Attack of the Vine!",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Disney Lorcana: Attack of the Vine! Booster Box",
+   "retail": 143.76,
+   "market": 205.44,
+   "ratio": 1.43,
+   "chase": "Belle & Beast - Certain as the Sun (Iconic)",
+   "chasePrice": 2188.63,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME04: Chaos Rising",
+   "released": "2026-05-22",
+   "age": 83,
+   "product": "Chaos Rising Booster Bundle",
+   "retail": 26.94,
+   "market": 38.26,
+   "ratio": 1.42,
+   "chase": "Mega Greninja ex - 116/086",
+   "chasePrice": 212.63,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME05: Pitch Black",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Pitch Black Elite Trainer Box",
+   "retail": 49.99,
+   "market": 71.02,
+   "ratio": 1.42,
+   "chase": "Mega Darkrai ex - 116/084",
+   "chasePrice": 229.66,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Winterspell",
+   "released": "2026-02-13",
+   "age": 181,
+   "product": "Disney Lorcana: Winterspell Booster Box",
+   "retail": 143.76,
+   "market": 201.23,
+   "ratio": 1.4,
+   "chase": "Moana - Curious Explorer (Iconic)",
+   "chasePrice": 1142.98,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME04: Chaos Rising",
+   "released": "2026-05-22",
+   "age": 83,
+   "product": "Chaos Rising Elite Trainer Box",
+   "retail": 49.99,
+   "market": 69.43,
+   "ratio": 1.39,
+   "chase": "Mega Greninja ex - 116/086",
+   "chasePrice": 212.63,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 35: RED/BLACK Sabo",
+   "released": "2026-07-31",
+   "age": 13,
+   "product": "Starter Deck 35: RED/BLACK Sabo",
+   "retail": 11.99,
+   "market": 16.68,
+   "ratio": 1.39,
+   "chase": "Bartholomew Kuma",
+   "chasePrice": 2.25,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Whispers in the Well",
+   "released": "2025-11-07",
+   "age": 279,
+   "product": "Disney Lorcana: Whispers in the Well Booster Box",
+   "retail": 143.76,
+   "market": 191.9,
+   "ratio": 1.33,
+   "chase": "Ariel - Ethereal Voice (Iconic)",
+   "chasePrice": 1344.77,
+   "chaseRarity": "Iconic"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME04: Chaos Rising",
+   "released": "2026-05-22",
+   "age": 83,
+   "product": "Chaos Rising Booster Box",
+   "retail": 143.64,
+   "market": 189.99,
+   "ratio": 1.32,
+   "chase": "Mega Greninja ex - 116/086",
+   "chasePrice": 212.63,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "One Piece",
+   "set": "The Time of Battle",
+   "released": "2026-06-12",
+   "age": 62,
+   "product": "The Time of Battle Booster Pack",
+   "retail": 4.99,
+   "market": 6.48,
+   "ratio": 1.3,
+   "chase": "Sakazuki (Manga)",
+   "chasePrice": 1224.82,
+   "chaseRarity": "SR"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME05: Pitch Black",
+   "released": "2026-07-17",
+   "age": 27,
+   "product": "Pitch Black Booster Box",
+   "retail": 143.64,
+   "market": 174.25,
+   "ratio": 1.21,
+   "chase": "Mega Darkrai ex - 116/084",
+   "chasePrice": 229.66,
+   "chaseRarity": "Special Illustration Rare"
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME03: Perfect Order",
+   "released": "2026-03-27",
+   "age": 139,
+   "product": "Perfect Order Booster Box",
+   "retail": 143.64,
+   "market": 168.13,
+   "ratio": 1.17,
+   "chase": "Mega Zygarde ex - 124/088",
+   "chasePrice": 132.89,
+   "chaseRarity": "Mega Hyper Rare"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Reign of Jafar",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Disney Lorcana: Reign of Jafar Booster Pack",
+   "retail": 5.99,
+   "market": 6.8,
+   "ratio": 1.14,
+   "chase": "Stitch - Experiment 626 (Enchanted)",
+   "chasePrice": 359.57,
+   "chaseRarity": "Enchanted"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Reign of Jafar",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Disney Lorcana: Reign of Jafar Illumineer's Trove",
+   "retail": 49.99,
+   "market": 49.05,
+   "ratio": 0.98,
+   "chase": "Stitch - Experiment 626 (Enchanted)",
+   "chasePrice": 359.57,
+   "chaseRarity": "Enchanted"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Reign of Jafar",
+   "released": "2025-05-30",
+   "age": 440,
+   "product": "Disney Lorcana: Reign of Jafar Booster Box",
+   "retail": 143.76,
+   "market": 131.75,
+   "ratio": 0.92,
+   "chase": "Stitch - Experiment 626 (Enchanted)",
+   "chasePrice": 359.57,
+   "chaseRarity": "Enchanted"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Archazia's Island",
+   "released": "2025-03-07",
+   "age": 524,
+   "product": "Disney Lorcana: Archazia's Island Booster Pack",
+   "retail": 5.99,
+   "market": 5.45,
+   "ratio": 0.91,
+   "chase": "All Is Found (Enchanted)",
+   "chasePrice": 261.13,
+   "chaseRarity": "Enchanted"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Archazia's Island",
+   "released": "2025-03-07",
+   "age": 524,
+   "product": "Disney Lorcana: Archazia's Island Illumineer's Trove",
+   "retail": 49.99,
+   "market": 42.6,
+   "ratio": 0.85,
+   "chase": "All Is Found (Enchanted)",
+   "chasePrice": 261.13,
+   "chaseRarity": "Enchanted"
+  },
+  {
+   "game": "Lorcana",
+   "set": "Archazia's Island",
+   "released": "2025-03-07",
+   "age": 524,
+   "product": "Disney Lorcana: Archazia's Island Booster Box",
+   "retail": 143.76,
+   "market": 116.63,
+   "ratio": 0.81,
+   "chase": "All Is Found (Enchanted)",
+   "chasePrice": 261.13,
+   "chaseRarity": "Enchanted"
+  }
+ ],
+ "sets": [
+  {
+   "game": "Pokemon",
+   "set": "SV: Prismatic Evolutions",
+   "released": "2025-01-17",
+   "age": 573,
+   "chase": {
+    "name": "Umbreon ex - 161/131",
+    "price": 1494.97,
+    "rarity": "Special Illustration Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "McDonald's Promos 2024",
+   "released": "2025-01-21",
+   "age": 569,
+   "chase": {
+    "name": "Dragonite",
+    "price": 6.56,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV09: Journey Together",
+   "released": "2025-03-28",
+   "age": 503,
+   "chase": {
+    "name": "Lillie's Clefairy ex - 184/159",
+    "price": 110.89,
+    "rarity": "Special Illustration Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV10: Destined Rivals",
+   "released": "2025-05-30",
+   "age": 440,
+   "chase": {
+    "name": "Team Rocket's Mewtwo ex - 231/182",
+    "price": 506.89,
+    "rarity": "Special Illustration Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: Black Bolt",
+   "released": "2025-07-18",
+   "age": 391,
+   "chase": {
+    "name": "Zekrom ex - 172/086",
+    "price": 605.75,
+    "rarity": "Black White Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "SV: White Flare",
+   "released": "2025-07-18",
+   "age": 391,
+   "chase": {
+    "name": "Victini - 172/086",
+    "price": 560.28,
+    "rarity": "Black White Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Mega Evolution Promo",
+   "released": "2025-09-26",
+   "age": 321,
+   "chase": {
+    "name": "Celebratory Fanfare (Ace Trainer)",
+    "price": 685.24,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME01: Mega Evolution",
+   "released": "2025-09-26",
+   "age": 321,
+   "chase": {
+    "name": "Mega Lucario ex - 188/132",
+    "price": 271.87,
+    "rarity": "Mega Hyper Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "MEE: Mega Evolution Energies",
+   "released": "2025-09-26",
+   "age": 321,
+   "chase": {
+    "name": "Basic Darkness Energy - 007",
+    "price": 0.34,
+    "rarity": "Common"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME02: Phantasmal Flames",
+   "released": "2025-11-14",
+   "age": 272,
+   "chase": {
+    "name": "Mega Charizard X ex - 125/094",
+    "price": 703.54,
+    "rarity": "Special Illustration Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "Player Placement Trainer Promos",
+   "released": "2026-01-02",
+   "age": 223,
+   "chase": null
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: Ascended Heroes",
+   "released": "2026-01-30",
+   "age": 195,
+   "chase": {
+    "name": "Mega Gengar ex - 284/217",
+    "price": 1108.52,
+    "rarity": "Special Illustration Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME03: Perfect Order",
+   "released": "2026-03-27",
+   "age": 139,
+   "chase": {
+    "name": "Mega Zygarde ex - 124/088",
+    "price": 132.89,
+    "rarity": "Mega Hyper Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "First Partner Collection 2026",
+   "released": "2026-03-30",
+   "age": 136,
+   "chase": {
+    "name": "Mudkip -  057",
+    "price": 28.23,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME04: Chaos Rising",
+   "released": "2026-05-22",
+   "age": 83,
+   "chase": {
+    "name": "Mega Greninja ex - 116/086",
+    "price": 212.63,
+    "rarity": "Special Illustration Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME05: Pitch Black",
+   "released": "2026-07-17",
+   "age": 27,
+   "chase": {
+    "name": "Mega Darkrai ex - 116/084",
+    "price": 229.66,
+    "rarity": "Special Illustration Rare"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "Burger King Promos",
+   "released": "2026-08-13",
+   "age": 0,
+   "chase": {
+    "name": "Pikachu - 94/123 (Diamond & Pearl)",
+    "price": 97.39,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "Pikachu World Collection Promos",
+   "released": "2026-08-13",
+   "age": 0,
+   "chase": {
+    "name": "______'s Pikachu",
+    "price": 269.33,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "Professor Program Promos",
+   "released": "2026-08-13",
+   "age": 0,
+   "chase": {
+    "name": "Prof. Oak's Research (2004-2005)",
+    "price": 134.99,
+    "rarity": "Promo"
+   }
+  },
+  {
+   "game": "Pokemon",
+   "set": "ME: 30th Celebration",
+   "released": "2026-09-16",
+   "age": -34,
+   "chase": null
+  },
+  {
+   "game": "One Piece",
+   "set": "Royal Blood Release Event Cards",
+   "released": "2025-03-14",
+   "age": 517,
+   "chase": {
+    "name": "Nami (033)",
+    "price": 50.17,
+    "rarity": "UC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck EX: Gear 5",
+   "released": "2025-03-14",
+   "age": 517,
+   "chase": {
+    "name": "Monkey.D.Luffy (001) (Parallel)",
+    "price": 121.51,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Royal Blood",
+   "released": "2025-03-21",
+   "age": 510,
+   "chase": {
+    "name": "Trafalgar Law (119) (Manga)",
+    "price": 710.67,
+    "rarity": "SEC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Extra Booster: Anime 25th Collection",
+   "released": "2025-05-09",
+   "age": 461,
+   "chase": {
+    "name": "Boa Hancock (SP)",
+    "price": 6969.69,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "A Fist of Divine Speed Release Event Cards",
+   "released": "2025-05-30",
+   "age": 440,
+   "chase": {
+    "name": "After All These Years I'm Losing My Edge!!!",
+    "price": 19.83,
+    "rarity": "UC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "A Fist of Divine Speed",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Monkey.D.Luffy (119) (SP) (Gold)",
+    "price": 13000.0,
+    "rarity": "SEC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 23: RED Shanks",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Uta",
+    "price": 10.56,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 24: GREEN Jewelry Bonney",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Law & Bepo",
+    "price": 10.52,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 25: BLUE Buggy",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Buggy (OP09-042)",
+    "price": 1.39,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 26: PURPLE/BLACK Monkey.D.Luffy",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Monkey.D.Luffy (OP09-061)",
+    "price": 8.8,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 27: BLACK Marshall.D.Teach",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Kuzan",
+    "price": 0.94,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 28: GREEN/YELLOW Yamato",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Yamato (OP06-022)",
+    "price": 2.03,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Legacy of the Master Release Event Cards",
+   "released": "2025-08-15",
+   "age": 363,
+   "chase": {
+    "name": "Ms. All Sunday",
+    "price": 31.31,
+    "rarity": "C"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Legacy of the Master",
+   "released": "2025-08-22",
+   "age": 356,
+   "chase": {
+    "name": "Marshall.D.Teach (SP) (Gold)",
+    "price": 1894.05,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 22: Ace & Newgate",
+   "released": "2025-09-05",
+   "age": 342,
+   "chase": {
+    "name": "Ace & Newgate (Parallel)",
+    "price": 23.25,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Learn Together Deck Set",
+   "released": "2025-10-03",
+   "age": 314,
+   "chase": {
+    "name": "Monkey.D.Luffy - ST21-001 (Luffy Deck)",
+    "price": 14.74,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Premium Booster -The Best- Vol. 2",
+   "released": "2025-10-03",
+   "age": 314,
+   "chase": {
+    "name": "Sanji - OP06-119 (Manga)",
+    "price": 2262.72,
+    "rarity": "SEC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Carrying On His Will: 3rd Anniversary Tournament Cards",
+   "released": "2025-10-31",
+   "age": 286,
+   "chase": {
+    "name": "Nico Robin",
+    "price": 30.28,
+    "rarity": "UC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Carrying On His Will",
+   "released": "2025-11-07",
+   "age": 279,
+   "chase": {
+    "name": "Sabo (120) (Red Super Alternate Art)",
+    "price": 4800.0,
+    "rarity": "SEC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "The Azure Sea's Seven Release Event Cards",
+   "released": "2026-01-09",
+   "age": 216,
+   "chase": {
+    "name": "Kumacy",
+    "price": 26.32,
+    "rarity": "C"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 29: Egghead",
+   "released": "2026-01-16",
+   "age": 209,
+   "chase": {
+    "name": "Nico Robin (Full Art)",
+    "price": 28.16,
+    "rarity": "C"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "The Azure Sea's Seven",
+   "released": "2026-01-16",
+   "age": 209,
+   "chase": {
+    "name": "Buggy - OP09-051 (SP) (Gold)",
+    "price": 1638.69,
+    "rarity": "R"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Extra Booster: One Piece Heroines Edition",
+   "released": "2026-02-20",
+   "age": 174,
+   "chase": {
+    "name": "Nico Robin (055) (SP)",
+    "price": 1415.09,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Adventure on Kami's Island Release Event Cards",
+   "released": "2026-03-27",
+   "age": 139,
+   "chase": {
+    "name": "Monkey.D.Luffy (OP15-051)",
+    "price": 25.99,
+    "rarity": "UC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Adventure on Kami's Island",
+   "released": "2026-04-03",
+   "age": 132,
+   "chase": {
+    "name": "Enel (OP15-118) (Manga)",
+    "price": 1051.34,
+    "rarity": "SEC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "The Time of Battle Release Event Cards",
+   "released": "2026-06-05",
+   "age": 69,
+   "chase": {
+    "name": "Nico Robin",
+    "price": 51.2,
+    "rarity": "UC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck EX: Luffy & Ace",
+   "released": "2026-06-12",
+   "age": 62,
+   "chase": {
+    "name": "Luffy & Ace (Parallel)",
+    "price": 89.02,
+    "rarity": "L"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "The Time of Battle",
+   "released": "2026-06-12",
+   "age": 62,
+   "chase": {
+    "name": "Sakazuki (Manga)",
+    "price": 1224.82,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 31: RED Monkey.D.Luffy",
+   "released": "2026-07-31",
+   "age": 13,
+   "chase": {
+    "name": "Thousand Sunny",
+    "price": 9.15,
+    "rarity": "C"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 32: GREEN Roronoa Zoro",
+   "released": "2026-07-31",
+   "age": 13,
+   "chase": {
+    "name": "Kouzuki Oden",
+    "price": 9.12,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 33: BLUE Kuzan",
+   "released": "2026-07-31",
+   "age": 13,
+   "chase": {
+    "name": "Borsalino",
+    "price": 4.6,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 34: PURPLE Charlotte Katakuri",
+   "released": "2026-07-31",
+   "age": 13,
+   "chase": {
+    "name": "Charlotte Linlin",
+    "price": 8.01,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 35: RED/BLACK Sabo",
+   "released": "2026-07-31",
+   "age": 13,
+   "chase": {
+    "name": "Bartholomew Kuma",
+    "price": 2.25,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Starter Deck 36: YELLOW Eustass\"Captain\"Kid",
+   "released": "2026-07-31",
+   "age": 13,
+   "chase": {
+    "name": "Eustass\"Captain\"Kid (ST36-005)",
+    "price": 3.57,
+    "rarity": "SR"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "The World's Strongest Warriors Release Event Cards",
+   "released": "2026-08-21",
+   "age": -8,
+   "chase": null
+  },
+  {
+   "game": "One Piece",
+   "set": "The World's Strongest Warriors",
+   "released": "2026-08-28",
+   "age": -15,
+   "chase": {
+    "name": "Loki",
+    "price": 79.99,
+    "rarity": "SEC"
+   }
+  },
+  {
+   "game": "One Piece",
+   "set": "Set Sail Deck Set",
+   "released": "2026-09-18",
+   "age": -36,
+   "chase": null
+  },
+  {
+   "game": "Lorcana",
+   "set": "Archazia's Island",
+   "released": "2025-03-07",
+   "age": 524,
+   "chase": {
+    "name": "All Is Found (Enchanted)",
+    "price": 261.13,
+    "rarity": "Enchanted"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Reign of Jafar",
+   "released": "2025-05-30",
+   "age": 440,
+   "chase": {
+    "name": "Stitch - Experiment 626 (Enchanted)",
+    "price": 359.57,
+    "rarity": "Enchanted"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Illumineer's Quest: Palace Heist",
+   "released": "2025-06-06",
+   "age": 433,
+   "chase": {
+    "name": "Elsa - Ice Maker (224/204)",
+    "price": 3.19,
+    "rarity": "Super Rare"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Fabled",
+   "released": "2025-08-29",
+   "age": 349,
+   "chase": {
+    "name": "Minnie Mouse - Sweetheart Princess (Iconic)",
+    "price": 1808.22,
+    "rarity": "Iconic"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Whispers in the Well",
+   "released": "2025-11-07",
+   "age": 279,
+   "chase": {
+    "name": "Ariel - Ethereal Voice (Iconic)",
+    "price": 1344.77,
+    "rarity": "Iconic"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Winterspell",
+   "released": "2026-02-13",
+   "age": 181,
+   "chase": {
+    "name": "Moana - Curious Explorer (Iconic)",
+    "price": 1142.98,
+    "rarity": "Iconic"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Wilds Unknown",
+   "released": "2026-05-08",
+   "age": 97,
+   "chase": {
+    "name": "Buzz Lightyear - Jungle Ranger (Iconic)",
+    "price": 3632.28,
+    "rarity": "Iconic"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Attack of the Vine!",
+   "released": "2026-07-17",
+   "age": 27,
+   "chase": {
+    "name": "Belle & Beast - Certain as the Sun (Iconic)",
+    "price": 2188.63,
+    "rarity": "Iconic"
+   }
+  },
+  {
+   "game": "Lorcana",
+   "set": "Illumineer's Quest: The Great Hunny Rescue",
+   "released": "2026-10-02",
+   "age": -50,
+   "chase": null
+  },
+  {
+   "game": "Lorcana",
+   "set": "Hyperia City",
+   "released": "2026-10-16",
+   "age": -64,
+   "chase": null
+  }
+ ]
+}

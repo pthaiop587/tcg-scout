@@ -1,0 +1,10 @@
+# build output - CI regenerates this into _site/ on every run
+card-run-hq.html
+_site/
+
+# local thumbnail download cache (lives in the tcg-lister project, but just in case)
+.thumbcache/
+
+__pycache__/
+*.pyc
+.DS_Store
