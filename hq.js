@@ -72,7 +72,20 @@ const RETAILERS = [
   {k:'GameStop', s:'GS', u:q => 'https://www.gamestop.com/search/?q=' + q},
   {k:'Pokemon Center', s:'PC', pokemonOnly:true,
    u:q => 'https://www.pokemoncenter.com/search/' + q},
-  {k:'TCGplayer', s:'TP', u:q => 'https://www.tcgplayer.com/search/all/product?q=' + q},
+];
+
+/* What it actually sells for, checked by hand.
+   eBay's sold-price APIs are all shut to us -- Marketplace Insights is
+   partner-only, Finding was switched off in Feb 2025, and Browse needs an
+   eBay Partner Network contract. A sold-listings URL needs none of that, so
+   the honest version of "check eBay" is one tap into the real thing. */
+const CHECKERS = [
+  {k:'eBay sold prices', s:'eBay sold', hot:true,
+   u:q => 'https://www.ebay.com/sch/i.html?_nkw=' + q + '&LH_Sold=1&LH_Complete=1&_sop=13'},
+  {k:'TCGplayer', s:'TCGplayer', tcgOnly:true,
+   u:q => 'https://www.tcgplayer.com/search/all/product?q=' + q},
+  {k:'SportsCardsPro price guide', s:'SportsCardsPro', sportsOnly:true,
+   u:q => 'https://www.sportscardspro.com/search-products?q=' + q + '&type=prices'},
 ];
 
 /* retailers list the product, not the set - drop set prefixes and punctuation */
@@ -92,6 +105,36 @@ function buyLinks(product, game){
     .filter(r => !r.pokemonOnly || pk)
     .map(r => '<a class="buylink" href="' + r.u(q) + '" target="_blank" rel="noopener nofollow" ' +
               'title="Search ' + r.k + '">' + r.s + '</a>').join('') + '</span>';
+}
+
+/* "what is it really worth" links - works for sports, where no free feed exists */
+function checkLinks(product, game){
+  const q = buyQuery(product, game);
+  const sports = /sport|topps|panini|bowman/i.test(game || '');
+  return '<span class="buys">' + CHECKERS
+    .filter(c => (!c.tcgOnly || !sports) && (!c.sportsOnly || sports))
+    .map(c => '<a class="buylink' + (c.hot ? ' hot' : '') + '" href="' + c.u(q) +
+              '" target="_blank" rel="noopener nofollow" title="' + c.k + '">' +
+              c.s + '</a>').join('') + '</span>';
+}
+
+/* ---- fill the per-card link rows on the tiered shelf lists ---- */
+document.querySelectorAll('.linkrow[data-links]').forEach(el => {
+  el.innerHTML = buyLinks(el.dataset.links, el.dataset.game) +
+                 checkLinks(el.dataset.links, el.dataset.game);
+});
+
+/* ---- things we track but cannot price: sports, Palworld ---- */
+const UNPRICED = __UNPRICED__;
+const upBody = document.getElementById('unpriced');
+if (upBody) {
+  upBody.innerHTML = UNPRICED.map(u =>
+    '<tr><td class="mono">' + esc(u.d) + '<br><span class="setname">' +
+      (u.days >= 0 ? '+' + u.days : u.days) + 'd</span></td>' +
+    '<td>' + u.n + '</td><td>' + esc(u.l) + '</td>' +
+    '<td>' + buyLinks(u.n.replace(/<[^>]+>/g, ''), u.l) + '</td>' +
+    '<td>' + checkLinks(u.n.replace(/<[^>]+>/g, ''), u.l) + '</td></tr>').join('')
+    || '<tr><td colspan="5" class="setname">Nothing upcoming.</td></tr>';
 }
 
 /* ---------------- shelf search ---------------- */
@@ -120,6 +163,7 @@ function renderShelf(){
       +'<td class="num mono">'+money(r.r)+'</td><td class="num mono">'+money(r.m)+'</td>'
       +'<td class="num mono xcell '+cls+'">'+r.x.toFixed(2)+'&times;</td>'
       +'<td>'+buyLinks(r.p, r.g)+'</td>'
+      +'<td>'+checkLinks(r.p, r.g)+'</td>'
       +'<td class="chasecell mono">'+ch+'</td></tr>';
   }).join('');
 }

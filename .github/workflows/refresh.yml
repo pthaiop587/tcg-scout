@@ -7,6 +7,8 @@ on:
   schedule:
     - cron: '13 1,7,13,19 * * *'
   workflow_dispatch:        # gives you a "Run workflow" button for a manual pull
+  push:
+    branches: [master]      # a change to the dashboard goes live on commit
 
 permissions:
   contents: read

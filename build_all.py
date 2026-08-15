@@ -139,6 +139,42 @@ def topcard(r):
             f'<span class="xx">{r["x"]:.2f}&times;</span></div>{ch}</div></article>')
 top_cards = "".join(topcard(r) for r in shelf_rows[:3])
 
+# ---------------------------------------------------------------- shelf tiers
+# Sorted into three buckets so a shopping trip is a glance, not a reading task.
+# The bottom tier is the useful one nobody builds: the reason a thing is STILL
+# sitting on the shelf is almost always that the numbers don't work.
+GRAB, LOOK = 2.0, 1.5
+
+def why_left(r):
+    x = r["x"]
+    if x < 1.0:
+        return "Worth <b>less</b> than the sticker. It is on the shelf because nobody wants it."
+    if x < 1.2:
+        return "Barely above retail &mdash; fees and postage eat all of it."
+    return "Thin. About {:.0%} over retail before eBay takes ~13% and postage.".format(x - 1)
+
+def tier_card(r, tone):
+    ch = (f'<div class="ch">Best card in set &middot; <b>{esc(r["c"])}</b> '
+          f'<span class="mono">${r["cp"]:,.0f}</span></div>') if r["c"] else ""
+    why = f'<div class="ch">{why_left(r)}</div>' if tone == "skip" else ""
+    return (f'<article class="card {tone}"><div class="pad">'
+            f'<span class="game">{esc(r["g"])} &middot; {esc(r["s"])}</span>'
+            f'<b class="pname">{esc(r["p"])}</b>'
+            f'<div class="prices mono"><span class="tag">shelf</span>'
+            f'<span class="rp">${r["r"]:,.2f}</span><span class="arrow">&rarr;</span>'
+            f'<span class="tag">worth</span><span class="mp">${r["m"]:,.2f}</span>'
+            f'<span class="xx">{r["x"]:.2f}&times;</span></div>'
+            f'<div class="linkrow" data-links="{esc(r["p"])}" data-game="{esc(r["g"])}"></div>'
+            f'{ch}{why}</div></article>')
+
+_grab = [r for r in shelf_rows if r["x"] >= GRAB]
+_look = [r for r in shelf_rows if LOOK <= r["x"] < GRAB]
+_skip = sorted([r for r in shelf_rows if r["x"] < LOOK], key=lambda r: r["x"])
+
+tier_grab = "".join(tier_card(r, "buy") for r in _grab[:10])
+tier_look = "".join(tier_card(r, "watch") for r in _look[:8])
+tier_skip = "".join(tier_card(r, "skip") for r in _skip[:6])
+
 CSS = io.open(f"{SP}/hq.css", encoding="utf-8").read()
 JS  = io.open(f"{SP}/hq.js",  encoding="utf-8").read()
 
@@ -170,7 +206,13 @@ JS  = JS.replace("__ROWS__", json.dumps(rows, separators=(",", ":"))) \
         .replace("__HUNT__", json.dumps({k: v[1] for k, v in HUNT.items()})) \
         .replace("__CARDS__", CARDS_JSON) \
         .replace("__BUILT__", json.dumps(TODAY.isoformat())) \
-        .replace("__THUMBS__", THUMBS_JSON)
+        .replace("__THUMBS__", THUMBS_JSON) \
+        .replace("__UNPRICED__", json.dumps(
+            [{"d": _dt.date(*map(int, iso.split("-"))).strftime("%d %b"),
+              "n": name, "l": line, "days": _days(iso)}
+             for iso, name, line in CALENDAR
+             if line in ("Sports", "Palworld") and _days(iso) >= -30],
+            separators=(",", ":")))
 
 BODY = f'''<title>Card Run HQ</title>
 <style>{CSS}</style>
@@ -283,7 +325,28 @@ BODY = f'''<title>Card Run HQ</title>
    <b>Shelf</b> is the verified MSRP &middot; <b>Worth</b> is the TCGplayer market price &middot;
    <b>Multiple</b> is worth &divide; shelf, which is the upcharge. <a href="#src">Full sources &rarr;</a></p>
  </section>
- <section><h2>Best things to find right now</h2>{top_cards}</section>
+ <section><h2>Grab it &mdash; 2&times; and up <span class="hint">{len(_grab)} on shelves</span></h2>
+  <p class="hint">If you see any of these at the shelf price, take it. Every one clears fees comfortably.</p>
+  {tier_grab}
+ </section>
+
+ <section><h2>Worth a look &mdash; 1.5&times; to 2&times; <span class="hint">{len(_look)} on shelves</span></h2>
+  <p class="hint">Real margin, but not enough to fight over. Buy if it&rsquo;s in front of you and priced right.</p>
+  {tier_look}
+ </section>
+
+ <section><h2>Why these are still sitting there <span class="hint">{len(_skip)} below 1.5&times;</span></h2>
+  <p class="hint">The stock nobody clears. Useful to recognise so you stop picking it up &mdash; each one says what&rsquo;s wrong with it.</p>
+  {tier_skip}
+ </section>
+
+ <section><h2>Tracked but not priced</h2>
+  <div class="note warn"><b>Sports cards have no free price feed anywhere &mdash; I checked again on 15 Aug 2026.</b> TCGplayer is trading-card-games only, so there is no Topps or Panini category to read, and every sports-specific API (SportsCardsPro CSV, Card Hedger, Zyla, Ximilar) is a paid subscription. <b>Palworld</b> has no TCGplayer listing either.
+  <br><br>So rather than invent a multiple, these get dates and one-tap links: <b>eBay sold prices</b> tells you what a thing actually goes for, and for sports the free <b>SportsCardsPro</b> guide does the same. That is the same answer I&rsquo;d get from an API, just checked by hand.</div>
+  <div class="scroll"><table><thead><tr><th>Date</th><th>Product</th><th>Line</th>
+   <th>Buy at MSRP</th><th>What it sells for</th></tr></thead>
+   <tbody id="unpriced"></tbody></table></div>
+ </section>
  <section>
   <h2>Search everything &mdash; {len(rows)} products</h2>
   <div class="tools">
@@ -294,7 +357,7 @@ BODY = f'''<title>Card Run HQ</title>
   </div>
   <div class="scroll"><table><thead><tr><th>Product</th><th>Where</th><th class="num">Shelf &middot; MSRP</th>
    <th class="num">Worth &middot; TCGplayer</th><th class="num">Upcharge</th><th>Buy at MSRP</th>
-   <th>Best card in set</th></tr></thead>
+   <th>What it sells for</th><th>Best card in set</th></tr></thead>
    <tbody id="tb"></tbody></table></div>
   <div class="empty" id="empty" hidden>Nothing matches. Try a shorter word.</div>
  </section>
