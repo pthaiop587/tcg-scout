@@ -20,10 +20,12 @@ def where(r):
     if "pokemon center" in r["product"].lower(): return "online"
     return "store"
 
+# x (the upcharge) is None for Magic, where Wizards publishes no MSRP.
+# Sort those to the bottom rather than crashing on the comparison.
 rows = sorted([{"g": r["game"], "s": r["set"], "p": r["product"], "r": r["retail"],
                 "m": r["market"], "x": r["ratio"], "c": r["chase"], "cp": r["chasePrice"],
                 "cr": r["chaseRarity"], "w": where(r)} for r in shelf_data["rows"]],
-              key=lambda r: -r["x"])
+              key=lambda r: (r["x"] is None, -(r["x"] or 0)))
 shelf_rows = [r for r in rows if r["w"] == "store"]
 
 chase = sorted([s for s in shelf_data["sets"] if s.get("chase")],
@@ -259,13 +261,27 @@ pre_cards = "".join(
     f'<div class="linkrow" data-links="{esc(name)}" data-game="{esc(line)}"></div>'
     f'</div></article>' for iso, name, line in _pre)
 
-_grab = [r for r in shelf_rows if r["x"] >= GRAB]
-_look = [r for r in shelf_rows if LOOK <= r["x"] < GRAB]
-_skip = sorted([r for r in shelf_rows if r["x"] < LOOK], key=lambda r: r["x"])
+_scored = [r for r in shelf_rows if r["x"] is not None]
+_grab = [r for r in _scored if r["x"] >= GRAB]
+_look = [r for r in _scored if LOOK <= r["x"] < GRAB]
+_skip = sorted([r for r in _scored if r["x"] < LOOK], key=lambda r: r["x"])
+# Magic: no published MSRP, so no upcharge is computable. Rank by market value.
+_nomsrp = sorted([r for r in shelf_rows if r["x"] is None], key=lambda r: -r["m"])
 
 tier_grab = "".join(tier_card(r, "buy") for r in _grab[:10])
 tier_look = "".join(tier_card(r, "watch") for r in _look[:8])
 tier_skip = "".join(tier_card(r, "skip") for r in _skip[:6])
+
+def nomsrp_card(r):
+    return (f'<article class="card flag"><div class="pad">'
+            f'<span class="game">{esc(r["g"])} &middot; {esc(r["s"])}</span>'
+            f'<b class="pname">{esc(r["p"])}</b>'
+            f'<div class="prices mono"><span class="tag">market</span>'
+            f'<span class="mp">${r["m"]:,.2f}</span>'
+            f'<span class="xx">no published MSRP</span></div>'
+            f'<div class="linkrow" data-links="{esc(r["p"])}" data-game="{esc(r["g"])}"></div>'
+            f'</div></article>')
+tier_nomsrp = "".join(nomsrp_card(r) for r in _nomsrp[:12])
 
 CSS = io.open(f"{SP}/hq.css", encoding="utf-8").read()
 JS  = io.open(f"{SP}/hq.js",  encoding="utf-8").read()
@@ -432,6 +448,12 @@ BODY = f'''<title>Card Run HQ</title>
  <section><h2>Why these are still sitting there <span class="hint">{len(_skip)} below 1.5&times;</span></h2>
   <p class="hint">The stock nobody clears. Useful to recognise so you stop picking it up &mdash; each one says what&rsquo;s wrong with it.</p>
   {tier_skip}
+ </section>
+
+ <section><h2>Magic &mdash; market price only <span class="hint">{len(_nomsrp)} products</span></h2>
+  <div class="note warn"><b>Magic has no MSRP to compare against.</b> Wizards of the Coast stopped publishing one &mdash; retailers set their own price, so there is no sticker to divide by and no honest upcharge to show. Checked again 15 Aug 2026.
+  <br><br>So these show the <b>TCGplayer market price</b> instead. Compare it to whatever the shelf tag says in front of you: <b>if the tag is under the market price, that is your margin.</b> The one exception is <b>Draft Night</b>, which does carry a published $119.99 list price and so appears in the tiers above.</div>
+  {tier_nomsrp}
  </section>
 
  <section><h2>Tracked but not priced</h2>

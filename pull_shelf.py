@@ -3,11 +3,17 @@ prices and the set's chase card. Output feeds the in-store lookup dashboard."""
 import json, urllib.request, datetime, sys, re
 
 BASE = "https://tcgcsv.com/tcgplayer"
-CATS = {3: "Pokemon", 68: "One Piece", 71: "Lorcana"}
+CATS = {3: "Pokemon", 68: "One Piece", 71: "Lorcana", 1: "Magic"}
 CUTOFF = "2025-01-01"          # ~19 months back: realistic shelf life
+# Magic prints far more sets than the others; a tighter window keeps the pull
+# (and the 4x-daily CI build) from ballooning.
+CUTOFF_BY_GAME = {"Magic": "2026-01-01"}
 TODAY = datetime.date.today()
 JUNK = ("pop series", "miscellaneous", "alternate art promos", "nintendo promos",
-        "trainer kit", "blister exclusives", "first partner pack", "prerelease")
+        "trainer kit", "blister exclusives", "first partner pack", "prerelease",
+        # Magic supplements that never sit on a retail shelf as sealed product
+        "art series", "minigame", "substitute card", "source material",
+        "tokens", "front cards", "the list")
 
 def get(url, tries=3):
     for i in range(tries):
@@ -28,7 +34,7 @@ def ext(p, key):
     return None
 
 # --- retail price by product type. Only verified figures; None = don't claim one.
-def msrp_for(game, name):
+def msrp_for(game, name, set_name=""):
     n = name.lower()
     if "case" in n or ("display" in n and "mini tin display" not in n):
         return None                     # distributor units, not shelf items
@@ -70,12 +76,36 @@ def msrp_for(game, name):
             return 5.99
         if "illumineer's trove" in n and "case" not in n:
             return 49.99
+    if game == "Magic":
+        # Wizards stopped publishing MSRPs -- retailers set their own price, so
+        # for Magic there is usually no sticker to divide by. Only products with
+        # a genuine published list price get one; everything else comes through
+        # with retail=None and is shown as market price only.
+        if "draft night" in n:
+            # Same box (12 Play + 1 Collector + 90 lands), two price points:
+            # Universes Beyond carries a premium. Verified 15 Aug 2026 --
+            # TMNT and The Hobbit at $119.99, Lorwyn Eclipsed at $89.99.
+            return 119.99 if is_universes_beyond(set_name) else 89.99
     return None
+
+
+# Universes Beyond = licensed crossover sets, priced above standard Magic.
+UB_SETS = ("teenage mutant ninja turtles", "the hobbit", "marvel super heroes",
+           "star trek", "final fantasy", "spider-man", "avatar", "assassin's creed",
+           "fallout", "doctor who", "jurassic world", "warhammer")
+
+def is_universes_beyond(set_name):
+    s = (set_name or "").lower()
+    return any(u in s for u in UB_SETS)
 
 rows, sets_meta = [], []
 for cat, game in CATS.items():
     groups = [g for g in get(f"{BASE}/{cat}/groups") if g.get("publishedOn")]
-    groups = [g for g in groups if g["publishedOn"][:10] >= CUTOFF]
+    # TCGCSV sometimes stamps publishedOn with the crawl time instead of a
+    # release date (19/217 Pokemon groups, all POP Series). Real release dates
+    # are exactly midnight; drop the artifacts rather than let them look new.
+    groups = [g for g in groups if g["publishedOn"].endswith("T00:00:00")]
+    groups = [g for g in groups if g["publishedOn"][:10] >= CUTOFF_BY_GAME.get(game, CUTOFF)]
     groups = [g for g in groups if not any(j in g["name"].lower() for j in JUNK)]
     groups.sort(key=lambda g: g["publishedOn"])
     print(f"{game}: {len(groups)} sets", file=sys.stderr)
@@ -114,20 +144,34 @@ for cat, game in CATS.items():
             if not mp or ext(p, "Number") is not None:
                 continue
             nm = p["name"]
-            if "code card" in nm.lower() or "don!!" in nm.lower():
+            nl = nm.lower()
+            if "code card" in nl or "don!!" in nl:
                 continue
-            retail = msrp_for(game, nm)
-            if not retail:
+            # Distributor units, not things you find on a shelf. The MSRP table
+            # already returns None for these, but Magic rows are allowed through
+            # without an MSRP, so they need an explicit gate.
+            if "case" in nl or "[set of" in nl or "master" in nl:
+                continue
+            retail = msrp_for(game, nm, sname)
+            # No verified MSRP is still worth showing for Magic, where Wizards
+            # publishes none: market price plus links beats omitting the product.
+            # Everywhere else a missing MSRP means we could not verify it, and a
+            # row with no sticker and no ratio would just be noise.
+            if not retail and game != "Magic":
                 continue
             rows.append({
                 "game": game, "set": sname, "released": rel, "age": age,
-                "product": nm, "retail": round(retail, 2), "market": round(mp, 2),
-                "ratio": round(mp / retail, 2),
+                "product": nm,
+                "retail": round(retail, 2) if retail else None,
+                "market": round(mp, 2),
+                "ratio": round(mp / retail, 2) if retail else None,
                 "chase": chase["name"] if chase else None,
                 "chasePrice": round(chase["price"], 2) if chase else None,
                 "chaseRarity": chase["rarity"] if chase else None,
             })
 
-rows.sort(key=lambda r: -r["ratio"])
+rows.sort(key=lambda r: (r["ratio"] is None, -(r["ratio"] or 0)))
 json.dump({"rows": rows, "sets": sets_meta}, open(sys.argv[1], "w"), indent=1)
-print(f"\nrows with verified retail: {len(rows)}   sets: {len(sets_meta)}", file=sys.stderr)
+_priced = sum(1 for r in rows if r["ratio"] is not None)
+print(f"\nrows: {len(rows)}  ({_priced} with a verified MSRP, "
+      f"{len(rows)-_priced} market-price-only)   sets: {len(sets_meta)}", file=sys.stderr)

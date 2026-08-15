@@ -148,20 +148,24 @@ function renderShelf(){
   const onlyBuy=fBuy.getAttribute('aria-pressed')==='true';
   const list=ROWS.filter(r=>{
     if(onlyStore && r.w!=='store') return false;
-    if(onlyBuy && r.x<2) return false;
+    if(onlyBuy && !(r.x >= 2)) return false;   /* null ratio is not "2x and up" */
     if(!term) return true;
     return (r.p+' '+r.s+' '+r.g+' '+(r.c||'')).toLowerCase().indexOf(term)>-1;
   });
   cnt.textContent=list.length+' of '+ROWS.length+' shown';
   empty.hidden=list.length>0;
   tb.innerHTML=list.map(r=>{
-    const cls=r.x>=2?'x-hi':(r.x>=1.5?'x-mid':'x-lo');
+    /* Magic has no published MSRP, so r.x and r.r are null there */
+    const hasMsrp = r.x != null;
+    const cls = !hasMsrp ? 'x-lo' : (r.x>=2?'x-hi':(r.x>=1.5?'x-mid':'x-lo'));
     const ch=r.c ? '<b>'+esc(r.c)+'</b><br>'+money(r.cp)+(r.cr?' &middot; '+esc(r.cr):'')
                  : '<span style="opacity:.55">not listed yet</span>';
     return '<tr><td><div class="prod">'+esc(r.p)+'</div><div class="setname">'+esc(r.g)+' &middot; '+esc(r.s)+'</div></td>'
       +'<td><span class="wtag w-'+r.w+'">'+r.w+'</span></td>'
-      +'<td class="num mono">'+money(r.r)+'</td><td class="num mono">'+money(r.m)+'</td>'
-      +'<td class="num mono xcell '+cls+'">'+r.x.toFixed(2)+'&times;</td>'
+      +'<td class="num mono">'+(hasMsrp?money(r.r):'<span style="opacity:.45">none</span>')+'</td>'
+      +'<td class="num mono">'+money(r.m)+'</td>'
+      +'<td class="num mono xcell '+cls+'">'
+        +(hasMsrp?r.x.toFixed(2)+'&times;':'<span style="opacity:.45">&mdash;</span>')+'</td>'
       +'<td>'+buyLinks(r.p, r.g)+'</td>'
       +'<td>'+checkLinks(r.p, r.g)+'</td>'
       +'<td class="chasecell mono">'+ch+'</td></tr>';
