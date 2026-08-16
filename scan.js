@@ -388,15 +388,51 @@ const SC_FIELDS = [
   { k: 'var',  label: 'Parallel',  ph: 'Gold Cracked Ice' },
   { k: 'c',    label: 'Condition', sel: SC_CONDS },
   { k: 'q',    label: 'Qty',       num: true },
-  { k: 'v',    label: 'Worth ea',  num: true, ph: '0.00' },
-  { k: 'kind', label: 'Category',  sel: ['Sports', 'TCG', 'Non-sport'] }
+  { k: 'v',    label: 'Worth ea',  num: true, ph: '0.00' }
+];
+
+/* Everything that is the same for every card out of one box, pack or stack.
+   Typing the year, the brand and the set on all twelve cards of a rip is the
+   bulk of the work and none of it is per-card information. These are filled
+   in once; a card inherits any of them it has not been given itself, so a
+   mixed stack can still override the set on a single row. */
+const SC_BATCH_FIELDS = [
+  { k: 'year',   label: 'Year',        ph: '2025' },
+  { k: 's',      label: 'Set / brand', ph: 'Panini Prizm Draft Picks', wide: true },
+  { k: 'insert', label: 'Insert set',  ph: 'Student Orientation' },
+  { k: 'team',   label: 'Team',        ph: 'Colorado Buffaloes' },
+  { k: 'league', label: 'League',      sel: ['', 'NCAA', 'NFL', 'NBA', 'MLB', 'NHL', 'MLS', 'WWE', 'UFC'] },
+  { k: 'sport',  label: 'Sport / game', ph: 'Football' },
+  { k: 'kind',   label: 'Category',    sel: ['Sports', 'TCG', 'Non-sport'] },
+  { k: 'c',      label: 'Condition',   sel: SC_CONDS },
+  { k: 'source', label: 'Bought from', ph: 'Target Upland' },
+  { k: 'lot',    label: 'Lot ID',      ph: 'LOT-001' }
 ];
 
 /* queue field -> the name file_batch.py knows it by */
 const SC_TO_BATCH = {
   n: 'player', s: 'brand', num: 'num', var: 'parallel',
-  c: 'condition', q: 'qty', v: 'market', kind: 'category'
+  c: 'condition', q: 'qty', v: 'market', kind: 'category',
+  year: 'year', insert: 'insert', team: 'team', league: 'league',
+  sport: 'sport', source: 'source', lot: 'lot'
 };
+
+let SC_BATCH = {};
+
+/* a card as it will actually be filed: its own values, then the batch's */
+function scMerged(entry){
+  const out = {};
+  SC_BATCH_FIELDS.forEach(f => {
+    const v = SC_BATCH[f.k];
+    if (v !== undefined && v !== '') out[f.k] = v;
+  });
+  Object.keys(entry || {}).forEach(k => {
+    if (SC_TO_BATCH[k] === undefined) return;
+    const v = entry[k];
+    if (v !== undefined && v !== '' && !(k === 'v' && !v)) out[k] = v;
+  });
+  return out;
+}
 
 /* what an old queue, or a paste written the collector's way, gets turned into */
 const SC_COND_ALIAS = {
@@ -425,11 +461,12 @@ function scQLoad(){
     const saved = raw ? JSON.parse(raw) : {};
     SC_QUEUE = saved.queue || [];
     SC_PAIRS = !!saved.pairs;
+    SC_BATCH = saved.batch || {};
     /* a queue stored before grouping was explicit has no card ids on it */
     if (SC_QUEUE.some(e => !e.card)){
       if (SC_PAIRS) scPairUp(); else scUnpair();
     }
-  } catch (e){ SC_QPERSISTS = false; SC_QUEUE = []; SC_PAIRS = false; }
+  } catch (e){ SC_QPERSISTS = false; SC_QUEUE = []; SC_PAIRS = false; SC_BATCH = {}; }
 }
 
 /* The queue as CARDS rather than pictures.
@@ -463,7 +500,8 @@ function scUnpair(){
 function scQSave(){
   if (!SC_QPERSISTS) return;
   try { localStorage.setItem(SC_QKEY,
-    JSON.stringify({ queue: SC_QUEUE, pairs: SC_PAIRS, at: Date.now() })); }
+    JSON.stringify({ queue: SC_QUEUE, pairs: SC_PAIRS, batch: SC_BATCH,
+                     at: Date.now() })); }
   catch (e){
     /* quota, almost certainly the thumbnails. Say so rather than failing mute. */
     SC_QPERSISTS = false;
@@ -507,16 +545,30 @@ if (scDropEl) {
     let input;
     if (f.sel){
       input = document.createElement('select');
+      /* A blank first option meaning "whatever the batch says". Without it a
+         card is created already holding a condition, that counts as its own
+         value, and it silently beats anything set for the whole batch. */
+      const inh = SC_BATCH[f.k];
+      const blank = document.createElement('option');
+      blank.value = '';
+      blank.textContent = (inh || f.sel[0]) + (inh ? ' — from batch' : '');
+      input.appendChild(blank);
       f.sel.forEach(o => {
         const opt = document.createElement('option');
         opt.value = o; opt.textContent = o;
-        if (String(entry[f.k]) === o) opt.selected = true;
         input.appendChild(opt);
       });
+      input.value = entry[f.k] || '';
+      if (!entry[f.k] && inh) input.classList.add('inherited');
     } else {
       input = document.createElement('input');
       if (f.num){ input.type = 'number'; input.min = '0'; input.step = f.k === 'q' ? '1' : '0.5'; }
-      input.placeholder = f.ph || '';
+      /* an empty field shows what it will inherit from the batch strip, so
+         you can see the set is filled in without it being typed on every row */
+      const inherited = SC_BATCH[f.k];
+      input.placeholder = (inherited !== undefined && inherited !== '')
+        ? inherited : (f.ph || '');
+      if (inherited) input.classList.add('inherited');
       input.value = entry[f.k] === 0 && f.k === 'v' ? '' : (entry[f.k] ?? '');
     }
 
@@ -529,11 +581,16 @@ if (scDropEl) {
       if ((entry.flags || []).includes(f.k)){
         entry.flags = entry.flags.filter(x => x !== f.k);
         input.classList.remove('unsure');
-        renderFoot();
       }
-      scQSave();
+      /* and a card you have just edited is no longer a card you have checked,
+         or "checked" would mean nothing */
+      if (entry.ok){ entry.ok = false; entry.filed = false; }
+      scQSave(); renderFoot();
     });
-    input.addEventListener('change', () => { scQSave(); render(); });
+    input.addEventListener('change', () => {
+      if (entry.ok){ entry.ok = false; entry.filed = false; }
+      scQSave(); renderRows();
+    });
     wrap.appendChild(input);
 
     if (flagged){
@@ -550,7 +607,7 @@ if (scDropEl) {
     return wrap;
   }
 
-  function rowEl(group, i){
+  function rowEl(group, i, warnings){
     /* the first picture of a card carries its details; a back is just
        another photo of the same card */
     const entry = group[0];
@@ -562,14 +619,24 @@ if (scDropEl) {
     left.className = 'qleft';
     const shots = document.createElement('div');
     shots.className = 'qshots';
-    group.forEach((e, k) => {
-      const im = document.createElement('img');
-      im.className = 'qshot' + (group.length > 1 ? ' pair' : '');
-      im.src = e.thumb;
-      im.alt = 'card ' + (i + 1) + (group.length > 1 ? (k ? ' back' : ' front') : '');
-      im.title = group.length > 1 ? (k ? 'back' : 'front') : '';
-      shots.appendChild(im);
-    });
+    const withPics = group.filter(e => e.thumb);
+    if (!withPics.length){
+      /* a card typed in before its photograph exists -- the row is the card,
+         the picture catches up later */
+      const ph = document.createElement('div');
+      ph.className = 'qshot noshot';
+      ph.textContent = 'no picture yet';
+      shots.appendChild(ph);
+    } else {
+      withPics.forEach((e, k) => {
+        const im = document.createElement('img');
+        im.className = 'qshot' + (withPics.length > 1 ? ' pair' : '');
+        im.src = e.thumb;
+        im.alt = 'card ' + (i + 1) + (withPics.length > 1 ? (k ? ' back' : ' front') : '');
+        im.title = withPics.length > 1 ? (k ? 'back' : 'front') : '';
+        shots.appendChild(im);
+      });
+    }
     left.appendChild(shots);
     const cap = document.createElement('div');
     cap.className = 'scname';
@@ -578,10 +645,19 @@ if (scDropEl) {
     left.appendChild(cap);
     row.appendChild(left);
 
+    const mid = document.createElement('div');
     const fields = document.createElement('div');
     fields.className = 'qfields';
     SC_FIELDS.forEach(f => fields.appendChild(fieldEl(entry, f)));
-    row.appendChild(fields);
+    mid.appendChild(fields);
+
+    if (warnings && warnings.length){
+      const w = document.createElement('p');
+      w.className = 'qwarn';
+      w.textContent = 'Check: ' + warnings.join(' · ');
+      mid.appendChild(w);
+    }
+    row.appendChild(mid);
 
     const acts = document.createElement('div');
     acts.className = 'qacts';
@@ -612,8 +688,8 @@ if (scDropEl) {
 
     /* the answer to "how do I upload the back of THIS card" -- point at the
        card, pick the picture, done, whatever order they arrived in */
-    btn(many ? 'Add another' : 'Add back',
-        'Upload the other side of this card', () => {
+    btn(!group.some(e => e.thumb) ? 'Add picture' : (many ? 'Add another' : 'Add back'),
+        'Upload a picture for this card', () => {
       scAttachTo = entry.card || entry.id;
       const addEl = document.getElementById('sc-add');
       if (addEl) addEl.click();
@@ -675,8 +751,8 @@ if (scDropEl) {
      out front, back, front, back -- which is the order
      add_photos.py --assign --pairs reads them back in. */
   function cropName(entry){
-    const n = SC_QUEUE.indexOf(entry) + 1;
-    return entry.src + '-' + String(n).padStart(2, '0') + '.jpg';
+    const n = SC_QUEUE.filter(e => e.thumb).indexOf(entry) + 1;
+    return (entry.src || 'card') + '-' + String(n).padStart(2, '0') + '.jpg';
   }
 
   function renderFoot(){
@@ -706,14 +782,60 @@ if (scDropEl) {
     if (odd) odd.hidden = !(SC_PAIRS && groups.some(g => g.length === 1));
   }
 
+  /* the "same for every card" strip. Rebuilt only when it is empty, so
+     typing in it does not tear the field you are typing in out from under you. */
+  function renderBatch(){
+    const host = document.getElementById('sc-batch');
+    if (!host || host.childNodes.length) return;
+    SC_BATCH_FIELDS.forEach(f => {
+      const wrap = document.createElement('div');
+      wrap.className = 'field' + (f.wide ? ' wide' : '');
+      const lab = document.createElement('label');
+      lab.textContent = f.label;
+      wrap.appendChild(lab);
+      let input;
+      if (f.sel){
+        input = document.createElement('select');
+        f.sel.forEach(o => {
+          const opt = document.createElement('option');
+          opt.value = o; opt.textContent = o || '—';
+          if (String(SC_BATCH[f.k] || '') === o) opt.selected = true;
+          input.appendChild(opt);
+        });
+      } else {
+        input = document.createElement('input');
+        input.placeholder = f.ph || '';
+        input.value = SC_BATCH[f.k] || '';
+      }
+      input.addEventListener('input', () => {
+        SC_BATCH[f.k] = input.value;
+        scQSave(); renderRows();
+      });
+      input.addEventListener('change', () => {
+        SC_BATCH[f.k] = input.value;
+        scQSave(); renderRows();
+      });
+      wrap.appendChild(input);
+      host.appendChild(wrap);
+    });
+  }
+
+  function renderRows(){
+    if (!listEl) return;
+    const groups = scGroups();
+    const warns = scAudit(groups);
+    listEl.innerHTML = '';
+    groups.forEach((g, i) => listEl.appendChild(rowEl(g, i, warns[i])));
+    renderFoot();
+  }
+
   function render(){
     if (wrapEl) wrapEl.hidden = !SC_QUEUE.length;
     const pairEl = document.getElementById('sc-pairs');
     if (pairEl) pairEl.checked = SC_PAIRS;
+    renderBatch();
     if (!listEl) return;
-    listEl.innerHTML = '';
-    scGroups().forEach((g, i) => listEl.appendChild(rowEl(g, i)));
-    renderFoot();
+    renderRows();
 
     const lost = SC_QUEUE.filter(e => !SC_FULL.has(e.id)).length;
     const warn = document.getElementById('sc-lost');
@@ -741,27 +863,70 @@ if (scDropEl) {
     scQSave(); render();
   }
 
-  /* the card as file_batch.py wants it */
+  /* the card as file_batch.py wants it: its own values over the batch's */
   function batchCard(group){
     const e = group[0];
+    const m = scMerged(e);
+    const card = { photos: group.filter(x => SC_FULL.has(x.id)).length };
+
+    Object.keys(m).forEach(k => {
+      const name = SC_TO_BATCH[k];
+      if (!name) return;
+      let v = m[k];
+      if (k === 'q') v = Math.max(1, Math.round(parseFloat(v) || 1));
+      else if (k === 'v'){ v = parseFloat(v); if (!(v > 0)) return; }
+      else if (typeof v === 'string') v = v.trim();
+      if (v === '' || v === undefined || v === null) return;
+      card[name] = v;
+    });
+
+    if (!card.qty) card.qty = 1;
+    if (!card.condition) card.condition = SC_CONDS[0];
+    if (!card.category) card.category = 'Sports';
+
     const unsure = (e.flags || []).map(f => SC_TO_BATCH[f]).filter(Boolean);
-    const kind = String(e.kind || 'Sports');
-    const card = {
-      player: (e.n || '').trim(),
-      brand: (e.s || '').trim(),
-      num: String(e.num || '').trim(),
-      parallel: (e.var || '').trim(),
-      condition: scCond(e.c),
-      category: kind,
-      sport: kind === 'Sports' ? 'Football' : 'TCG',
-      qty: Math.max(1, Math.round(parseFloat(e.q) || 1)),
-      photos: group.filter(x => SC_FULL.has(x.id)).length
-    };
-    const v = parseFloat(e.v);
-    if (isFinite(v) && v > 0) card.market = v;
-    else unsure.push('market');
+    if (card.market === undefined) unsure.push('market');
     if (unsure.length) card.unsure = Array.from(new Set(unsure));
     return card;
+  }
+
+  /* Things worth a second look before a card becomes a listing. These are
+     warnings, not blocks -- the odd card really does have no number, and
+     being nagged about it is better than being stopped. The duplicate check
+     is the one that catches a real mistake: two rows with the same player,
+     set, number and parallel usually means a front and a back came apart
+     and are about to be filed as two separate cards. */
+  function scAudit(groups){
+    const seen = new Map();
+    groups.forEach((g, i) => {
+      const m = scMerged(g[0]);
+      const key = [m.n, m.s, m.num, m.var].map(x => String(x || '').trim().toLowerCase()).join('|');
+      if (!m.n) return;
+      if (!seen.has(key)) seen.set(key, []);
+      seen.get(key).push(i + 1);
+    });
+
+    return groups.map((g, i) => {
+      const e = g[0], m = scMerged(e), out = [];
+      if (!String(m.s || '').trim()) out.push('no set or brand');
+      if (!String(m.num || '').trim()) out.push('no card number');
+      if (!(parseFloat(m.v) > 0)) out.push('no worth — it will file as Review');
+      if (!m.year) out.push('no year');
+      if (m.kind === 'TCG' && /foot|basket|base|hockey|soccer/i.test(String(m.sport || '')))
+        out.push('category is TCG but the sport is a sport');
+      if (m.kind === 'Sports' && !String(m.sport || '').trim())
+        out.push('no sport');
+      if (parseFloat(m.q) > 1 && String(m.var || '').match(/\/\s*\d/))
+        out.push('serial numbered but qty is more than 1');
+      if (g.length > 2) out.push(g.length + ' pictures on one card');
+
+      const key = [m.n, m.s, m.num, m.var].map(x => String(x || '').trim().toLowerCase()).join('|');
+      const dupes = (seen.get(key) || []).filter(n => n !== i + 1);
+      if (m.n && dupes.length)
+        out.push('same card as ' + dupes.map(n => '#' + n).join(', ')
+                 + ' — is one of them a back?');
+      return out;
+    });
   }
 
   /* ---- taking files ---- */
@@ -812,13 +977,18 @@ if (scDropEl) {
         SC_QUEUE.push({
           id: id, card: targetCard || id,
           src: stem(file.name), turns: 0, thumb: scThumb(img, rect, 0),
-          kind: 'Sports', n: '', s: '', num: '', var: '', c: SC_CONDS[0], q: 1, v: 0,
+          /* blank, not defaulted -- a value here would beat the batch strip */
+          kind: '', n: '', s: '', num: '', var: '', c: '', q: 1, v: 0,
           flags: [], at: Date.now()
         });
         added++;
       });
     }
     scDropEl.classList.remove('busy');
+    if (targetCard && added){
+      /* the empty stand-in has done its job now a real picture is here */
+      SC_QUEUE = SC_QUEUE.filter(e => !(e.card === targetCard && !e.thumb));
+    }
     if (SC_PAIRS && !targetCard) scPairUp();
     scQSave(); render();
 
@@ -889,6 +1059,22 @@ if (scDropEl) {
     if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;   /* let a real paste be a paste */
     const items = e.clipboardData && e.clipboardData.files;
     if (items && items.length) take(items);
+  });
+
+  const onEarly = (id, fn) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', fn);
+  };
+  onEarly('sc-blank', () => {
+    const id = scNewId();
+    SC_QUEUE.push({
+      id: id, card: id, src: 'typed', turns: 0, thumb: '',
+      kind: '', n: '', s: '', num: '', var: '', c: '', q: 1, v: 0,
+      flags: [], at: Date.now()
+    });
+    scQSave(); render();
+    say('Added a card with no picture. Fill it in, and use "Add picture" on it '
+      + 'whenever you get round to photographing it.');
   });
 
   const on = (id, fn) => {

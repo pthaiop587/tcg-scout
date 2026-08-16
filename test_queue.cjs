@@ -128,7 +128,7 @@ async function catchDownloads(page, fn){
         'NM should map to the workbook wording, got ' + filled.c);
   check(filled.kind === 'Sports', 'category did not parse, got ' + filled.kind);
   check(JSON.stringify(filled.flags) === '["var"]', 'flags should be ["var"]');
-  check(await page.locator('.qfields .unsure').count() === 1, 'the unsure field should be amber');
+  check(await page.locator('.qrow .qfields .unsure').count() === 1, 'the unsure field should be amber');
   check(await confirmOff(), 'CONFIRM WAS ON WHILE A FIELD WAS STILL UNSURE');
 
   await page.click('.unsurebtn');
@@ -206,6 +206,151 @@ async function catchDownloads(page, fn){
   }
   await page.click('#sc-clearfiled');
   await page.waitForTimeout(250);
+
+  /* --- typing the shared bits once --------------------------------------- */
+  await page.evaluate(() => { SC_QUEUE = []; SC_BATCH = {}; scQSave(); render(); });
+  await page.setInputFiles('#sc-file', SCAN);
+  await page.waitForSelector('.qrow', { timeout: 30000 });
+  await page.waitForTimeout(300);
+
+  await page.evaluate(() => {
+    SC_BATCH = { year: '2025', s: 'Panini Prizm Draft Picks', insert: 'Student Orientation',
+                 team: 'Colorado Buffaloes', league: 'NCAA', sport: 'Football',
+                 kind: 'Sports', c: 'Excellent', source: 'Target Upland', lot: 'LOT-001' };
+    SC_QUEUE[0].n = 'Shedeur Sanders'; SC_QUEUE[0].num = '8'; SC_QUEUE[0].v = 12.5;
+    SC_QUEUE[0].flags = [];
+    scQSave(); render();
+  });
+  await page.click('#sc-qconfirm');
+  await page.waitForTimeout(250);
+  const gotB = await catchDownloads(page, () => page.click('#sc-tofile'));
+  const bB = gotB.find(g => g.name === 'batch.json');
+  if (bB) {
+    const c = JSON.parse(fs.readFileSync(bB.path, 'utf8')).cards[0];
+    check(c.year === '2025', 'year should be inherited from the batch, got ' + c.year);
+    check(c.brand === 'Panini Prizm Draft Picks', 'brand inherited: ' + c.brand);
+    check(c.insert === 'Student Orientation', 'insert inherited: ' + c.insert);
+    check(c.team === 'Colorado Buffaloes', 'team inherited: ' + c.team);
+    check(c.league === 'NCAA', 'league inherited: ' + c.league);
+    check(c.sport === 'Football', 'sport inherited: ' + c.sport);
+    check(c.source === 'Target Upland', 'source inherited: ' + c.source);
+    check(c.lot === 'LOT-001', 'lot inherited: ' + c.lot);
+    check(c.condition === 'Excellent', 'condition inherited: ' + c.condition);
+    check(c.player === 'Shedeur Sanders' && c.num === '8', 'the per-card bits should survive');
+  }
+  await page.click('#sc-clearfiled');
+  await page.waitForTimeout(250);
+
+  /* a value typed on the card beats the batch */
+  await page.setInputFiles('#sc-file', SCAN);
+  await page.waitForSelector('.qrow', { timeout: 30000 });
+  await page.waitForTimeout(300);
+  await page.evaluate(() => {
+    SC_QUEUE[0].n = 'Jonah Coleman'; SC_QUEUE[0].num = '169'; SC_QUEUE[0].v = 6;
+    SC_QUEUE[0].s = '2025 Panini Prizm Draft Picks Base';   /* override */
+    SC_QUEUE[0].c = 'Poor';                                  /* override */
+    SC_QUEUE[0].flags = []; scQSave(); render();
+  });
+  await page.click('#sc-qconfirm');
+  await page.waitForTimeout(250);
+  const gotO = await catchDownloads(page, () => page.click('#sc-tofile'));
+  const bO = gotO.find(g => g.name === 'batch.json');
+  if (bO) {
+    const c = JSON.parse(fs.readFileSync(bO.path, 'utf8')).cards[0];
+    check(c.brand === '2025 Panini Prizm Draft Picks Base',
+          'A CARD\'S OWN SET MUST BEAT THE BATCH, got ' + c.brand);
+    check(c.condition === 'Poor', 'a card\'s own condition must win, got ' + c.condition);
+    check(c.year === '2025', 'unset fields still inherit, got ' + c.year);
+  }
+  await page.click('#sc-clearfiled');
+  await page.waitForTimeout(250);
+
+  /* --- editing a checked card un-checks it -------------------------------- */
+  await page.setInputFiles('#sc-file', SCAN);
+  await page.waitForSelector('.qrow', { timeout: 30000 });
+  await page.waitForTimeout(300);
+  await page.evaluate(() => {
+    SC_QUEUE[0].n = 'Travis Hunter'; SC_QUEUE[0].num = '3'; SC_QUEUE[0].v = 30;
+    SC_QUEUE[0].flags = []; scQSave(); render();
+  });
+  await page.click('#sc-qconfirm');
+  await page.waitForTimeout(250);
+  check(await page.evaluate(() => !!SC_QUEUE[0].ok), 'should be checked before the edit');
+
+  await page.locator('.qrow .qfields input').first().fill('Travis Hunter Jr');
+  await page.waitForTimeout(300);
+  check(await page.evaluate(() => !SC_QUEUE[0].ok),
+        'EDITING A CHECKED CARD MUST UN-CHECK IT, or "checked" means nothing');
+  check(await saveOff(), 'Save should go off again once nothing is checked');
+
+  /* --- the audit ---------------------------------------------------------- */
+  const warn = () => page.locator('.qwarn').first().textContent();
+  await page.evaluate(() => {
+    SC_BATCH = {}; SC_QUEUE[0].s = ''; SC_QUEUE[0].num = ''; SC_QUEUE[0].v = 0;
+    scQSave(); render();
+  });
+  await page.waitForTimeout(250);
+  const w1 = await warn();
+  check(/no set or brand/.test(w1), 'should warn about a missing set: ' + w1);
+  check(/no card number/.test(w1), 'should warn about a missing number: ' + w1);
+  check(/no worth/.test(w1), 'should warn that it will file as Review: ' + w1);
+  check(/no year/.test(w1), 'should warn about a missing year: ' + w1);
+
+  /* two rows that are the same card -- usually a front and back come apart */
+  await page.setInputFiles('#sc-file', SCAN);
+  await page.waitForTimeout(2500);
+  await page.evaluate(() => {
+    SC_QUEUE.forEach(e => { e.n = 'Shedeur Sanders'; e.s = 'Prizm'; e.num = '8'; e.var = 'Gold'; });
+    scQSave(); render();
+  });
+  await page.waitForTimeout(250);
+  const w2 = await page.locator('.qwarn').allTextContents();
+  check(w2.some(t => /same card as/.test(t)),
+        'two identical rows should be flagged as a possible split front/back: ' + w2.join(' | '));
+
+  await page.evaluate(() => { SC_QUEUE = []; SC_BATCH = {}; scQSave(); render(); });
+
+  /* --- a card logged now, photographed later ------------------------------ */
+  await page.evaluate(() => { SC_QUEUE = []; SC_BATCH = {}; scQSave(); render(); });
+  await page.click('#sc-blank');
+  await page.waitForTimeout(300);
+  check(await page.locator('.qrow').count() === 1, 'the blank card should be a row');
+  check(await page.locator('.noshot').count() === 1, 'it should show a "no picture" placeholder');
+  check(await page.locator('.qacts').first().locator('button').nth(1).textContent()
+        === 'Add picture', 'a card with no picture should offer Add picture');
+
+  await page.evaluate(() => {
+    SC_BATCH = { year: '2025', s: 'Panini Prizm', sport: 'Football', kind: 'Sports' };
+    SC_QUEUE[0].n = 'Travis Hunter'; SC_QUEUE[0].num = '3'; SC_QUEUE[0].v = 40;
+    scQSave(); render();
+  });
+  await page.click('#sc-qconfirm');
+  await page.waitForTimeout(250);
+  const gotN = await catchDownloads(page, () => page.click('#sc-tofile'));
+  check(gotN.filter(g => /\.jpg$/i.test(g.name)).length === 0,
+        'a card with no picture should hand over no pictures');
+  const bN = gotN.find(g => g.name === 'batch.json');
+  if (bN) {
+    const c = JSON.parse(fs.readFileSync(bN.path, 'utf8')).cards[0];
+    check(c.photos === 0, 'photos must be 0 so file_batch.py expects none, got ' + c.photos);
+    check(c.player === 'Travis Hunter' && c.year === '2025',
+          'the typed card should still carry its details and the batch ones');
+  }
+
+  /* attaching the picture later replaces the placeholder rather than adding a card */
+  await page.evaluate(() => { SC_QUEUE = []; SC_BATCH = {}; scQSave(); render(); });
+  await page.click('#sc-blank');
+  await page.waitForTimeout(250);
+  await page.locator('.qacts').first().getByText('Add picture').click();
+  await page.setInputFiles('#sc-add', SCAN);
+  await page.waitForTimeout(3000);
+  check(await page.locator('.qrow').count() === 1,
+        'adding the picture later must not make a second card');
+  check(await page.locator('.noshot').count() === 0, 'the placeholder should be gone');
+  check(await page.evaluate(() => SC_QUEUE.length) === 1,
+        'the empty stand-in should have been dropped, got ' + await page.evaluate(() => SC_QUEUE.length));
+
+  await page.evaluate(() => { SC_QUEUE = []; SC_BATCH = {}; scQSave(); render(); });
 
   /* --- persistence ------------------------------------------------------- */
   await page.setInputFiles('#sc-file', SCAN);

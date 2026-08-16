@@ -388,6 +388,38 @@ JS  = io.open(f"{SP}/hq.js",  encoding="utf-8").read()
 # both. It is inlined straight after, so it still ships as one file.
 SCAN_JS = io.open(f"{SP}/scan.js", encoding="utf-8").read()
 
+# The download button points at two different files depending on where the
+# page is being read, and it was only ever right in one of them.
+#
+# CI builds into _site/ and generates a BLANK workbook there as
+# Card-Run-HQ-Master.xlsx, because the real one is gitignored and holds what
+# every box cost -- it must never reach a public site. But open the page
+# locally and that name does not exist: your workbook is "Card Run HQ -
+# Master.xlsx", spaces and all, so the button did nothing.
+#
+# So look. If the real workbook is sitting next to the build, link to it and
+# say so. If it is not -- which is exactly the case in CI -- fall back to the
+# blank one CI writes. Nothing is copied either way, so there is no path by
+# which the private workbook can end up published.
+_wb_local = f"{SP}/Card Run HQ - Master.xlsx"
+if os.path.exists(_wb_local):
+    WORKBOOK_HREF = "Card%20Run%20HQ%20-%20Master.xlsx"
+    WORKBOOK_LABEL = "Open your workbook"
+    WORKBOOK_NOTE = (
+        "This is <b>your</b> workbook, the filled-in one sitting next to this "
+        "page. Opens in Excel, Numbers or Google Sheets &mdash; dropdowns, "
+        "formulas and the eBay codes are already in it. It is the inventory: "
+        "cards land in it through <b>Save for the workbook</b> on the Card "
+        "desk, and it is where you edit them afterwards.")
+else:
+    WORKBOOK_HREF = "Card-Run-HQ-Master.xlsx"
+    WORKBOOK_LABEL = "Download a blank workbook"
+    WORKBOOK_NOTE = (
+        "Opens in Excel, Numbers or Google Sheets. Dropdowns, formulas and the "
+        "eBay codes are already in it. This link hands you an <b>empty</b> one "
+        "&mdash; your filled-in copy stays on your own machine, because this "
+        "site is public and the workbook holds what you paid for everything.")
+
 # Singles catalogue for the Card Desk tabs. Produced by
 #   project tcg-lister\export_web_catalog.py
 # from the Card Desk SQLite. Absent is fine -- the tab says so.
@@ -499,6 +531,12 @@ BODY = f'''<title>Card Run HQ</title>
   </div>
   <input id="sc-file" type="file" accept="image/*" multiple hidden>
 
+  <div class="tools" style="margin-top:11px">
+   <button class="btn2" type="button" id="sc-blank">Add a card with no picture</button>
+   <span class="hint">for a card you want to log now and photograph later &mdash;
+    <b>Add picture</b> on its row whenever you get to it</span>
+  </div>
+
   <p class="hint" id="sc-msg" aria-live="polite"></p>
 
   <div class="note"><b>Which way up is the one thing it cannot work out.</b>
@@ -549,6 +587,13 @@ BODY = f'''<title>Card Run HQ</title>
   <p class="hint warnline" id="sc-odd" hidden>One card has only a front. Check the
    pairs line up before you confirm &mdash; <b>Split</b> and <b>Add back</b> fix any
    that do not.</p>
+
+  <div class="bxh">Same for every card in this batch</div>
+  <p class="hint">Fill these in once. A card inherits anything you have not typed
+   on the card itself &mdash; so for a box rip you type the year, brand and set
+   here and never again, and for a mixed stack you can still override the set on
+   a single row. Greyed text in a card&rsquo;s field is what it will inherit.</p>
+  <div id="sc-batch" class="qfields batchfields"></div>
 
   <div id="sc-queue"></div>
 
@@ -992,8 +1037,8 @@ BODY = f'''<title>Card Run HQ</title>
   <h2>Master spreadsheet</h2>
   <p class="sub">One workbook holding the inventory, the box log, the sales record and the eBay upload. This page is a snapshot you read; the workbook is the thing you type into.</p>
 
-  <p><a class="btn2 go" href="Card-Run-HQ-Master.xlsx" download>Download the workbook</a></p>
-  <p class="hint">Opens in Excel, Numbers or Google Sheets. Dropdowns, formulas and the eBay codes are already in it. This link hands you an <b>empty</b> one &mdash; your filled-in copy stays on your own machine, because this site is public and the workbook holds what you paid for everything.</p>
+  <p><a class="btn2 go" href="{WORKBOOK_HREF}" download>{WORKBOOK_LABEL}</a></p>
+  <p class="hint">{WORKBOOK_NOTE}</p>
 
   <div class="bxh">What is in it</div>
   <div class="scroll"><table>
