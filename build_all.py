@@ -855,6 +855,7 @@ BODY = f'''<title>Card Run HQ</title>
    <button class="btn2" type="button" data-invf="Listed">Listed</button>
    <button class="btn2" type="button" data-invf="Sold">Sold</button>
   </div>
+  <div class="tools" id="inv-sports" style="margin-top:9px" hidden></div>
   <div class="searchbar" style="margin-top:11px">
    <input id="inv-q" type="search" autocomplete="off" spellcheck="false"
           placeholder="Find a card &mdash; name, set, number, SKU&hellip;">

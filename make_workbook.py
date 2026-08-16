@@ -47,6 +47,9 @@ CARD_CONDITIONS = [
     ("Poor",                400013),
 ]
 
+SPORTS = ["Football", "Basketball", "Baseball", "Hockey", "Soccer",
+          "Pokemon", "One Piece", "Lorcana", "Magic", "Other"]
+
 GRADERS = [
     "Professional Sports Authenticator (PSA)",
     "Beckett Grading Services (BGS)",
@@ -262,6 +265,10 @@ def build_inventory(wb, google=False):
     dv(ws, ["Unlisted", "Review", "Listed", "Sold", "Kept", "At COMC", "Bulk"],
        span("Status"))
     dv(ws, ["Sports", "TCG", "Non-sport"], span("Category"))
+    # sport_tabs.py groups the view tabs on this column, so it is a list
+    # rather than free text -- "Basketball" and "basketball" would otherwise
+    # become two tabs holding half the cards each.
+    dv(ws, SPORTS, span("Sport or game"))
     dv(ws, ["NCAA", "NFL", "NBA", "MLB", "NHL", "MLS", "WWE", "UFC"],
        span("League"))
     for name in ("RC", "Auto", "Relic"):

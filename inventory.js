@@ -27,6 +27,7 @@
   const qEl = document.getElementById('inv-q');
 
   let filter = 'all';
+  let sport = 'all';
   let term = '';
 
   const esc = s => String(s == null ? '' : s)
@@ -107,6 +108,7 @@
 
   function matches(card) {
     if (filter !== 'all' && card.status !== filter) return false;
+    if (sport !== 'all' && String(card.sport || '') !== sport) return false;
     if (!term) return true;
     return [card.name, card.brand, card.insert, card.parallel, card.num,
             card.sku, card.team, card.title]
@@ -136,6 +138,31 @@
       }
       noteEl.innerHTML = bits.join(' &middot; ');
     }
+  }
+
+  /* Sports only get their own row of buttons once there is more than one --
+     a single "Football" button next to "Everything" is just noise. The
+     workbook grows a read-only tab per sport at the same time; this is the
+     same split, on the page. */
+  const sports = Array.from(new Set(cards.map(c => String(c.sport || '').trim())
+                                         .filter(Boolean))).sort();
+  const sportHost = document.getElementById('inv-sports');
+  if (sportHost && sports.length > 1) {
+    sportHost.hidden = false;
+    sportHost.innerHTML =
+      '<span class="hint">Sport</span>'
+      + ['all'].concat(sports).map(s =>
+          '<button class="btn2' + (s === 'all' ? ' go' : '') + '" type="button" '
+          + 'data-invs="' + esc(s) + '">' + esc(s === 'all' ? 'Every sport' : s)
+          + '</button>').join('');
+    sportHost.querySelectorAll('[data-invs]').forEach(b => {
+      b.addEventListener('click', () => {
+        sport = b.getAttribute('data-invs');
+        sportHost.querySelectorAll('[data-invs]').forEach(x => x.classList.remove('go'));
+        b.classList.add('go');
+        render();
+      });
+    });
   }
 
   document.querySelectorAll('[data-invf]').forEach(b => {

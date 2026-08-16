@@ -7,6 +7,7 @@
 Run this after typing into Card Run HQ - Master.xlsx. It does, in order:
 
     embed_photos.py      thumbnails into the workbook's Photos tab
+    sport_tabs.py        a read-only tab per sport, rebuilt from Inventory
     export_inventory.py  the Inventory tab out to JSON
     build_all.py         the page rebuilt around it
 
@@ -81,6 +82,11 @@ def main():
         if not run([sys.executable, "embed_photos.py", "--workbook", a.workbook],
                    "embed_photos.py"):
             return 1
+
+    # a read-only tab per sport, rebuilt from Inventory each time
+    if not run([sys.executable, "sport_tabs.py", "--workbook", a.workbook],
+               "sport_tabs.py"):
+        return 1
 
     args = [sys.executable, "export_inventory.py", "--workbook", a.workbook]
     if a.publish:

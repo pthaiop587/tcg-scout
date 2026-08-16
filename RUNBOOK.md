@@ -44,6 +44,7 @@ this machine.
 | `python upgrade_workbook.py` | Moves an **existing** workbook onto the current layout **keeping what you typed**. Dry run by default; `--go` to do it. Backs up first, always. |
 | `python embed_photos.py` | Rewrites the **Photos** tab from what is in `photos/`, thumbnails and all. Run it after adding photos. |
 | `python export_inventory.py` | Puts the Inventory tab onto the dashboard's **My inventory** tab. `--publish` also writes the money-free copy for the public site. |
+| `python sport_tabs.py` | Rebuilds a read-only tab per sport from Inventory. `--add Basketball` starts one before there are any cards; `--list` says what is there. |
 | `python file_batch.py batch.json` | Files a whole scanned batch: a row per card with a SKU, photos onto those SKUs. |
 | `python add_card.py --player "..." --year 2025 --brand "..." ...` | Appends one card to Inventory and assigns the next SKU. |
 | `python make_ebay_csv.py` | Writes `ebay-upload-<date>.csv` from every Inventory row marked **Unlisted**, and rewrites the workbook's eBay upload tab to match. `--sku CRH-0001` for one card, `--all` to ignore status. |
@@ -116,6 +117,43 @@ A bulk upload carries image *links*, not image files. Put photos in `photos/`
 named after the SKU — `CRH-0001.jpg`, `CRH-0001-back.jpg` — and they publish
 with the Pages site, which makes them valid eBay picture URLs. `PicURL` fills
 itself in when a matching file exists.
+
+---
+
+## More than one sport
+
+**There is still only one Inventory.** It has a **Sport or game** column with a
+dropdown — Football, Basketball, Baseball, Hockey, Soccer, Pokemon, One Piece,
+Lorcana, Magic, Other — and every card goes in it whatever the sport.
+
+`sport_tabs.py` then builds a **read-only tab per sport**, so each can be looked
+at on its own. `Update dashboard.cmd` rebuilds them, and the dashboard's My
+inventory grows a **Sport** filter row at the same time.
+
+```
+python sport_tabs.py --add Basketball    # start the tab before the first card
+python sport_tabs.py                     # rebuild them all
+python sport_tabs.py --list              # what is in there now
+```
+
+### Why views and not separate inventories
+
+Everything downstream reads the **Inventory** tab and only that: `file_batch.py`
+takes the next SKU from it, `make_ebay_csv.py` exports from it, Summary and
+Audit count it, and `export_inventory.py` puts it on the dashboard.
+
+Type a basketball card into a tab of its own and it gets a SKU another card
+already has, **never reaches an eBay upload**, and is missing from every total —
+silently, because nothing is looking for a second inventory. So the sport tabs
+are copies, marked *"VIEW — generated from Inventory. Do not type here."*, and
+rebuilt from it every run. Anything typed into one is overwritten next time.
+
+A tab you made yourself is never touched: only sheets carrying that marker get
+replaced, so a hand-made "Basketball" sheet is left exactly as it is.
+
+*(A live `FILTER()` formula would have been nicer than regenerating. It was
+tried and dropped — it does not survive a recalculation outside the newest
+Excel, so the tab would read "none" on a perfectly good workbook.)*
 
 ---
 
@@ -360,7 +398,7 @@ the browser to hold twenty 33-megapixel pages at once.
 ### Tests
 
 ```
-python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py test_export_inventory.py
+python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py test_export_inventory.py test_sport_tabs.py
 node test_scan.mjs                      # 19, the browser geometry
 python build_all.py . card-run-hq.html  # the dashboard test needs the build
 node test_dashboard.cjs                 # every tab, every bookmark, no js errors
