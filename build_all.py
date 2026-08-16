@@ -1243,6 +1243,77 @@ BODY = f'''<title>Card Run HQ</title>
    </div>
   </details>
 
+  <details class="fold" id="anat">
+   <summary>Where do I find the number, the parallel, all that? &mdash; card map</summary>
+   <p class="hint">Positions shift a little between products, but these are the regions to check. The <b>back</b> is where most of it lives.</p>
+
+   <div class="cardmap">
+    <svg viewBox="0 0 470 330" role="img" aria-label="Diagram of a sports card front and back showing where each detail is printed">
+     <!-- FRONT -->
+     <text x="10" y="16" class="cm-t">FRONT</text>
+     <rect x="10" y="26" width="200" height="280" rx="10" class="cm-card"/>
+     <rect x="22" y="38" width="176" height="196" rx="6" class="cm-photo"/>
+     <text x="110" y="140" class="cm-ph">player photo</text>
+     <rect x="22" y="244" width="176" height="26" rx="4" class="cm-band"/>
+     <text x="30" y="262" class="cm-lbl">PLAYER NAME</text>
+     <rect x="22" y="276" width="96" height="18" rx="4" class="cm-band"/>
+     <text x="30" y="289" class="cm-lbl">team</text>
+     <circle cx="180" cy="56" r="13" class="cm-hi"/>
+     <text x="180" y="61" class="cm-num">3</text>
+     <circle cx="180" cy="285" r="13" class="cm-hi"/>
+     <text x="180" y="290" class="cm-num">4</text>
+     <circle cx="110" cy="196" r="13" class="cm-hi"/>
+     <text x="110" y="201" class="cm-num">5</text>
+
+     <!-- BACK -->
+     <text x="260" y="16" class="cm-t">BACK</text>
+     <rect x="260" y="26" width="200" height="280" rx="10" class="cm-card"/>
+     <rect x="272" y="38" width="76" height="22" rx="4" class="cm-band"/>
+     <text x="279" y="53" class="cm-lbl">25 / 49</text>
+     <circle cx="341" cy="49" r="13" class="cm-hi"/>
+     <text x="341" y="54" class="cm-num">2</text>
+     <rect x="372" y="38" width="76" height="22" rx="4" class="cm-band"/>
+     <text x="379" y="53" class="cm-lbl">No. 101</text>
+     <circle cx="441" cy="49" r="13" class="cm-hi hi1"/>
+     <text x="441" y="54" class="cm-num">1</text>
+     <rect x="272" y="70" width="176" height="150" rx="6" class="cm-photo"/>
+     <text x="360" y="150" class="cm-ph">stats &amp; bio</text>
+     <rect x="272" y="264" width="176" height="30" rx="4" class="cm-band"/>
+     <text x="279" y="277" class="cm-lbl">&copy; 2025 Panini &middot; Prizm Draft</text>
+     <text x="279" y="289" class="cm-lbl">Picks &middot; licensing text</text>
+     <circle cx="423" cy="240" r="13" class="cm-hi"/>
+     <text x="423" y="245" class="cm-num">6</text>
+    </svg>
+   </div>
+
+   <div class="scroll"><table><thead><tr><th>#</th><th>What</th><th>Where to look</th></tr></thead>
+    <tbody>
+     <tr><td class="mono"><b>1</b></td><td><b>Card number</b></td>
+       <td class="wnote"><b>Back, in a top corner.</b> Small, often just digits. This is what goes in the <b>Number</b> field.</td></tr>
+     <tr><td class="mono"><b>2</b></td><td><b>Serial number</b></td>
+       <td class="wnote"><b>Back, toward the upper-left</b> &mdash; sometimes stamped on the front instead. Reads <span class="mono">25/49</span> or <span class="mono">1/1</span>. <b>If it has one, it is a numbered parallel and always worth setting aside.</b></td></tr>
+     <tr><td class="mono"><b>3</b></td><td>Rookie badge</td>
+       <td class="wnote">Front, usually a small shield or <b>RC</b> mark in a corner.</td></tr>
+     <tr><td class="mono"><b>4</b></td><td>Team / position</td><td class="wnote">Front, in the lower band with the name.</td></tr>
+     <tr><td class="mono"><b>5</b></td><td><b>The finish &mdash; this is the parallel</b></td>
+       <td class="wnote"><b>Tilt it under a light.</b> A rainbow shimmer across the surface means it is a Prizm; a flat, dull surface means base. The <i>colour</i> of that shimmer is which parallel it is.</td></tr>
+     <tr><td class="mono"><b>6</b></td><td>Set name &amp; year</td>
+       <td class="wnote">Back, in the small copyright and licensing line at the bottom. Goes in the <b>Set or product</b> field.</td></tr>
+    </tbody></table></div>
+
+   <div class="note warn"><b>The catch nobody tells you: the parallel name is not printed anywhere on the card.</b> A Silver Prizm does not say &ldquo;Silver&rdquo;. You identify it by the colour and pattern of the shine, compared against a reference gallery.
+   <br><br>So the reliable method is: <b>if it is serial numbered, read the number</b> (that narrows it immediately &mdash; in your box, <span class="mono">/49</span> means Gold Flash). <b>If it is not numbered, match the colour</b> against Beckett's parallel gallery for the set, or just search eBay sold for &ldquo;set name + player + the colour you see&rdquo; and compare pictures.</div>
+
+   <div class="teach">
+    <p><b>For the box you have &mdash; 2025 Prizm Draft Picks:</b></p>
+    <p><b>Plain, no shine</b> &rarr; base prospect. Bulk.<br>
+       <b>Silver shimmer, no serial</b> &rarr; Silver Prizm.<br>
+       <b>Red</b> &rarr; Red Ice or Red Flash. You get 18 a box, so these are common by design.<br>
+       <b>Gold</b> &rarr; Gold Ice, or <b>Gold Flash if it is numbered /49</b> &mdash; that is the realistic ceiling in this box.<br>
+       <b>Numbered /10, /5, or 1/1</b> &rarr; stop and price it properly before doing anything else.</p>
+    <p style="margin-bottom:0">When in doubt, put the serial number in the <b>Parallel / variant</b> field &mdash; <span class="mono">/49</span> tells you more than a colour name you had to guess at.</p></div>
+  </details>
+
   <details class="fold">
    <summary>Know the set code? Type it instead</summary>
    <p>A set code and number jumps straight to one card, and you can bolt on condition, printing and quantity in one go:</p>

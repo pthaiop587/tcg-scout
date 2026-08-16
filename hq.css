@@ -170,6 +170,22 @@ color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1p
 letter-spacing:0}
 .tierfold>*+*{margin-top:11px}
 
+/* ---------------- card anatomy map ---------------- */
+.cardmap{background:var(--surface2);border:1px solid var(--line);border-radius:10px;
+padding:12px;margin:10px 0 12px;overflow-x:auto}
+.cardmap svg{display:block;width:100%;min-width:430px;height:auto}
+.cm-card{fill:var(--surface);stroke:var(--line);stroke-width:1.5}
+.cm-photo{fill:var(--bg);stroke:var(--line2);stroke-width:1;stroke-dasharray:3 4}
+.cm-band{fill:var(--accent-soft);stroke:var(--line2);stroke-width:1}
+.cm-t{fill:var(--ink3);font-size:10px;font-weight:700;letter-spacing:.14em;
+font-family:ui-monospace,monospace}
+.cm-ph{fill:var(--ink3);font-size:10.5px;text-anchor:middle;font-style:italic}
+.cm-lbl{fill:var(--ink2);font-size:9.5px;font-family:ui-monospace,monospace}
+.cm-hi{fill:var(--accent);stroke:var(--bg);stroke-width:2.5}
+.cm-hi.hi1{fill:var(--buy)}
+.cm-num{fill:#fff;font-size:11px;font-weight:800;text-anchor:middle;
+font-family:ui-monospace,monospace}
+
 /* ---------------- box breakdowns ---------------- */
 .bxh{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink3);
 font-weight:750;margin-top:11px}
