@@ -444,7 +444,7 @@ color:var(--ink2);text-align:center;cursor:pointer;transition:border-color .15s,
 .dropzone.busy{opacity:.6;cursor:progress}
 /* one row per card waiting to be confirmed: picture, its fields, its buttons */
 #sc-queue{display:flex;flex-direction:column;gap:11px;margin:13px 0}
-.qrow{display:grid;grid-template-columns:158px 1fr 132px;gap:13px;padding:11px;
+.qrow{display:grid;grid-template-columns:158px 1fr 148px;gap:13px;padding:11px;
 border:1px solid var(--line);border-radius:9px;background:var(--surface);align-items:start}
 .qrow.ready{border-color:var(--accent)}
 .qleft{display:flex;flex-direction:column;gap:5px}

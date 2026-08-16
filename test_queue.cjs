@@ -222,6 +222,63 @@ cv2.imwrite(r"${dest.replace(/\\/g, '\\\\')}", page)
   await p2.waitForTimeout(200);
   check(await p2.isVisible('#sc-odd'), 'an odd number of pictures should be flagged');
 
+  /* --- two sides of one card, whatever order they arrive in ------------- */
+
+  const p3 = await ctx.newPage();
+  p3.on('pageerror', e => jsErrors.push('pageerror(join): ' + e.message));
+  p3.on('console', m => { if (m.type() === 'error') jsErrors.push('console(join): ' + m.text()); });
+  await p3.goto(url, { waitUntil: 'load' });
+  const clear = () => p3.evaluate(() => { SC_QUEUE = []; SC_PAIRS = false; scQSave(); render(); });
+
+  /* upload the front, then point at it and add the back */
+  await clear();
+  await p3.setInputFiles('#sc-file', SCAN);
+  await p3.waitForSelector('.qrow', { timeout: 30000 });
+  await p3.waitForTimeout(300);
+  check(await p3.locator('.qrow').count() === 1, 'one picture should be one card');
+
+  await p3.locator('.qacts').first().getByText('Add back').click();
+  await p3.setInputFiles('#sc-add', SCAN);
+  await p3.waitForTimeout(3000);
+  check(await p3.evaluate(() => SC_QUEUE.length) === 2, 'the back should be added as a picture');
+  check(await p3.locator('.qrow').count() === 1,
+        'ADD BACK MADE A SECOND CARD instead of a second picture on the same one');
+  check(await p3.locator('.qrow').first().locator('.qshot').count() === 2,
+        'both sides should show on the card');
+
+  /* and it confirms as ONE card */
+  await p3.evaluate(() => {
+    SC_QUEUE[0].n = 'Shedeur Sanders'; SC_QUEUE[0].v = 12.5; SC_QUEUE[0].flags = [];
+    scQSave(); render();
+  });
+  const beforeJoin = await p3.evaluate(() => CD_STOCK.length);
+  await p3.locator('.qacts').first().getByText('Confirm').click();
+  await p3.waitForTimeout(400);
+  check(await p3.evaluate(() => CD_STOCK.length) - beforeJoin === 1,
+        'a card with two pictures should add ONE row to My cards');
+  check(await p3.evaluate(() => SC_QUEUE.length) === 0,
+        'confirming should clear both of its pictures');
+
+  /* both sides uploaded separately, then joined */
+  await clear();
+  await p3.setInputFiles('#sc-file', SCAN);
+  await p3.waitForSelector('.qrow', { timeout: 30000 });
+  await p3.waitForTimeout(2000);
+  await p3.setInputFiles('#sc-file', SCAN);
+  await p3.waitForTimeout(3000);
+  check(await p3.locator('.qrow').count() === 2, 'two separate uploads start as two cards');
+
+  await p3.locator('.qrow').nth(1).getByText('Join to 1').click();
+  await p3.waitForTimeout(300);
+  check(await p3.locator('.qrow').count() === 1, 'JOIN DID NOT MERGE the two into one card');
+  check(await p3.locator('.qrow').first().locator('.qshot').count() === 2,
+        'the joined card should show both pictures');
+
+  /* and split puts them back */
+  await p3.locator('.qacts').first().getByText('Split').click();
+  await p3.waitForTimeout(300);
+  check(await p3.locator('.qrow').count() === 2, 'split should give two cards back');
+
   check(jsErrors.length === 0, 'js errors: ' + jsErrors.join(' | '));
 
   await browser.close();

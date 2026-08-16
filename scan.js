@@ -405,15 +405,39 @@ function scQLoad(){
     const saved = raw ? JSON.parse(raw) : {};
     SC_QUEUE = saved.queue || [];
     SC_PAIRS = !!saved.pairs;
+    /* a queue stored before grouping was explicit has no card ids on it */
+    if (SC_QUEUE.some(e => !e.card)){
+      if (SC_PAIRS) scPairUp(); else scUnpair();
+    }
   } catch (e){ SC_QPERSISTS = false; SC_QUEUE = []; SC_PAIRS = false; }
 }
 
-/* the queue as cards rather than pictures: one entry each, or two when paired */
+/* The queue as CARDS rather than pictures.
+
+   Grouping is by an explicit id each picture carries, not by its position.
+   Position was the first attempt and it only ever worked for one shape of
+   batch -- front, back, front, back, all dropped at once. Upload the two
+   sides one at a time, or in any other order, and there was no way to say
+   "this is the back of that one". An id can be assigned however you like:
+   in pairs down the list, or one picture at a time onto a card you point at. */
 function scGroups(){
-  if (!SC_PAIRS) return SC_QUEUE.map(e => [e]);
-  const out = [];
-  for (let i = 0; i < SC_QUEUE.length; i += 2) out.push(SC_QUEUE.slice(i, i + 2));
-  return out;
+  const byCard = new Map();
+  SC_QUEUE.forEach(e => {
+    const k = e.card || e.id;
+    if (!byCard.has(k)) byCard.set(k, []);
+    byCard.get(k).push(e);
+  });
+  return Array.from(byCard.values());
+}
+
+/* pair them off down the list: 1+2, 3+4, ... */
+function scPairUp(){
+  SC_QUEUE.forEach((e, i) => {
+    e.card = SC_QUEUE[i - (i % 2)].id;
+  });
+}
+function scUnpair(){
+  SC_QUEUE.forEach(e => { e.card = e.id; });
 }
 
 function scQSave(){
@@ -437,6 +461,8 @@ function scThumb(img, rect, turns){
 }
 
 const scReady = e => !!(e.n || '').trim() && !(e.flags && e.flags.length);
+
+let scAttachTo = null;    /* which card an "Add back" picture belongs to */
 
 const scDropEl = document.getElementById('sc-drop');
 if (scDropEl) {
@@ -557,6 +583,33 @@ if (scDropEl) {
     if (!(entry.n || '').trim()) conf.title = 'Needs a card name first';
     else if ((entry.flags || []).length) conf.title = 'Clear the amber fields first';
 
+    /* the answer to "how do I upload the back of THIS card" -- point at the
+       card, pick the picture, done, whatever order they arrived in */
+    btn(many ? 'Add another' : 'Add back',
+        'Upload the other side of this card', () => {
+      scAttachTo = entry.card || entry.id;
+      const addEl = document.getElementById('sc-add');
+      if (addEl) addEl.click();
+    });
+
+    /* and the other half of it: two sides already uploaded as two cards,
+       which is what happens if you drop them one at a time */
+    if (i > 0 && !many) btn('Join to ' + i, 'Make this the back of the card above', () => {
+      const prev = scGroups()[i - 1];
+      const key = prev[0].card || prev[0].id;
+      group.forEach(e => { e.card = key; });
+      SC_PAIRS = false;
+      scQSave(); render();
+      say('Joined — one card with two pictures now.');
+    });
+
+    if (many) btn('Split', 'Treat these as separate cards again', () => {
+      group.forEach(e => { e.card = e.id; });
+      SC_PAIRS = false;
+      scQSave(); render();
+      say('Split — those are two cards again.');
+    });
+
     const turn = btn(many ? 'Turn both' : 'Turn', 'Rotate a quarter turn', () => {
       group.forEach(e => {
         const full = SC_FULL.get(e.id);
@@ -614,7 +667,7 @@ if (scDropEl) {
       c.textContent = ready ? 'Confirm ' + ready + ' \u2192 My cards' : 'Confirm all ready';
     }
     const odd = document.getElementById('sc-odd');
-    if (odd) odd.hidden = !(SC_PAIRS && SC_QUEUE.length % 2);
+    if (odd) odd.hidden = !(SC_PAIRS && groups.some(g => g.length === 1));
   }
 
   function render(){
@@ -676,7 +729,10 @@ if (scDropEl) {
     });
   }
 
-  async function take(files){
+  /* targetCard attaches whatever is found to a card already on the queue,
+     which is how a back gets onto its front when the two were not uploaded
+     together in the right order */
+  async function take(files, targetCard){
     const list = Array.from(files || []);
     if (!list.length) return;
 
@@ -707,7 +763,8 @@ if (scDropEl) {
         const id = scNewId();
         SC_FULL.set(id, { img: img, rect: rect });
         SC_QUEUE.push({
-          id: id, src: stem(file.name), turns: 0, thumb: scThumb(img, rect, 0),
+          id: id, card: targetCard || id,
+          src: stem(file.name), turns: 0, thumb: scThumb(img, rect, 0),
           kind: 'sports', n: '', s: '', num: '', var: '', c: 'NM', q: 1, v: 0,
           flags: [], at: Date.now()
         });
@@ -715,7 +772,16 @@ if (scDropEl) {
       });
     }
     scDropEl.classList.remove('busy');
+    if (SC_PAIRS && !targetCard) scPairUp();
     scQSave(); render();
+
+    if (targetCard){
+      say(added
+        ? 'Added ' + added + (added === 1 ? ' more picture' : ' more pictures')
+          + ' to that card. It is still one card.'
+        : 'Nothing card-shaped in that image, so nothing was added.');
+      return;
+    }
 
     let note = 'Found ' + added + (added === 1 ? ' card' : ' cards')
              + ' and put ' + (added === 1 ? 'it' : 'them') + ' on the review queue.';
@@ -744,6 +810,14 @@ if (scDropEl) {
     if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fileEl && fileEl.click(); }
   });
   if (fileEl) fileEl.addEventListener('change', () => { take(fileEl.files); fileEl.value = ''; });
+
+  const addEl = document.getElementById('sc-add');
+  if (addEl) addEl.addEventListener('change', () => {
+    const to = scAttachTo;
+    scAttachTo = null;
+    take(addEl.files, to);
+    addEl.value = '';
+  });
 
   ['dragenter', 'dragover'].forEach(ev => scDropEl.addEventListener(ev, e => {
     e.preventDefault(); e.stopPropagation(); scDropEl.classList.add('over');
@@ -811,10 +885,12 @@ if (scDropEl) {
   const pairEl = document.getElementById('sc-pairs');
   if (pairEl) pairEl.addEventListener('change', () => {
     SC_PAIRS = pairEl.checked;
+    if (SC_PAIRS) scPairUp(); else scUnpair();
     scQSave(); render();
     say(SC_PAIRS
-      ? 'Paired up: two pictures per card, front then back. Fill in each card once.'
-      : 'Unpaired: every picture is its own card again.');
+      ? 'Paired off down the list: 1 with 2, 3 with 4. If any pair is wrong, '
+        + 'Split it and use Add back on the right card.'
+      : 'Unpaired — every picture is its own card again.');
   });
 
   on('sc-clear', () => {

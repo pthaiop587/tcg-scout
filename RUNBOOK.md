@@ -147,7 +147,10 @@ as a manual row, exactly as if you had typed it into *Add it by hand*.
 
 | Button | What it does |
 |---|---|
-| **Confirm** | that row into My cards; off until it has a name and no amber |
+| **Confirm** | that card into My cards; off until it has a name and no amber |
+| **Add back** | attach another picture — the other side — to *this* card |
+| **Join to N** | make this card the back of the one above it |
+| **Split** | break a two-picture card back into two |
 | **Turn** | rotate that card a quarter turn |
 | **Save crop** | download that card's full-size picture |
 | **Remove** | drop it off the queue without adding it |
@@ -200,12 +203,20 @@ A `?` in front of a value makes that field **amber**, and **Confirm stays off
 until you have dealt with it** — type a correction, or press *looks right* to
 accept it. Same guard, different place.
 
-**Turn on "Scanned front and back"** if you scanned both sides. Without it
-every side becomes a card of its own and you fill each one in twice; with it
-the pictures pair up, you fill in one set of details per card, and confirming
-takes both pictures with it. It matches `add_photos.py --pairs` at the other
-end of the run. An odd number of pictures is called out rather than silently
-mispaired.
+**Two sides of one card.** Every picture starts as its own card. There are
+three ways to say two of them are the same card, and they cover every order
+the pictures can arrive in:
+
+| | |
+|---|---|
+| **Add back** | on a card, then pick the picture. Works whatever order they were uploaded in, or if they came from different scans. |
+| **Join to N** | on a card, to make it the back of the one above. For when you already uploaded both separately. |
+| **Scanned front and back in order** | pairs the whole list off, 1 with 2, 3 with 4. For a batch scanned front, back, front, back in one go. |
+
+**Split** undoes any of them. A card with two pictures asks for one set of
+details, confirms as **one** row in My cards, and takes both pictures with it.
+Grouping is by an id each picture carries, not by its position, so joining and
+splitting never disturbs the rest of the list.
 
 ### Two things worth knowing
 

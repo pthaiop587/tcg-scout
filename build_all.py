@@ -532,12 +532,23 @@ BODY = f'''<title>Card Run HQ</title>
    My cards when somebody has said what it is.</div>
   <p class="hint" id="sc-lost" hidden></p>
 
+  <input id="sc-add" type="file" accept="image/*" multiple hidden>
+
+  <div class="note"><b>Two sides, one card.</b> Every picture starts as its own
+   card. To put a back on a front, press <b>Add back</b> on that card and choose
+   the picture &mdash; it does not matter what order they were uploaded in, or
+   whether they came from the same scan.
+   <br><br>If you scanned a whole batch front, back, front, back in one go, the
+   tick box below does the lot at once. Any pair it gets wrong, press
+   <b>Split</b> on it and use <b>Add back</b> instead.</div>
+
   <label class="pairtog"><input type="checkbox" id="sc-pairs">
-   <span><b>Scanned front and back</b> &mdash; pair the pictures up, two per card.
-   Scanning both sides is how a batch usually comes off the glass, and without
-   this every side becomes a card of its own and you fill each one in twice.</span></label>
-  <p class="hint warnline" id="sc-odd" hidden>There is an odd number of pictures,
-   so the last card has a front and no back. Check the pairs line up before you confirm.</p>
+   <span><b>Scanned front and back in order</b> &mdash; pair them off down the
+   list, 1 with 2, 3 with 4. Without this every side stays a card of its own and
+   you would fill each one in twice.</span></label>
+  <p class="hint warnline" id="sc-odd" hidden>One card has only a front. Check the
+   pairs line up before you confirm &mdash; <b>Split</b> and <b>Add back</b> fix any
+   that do not.</p>
 
   <div id="sc-queue"></div>
 
