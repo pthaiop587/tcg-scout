@@ -99,6 +99,7 @@
       + (badges ? '<br>' + badges : '') + '</td>'
       + '<td class="mono">' + esc(card.sku) + '</td>'
       + '<td>' + status(card) + '</td>'
+      + '<td class="mono">' + esc(card.logged || '—') + '</td>'
       + '<td class="mono">' + esc(card.cond || '—') + '</td>'
       + '<td class="mono">' + (card.qty || 1) + '</td>';
 
@@ -131,7 +132,7 @@
     const shown = cards.filter(matches);
 
     let head = '<tr><th>Photo</th><th>Card</th><th>SKU</th><th>Status</th>'
-             + '<th>Cond</th><th>Qty</th>';
+             + '<th>Logged</th><th>Cond</th><th>Qty</th>';
     if (money) head += '<th>Cost</th>';
     head += '<th>Market</th><th>Ask</th><th>Listed</th><th>Sold</th>';
     if (money) head += '<th>Sold for</th><th>Profit</th>';

@@ -188,6 +188,29 @@ python sport_tabs.py                     # rebuild them all
 python sport_tabs.py --list              # what is in there now
 ```
 
+### When each card was logged
+
+Every tab that holds rows shows a date, so you can tell what came in this week
+from what has been sitting there.
+
+| Tab | Column | Filled by |
+|---|---|---|
+| Inventory | `Date in` | `add_card.py` and `file_batch.py`, stamped on the day |
+| The 7 game tabs | `Date in` | carried across from Inventory on every rebuild |
+| Costs | `Date` | you, when you log the purchase |
+| eBay | — | generated upload sheet; a column here breaks the upload |
+
+The game tabs also carry `Listed on` and `Sold on`, so one game's whole run —
+logged, listed, gone — reads across a single row.
+
+**They are formatted, not just filled.** openpyxl hands a date back as a
+datetime, and a cell with no number format shows it as a five-digit serial:
+`46615` sitting in a row of cards reads as a card number at a glance.
+`sport_tabs.DATES` lists the date columns and `build_tab` formats every one,
+with a test asserting the format rather than just the value.
+
+Existing rows already have their date — nothing needed backfilling.
+
 ### Why views and not separate inventories
 
 Everything downstream reads the **Inventory** tab and only that: `file_batch.py`

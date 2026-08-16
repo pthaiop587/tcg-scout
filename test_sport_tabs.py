@@ -158,6 +158,48 @@ def test_the_tab_says_it_is_generated(wb):
     assert "Do not type here" in a1
 
 
+def test_the_tab_shows_when_each_card_was_logged(wb):
+    """The point of the tab is looking at one game on its own; "when did this
+    come in" is part of that and used to be missing."""
+    run(wb)
+    rows = rows_on(wb, "Basketball")
+    assert rows, "no rows to check"
+    for r in rows:
+        assert "Date in" in r, r.keys()
+        assert r["Date in"] is not None
+
+
+def test_the_date_is_formatted_as_a_date(wb):
+    """openpyxl hands back a datetime; without a number format Excel shows it
+    as a five-digit serial, which reads as a card number at a glance."""
+    run(wb)
+    ws = load_workbook(wb)["Basketball"]
+    hdr = [c.value for c in ws[2]]
+    col = hdr.index("Date in") + 1
+    cell = ws.cell(row=3, column=col)
+    assert cell.number_format == st.DATEFMT, cell.number_format
+
+
+def test_every_date_column_carries_a_date_format(wb):
+    """Listed on and Sold on travel to the tab too, and have the same trap."""
+    run(wb)
+    ws = load_workbook(wb)["Basketball"]
+    hdr = [c.value for c in ws[2]]
+    for name in st.DATES:
+        assert name in hdr, "%s missing from the tab" % name
+        cell = ws.cell(row=3, column=hdr.index(name) + 1)
+        assert cell.number_format == st.DATEFMT, (name, cell.number_format)
+
+
+def test_the_date_survives_a_rebuild(wb):
+    """Tabs are thrown away and rebuilt every refresh; the date has to come
+    back each time, not just the first."""
+    run(wb)
+    run(wb)
+    rows = rows_on(wb, "Basketball")
+    assert all(r["Date in"] is not None for r in rows)
+
+
 def test_list_reports_what_is_there(wb):
     run(wb)
     out = run(wb, "--list")

@@ -48,7 +48,7 @@ PAGES = "https://pthaiop587.github.io/tcg-scout"
 # not carried, which is deliberate: the page should not quietly start showing
 # a column somebody adds to the workbook.
 FIELDS = {
-    "SKU": "sku", "Status": "status", "Lot ID": "lot",
+    "SKU": "sku", "Status": "status", "Date in": "logged", "Lot ID": "lot",
     "Category": "cat", "Sport or game": "sport", "League": "league",
     "Year": "year", "Brand / set": "brand", "Insert set": "insert",
     "Parallel": "parallel", "Player or card name": "name", "Card #": "num",
