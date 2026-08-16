@@ -130,74 +130,150 @@ SETS = [
         ],
     },
     {
-        "key": "chromeblack",
-        "name": "2026 Topps Chrome Black",
-        "sub": "6 cards per pack · one parallel guaranteed in every pack",
-        "set_line": "2026 Topps Chrome Black",
+        "key": "prizmdraft",
+        "name": "2025 Panini Prizm Draft Picks — Collegiate Football",
+        "sub": "the 2025 draft class in college uniforms · mega box",
+        "set_line": "2025 Prizm Draft Picks",
         "sport": "sports",
-        "warn": "The guaranteed autograph in Chrome Black is the encased 13th "
-                "card that comes with a HOBBY BOX — it is not inside the "
-                "6-card packs. Loose single packs have had that card removed "
-                "already. In the packs themselves autographs run about 1:7, so "
-                "across 4 packs it is closer to a coin flip than a promise.",
+        "warn": "These are college cards, not NFL rookie cards. A Prizm Draft "
+                "Picks Shedeur Sanders is a pre-rookie — the player's official "
+                "RC comes from a licensed NFL product. Titling one as a rookie "
+                "card is the fastest way to an angry buyer and a return, and "
+                "it is the single most common mistake with this set.",
         "groups": [
             {
-                "title": "Refractor parallels",
-                "note": "One per pack, guaranteed. Serial number on the back "
-                        "— the colour alone does not tell you the tier.",
+                "title": "Mega box exclusives",
+                "note": "Only out of a mega. If you opened a mega, these are "
+                        "the two to know by sight — they are the reason the "
+                        "mega exists.",
                 "items": [
-                    {"v": "Refractor /199", "odds": "/199"},
-                    {"v": "Blue Refractor /150", "odds": "/150"},
-                    {"v": "Green Refractor /99", "odds": "/99"},
-                    {"v": "Purple Refractor /75", "odds": "/75"},
-                    {"v": "Orange Refractor /25", "odds": "/25"},
-                    {"v": "Rose Gold Refractor /10", "odds": "/10"},
-                    {"v": "Red Refractor /5", "odds": "/5"},
-                    {"v": "Superfractor 1/1", "odds": "1/1"},
-                    {"v": "Mini Diamond Refractor", "odds": "/75 /50 /25"},
-                    {"v": "Wave Refractor", "odds": "/75 /50 /25"},
+                    {"v": "Gold Ice Prizm", "odds": "mega only"},
+                    {"v": "Gold Flash Prizm", "odds": "mega only · /49"},
                 ],
             },
             {
-                "title": "Autographs",
-                "note": "About 1:7 packs for a pack-pulled auto. All of these "
-                        "are numbered.",
+                "title": "Numbered parallels",
+                "note": "Serial number on the FRONT for Prizm, usually bottom "
+                        "corner. Anything numbered comes out of the pile.",
                 "items": [
-                    {"v": "Chrome Black Autograph", "odds": "1:7 packs"},
-                    {"v": "Ivory Autograph", "odds": "/50 or less",
-                     "look": "36 cards in the set; the Ohtani 1/1 is the most "
-                             "chased card in the product"},
-                    {"v": "Paint It! Autograph", "odds": "/10",
-                     "look": "19 cards, new this year"},
-                    {"v": "Pitch Black Pairings dual auto", "odds": "/30",
-                     "look": "two signatures on one card"},
-                    {"v": "Super Futures Autograph", "odds": "numbered"},
+                    {"v": "Red Prizm /399", "odds": "/399"},
+                    {"v": "Blue Wave Prizm /299", "odds": "/299"},
+                    {"v": "Blue Prizm /249", "odds": "/249"},
+                    {"v": "Purple Ice Prizm /199", "odds": "/199"},
+                    {"v": "Blue Ice Prizm /149", "odds": "/149"},
+                    {"v": "Red Finite Prizm /125", "odds": "/125"},
+                    {"v": "Purple Prizm /99", "odds": "/99"},
+                    {"v": "Orange Pulsar Prizm /75", "odds": "/75"},
+                    {"v": "Gold Flash Prizm /49", "odds": "/49"},
+                    {"v": "Red Flash Prizm /49", "odds": "/49"},
+                    {"v": "Orange Finite Prizm /39", "odds": "/39"},
+                    {"v": "Green Pulsar Prizm /25", "odds": "/25"},
+                    {"v": "Mojo Prizm /25", "odds": "/25"},
+                    {"v": "Gold Shimmer Prizm /15", "odds": "/15"},
+                    {"v": "Neon Pink Pulsar Prizm /15", "odds": "/15 · blaster"},
+                    {"v": "Gold Prizm /10", "odds": "/10"},
+                    {"v": "Green Shimmer Prizm /8", "odds": "/8"},
+                    {"v": "Black Finite Prizm 1/1", "odds": "1/1"},
                 ],
             },
             {
-                "title": "Inserts",
+                "title": "Colour Blast — the real chase",
+                "note": "Short print, and the top card in the set by some "
+                        "distance. Unmistakable: a burst of colour across the "
+                        "whole card instead of a photo background.",
                 "items": [
-                    {"v": "Damascus", "odds": "short print, new"},
-                    {"v": "Nocturnal", "odds": "insert"},
-                    {"v": "Depth of Darkness", "odds": "insert"},
-                    {"v": "Home Field Advantage", "odds": "insert, new"},
+                    {"v": "Color Blast SSP", "odds": "SSP"},
+                    {"v": "Color Blast Duals SSP", "odds": "SSP",
+                     "look": "two players on one card — the Sanders/Hunter "
+                             "dual is the headline"},
                 ],
             },
             {
-                "title": "Rookies worth separating",
-                "note": "53 rookies on the checklist; these are the ones being "
-                        "chased.",
+                "title": "Inserts and the names to stop on",
+                "note": "Unnumbered inserts are usually a lot, not a listing "
+                        "— unless the name is one of these.",
                 "items": [
-                    {"v": "Base RC", "who": "Roman Anthony"},
-                    {"v": "Base RC", "who": "Munetaka Murakami"},
-                    {"v": "Base RC", "who": "Jac Caglianone"},
-                    {"v": "Base RC", "who": "Bubba Chandler"},
-                    {"v": "Base RC", "who": "Trey Yesavage"},
-                    {"v": "Base RC", "who": "Nolan McLean"},
-                    {"v": "Base RC", "who": "Jacob Misiorowski"},
-                    {"v": "Base RC", "who": "Chase Burns"},
-                    {"v": "Base RC", "who": "Kyle Teel"},
-                    {"v": "Base RC", "who": "Sal Stewart"},
+                    {"v": "Student Orientation", "odds": "insert"},
+                    {"v": "Signing Day", "odds": "insert"},
+                    {"v": "Silver Prizm", "odds": "unnumbered"},
+                    {"v": "Base", "who": "Travis Hunter"},
+                    {"v": "Base", "who": "Shedeur Sanders"},
+                    {"v": "Base", "who": "Arch Manning"},
+                    {"v": "Base", "who": "Ashton Jeanty"},
+                ],
+            },
+        ],
+    },
+    {
+        "key": "pitchblack",
+        "name": "Pokémon TCG — Pitch Black (ME05)",
+        "sub": "Mega Evolution · released 17 Jul 2026 · 120 cards "
+               "(84 main + 36 secret)",
+        "set_line": "Pokemon Pitch Black (ME05)",
+        "sport": "tcg",
+        "warn": "Sort by the CARD NUMBER first. A secret rare is numbered "
+                "higher than the set total — anything reading above /084 is "
+                "out of the secret run and worth looking up whatever it looks "
+                "like. That one check finds every chase in the set and takes a "
+                "second per card.",
+        "groups": [
+            {
+                "title": "The cards that actually carry the set",
+                "note": "Three Megas hold nearly all the value here. Prices "
+                        "move weekly — look them up, do not take a number "
+                        "from a file — but these are the names to stop on.",
+                "items": [
+                    {"v": "Special Illustration Rare",
+                     "who": "Mega Darkrai ex", "odds": "1:80 packs",
+                     "look": "the top card in the set by a distance; the gold "
+                             "Mega Hyper Rare version is rarer still"},
+                    {"v": "Special Illustration Rare",
+                     "who": "Mega Tyranitar ex", "odds": "1:80 packs"},
+                    {"v": "Special Illustration Rare",
+                     "who": "Mega Absol ex", "odds": "1:80 packs"},
+                    {"v": "Mega Hyper Rare (gold)",
+                     "who": "Mega Darkrai ex", "odds": "1:1081 packs",
+                     "look": "entirely gold card — the hardest pull in Pitch "
+                             "Black"},
+                ],
+            },
+            {
+                "title": "Rarity tiers, commonest first",
+                "note": "In a 753-pack sample, 53% of packs gave nothing "
+                        "better than a plain Rare. Most packs are meant to "
+                        "miss — that is the set working as designed, not bad "
+                        "luck.",
+                "items": [
+                    {"v": "Double Rare", "odds": "1:5 packs",
+                     "look": "an ex card, two black stars bottom-right"},
+                    {"v": "Illustration Rare", "odds": "1:9 packs",
+                     "look": "the Pokémon in a scene, art running past the "
+                             "frame; number above the set total"},
+                    {"v": "Ultra Rare", "odds": "1:12 packs",
+                     "look": "full-art, textured surface you can feel"},
+                    {"v": "Special Illustration Rare", "odds": "1:80 packs",
+                     "look": "full-bleed art, 6 of them in the set"},
+                    {"v": "Mega Hyper Rare", "odds": "1:1081 packs",
+                     "look": "gold; there is exactly one in the set"},
+                ],
+            },
+            {
+                "title": "Illustration Rares — 11 in the set",
+                "note": "The realistic good pull. Common enough to actually "
+                        "see, worth enough to list on their own rather than "
+                        "bundling.",
+                "items": [
+                    {"v": "Illustration Rare", "odds": "1:9 packs"},
+                ],
+            },
+            {
+                "title": "Everything else",
+                "note": "Bulk, with one exception: hold the energy and "
+                        "trainers back as a lot rather than binning them.",
+                "items": [
+                    {"v": "Reverse holo", "odds": "1 per pack"},
+                    {"v": "Regular Rare", "odds": "~53% of packs"},
+                    {"v": "Trainer / Energy", "odds": "bulk lot"},
                 ],
             },
         ],

@@ -481,6 +481,14 @@ parallel sitting in the condition column and the worth in the quantity.
 `test_ripsheet.py` reads the order out of `hq.js` and compares, rather than
 restating it, so it can actually fail when it should.
 
+### The last column decides the category
+
+`sports` or `tcg` is the eighth field, and it is what puts a card under the
+right eBay category and the right `Category` in the workbook. A Pokémon card
+sent over as `sports` lists in the wrong place with nothing looking wrong
+anywhere. Each set on the sheet carries its own flag, and a test cross-checks
+those against `autofill.py`'s `CATEGORY_OF` so the two cannot drift.
+
 ### No prices are baked in
 
 On purpose. A number written into a file in August is a lie by October. The

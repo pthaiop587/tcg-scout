@@ -125,13 +125,51 @@ def test_every_line_can_be_ticked(page):
     assert n > 40
 
 
-def test_each_button_carries_the_set_and_sport(page):
+def test_each_button_carries_a_set_and_a_sport(page):
     """Otherwise the pasted line has an empty set column and the card is
     orphaned from the box it came out of."""
+    seen = set()
     for m in re.finditer(r'<button class="add"[^>]*>', page):
         tag = m.group(0)
-        assert 'data-set="2026 Topps' in tag, tag
-        assert 'data-sport="sports"' in tag, tag
+        s = re.search(r'data-set="([^"]*)"', tag)
+        k = re.search(r'data-sport="([^"]*)"', tag)
+        assert s and s.group(1), tag
+        assert k and k.group(1) in ("sports", "tcg"), tag
+        seen.add(k.group(1))
+    assert seen == {"sports", "tcg"}, (
+        "both kinds of set should be on the sheet; got %s" % seen)
+
+
+def test_a_pokemon_card_is_never_flagged_as_sports(page):
+    """The last column decides the eBay category and the workbook's Category.
+    A Pokemon card sent over as 'sports' lists under the wrong category with
+    nothing looking wrong anywhere."""
+    for m in re.finditer(r'<button class="add"[^>]*>', page):
+        tag = m.group(0)
+        st = re.search(r'data-set="([^"]*)"', tag).group(1)
+        kind = re.search(r'data-sport="([^"]*)"', tag).group(1)
+        if "Pokemon" in st or "Pokémon" in st:
+            assert kind == "tcg", tag
+        else:
+            assert kind == "sports", tag
+
+
+def test_the_sport_flag_agrees_with_autofills_category_map():
+    """autofill.py decides Sports vs TCG from the game name. The rip sheet
+    decides it from a hand-set field. They must not drift apart."""
+    import autofill
+    checked = 0
+    for s in rs.SETS:
+        hay = (s["set_line"] + " " + s["name"]).lower()
+        for game, cat in autofill.CATEGORY_OF.items():
+            if game in hay:
+                want = "tcg" if cat == "TCG" else "sports"
+                assert s["sport"] == want, (
+                    "%s is %s to autofill.py but %r on the rip sheet"
+                    % (s["name"], cat, s["sport"]))
+                checked += 1
+                break
+    assert checked, "no set matched autofill's map -- the guard is asleep"
 
 
 def test_the_short_print_trap_is_spelled_out(page):
@@ -146,10 +184,23 @@ def test_the_short_print_trap_is_spelled_out(page):
     assert "#697" in page
 
 
-def test_the_chrome_black_pack_warning_is_present(page):
-    """A loose pack has had the guaranteed encased auto removed already."""
-    assert "encased" in page
-    assert "HOBBY BOX" in page
+def test_the_pokemon_secret_rare_tell_is_spelled_out(page):
+    """Sorting by card number finds every chase in the set in one pass. It is
+    the most useful thing to know and nothing on the card says it."""
+    assert "CARD NUMBER" in page
+    assert "/084" in page
+
+
+def test_prizm_draft_picks_are_not_called_rookie_cards(page):
+    """A Draft Picks card is a college pre-rookie. Listing one as an RC earns
+    a return, and it is the most common mistake with this set."""
+    assert "not NFL rookie cards" in page
+    assert "pre-rookie" in page
+
+
+def test_the_pokemon_chases_are_named(page):
+    for who in ("Mega Darkrai ex", "Mega Tyranitar ex", "Mega Absol ex"):
+        assert who in page
 
 
 def test_serial_numbers_are_pointed_at_the_back_of_the_card(page):
