@@ -130,6 +130,29 @@ test('percentile of all zeros is zero', () => {
   assert.equal(S.scPercentile(new Float32Array(50), 92), 0);
 });
 
+test('percentile is not thrown off by one huge outlier', () => {
+  /* The bug this replaces. It bucketed into 1024 bins spanning 0..max and
+     returned a bin's lower edge. One card edge makes max enormous, so every
+     paper-grain gradient crushed into the first bin or two and the "92nd
+     percentile" let 24% of the page through -- which the close then welded
+     into a single page-sized blob and the card was never found. On a clean
+     synthetic page the threshold is 0 either way, so nothing caught it. */
+  const v = new Float32Array(10000);
+  for (let i = 0; i < 9990; i++) v[i] = 1 + (i % 20) * 0.1;   /* grain, 1.0-2.9 */
+  for (let i = 9990; i < 10000; i++) v[i] = 5000;             /* a card edge */
+  const thr = S.scPercentile(v, 92);
+  let over = 0;
+  for (let i = 0; i < v.length; i++) if (v[i] > thr) over++;
+  assert.ok(over <= v.length * 0.09,
+            'threshold let ' + (100 * over / v.length).toFixed(1) + '% through, wanted <=9%');
+});
+
+test('percentile tracks the noise floor, which is what the edge floor uses', () => {
+  const v = new Float32Array(1000);
+  for (let i = 0; i < 1000; i++) v[i] = i < 500 ? 6 : 6 + (i - 500) * 0.02;
+  assert.ok(Math.abs(S.scPercentile(v, 50) - 6) < 0.5, S.scPercentile(v, 50));
+});
+
 /* --- morphology and blobs --- */
 
 test('close seals a gap in an outline', () => {

@@ -500,14 +500,6 @@ BODY = f'''<title>Card Run HQ</title>
   <input id="sc-file" type="file" accept="image/*" multiple hidden>
 
   <p class="hint" id="sc-msg" aria-live="polite"></p>
-  <div id="sc-out" class="scgrid"></div>
-
-  <div class="tools" id="sc-tools" hidden>
-   <span class="hint" id="sc-count"></span>
-   <button class="btn2" type="button" id="sc-rotall">Turn all round</button>
-   <button class="btn2 go" type="button" id="sc-save">Save all crops</button>
-   <button class="btn2" type="button" id="sc-clear">Clear</button>
-  </div>
 
   <div class="note"><b>Which way up is the one thing it cannot work out.</b>
    Nothing in the shape of a card says which end is the top, so if they come
@@ -528,6 +520,42 @@ BODY = f'''<title>Card Run HQ</title>
    published, so it cannot recognise a Prizm parallel any more than it can price
    one. The crops are the handover: save them, then ask Claude to read them and
    paste the lines back in below.</div>
+ </section>
+
+ <section id="sc-qwrap" hidden>
+  <h2>Review queue <span class="hint" id="sc-qcount"></span></h2>
+  <div class="note warn"><b>Nothing on this list is in My cards yet, and nothing
+   here can reach an eBay export.</b> That is deliberate. A crop is a picture;
+   a listing needs a name, a set, a number and a parallel, and no part of this
+   page can read those off the image. So the card is captured the moment you
+   drop it &mdash; it will still be here tomorrow &mdash; but it only moves into
+   My cards when somebody has said what it is.</div>
+  <p class="hint" id="sc-lost" hidden></p>
+
+  <div id="sc-queue"></div>
+
+  <div class="tools">
+   <button class="btn2 go" type="button" id="sc-qconfirm" disabled>Confirm all ready</button>
+   <button class="btn2" type="button" id="sc-rotall">Turn all round</button>
+   <button class="btn2" type="button" id="sc-save">Save all crops</button>
+   <button class="btn2" type="button" id="sc-clear">Clear queue</button>
+  </div>
+
+  <details class="fold">
+   <summary>Paste what Claude worked out &mdash; fills the whole queue at once</summary>
+   <p class="hint">One line per card, <b>in the order shown above</b>, pipe
+    separated. Blank cells are left alone. Put a <span class="mono">?</span> in
+    front of anything Claude was not sure of: it arrives amber and
+    <b>Confirm stays off until you have looked at it</b>.</p>
+   <p class="mono" style="background:var(--surface2);padding:9px 12px;border-radius:6px;font-size:11.5px;overflow-x:auto">card | set | number | parallel | condition | qty | worth | sports&nbsp;or&nbsp;tcg</p>
+   <textarea id="sc-qpaste" class="fallback" rows="4" style="display:block"
+     placeholder="Shedeur Sanders | 2025 Prizm Draft Picks - Student Orientation | 8 | ?Gold Cracked Ice | NM | 1 | 12.00 | sports"></textarea>
+   <div class="tools" style="margin-top:9px">
+    <button class="btn2 go" type="button" id="sc-qfill">Fill queue from paste</button>
+   </div>
+  </details>
+
+
  </section>
 
  <section>

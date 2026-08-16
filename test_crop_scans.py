@@ -175,6 +175,24 @@ def test_dust_and_specks_are_not_cards():
     assert len(cs.detect_cards(page, DPI)) == 1
 
 
+@pytest.mark.parametrize("sigma", [0, 2, 5, 8, 14])
+def test_grain_on_the_sheet_does_not_hide_the_card(sigma):
+    """A real scan has sensor grain, and PNG keeps every bit of it.
+
+    Grain is what breaks a threshold set as a share of the page: the top 8%
+    of gradients on a grainy sheet IS the grain, spread evenly, and the
+    close then welds that speckle into one page-sized blob with no card in
+    it. The floor at a multiple of the median gradient is what stops it, and
+    this is the test that says so -- before it, sigma 8 found nothing.
+    """
+    page = np.full((PAGE[0], PAGE[1], 3), 246, np.uint8)
+    if sigma:
+        noise = np.random.default_rng(3).normal(0, sigma, page.shape)
+        page = np.clip(page.astype(np.float32) + noise, 0, 255).astype(np.uint8)
+    put_card(page, 1000, 1400)
+    assert len(cs.detect_cards(page, DPI)) == 1
+
+
 def test_the_page_itself_is_not_returned_as_a_card():
     """An empty sheet has nothing card-shaped on it, so nothing comes back."""
     assert cs.detect_cards(blank_page(), DPI) == []

@@ -91,7 +91,7 @@ const check = (ok, msg) => { if (!ok) fails.push(msg); };
   /* the scan drop zone is wired up and starts clean */
   await page.goto(url);
   check(await page.isVisible('#sc-drop'), 'scan drop zone missing from Card desk');
-  check(!(await page.isVisible('#sc-tools')), 'crop buttons show before anything is dropped');
+  check(!(await page.isVisible('#sc-qwrap')), 'review queue shows before anything is dropped');
 
   check(jsErrors.length === 0, 'js errors: ' + jsErrors.join(' | '));
 

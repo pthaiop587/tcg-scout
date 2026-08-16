@@ -129,25 +129,63 @@ and border and centring are the first things a buyer inspects. A rim of
 plastic costs nothing and shows the card is protected. If a particular batch
 needs it, `--pad -40` trims a fixed 40 px off every side.
 
-### Or drop them in the page
+### Or drop them in the page — the review queue
 
-**Card desk → Drop your scans** does the same job in the browser for
-JPEG/PNG — drag them in, click to choose, or paste with `Ctrl+V`. Each card
-gets a tile with **Turn** (a quarter turn, for that one card) and **Not a
-card** (drop a false positive); **Turn all round** flips the whole batch
-180° in one click, which is the usual fix. **Save all crops** downloads them
-numbered in the order shown.
+**Card desk → Drop your scans** does the same job in the browser for PNG and
+JPEG — drag them in, click to choose, or paste with `Ctrl+V`. PNG is what the
+scanner produces now, so this is the everyday path.
 
-PNG is what the scanner produces now, so this is the everyday path. It will
-**not** open a **PDF** — nothing on the page can read one — so if the profile
-ever goes back to PDF, those go through `crop_scans.py`. Use the script anyway
-for a big folder: it is one command for the lot, and it does not ask the
-browser to hold twenty 33-megapixel pages in memory at once.
+Every card found goes straight onto a **review queue** under the drop zone.
+That is the answer to "does it add them to my collection": it captures the
+card immediately and keeps it — the queue survives closing the tab — but
+**nothing on the queue is in My cards, and nothing on it can reach an eBay
+export.** It only moves when somebody says what the card is.
 
-It does not know *which* card it is;
-the page is static and published, so it can no more recognise a Prizm
-parallel than price one. Save the crops, then ask Claude to read them and
-paste the lines back into **Or paste a line**.
+A row is confirmable when it has a card name and nothing on it is still
+marked unsure. Then **Confirm** (or **Confirm N → My cards**) moves it across
+as a manual row, exactly as if you had typed it into *Add it by hand*.
+
+| Button | What it does |
+|---|---|
+| **Confirm** | that row into My cards; off until it has a name and no amber |
+| **Turn** | rotate that card a quarter turn |
+| **Save crop** | download that card's full-size picture |
+| **Remove** | drop it off the queue without adding it |
+| **Turn all round** | flip the whole batch 180°, the usual scanner fix |
+| **Save all crops** | download every picture, numbered in the order shown |
+
+### Handing a batch to Claude
+
+The page cannot identify a card — it is static and published, so it can no
+more recognise a Prizm parallel than price one, and for **sports** there is no
+free image or price feed to match against at all. So: drop the scans, **Save
+all crops**, ask Claude to read them, and paste what comes back into **Paste
+what Claude worked out**. One line per card *in the order shown*:
+
+```
+card | set | number | parallel | condition | qty | worth | sports or tcg
+```
+
+Put a `?` in front of anything Claude was not sure of. That field arrives
+**amber**, and **Confirm stays off until you have dealt with it** — either
+type a correction, or press *looks right* to accept the value as it stands.
+That is the whole guard: a guess cannot become a listing without a person
+looking at it.
+
+### Two things worth knowing
+
+**The full-size picture is session-only.** The queue stores each card's
+details and a thumbnail, which is what survives a reload; the full-resolution
+crop lives in memory only, because a dozen of them would blow the browser's
+storage quota. After a reload the details are all still there and still
+confirmable, but *Save crop* is greyed out and the page says so. If you want
+the photos, save them in the same sitting — or use `crop_scans.py`, which
+writes real files to disk and never has this problem.
+
+**A PDF will not open here.** Nothing on the page can read one. If the scanner
+profile ever goes back to PDF, put those through `crop_scans.py`. Use the
+script for a big folder anyway: one command for the lot, and it does not ask
+the browser to hold twenty 33-megapixel pages at once.
 
 ### Tests
 

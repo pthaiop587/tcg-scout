@@ -13,8 +13,18 @@
    where there is something that can actually read a card.
    ========================================================================= */
 
-const SC_WORK = 1000;        /* detection runs on a shrunk copy */
+/* Same working size as crop_scans.py. Deliberately identical: the two are
+   meant to find the same cards on the same page, and a different working
+   resolution is a quiet way for them to disagree. */
+const SC_WORK = 1200;
 const SC_EDGE_PCT = 92;      /* top slice of the gradient that counts as edge */
+/* ...but a share is not a judgement. On a grainy scan the top 8% of gradients
+   IS the grain, spread evenly, and the close then welds that speckle into one
+   page-sized blob with no card in it. The threshold therefore also has a floor
+   at a multiple of the median gradient -- a robust read of the noise level
+   that a real card edge clears by an order of magnitude and paper grain never
+   does. Matches EDGE_NOISE_MULT in crop_scans.py; keep them the same. */
+const SC_EDGE_NOISE = 4.0;
 const SC_COLOUR_TOL = 22;    /* how far off the lid colour a pixel must be */
 const SC_ASPECT_MIN = 0.55, SC_ASPECT_MAX = 0.95;
 const SC_MIN_AREA = 0.010, SC_MAX_AREA = 0.85;
@@ -68,19 +78,30 @@ function scGradient(g, w, h){
   return mag;
 }
 
+/* Exact enough to match numpy, which matters more than it sounds.
+
+   This was a histogram of 1024 bins spread from 0 to the largest gradient on
+   the page. A card edge is enormous next to paper grain, so on any real scan
+   the maximum is huge, every noise gradient falls in the first bin or two,
+   and returning a bin's lower edge let 24% of the page through where 8% was
+   asked for. The close then welded that speckle into one page-sized blob and
+   the card vanished. Clean synthetic pages hid it completely: with no noise
+   the threshold is 0 either way.
+
+   Sorting a sample and indexing into it has no such failure mode, and one
+   sort of ~200k floats per image is nothing next to the gradient pass. */
 function scPercentile(v, pct){
-  let max = 0;
-  for (let i = 0; i < v.length; i++) if (v[i] > max) max = v[i];
-  if (max <= 0) return 0;
-  const bins = new Int32Array(1024);
-  for (let i = 0; i < v.length; i++) bins[Math.min(1023, (v[i]/max*1023)|0)]++;
-  const want = v.length * pct / 100;
-  let seen = 0;
-  for (let b = 0; b < 1024; b++){
-    seen += bins[b];
-    if (seen >= want) return b / 1023 * max;
-  }
-  return max;
+  const n = v.length;
+  if (!n) return 0;
+  const stride = Math.max(1, Math.floor(n / 200000));
+  const s = new Float32Array(Math.ceil(n / stride));
+  let j = 0;
+  for (let i = 0; i < n; i += stride) s[j++] = v[i];
+  const sample = j === s.length ? s : s.subarray(0, j);
+  sample.sort();
+  const idx = Math.min(sample.length - 1,
+                       Math.max(0, Math.round((sample.length - 1) * pct / 100)));
+  return sample[idx];
 }
 
 /* the lid, sampled from a ring round the edge of the page. Median, so one
@@ -223,18 +244,48 @@ function scReadingOrder(cards){
   return out;
 }
 
+/* Shrink to the working size by halving, not in one jump.
+   cv2.resize INTER_AREA averages every source pixel that lands in a target
+   pixel, so shrinking a scan 2.5x also divides its sensor noise by about the
+   same. One canvas drawImage does not: it samples a handful of neighbours,
+   noise comes through nearly intact, and on a lossless 600 dpi PNG that was
+   enough to swamp the gradient percentile -- the mask turned to speckle, the
+   close welded it into one page-sized blob, and the card was never found.
+   The python cropper coped with the same page because of INTER_AREA alone.
+   Repeated halving is the canvas equivalent: each step averages 4 pixels. */
+function scFit(img, maxEdge){
+  const scale = Math.min(1, maxEdge / Math.max(img.width, img.height));
+  const fw = Math.max(1, Math.round(img.width * scale));
+  const fh = Math.max(1, Math.round(img.height * scale));
+
+  let cur = img, w = img.width, h = img.height;
+  while (w > fw * 2){
+    const nw = Math.max(fw, Math.round(w / 2)), nh = Math.max(fh, Math.round(h / 2));
+    const step = document.createElement('canvas');
+    step.width = nw; step.height = nh;
+    const g = step.getContext('2d', { willReadFrequently: true });
+    g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+    g.drawImage(cur, 0, 0, nw, nh);
+    cur = step; w = nw; h = nh;
+  }
+  const out = document.createElement('canvas');
+  out.width = fw; out.height = fh;
+  const g = out.getContext('2d', { willReadFrequently: true });
+  g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+  g.drawImage(cur, 0, 0, fw, fh);
+  return { canvas: out, scale: scale };
+}
+
 function scDetect(img){
-  const scale = Math.min(1, SC_WORK / Math.max(img.width, img.height));
-  const w = Math.max(1, Math.round(img.width * scale));
-  const h = Math.max(1, Math.round(img.height * scale));
-  const cv = document.createElement('canvas');
-  cv.width = w; cv.height = h;
-  const cx = cv.getContext('2d', { willReadFrequently: true });
-  cx.drawImage(img, 0, 0, w, h);
+  const fit = scFit(img, SC_WORK);
+  const scale = fit.scale;
+  const w = fit.canvas.width, h = fit.canvas.height;
+  const cx = fit.canvas.getContext('2d', { willReadFrequently: true });
   const d = cx.getImageData(0, 0, w, h).data, n = w*h;
 
   const mag = scGradient(scBlur(scGrey(d, n), w, h), w, h);
-  const thr = scPercentile(mag, SC_EDGE_PCT);
+  const thr = Math.max(scPercentile(mag, SC_EDGE_PCT),
+                       SC_EDGE_NOISE * scPercentile(mag, 50));
   const bg  = scBackground(d, w, h);
 
   const mask = new Uint8Array(n);
@@ -290,65 +341,256 @@ function scExtract(img, rect, turns, maxW){
   return out;
 }
 
-/* ---------------- the panel ---------------- */
+/* ---------------- the review queue ----------------
+   Every card you drop lands here, not in My cards. That separation is the
+   whole point: a crop is pixels, and a listing needs a name, a set, a number
+   and a parallel that nothing on a static page can read off the picture. So
+   the card is captured the moment it is scanned, and stays captured, but it
+   cannot reach My cards -- and therefore cannot reach an eBay export -- until
+   somebody has actually confirmed what it is.
+
+   A row is confirmable when it has a name and nothing on it is still marked
+   uncertain. Claude marks a field uncertain by prefixing it with ? in the
+   paste, and the amber clears when you either edit the field or tick it.   */
+
+const SC_QKEY = 'carddesk.queue.v1';
+const SC_QTHUMB = 150;                 /* px wide; ~8 KB each in storage */
+
+/* Fields carry the same names a stored card uses, so confirming is a copy
+   rather than a translation that could quietly drop something. */
+const SC_FIELDS = [
+  { k: 'n',    label: 'Card',      ph: 'Shedeur Sanders' },
+  { k: 's',    label: 'Set',       ph: '2025 Prizm Draft Picks' },
+  { k: 'num',  label: 'Number',    ph: '8' },
+  { k: 'var',  label: 'Parallel',  ph: 'Gold Cracked Ice' },
+  { k: 'c',    label: 'Condition', sel: ['NM', 'LP', 'MP', 'HP', 'DMG'] },
+  { k: 'q',    label: 'Qty',       num: true },
+  { k: 'v',    label: 'Worth ea',  num: true, ph: '0.00' },
+  { k: 'kind', label: 'Route as',  sel: ['sports', 'tcg'] }
+];
+
+let SC_QUEUE = [];
+let SC_QPERSISTS = false;
+const SC_FULL = new Map();     /* id -> {img, rect}; session only, never stored */
+
+function scQLoad(){
+  try {
+    const raw = localStorage.getItem(SC_QKEY);
+    SC_QPERSISTS = true;
+    SC_QUEUE = raw ? (JSON.parse(raw).queue || []) : [];
+  } catch (e){ SC_QPERSISTS = false; SC_QUEUE = []; }
+}
+function scQSave(){
+  if (!SC_QPERSISTS) return;
+  try { localStorage.setItem(SC_QKEY, JSON.stringify({ queue: SC_QUEUE, at: Date.now() })); }
+  catch (e){
+    /* quota, almost certainly the thumbnails. Say so rather than failing mute. */
+    SC_QPERSISTS = false;
+    const m = document.getElementById('sc-msg');
+    if (m) m.textContent = 'This browser will not store any more of the queue '
+      + '(it is full). Confirm or clear some cards, and save your crops now.';
+  }
+}
+
+let scUid = 0;
+function scNewId(){ return 'q' + Date.now().toString(36) + (scUid++).toString(36); }
+
+function scThumb(img, rect, turns){
+  return scExtract(img, rect, turns, SC_QTHUMB).toDataURL('image/jpeg', 0.7);
+}
+
+const scReady = e => !!(e.n || '').trim() && !(e.flags && e.flags.length);
 
 const scDropEl = document.getElementById('sc-drop');
 if (scDropEl) {
   const fileEl  = document.getElementById('sc-file');
-  const outEl   = document.getElementById('sc-out');
+  const wrapEl  = document.getElementById('sc-qwrap');
+  const listEl  = document.getElementById('sc-queue');
   const msgEl   = document.getElementById('sc-msg');
-  const countEl = document.getElementById('sc-count');
-  const toolsEl = document.getElementById('sc-tools');
-  let queue = [];
+  const countEl = document.getElementById('sc-qcount');
 
   const say = t => { if (msgEl) msgEl.textContent = t; };
+  const stem = n => (n || 'scan').replace(/\.[^.]+$/, '').replace(/[^\w-]+/g, '-');
 
-  function stem(name){
-    return (name || 'scan').replace(/\.[^.]+$/, '').replace(/[^\w-]+/g, '-');
+  /* ---- rendering ---- */
+
+  function fieldEl(entry, f){
+    const wrap = document.createElement('div');
+    wrap.className = 'field';
+    const lab = document.createElement('label');
+    lab.textContent = f.label;
+    wrap.appendChild(lab);
+
+    let input;
+    if (f.sel){
+      input = document.createElement('select');
+      f.sel.forEach(o => {
+        const opt = document.createElement('option');
+        opt.value = o; opt.textContent = o;
+        if (String(entry[f.k]) === o) opt.selected = true;
+        input.appendChild(opt);
+      });
+    } else {
+      input = document.createElement('input');
+      if (f.num){ input.type = 'number'; input.min = '0'; input.step = f.k === 'q' ? '1' : '0.5'; }
+      input.placeholder = f.ph || '';
+      input.value = entry[f.k] === 0 && f.k === 'v' ? '' : (entry[f.k] ?? '');
+    }
+
+    const flagged = (entry.flags || []).includes(f.k);
+    if (flagged) input.classList.add('unsure');
+
+    input.addEventListener('input', () => {
+      entry[f.k] = f.num ? (parseFloat(input.value) || 0) : input.value;
+      /* editing a field is the same statement as ticking it: you looked */
+      if ((entry.flags || []).includes(f.k)){
+        entry.flags = entry.flags.filter(x => x !== f.k);
+        input.classList.remove('unsure');
+        renderFoot();
+      }
+      scQSave();
+    });
+    input.addEventListener('change', () => { scQSave(); render(); });
+    wrap.appendChild(input);
+
+    if (flagged){
+      const tick = document.createElement('button');
+      tick.type = 'button'; tick.className = 'unsurebtn';
+      tick.textContent = 'looks right';
+      tick.title = 'Clear the amber without changing the value';
+      tick.addEventListener('click', () => {
+        entry.flags = entry.flags.filter(x => x !== f.k);
+        scQSave(); render();
+      });
+      wrap.appendChild(tick);
+    }
+    return wrap;
+  }
+
+  function rowEl(entry, i){
+    const row = document.createElement('div');
+    row.className = 'qrow' + (scReady(entry) ? ' ready' : '');
+
+    const left = document.createElement('div');
+    left.className = 'qleft';
+    const im = document.createElement('img');
+    im.className = 'qshot'; im.src = entry.thumb; im.alt = 'card ' + (i + 1);
+    left.appendChild(im);
+    const cap = document.createElement('div');
+    cap.className = 'scname';
+    cap.textContent = (i + 1) + '. ' + entry.src;
+    left.appendChild(cap);
+    row.appendChild(left);
+
+    const fields = document.createElement('div');
+    fields.className = 'qfields';
+    SC_FIELDS.forEach(f => fields.appendChild(fieldEl(entry, f)));
+    row.appendChild(fields);
+
+    const acts = document.createElement('div');
+    acts.className = 'qacts';
+    const has = SC_FULL.has(entry.id);
+
+    const btn = (text, title, fn, cls) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'btn2' + (cls ? ' ' + cls : '');
+      b.textContent = text; if (title) b.title = title;
+      b.addEventListener('click', fn);
+      acts.appendChild(b);
+      return b;
+    };
+
+    const conf = btn('Confirm', 'Move this card into My cards', () => {
+      confirmOne(entry);
+    }, 'go');
+    conf.disabled = !scReady(entry);
+    if (!(entry.n || '').trim()) conf.title = 'Needs a card name first';
+    else if ((entry.flags || []).length) conf.title = 'Clear the amber fields first';
+
+    const turn = btn('Turn', 'Rotate a quarter turn', () => {
+      entry.turns = (entry.turns || 0) + 1;
+      const full = SC_FULL.get(entry.id);
+      entry.thumb = scThumb(full.img, full.rect, entry.turns);
+      scQSave(); render();
+    });
+    turn.disabled = !has;
+
+    const save = btn('Save crop', 'Download the full-size picture', () => {
+      const full = SC_FULL.get(entry.id);
+      download(scExtract(full.img, full.rect, entry.turns),
+               entry.src + '-' + String(i + 1).padStart(2, '0') + '.jpg');
+    });
+    save.disabled = !has;
+    if (!has) save.title = 'The full-size picture was only in this session. '
+      + 'Drop the scan again to save it.';
+
+    btn('Remove', 'Take it off the queue without adding it', () => {
+      SC_QUEUE = SC_QUEUE.filter(x => x !== entry);
+      SC_FULL.delete(entry.id);
+      scQSave(); render();
+    });
+
+    row.appendChild(acts);
+    return row;
+  }
+
+  function renderFoot(){
+    const ready = SC_QUEUE.filter(scReady).length;
+    if (countEl){
+      countEl.textContent = SC_QUEUE.length
+        ? SC_QUEUE.length + ' waiting \u00b7 ' + ready + ' ready to confirm'
+        : '';
+    }
+    const c = document.getElementById('sc-qconfirm');
+    if (c){
+      c.disabled = !ready;
+      c.textContent = ready ? 'Confirm ' + ready + ' \u2192 My cards' : 'Confirm all ready';
+    }
   }
 
   function render(){
-    outEl.innerHTML = '';
-    queue.forEach((card, i) => {
-      const tile = document.createElement('div');
-      tile.className = 'sctile';
+    if (wrapEl) wrapEl.hidden = !SC_QUEUE.length;
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    SC_QUEUE.forEach((e, i) => listEl.appendChild(rowEl(e, i)));
+    renderFoot();
 
-      const cv = scExtract(card.img, card.rect, card.turns, SC_THUMB_W);
-      cv.className = 'scshot';
-      tile.appendChild(cv);
-
-      const name = document.createElement('div');
-      name.className = 'scname';
-      name.textContent = (i+1) + '. ' + card.name;
-      tile.appendChild(name);
-
-      const row = document.createElement('div');
-      row.className = 'scrow';
-
-      const rot = document.createElement('button');
-      rot.className = 'btn2'; rot.type = 'button';
-      rot.textContent = 'Turn';
-      rot.title = 'Rotate this card a quarter turn';
-      rot.addEventListener('click', () => { card.turns++; render(); });
-      row.appendChild(rot);
-
-      const del = document.createElement('button');
-      del.className = 'btn2'; del.type = 'button';
-      del.textContent = 'Not a card';
-      del.addEventListener('click', () => { queue.splice(i, 1); render(); });
-      row.appendChild(del);
-
-      tile.appendChild(row);
-      outEl.appendChild(tile);
-    });
-
-    if (countEl){
-      countEl.textContent = queue.length
-        ? queue.length + (queue.length === 1 ? ' card' : ' cards') + ' ready'
-        : '';
+    const lost = SC_QUEUE.filter(e => !SC_FULL.has(e.id)).length;
+    const warn = document.getElementById('sc-lost');
+    if (warn){
+      warn.hidden = !lost;
+      warn.textContent = lost + (lost === 1 ? ' card on this list kept' : ' cards on this list kept')
+        + ' its details but not its full-size picture \u2014 that only lives in the '
+        + 'session it was dropped in. The details are safe; drop the scan again if '
+        + 'you still need the photo for a listing.';
     }
-    if (toolsEl) toolsEl.hidden = !queue.length;
   }
+
+  /* ---- confirming ---- */
+
+  function confirmOne(entry){
+    if (!scReady(entry)) return;
+    const cond = String(entry.c || 'NM').toUpperCase();
+    CD_STOCK.unshift({
+      manual: 1,
+      kind: entry.kind === 'tcg' ? 'tcg' : 'sports',
+      n: (entry.n || '').trim(),
+      s: (entry.s || '').trim(),
+      num: (entry.num || '').trim(),
+      var: (entry.var || '').trim(),
+      c: CD_CONDS.includes(cond) ? cond : 'NM',
+      q: Math.max(1, Math.round(parseFloat(entry.q) || 1)),
+      v: (isFinite(parseFloat(entry.v)) && entry.v >= 0) ? parseFloat(entry.v) : 0
+    });
+    cdSave(); cdRenderStock();
+    SC_QUEUE = SC_QUEUE.filter(x => x !== entry);
+    SC_FULL.delete(entry.id);
+    scQSave(); render();
+    say('Confirmed \u2014 it is in My cards now'
+        + (CD_PERSISTS ? '.' : ', but this browser is NOT saving. Export before you close.'));
+  }
+
+  /* ---- taking files ---- */
 
   function loadImage(file){
     return new Promise((resolve, reject) => {
@@ -368,38 +610,44 @@ if (scDropEl) {
     const imgs = list.filter(f => f.type.startsWith('image/'));
 
     if (pdfs.length && !imgs.length){
-      say('That is a PDF, which is what the scanner writes. The page cannot open '
-        + 'one -- run  python crop_scans.py --src "G:/Scans" --rotate 180  and drop '
-        + 'the crops it makes into photos/crops here, or scan to JPEG instead.');
+      say('That is a PDF. Nothing here can read one \u2014 the scanner writes PNG now, '
+        + 'or run  python crop_scans.py --src "G:/Scans" --rotate 180  for a folder.');
       return;
     }
-    if (!imgs.length){ say('No images in that -- drop JPEG or PNG files.'); return; }
+    if (!imgs.length){ say('No images in that \u2014 drop PNG or JPEG files.'); return; }
     if (pdfs.length) say(pdfs.length + ' PDF skipped; use crop_scans.py for those.');
 
     scDropEl.classList.add('busy');
     let added = 0, blank = 0;
     for (const file of imgs){
-      say('Reading ' + file.name + '...');
+      say('Reading ' + file.name + '\u2026');
       let img;
       try { img = await loadImage(file); }
       catch (e){ say('Could not read ' + file.name); continue; }
 
-      /* yields to the browser so the drop zone can repaint mid-batch */
-      await new Promise(r => setTimeout(r, 0));
+      await new Promise(r => setTimeout(r, 0));   /* let the page repaint */
       const rects = scDetect(img);
       if (!rects.length){ blank++; continue; }
+
       rects.forEach(rect => {
-        queue.push({ img: img, rect: rect, turns: 0, name: stem(file.name) });
+        const id = scNewId();
+        SC_FULL.set(id, { img: img, rect: rect });
+        SC_QUEUE.push({
+          id: id, src: stem(file.name), turns: 0, thumb: scThumb(img, rect, 0),
+          kind: 'sports', n: '', s: '', num: '', var: '', c: 'NM', q: 1, v: 0,
+          flags: [], at: Date.now()
+        });
         added++;
       });
     }
     scDropEl.classList.remove('busy');
-    render();
+    scQSave(); render();
 
-    let note = 'Found ' + added + (added === 1 ? ' card' : ' cards') + '.';
+    let note = 'Found ' + added + (added === 1 ? ' card' : ' cards')
+             + ' and put ' + (added === 1 ? 'it' : 'them') + ' on the review queue.';
     if (blank) note += ' ' + blank + (blank === 1 ? ' image' : ' images')
                     + ' had nothing card-shaped on it.';
-    if (added) note += ' Check the order and which way up they are, then save.';
+    if (added) note += ' Nothing is in My cards yet \u2014 fill in what each one is, then confirm.';
     say(note);
   }
 
@@ -415,66 +663,126 @@ if (scDropEl) {
     });
   }
 
-  /* --- wiring --- */
+  /* ---- wiring ---- */
 
   scDropEl.addEventListener('click', () => fileEl && fileEl.click());
   scDropEl.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); fileEl && fileEl.click(); }
   });
-  if (fileEl) fileEl.addEventListener('change', () => {
-    take(fileEl.files); fileEl.value = '';
-  });
+  if (fileEl) fileEl.addEventListener('change', () => { take(fileEl.files); fileEl.value = ''; });
 
-  ['dragenter', 'dragover'].forEach(ev =>
-    scDropEl.addEventListener(ev, e => {
-      e.preventDefault(); e.stopPropagation();
-      scDropEl.classList.add('over');
-    }));
-  ['dragleave', 'drop'].forEach(ev =>
-    scDropEl.addEventListener(ev, e => {
-      e.preventDefault(); e.stopPropagation();
-      scDropEl.classList.remove('over');
-    }));
+  ['dragenter', 'dragover'].forEach(ev => scDropEl.addEventListener(ev, e => {
+    e.preventDefault(); e.stopPropagation(); scDropEl.classList.add('over');
+  }));
+  ['dragleave', 'drop'].forEach(ev => scDropEl.addEventListener(ev, e => {
+    e.preventDefault(); e.stopPropagation(); scDropEl.classList.remove('over');
+  }));
   scDropEl.addEventListener('drop', e => take(e.dataTransfer.files));
 
-  /* paste, so a phone screenshot goes straight in */
   document.addEventListener('paste', e => {
     const panel = document.getElementById('p-add');
     if (!panel || panel.hidden) return;
+    const t = e.target;
+    if (t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;   /* let a real paste be a paste */
     const items = e.clipboardData && e.clipboardData.files;
     if (items && items.length) take(items);
   });
 
-  const rotAll = document.getElementById('sc-rotall');
-  if (rotAll) rotAll.addEventListener('click', () => {
-    queue.forEach(c => c.turns += 2);
-    render();
-    say('Turned every card half way round.');
+  const on = (id, fn) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', fn);
+    return el;
+  };
+
+  on('sc-rotall', () => {
+    let done = 0;
+    SC_QUEUE.forEach(e => {
+      const full = SC_FULL.get(e.id);
+      if (!full) return;
+      e.turns = (e.turns || 0) + 2;
+      e.thumb = scThumb(full.img, full.rect, e.turns);
+      done++;
+    });
+    scQSave(); render();
+    say(done ? 'Turned ' + done + ' round.' : 'Nothing here still has its full-size picture to turn.');
   });
 
-  const clearEl = document.getElementById('sc-clear');
-  if (clearEl) clearEl.addEventListener('click', () => {
-    queue = []; render(); say('Cleared.');
+  on('sc-qconfirm', () => {
+    const ready = SC_QUEUE.filter(scReady);
+    if (!ready.length) return;
+    ready.forEach(confirmOne);
+    say('Confirmed ' + ready.length + ' into My cards.'
+        + (CD_PERSISTS ? '' : ' This browser is NOT saving \u2014 export before you close.'));
   });
 
-  const saveEl = document.getElementById('sc-save');
-  if (saveEl) saveEl.addEventListener('click', async () => {
-    if (!queue.length) return;
-    saveEl.disabled = true;
-    /* numbered in the order shown, because that is the order
-       add_photos.py --assign will read them back in */
-    for (let i = 0; i < queue.length; i++){
-      const card = queue[i];
-      const n = String(i+1).padStart(2, '0');
-      say('Saving ' + (i+1) + ' of ' + queue.length + '...');
-      await download(scExtract(card.img, card.rect, card.turns),
-                     card.name + '-' + n + '.jpg');
+  on('sc-save', async () => {
+    const have = SC_QUEUE.filter(e => SC_FULL.has(e.id));
+    if (!have.length){ say('No full-size pictures left in this session to save.'); return; }
+    const btn = document.getElementById('sc-save');
+    btn.disabled = true;
+    for (let i = 0; i < have.length; i++){
+      const e = have[i];
+      say('Saving ' + (i + 1) + ' of ' + have.length + '\u2026');
+      const full = SC_FULL.get(e.id);
+      await download(scExtract(full.img, full.rect, e.turns),
+                     e.src + '-' + String(SC_QUEUE.indexOf(e) + 1).padStart(2, '0') + '.jpg');
     }
-    saveEl.disabled = false;
-    say('Saved ' + queue.length + '. They are in your downloads folder, numbered '
-      + 'in the order above -- move them to photos/crops and file them with '
-      + 'add_photos.py --assign.');
+    btn.disabled = false;
+    say('Saved ' + have.length + ', numbered in the order above. Move them to '
+      + 'photos/crops and file them with add_photos.py --assign.');
   });
 
+  on('sc-clear', () => {
+    if (!SC_QUEUE.length) return;
+    if (!window.confirm('Throw away all ' + SC_QUEUE.length + ' card'
+        + (SC_QUEUE.length === 1 ? '' : 's') + ' on the review queue? '
+        + 'Anything already confirmed into My cards stays.')) return;
+    SC_QUEUE = []; SC_FULL.clear(); scQSave(); render(); say('Queue cleared.');
+  });
+
+  /* Claude cannot write to this browser, so a batch it worked out arrives as
+     a paste. One line per card in the order shown; ? marks a field it is not
+     sure of, which comes through amber and blocks Confirm until you look. */
+  on('sc-qfill', () => {
+    const ta = document.getElementById('sc-qpaste');
+    const lines = ta.value.split('\n').map(s => s.trim()).filter(Boolean);
+    if (!lines.length){ say('Nothing to fill from.'); return; }
+    if (!SC_QUEUE.length){ say('Drop some scans first \u2014 this fills the queue in order.'); return; }
+
+    let n = 0, unsure = 0;
+    lines.forEach((line, i) => {
+      const e = SC_QUEUE[i];
+      if (!e) return;
+      const cells = line.split('|').map(s => s.trim());
+      const keys = ['n', 's', 'num', 'var', 'c', 'q', 'v', 'kind'];
+      e.flags = [];
+      keys.forEach((k, j) => {
+        let val = cells[j];
+        if (val === undefined || val === '') return;
+        if (val.charAt(0) === '?'){ val = val.slice(1).trim(); e.flags.push(k); unsure++; }
+        if (k === 'q') e.q = Math.max(1, Math.round(parseFloat(val) || 1));
+        else if (k === 'v') e.v = Math.max(0, parseFloat(val) || 0);
+        else if (k === 'c'){
+          const c = val.toUpperCase();
+          e.c = ['NM', 'LP', 'MP', 'HP', 'DMG'].includes(c) ? c : 'NM';
+        }
+        else if (k === 'kind') e.kind = /tcg/i.test(val) ? 'tcg' : 'sports';
+        else e[k] = val;
+      });
+      n++;
+    });
+    ta.value = '';
+    scQSave(); render();
+    say('Filled ' + n + ' of ' + SC_QUEUE.length + '.'
+      + (unsure ? ' ' + unsure + ' field' + (unsure === 1 ? '' : 's')
+                + ' came through marked unsure \u2014 they are amber, and Confirm '
+                + 'stays off until you have looked at each one.' : '')
+      + (lines.length > SC_QUEUE.length
+         ? ' ' + (lines.length - SC_QUEUE.length) + ' extra line(s) ignored.' : ''));
+  });
+
+  scQLoad();
+  if (!SC_QPERSISTS) say('This browser is blocking storage, so the review queue '
+    + 'will not survive a reload. Confirm as you go.');
   render();
 }

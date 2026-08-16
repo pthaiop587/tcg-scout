@@ -66,6 +66,15 @@ MIN_RECTANGULARITY = 0.80
 # through; too high and the lid's own paper noise starts to register.
 EDGE_PERCENTILE = 92
 
+# ...but a percentile alone is a share, not a judgement: on a grainy scan the
+# top 8% of gradients IS grain, evenly spread, and the close then welds that
+# speckle into one page-sized blob with no card in it. So the threshold also
+# has a floor at a multiple of the median gradient, which is a robust read of
+# the noise level -- a real card edge clears it by an order of magnitude and
+# paper grain never does. With the floor the share that passes holds at about
+# 1.5% from a clean page through to heavy grain; without it, 8% regardless.
+EDGE_NOISE_MULT = 4.0
+
 JPEG_QUALITY = 95
 
 # A card in a toploader measures 3 x 4 inches, not 2.5 x 3.5, because the
@@ -185,7 +194,9 @@ def card_mask(bgr):
 
     mag = cv2.magnitude(cv2.Scharr(blur, cv2.CV_32F, 1, 0),
                         cv2.Scharr(blur, cv2.CV_32F, 0, 1))
-    edges = (mag > np.percentile(mag, EDGE_PERCENTILE)).astype(np.uint8) * 255
+    thr = max(float(np.percentile(mag, EDGE_PERCENTILE)),
+              EDGE_NOISE_MULT * float(np.median(mag)))
+    edges = (mag > thr).astype(np.uint8) * 255
 
     bg = background_colour(bgr)
     diff = np.abs(bgr.astype(np.int16) - bg.astype(np.int16)).max(axis=2)
