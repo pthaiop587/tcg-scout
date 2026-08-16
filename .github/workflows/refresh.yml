@@ -49,6 +49,11 @@ jobs:
         run: |
           pip install --quiet openpyxl
           python make_workbook.py -o _site/Card-Run-HQ-Master.xlsx
+          # A second copy built for Google Sheets: the formula columns are one
+          # ARRAYFORMULA each so they never need dragging down, and the Photos
+          # tab draws each card straight from its published URL with IMAGE().
+          # Neither of those is Excel, hence two files rather than one.
+          python make_workbook.py --google --rows 120             -o _site/Card-Run-HQ-Google.xlsx
           if [ -d photos ] && [ -n "$(ls -A photos 2>/dev/null)" ]; then
             cp -r photos _site/photos
             echo "published $(ls _site/photos | wc -l) photo(s)"

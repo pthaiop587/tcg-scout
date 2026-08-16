@@ -140,13 +140,67 @@ LAST_COL = get_column_letter(len(INVENTORY_COLS))
 INV_ROWS = 400          # pre-formulated rows; add more by dragging down
 
 
-def build_inventory(wb):
+
+def google_inventory(ws, c):
+    """The Inventory formula columns as one ARRAYFORMULA each, at row 2.
+
+    Google recalculates these down the whole column forever, so adding a card
+    on row 500 needs nothing dragged. It also cuts the file from 15 KB of
+    repeated formulas to well under one.
+    """
+    def col(name):
+        return "%s2:%s" % (c[name], c[name])
+
+    ask, fee, net = col("Ask price"), col("Est fees"), col("Est net")
+    cost, who = col("Cost each"), col("Player or card name")
+    title = (
+        'TRIM({yr}&" "&{brand}&" "&{ins}&" "&{par}&" "&{who}'
+        '&IF({num}=""," "," #"&{num})'
+        '&IF({ser}=""," "," /"&{ser})'
+        '&IF({rc}="Yes"," RC","")'
+        '&IF({au}="Yes"," AUTO","")'
+        '&IF({rel}="Yes"," PATCH",""))'
+    ).format(yr=col("Year"), brand=col("Brand / set"), ins=col("Insert set"),
+             par=col("Parallel"), who=who, num=col("Card #"),
+             ser=col("Serial /"), rc=col("RC"), au=col("Auto"),
+             rel=col("Relic"))
+
+    put = lambda name, f: ws.__setitem__("%s2" % c[name], f)
+    put("Est fees",
+        '=ARRAYFORMULA(IF({a}="","",ROUND({a}*0.1325,2)+IF({a}<10,0.3,0.4)))'
+        .format(a=ask))
+    put("Est net", '=ARRAYFORMULA(IF({a}="","",{a}-{f}))'.format(a=ask, f=fee))
+    put("Margin",
+        '=ARRAYFORMULA(IF({n}="","",IF({c}="","",({n}-{c})/{n})))'
+        .format(n=net, c=cost))
+    put("eBay title", '=ARRAYFORMULA(IF({w}="","",{t}))'.format(w=who, t=title))
+    put("Len", '=ARRAYFORMULA(IF({t}="","",LEN({t})))'.format(t=col("eBay title")))
+    put("Sold comps",
+        '=ARRAYFORMULA(IF({w}="","",HYPERLINK('
+        '"https://www.ebay.com/sch/i.html?_nkw="&SUBSTITUTE(TRIM({yr}&" "&{b}'
+        '&" "&{i}&" "&{p}&" "&{w}&" "&{n})," ","+")'
+        '&"&_sacat=0&LH_Sold=1&LH_Complete=1&_ipg=100","sold")))'
+        .format(w=who, yr=col("Year"), b=col("Brand / set"),
+                i=col("Insert set"), p=col("Parallel"), n=col("Card #")))
+
+
+def build_inventory(wb, google=False):
     ws = wb.create_sheet("Inventory")
     head(ws, INVENTORY_COLS)
 
     c = COL
+    if google:
+        google_inventory(ws, c)
     for r in range(2, INV_ROWS + 2):
         f = {k: "%s%d" % (v, r) for k, v in c.items()}
+        if google:
+            # only the formats and the shading; the maths is one cell up top
+            for name in ("Cost each", "Market value", "Ask price",
+                         "Est fees", "Est net"):
+                ws[f[name]].number_format = MONEY
+            ws[f["Margin"]].number_format = PCT
+            ws[f["Date in"]].number_format = "yyyy-mm-dd"
+            continue
 
         # Fees: eBay final value fee plus the per-order fee, which steps at $10.
         ws[f["Est fees"]] = (
@@ -244,11 +298,23 @@ BOXLOG_COLS = [
 ]
 
 
-def build_boxlog(wb):
+def build_boxlog(wb, google=False):
     ws = wb.create_sheet("Box log")
     head(ws, BOXLOG_COLS)
 
+    if google:
+        ws["I2"] = '=ARRAYFORMULA(IF(H2:H="","",G2:G*H2:H))'
+        ws["K2"] = '=ARRAYFORMULA(IF(I2:I="","",I2:I+N(J2:J)))'
+        ws["M2"] = '=ARRAYFORMULA(IF(L2:L="","",K2:K-L2:L*N(G2:G)))'
+        ws["O2"] = '=ARRAYFORMULA(IF(N2:N="","",K2:K/N2:N))'
+        ws["Q2"] = '=ARRAYFORMULA(IF(P2:P="","",P2:P-K2:K))'
+
     for r in range(2, 202):
+        if google:
+            for col in ("H", "I", "J", "K", "L", "M", "O", "P", "Q"):
+                ws["%s%d" % (col, r)].number_format = MONEY
+            ws["B%d" % r].number_format = "yyyy-mm-dd"
+            continue
         ws["I%d" % r] = '=IF(N(H{r})=0,"",G{r}*H{r})'.format(r=r)
         ws["K%d" % r] = '=IF(N(I{r})=0,"",I{r}+N(J{r}))'.format(r=r)
         ws["M%d" % r] = '=IF(N(L{r})=0,"",K{r}-L{r}*N(G{r}))'.format(r=r)
@@ -296,10 +362,23 @@ SALES_COLS = [
 ]
 
 
-def build_sales(wb):
+def build_sales(wb, google=False):
     ws = wb.create_sheet("Sales")
     head(ws, SALES_COLS)
+
+    if google:
+        ws["G2"] = '=ARRAYFORMULA(IF(E2:E="","",E2:E+N(F2:F)))'
+        ws["K2"] = '=ARRAYFORMULA(IF(G2:G="","",G2:G-N(H2:H)-N(I2:I)-N(J2:J)))'
+        ws["M2"] = '=ARRAYFORMULA(IF(K2:K="","",K2:K-N(L2:L)))'
+        ws["N2"] = '=ARRAYFORMULA(IF(K2:K="","",M2:M/K2:K))'
+
     for r in range(2, 302):
+        if google:
+            for col in ("E", "F", "G", "H", "I", "J", "K", "L", "M"):
+                ws["%s%d" % (col, r)].number_format = MONEY
+            ws["N%d" % r].number_format = PCT
+            ws["A%d" % r].number_format = "yyyy-mm-dd"
+            continue
         ws["G%d" % r] = '=IF(N(E{r})=0,"",E{r}+N(F{r}))'.format(r=r)
         ws["K%d" % r] = ('=IF(N(G{r})=0,"",G{r}-N(H{r})-N(I{r})-N(J{r}))'
                          ).format(r=r)
@@ -526,23 +605,40 @@ def main():
     ap.add_argument("--force", action="store_true",
                     help="overwrite an existing workbook")
     ap.add_argument("-o", "--out", default=OUT)
+    ap.add_argument("--rows", type=int,
+                    help="how many rows to pre-fill with formulas (default "
+                         "400). Fewer makes a much smaller file, which matters "
+                         "when it has to be uploaded; drag the last row down "
+                         "to get more.")
+    ap.add_argument("--google", action="store_true",
+                    help="build the copy meant for Google Sheets: the Photos "
+                         "tab draws each card from its published URL instead "
+                         "of waiting for embed_photos.py")
     args = ap.parse_args()
 
     if os.path.exists(args.out) and not args.force:
         sys.exit("%s already exists. Use --force if you really mean to "
                  "replace it -- you will lose anything typed in." % args.out)
 
+    if args.rows:
+        global INV_ROWS
+        INV_ROWS = args.rows
+        extra.PURCHASE_ROWS = args.rows
+        extra.EXPENSE_ROWS = args.rows
+        extra.PHOTO_ROWS = args.rows
+
     wb = Workbook()
     wb.remove(wb.active)
     build_readme(wb)
-    build_inventory(wb)
+    build_inventory(wb, google=args.google)
     build_upload_placeholder(wb)
     # the money side: what went out, against what came back
-    extra.build_purchases(wb, head, note, dv, NOTEFILL, BOX)
-    build_boxlog(wb)
+    extra.build_purchases(wb, head, note, dv, NOTEFILL, BOX,
+                          google=args.google)
+    build_boxlog(wb, google=args.google)
     extra.build_expenses(wb, head, note, dv, NOTEFILL)
-    build_sales(wb)
-    extra.build_photos(wb, head, note, dv, NOTEFILL)
+    build_sales(wb, google=args.google)
+    extra.build_photos(wb, head, note, dv, NOTEFILL, google=args.google)
     # these two read every other tab, so they are built last
     extra.build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
                         NOTEFILL, INV_ROWS)

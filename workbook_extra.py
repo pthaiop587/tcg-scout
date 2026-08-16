@@ -44,12 +44,25 @@ BOUGHT_WHERE = ["In store", "Online", "Show", "Private"]
 PAID_WITH = ["Card", "Cash", "PayPal", "Gift card", "Other"]
 
 
-def build_purchases(wb, head, note, dv, NOTEFILL, BOX):
+def build_purchases(wb, head, note, dv, NOTEFILL, BOX, google=False):
     ws = wb.create_sheet("Purchases")
     head(ws, PURCHASE_COLS)
     c = {n: get_column_letter(i) for i, (n, _w) in enumerate(PURCHASE_COLS, 1)}
 
+    if google:
+        ws["%s2" % c["Subtotal"]] = (
+            '=ARRAYFORMULA(IF({q}2:{q}="","",{q}2:{q}*{u}2:{u}))'
+            .format(q=c["Qty"], u=c["Unit price"]))
+        ws["%s2" % c["Total paid"]] = (
+            '=ARRAYFORMULA(IF({s}2:{s}="","",N({s}2:{s})+N({t}2:{t})+N({sh}2:{sh})))'
+            .format(s=c["Subtotal"], t=c["Tax"], sh=c["Shipping"]))
+
     for r in range(2, PURCHASE_ROWS + 2):
+        if google:
+            for col in ("Unit price", "Subtotal", "Tax", "Shipping", "Total paid"):
+                ws["%s%d" % (c[col], r)].number_format = MONEY
+            ws["%s%d" % (c["Date"], r)].number_format = "yyyy-mm-dd"
+            continue
         ws["%s%d" % (c["Subtotal"], r)] = (
             '=IF(N({q}{r})=0,"",{q}{r}*{u}{r})'
             .format(q=c["Qty"], u=c["Unit price"], r=r))
@@ -134,17 +147,42 @@ PHOTO_COLS = [
 ]
 
 
-def build_photos(wb, head, note, dv, NOTEFILL):
+PAGES = "https://pthaiop587.github.io/tcg-scout/photos"
+
+
+def build_photos(wb, head, note, dv, NOTEFILL, google=False):
     ws = wb.create_sheet("Photos")
     head(ws, PHOTO_COLS)
     c = {n: get_column_letter(i) for i, (n, _w) in enumerate(PHOTO_COLS, 1)}
     dv(ws, ["Yes", "No"], "%s2:%s%d" % (c["Checked"], c["Checked"], PHOTO_ROWS + 1))
 
+    if google:
+        # Google Sheets draws a picture from a formula, so the tab fills itself:
+        # type a SKU and the photograph appears, live, straight off the
+        # published site. No embedding, no file size, and it can never be a
+        # stale copy of the picture eBay is actually serving.
+        ws["L1"] = PAGES + "/"          # the base address, written once
+        for r in range(2, min(PHOTO_ROWS, 40) + 2):
+            sku = "%s%d" % (c["SKU"], r)
+            url = '$L$1&%s&".jpg"' % sku
+            back = '$L$1&%s&"-back.jpg"' % sku
+            ws["%s%d" % (c["Picture"], r)] = (
+                '=IF({s}="","",IFERROR(IMAGE({u},1),"no photo yet"))'
+                .format(s=sku, u=url))
+            ws["%s%d" % (c["Picture URL for eBay"], r)] = (
+                '=IF({s}="","",{u}&IF({b}="","","|"&{bu}))'
+                .format(s=sku, u=url, b="%s%d" % (c["Back"], r), bu=back))
+            ws["%s%d" % (c["Front"], r)] = (
+                '=IF({s}="","",{s}&".jpg")'.format(s=sku))
+            ws.row_dimensions[r].height = 96
+
     r = PHOTO_ROWS + 3
     ws.cell(row=r, column=1, value="What each card actually has a picture of.")\
         .font = Font(bold=True)
     note(ws, "A%d" % (r + 1),
-         "Filled in by  python embed_photos.py  -- it reads the photos folder, "
+         "In the Google copy this tab fills itself: type a SKU in column A and "
+         "the photograph appears, live, off the published site. In the Excel "
+         "copy it is filled in by  python embed_photos.py  -- it reads the photos folder, "
          "writes a row per SKU and puts the thumbnail in the Picture column, so "
          "this tab is the visual stock check. Re-run it whenever you add "
          "photos; it rewrites the tab from what is on disk.\n"
