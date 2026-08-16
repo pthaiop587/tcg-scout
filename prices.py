@@ -41,6 +41,8 @@ from copy import copy
 
 from openpyxl import load_workbook
 
+import colleges
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 BASE = "https://www.sportscardspro.com"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -90,6 +92,10 @@ def norm(s):
     s = re.sub(r"\s+", " ", s).strip()
     s = SUFFIX.sub("", s).strip()
     return s
+
+
+def blank_cell(v):
+    return v is None or (isinstance(v, str) and not v.strip())
 
 
 def key(name, parallel, num):
@@ -208,7 +214,7 @@ def card_page(pg, url, delay):
     r = pg.goto(url, wait_until="domcontentloaded", timeout=60000)
     if r is not None and r.status >= 400:
         time.sleep(delay)
-        return None, {}
+        return None, {}, []
     pg.wait_for_timeout(1200)
 
     # PriceCharting inherits its field names from video games; these are the
@@ -235,8 +241,9 @@ def card_page(pg, url, delay):
       return out;
     }""")
 
-    best = {}
+    best, titles = {}, []
     for r in rows:
+        titles.append(r["title"])
         d = r["date"].split("\n")[0].strip()
         if not DATE.match(d):
             continue
@@ -244,7 +251,7 @@ def card_page(pg, url, delay):
         if g and (g not in best or d > best[g]):
             best[g] = d
     time.sleep(delay)
-    return prices, best
+    return prices, best, titles
 
 
 # --- the workbook -----------------------------------------------------------
@@ -306,6 +313,11 @@ def main():
     p.add_argument("--go", action="store_true", help="write the values in")
     p.add_argument("--overwrite", action="store_true",
                    help="replace values already in the price columns")
+    p.add_argument("--teams", action="store_true",
+                   help="also read each card's school out of its listings")
+    p.add_argument("--team-min", type=int, default=2, metavar="N",
+                   help="how many listings must agree on the school "
+                        "(default 2; use 1 for cards with few sales)")
     p.add_argument("--fix-names", action="store_true",
                    help="rewrite mistyped player names to the site's spelling")
     a = p.parse_args()
@@ -325,6 +337,7 @@ def main():
     g = {n: i for i, n in enumerate(hdr)}
     found = missed = 0
     typos = []          # matched by number, but the name you typed differs
+    teams, weak = [], []    # schools read off the listings, confident and not
 
     with sync_playwright() as pw:
         b = pw.chromium.launch()
@@ -393,9 +406,9 @@ def main():
                 urls.append(card_url(SET_SLUG, c["name"], c["parallel"],
                                      c["num"]))
 
-            prices, dates = None, {}
+            prices, dates, titles = None, {}, []
             for u in urls:
-                prices, dates = card_page(pg, u, a.delay)
+                prices, dates, titles = card_page(pg, u, a.delay)
                 if prices and any(v is not None for v in prices.values()):
                     break
             if not prices or not any(v is not None for v in prices.values()):
@@ -409,6 +422,19 @@ def main():
                   % (c["sku"], c["name"][:22], c["parallel"],
                      prices["raw"], prices["psa9"], prices["psa10"],
                      " ".join("%s=%s" % (t, dates.get(t, "-")) for t in TIERS)))
+
+            # The school is not a field on any price guide, but sellers put it
+            # in the title, so read it from there and take the commonest.
+            if a.teams and "Team" in g:
+                cell = ws.cell(row=c["row"], column=g["Team"] + 1)
+                if blank_cell(cell.value) or a.overwrite:
+                    school, n = colleges.vote(titles)
+                    if school and n >= a.team_min:
+                        teams.append((c["sku"], c["name"], school, n))
+                        if a.go:
+                            cell.value = school
+                    else:
+                        weak.append((c["sku"], c["name"], school, n))
 
             if not a.go:
                 continue
@@ -426,6 +452,18 @@ def main():
         b.close()
 
     print("\nmatched %d, missed %d" % (found, missed))
+
+    if teams:
+        print("\nschool read off the listings for %d card(s)%s."
+              % (len(teams), "" if a.go else " -- not written, add --go"))
+    if weak:
+        print("\n%d card(s) whose listings never name a school. Sellers just "
+              "did not\ntype it; fill these by hand if you want them in the "
+              "title:" % len(weak))
+        for sku, name, school, n in weak:
+            print("   %-9s %-24s %s"
+                  % (sku, name, "%s, but only %d listing said so" % (school, n)
+                     if school else "nothing found"))
 
     if typos:
         print("\n%d card(s) matched on number and parallel but the name you "
