@@ -1005,6 +1005,105 @@ if (document.getElementById('cd-q')) {
   cdRenderResults(); cdRenderStock();
 }
 
+/* ================= SPORTS SINGLES: COMC vs eBAY =================
+   Sports has no TCGplayer, so a single cannot ride in a shared cart the way a
+   Pokemon single does -- it carries eBay's fixed costs alone. COMC is the
+   nearest equivalent: ship a box once, they photograph, list and fulfil.
+   Fees verified 15 Aug 2026: 5% transaction, 10% cash-out, ~$0.50-1 to submit. */
+const SPF = {fvf:0.1325, orderLo:0.30, orderHi:0.40, insert:0.35, post:0.85,
+             comcTxn:0.05, comcCash:0.10};
+
+function ebaySingle(p, cost, buyerPays, insertion){
+  const shipIn = buyerPays ? SPF.post : 0;
+  const gross = p + shipIn;
+  let fee = gross * SPF.fvf + (gross <= 10 ? SPF.orderLo : SPF.orderHi);
+  if (insertion) fee += SPF.insert;
+  return gross - fee - SPF.post - cost;
+}
+function comcSingle(p, cost, sub, cashOut){
+  let pr = p * (1 - SPF.comcTxn) - sub;
+  if (cashOut) pr *= (1 - SPF.comcCash);
+  return pr - cost;
+}
+/* price at which the two paths cross, for the current settings */
+function comcCrossover(cost, buyerPays, insertion, sub, cashOut){
+  let lo = 0, hi = 400;
+  for (let i = 0; i < 60; i++){
+    const mid = (lo + hi) / 2;
+    if (comcSingle(mid, cost, sub, cashOut) > ebaySingle(mid, cost, buyerPays, insertion))
+      lo = mid; else hi = mid;
+  }
+  return hi;
+}
+
+const spEls = ['sp-price','sp-cost','sp-qty','sp-sub','sp-min'].map(i => document.getElementById(i));
+if (spEls.every(Boolean)) {
+  const [pI, cI, qI, subI, minI] = spEls;
+  const buyerI = document.getElementById('sp-buyer');
+  const cashI  = document.getElementById('sp-cash');
+  const insI   = document.getElementById('sp-ins');
+  const n = (el, d) => { const v = parseFloat(el.value); return isFinite(v) && v >= 0 ? v : d; };
+  const m = v => (v < 0 ? '\u2212$' : '$') + Math.abs(v).toFixed(2);
+
+  function renderSports(){
+    const p = n(pI, 0), cost = n(cI, 0), qty = Math.max(1, Math.round(n(qI, 1)));
+    const sub = n(subI, 0.75), mins = n(minI, 5);
+    const buyerPays = buyerI.value === 'yes';
+    const cashOut = cashI.value === 'cash';
+    const insertion = insI.value === 'yes';
+
+    const e = ebaySingle(p, cost, buyerPays, insertion);
+    const c = comcSingle(p, cost, sub, cashOut);
+    const hours = qty * mins / 60;
+    const rate = hours > 0 ? (e * qty) / hours : 0;
+    const cross = comcCrossover(cost, buyerPays, insertion, sub, cashOut);
+
+    document.getElementById('sp-ebay').textContent = m(e);
+    document.getElementById('sp-comc').textContent = m(c);
+    document.getElementById('sp-ebay-all').textContent = m(e * qty);
+    document.getElementById('sp-comc-all').textContent = m(c * qty);
+    document.getElementById('sp-hours').textContent = hours.toFixed(1) + ' hr';
+    document.getElementById('sp-rate').textContent = m(rate) + '/hr';
+    for (const [id, v] of [['sp-ebay', e], ['sp-comc', c]])
+      document.getElementById(id).style.color =
+        v <= 0 ? 'var(--skip)' : (v < 1 ? 'var(--watch)' : 'var(--buy)');
+
+    const v = document.getElementById('sp-verdict');
+    if (e <= 0 && c <= 0){
+      v.className = 'verdict v-bad';
+      v.innerHTML = '<b>Do not list this card anywhere</b>Both routes lose money at ' +
+        m(p) + '. This is bulk \u2014 dollar box, a throw-in, or sold by weight.';
+    } else if (c > e){
+      v.className = 'verdict v-list';
+      v.innerHTML = '<b>COMC \u2014 ' + m(c) + ' vs ' + m(e) + ' on eBay</b>' +
+        'And you ship once instead of ' + qty + ' times. eBay only overtakes COMC above ' +
+        m(cross) + ' a card.';
+    } else {
+      v.className = 'verdict v-list';
+      v.innerHTML = '<b>eBay \u2014 ' + m(e) + ' vs ' + m(c) + ' on COMC</b>' +
+        'Above ' + m(cross) + ' a card eBay wins on fees. Worth the handling at this price.';
+    }
+
+    const lab = document.getElementById('sp-labour');
+    if (rate < 15 && e > 0){
+      lab.className = 'note warn';
+      lab.innerHTML = '<b>The fees are not the problem here \u2014 the clock is.</b> Listing, ' +
+        'packing and posting ' + qty + ' cards yourself is about <b>' + hours.toFixed(1) +
+        ' hours</b> for ' + m(e * qty) + ', or <b>' + m(rate) + ' an hour</b>. ' +
+        'COMC costs more in fees and takes all of that off you.';
+    } else {
+      lab.className = 'note';
+      lab.innerHTML = '<b>' + hours.toFixed(1) + ' hours</b> of listing and posting for ' +
+        m(e * qty) + ' \u2014 about <b>' + m(rate) + ' an hour</b> on the eBay route. ' +
+        'COMC trades some of that margin for none of the work.';
+    }
+  }
+  [...spEls, buyerI, cashI, insI].forEach(el => {
+    el.addEventListener('input', renderSports); el.addEventListener('change', renderSports);
+  });
+  renderSports();
+}
+
 /* ---------------- sell: store break-even ---------------- */
 const beVol = document.getElementById('be-vol'), beGross = document.getElementById('be-gross');
 if (beVol && beGross) {

@@ -460,6 +460,7 @@ BODY = f'''<title>Card Run HQ</title>
     <p class="lbl">Sell &mdash; work it out</p>
     <button class="navlink" role="tab" id="t-sell"  aria-controls="p-sell"  aria-selected="false"><i></i>Price a card</button>
     <button class="navlink" role="tab" id="t-chan"  aria-controls="p-chan"  aria-selected="false"><i></i>Where to sell it</button>
+    <button class="navlink" role="tab" id="t-sport" aria-controls="p-sport" aria-selected="false"><i></i>Sports singles</button>
     <button class="navlink" role="tab" id="t-rules" aria-controls="p-rules" aria-selected="false"><i></i>Pricing rules</button>
     <button class="navlink" role="tab" id="t-src"   aria-controls="p-src"   aria-selected="false"><i></i>Where prices come from</button>
     <button class="navlink" role="tab" id="t-plan"  aria-controls="p-plan"  aria-selected="false"><i></i>Build plan</button>
@@ -984,6 +985,75 @@ BODY = f'''<title>Card Run HQ</title>
    <p><b>TCGplayer, verified 2026:</b> 10.75% commission on Marketplace Seller levels 1&ndash;4 &mdash; up from 10.25% on 10 February 2026 &mdash; plus a 2.5% + $0.30 transaction fee on the whole order.</p>
    <p><b>eBay, verified 2026:</b> 13.25% final value fee, $0.30 per order at or under $10, $0.35 insertion past your free 250, eBay Standard Envelope $0.74&ndash;$1.32 for cards under $20.</p>
    <p style="margin-bottom:0"><b>Treat the TCGplayer side as modelled, not measured.</b> Order size is the dominant variable and it is a guess until real orders land. Postage is entered as a cost you absorb; TCGplayer shipping credits offset some of it, so the real figure is a little kinder than what is shown.</p></div>
+ </section>
+</div>
+
+<!-- ============ SPORTS SINGLES ============ -->
+<div role="tabpanel" id="p-sport" aria-labelledby="t-sport" hidden>
+ <section>
+  <h2>Sports singles &mdash; COMC or eBay</h2>
+  <div class="rule"><p class="big">Sports has no TCGplayer, and that is the whole problem</p>
+   <p>A Pok&eacute;mon single rides in a shared cart, so eBay-style fixed costs split a dozen ways. <b>A sports single carries them alone.</b> COMC is the nearest equivalent &mdash; you ship a box once and they photograph, list and fulfil every order.</p></div>
+
+  <div class="calc">
+   <div class="field"><label for="sp-price">Card sells for</label>
+    <input id="sp-price" type="number" min="0" step="0.5" value="8.00" inputmode="decimal"></div>
+   <div class="field"><label for="sp-cost">Your cost per card</label>
+    <input id="sp-cost" type="number" min="0" step="0.05" value="0.00" inputmode="decimal"></div>
+   <div class="field"><label for="sp-qty">How many cards</label>
+    <input id="sp-qty" type="number" min="1" step="5" value="50" inputmode="numeric"></div>
+   <div class="field"><label for="sp-sub">COMC submit fee/card</label>
+    <input id="sp-sub" type="number" min="0" step="0.25" value="0.75" inputmode="decimal"></div>
+   <div class="field"><label for="sp-min">Minutes per eBay listing</label>
+    <input id="sp-min" type="number" min="1" step="1" value="5" inputmode="numeric"></div>
+   <div class="field"><label for="sp-buyer">Buyer pays postage</label><select id="sp-buyer">
+     <option value="yes" selected>Yes</option><option value="no">No, free shipping</option></select></div>
+   <div class="field"><label for="sp-cash">COMC payout</label><select id="sp-cash">
+     <option value="cash" selected>Cash out (&minus;10%)</option>
+     <option value="credit">Keep as store credit</option></select></div>
+   <div class="field"><label for="sp-ins">Past eBay free listings</label><select id="sp-ins">
+     <option value="yes" selected>Yes (&minus;$0.35)</option><option value="no">No, still free</option></select></div>
+  </div>
+
+  <div class="out">
+   <div><span class="k">eBay, per card</span><span class="v" id="sp-ebay">&mdash;</span></div>
+   <div><span class="k">COMC, per card</span><span class="v" id="sp-comc">&mdash;</span></div>
+   <div><span class="k">eBay, all of them</span><span class="v" id="sp-ebay-all">&mdash;</span></div>
+   <div><span class="k">COMC, all of them</span><span class="v" id="sp-comc-all">&mdash;</span></div>
+  </div>
+  <div class="out" style="margin-top:11px">
+   <div><span class="k">Your time on eBay</span><span class="v" id="sp-hours">&mdash;</span></div>
+   <div><span class="k">Effective hourly</span><span class="v" id="sp-rate">&mdash;</span></div>
+  </div>
+
+  <div class="verdict v-list" id="sp-verdict">&mdash;</div>
+  <div class="note" id="sp-labour">&mdash;</div>
+ </section>
+
+ <section><h2>A correction I owe you</h2>
+  <div class="note warn"><b>I told you sports singles under $3 were unlistable. That was wrong on the fee maths.</b> Working it through properly: with the buyer paying postage, eBay breaks even at <b>$0.88</b>, and a $3 card nets about <b>$1.84</b>. The fees alone do not kill a $3 card.
+  <br><br><b>What actually kills it is the clock and the contents.</b> $1.84 for five minutes of listing, packing and posting is roughly $22 an hour &mdash; and most cards out of a retail box are not $3 cards, they are five-cent base with a <b>383,000</b> print run. Those are bulk no matter which platform you use.</div>
+ </section>
+
+ <section><h2>How the two actually differ</h2>
+  <div class="scroll"><table><thead><tr><th></th><th>eBay</th><th>COMC</th></tr></thead>
+   <tbody>
+    <tr><td><b>Cut</b></td><td>13.25% + $0.30&ndash;0.40 per order</td><td>5% + 10% to cash out</td></tr>
+    <tr><td><b>Up front</b></td><td>$0.35 insertion past your free 250</td><td>~$0.50&ndash;1.00 per card to submit</td></tr>
+    <tr><td><b>Postage</b></td><td>You pack and post every single card</td><td>One bulk shipment, then they handle it</td></tr>
+    <tr><td><b>Your time</b></td><td>Minutes per card, forever</td><td>Minutes per <i>batch</i></td></tr>
+    <tr><td><b>Speed</b></td><td>Sells when it sells</td><td>Can sit a long time</td></tr>
+    <tr><td><b>Best for</b></td><td>Cards above about $15</td><td>The $10&ndash;500 middle, 50+ at a time</td></tr>
+   </tbody></table></div>
+  <div class="note"><b>Taking COMC payout as store credit skips the 10%</b>, which makes it cheaper than eBay at every price. That only helps if you actually want to buy cards there &mdash; otherwise it is a discount on money you cannot spend.</div>
+ </section>
+
+ <section><h2>The tier split that works</h2>
+  <div class="teach">
+   <p><b>Above ~$15</b> &mdash; eBay. Worth the handling, and the audience is bigger.</p>
+   <p><b>$5 to $15</b> &mdash; COMC. Thin enough that the labour matters more than the fee.</p>
+   <p><b>Under ~$1</b> &mdash; neither. Dollar box at a show, throw-in on another sale, or sold by weight.</p>
+   <p style="margin-bottom:0"><b>And the honest one:</b> if you are opening retail sports boxes to get here, most of what you pull is that bottom tier. That is the design, not bad luck.</p></div>
  </section>
 </div>
 
