@@ -108,13 +108,82 @@ def sports_in(rows):
     return out
 
 
+def stray(ws, mine, cols):
+    """Cells on a generated tab that Inventory cannot account for.
+
+    A1 saying "do not type here" is a sign, not a lock. Somebody typed on this
+    tab once and the next refresh threw it away, which is the worst kind of
+    data loss: silent, and caused by the tool doing exactly what it was told.
+
+    So before this tab is destroyed, work out whether anything on it is NOT a
+    copy of Inventory. Three ways that happens: a value typed past the columns
+    this script writes, a row whose SKU is not in Inventory at all, and a cell
+    edited to differ from the Inventory row it was copied from.
+    """
+    by_sku = {}
+    for rec in mine:
+        s = str(rec.get("SKU") or "").strip()
+        if s:
+            by_sku[s] = rec
+
+    found = []
+    width = len(cols)
+    for r in range(3, ws.max_row + 1):
+        vals = [ws.cell(row=r, column=c).value
+                for c in range(1, ws.max_column + 1)]
+        if not any(v not in (None, "") for v in vals):
+            continue
+
+        for c in range(width + 1, ws.max_column + 1):     # typed past the end
+            v = ws.cell(row=r, column=c).value
+            if v not in (None, ""):
+                found.append((r, get_column_letter(c), v))
+
+        sku = str(vals[0] or "").strip()
+        rec = by_sku.get(sku)
+        if not rec:                                       # a row of its own
+            found.append((r, "A", sku or "(no SKU)"))
+            continue
+        for i, name in enumerate(cols):                   # edited in place
+            was, now = vals[i], rec.get(name)
+            if was in (None, "") or was == now:
+                continue
+            if isinstance(was, float) and isinstance(now, (int, float)) \
+                    and abs(was - float(now)) < 0.005:
+                continue
+            found.append((r, name, was))
+    return found
+
+
 def build_tab(wb, sport, rows, hdr):
     if sport in wb.sheetnames:
         if not generated(wb, sport):
             print("   %s: a tab of that name already exists and was not made "
                   "by this script, so it was left alone." % sport)
             return 0
-        del wb[sport]
+
+        mine_now = [r for r in rows
+                    if str(r.get("Sport or game") or "").strip().lower()
+                    == sport.lower()]
+        cols_now = [c for c in SHOW if c in hdr]
+        typed = stray(wb[sport], mine_now, cols_now)
+        if typed:
+            keep = "%s (typed on)" % sport
+            n = 2
+            while keep in wb.sheetnames:
+                keep = "%s (typed on %d)" % (sport, n)
+                n += 1
+            wb[sport].title = keep
+            print("   %s: %d cell(s) on this tab were typed by hand, not "
+                  "copied from Inventory." % (sport, len(typed)))
+            for r, where, v in typed[:6]:
+                print("        row %-4d %-18s %s" % (r, where, str(v)[:44]))
+            if len(typed) > 6:
+                print("        ... and %d more" % (len(typed) - 6))
+            print("      Kept as %r rather than thrown away. Move what you "
+                  "want into Inventory,\n      then delete that sheet." % keep)
+        else:
+            del wb[sport]
 
     ws = wb.create_sheet(sport)
     ws["A1"] = MARK + "  Rebuilt %s from the Inventory tab." % date.today().isoformat()

@@ -211,6 +211,28 @@ with a test asserting the format rather than just the value.
 
 Existing rows already have their date — nothing needed backfilling.
 
+### Typing on a game tab no longer loses it
+
+On 16 Aug 2026 a batch of listing entries was typed onto the **Football** tab
+and the next `sport_tabs.py` run destroyed them. The tab said *"do not type
+here"* in A1 and that was the entire safeguard — a sign, not a lock. The loss
+was silent: the script did exactly what it was told.
+
+It now checks before it deletes. Anything on a generated tab that Inventory
+cannot account for counts as typed by hand:
+
+- a value past the columns the script writes
+- a row whose SKU is not in Inventory at all
+- a cell edited to differ from the Inventory row it was copied from
+
+If it finds any, the sheet is **renamed to `Football (typed on)` and kept**,
+the view is rebuilt alongside it, and the run says what it found and where.
+Move what you want into Inventory, then delete the kept sheet.
+
+**Type listings into Inventory, not onto a game tab.** `Listed on`,
+`eBay item #` and `Sold on` are Inventory columns; the game tabs show them but
+are rebuilt from Inventory every refresh.
+
 ### Why views and not separate inventories
 
 Everything downstream reads the **Inventory** tab and only that: `file_batch.py`

@@ -236,6 +236,56 @@ def test_the_date_survives_a_rebuild(wb):
     assert all(r["Date in"] is not None for r in rows)
 
 
+def test_something_typed_onto_the_tab_is_never_thrown_away(wb):
+    """The tab says "do not type here". Somebody typed there anyway, a refresh
+    destroyed it, and nothing said so. A1 is a sign, not a lock -- the rebuild
+    has to check before it deletes."""
+    run(wb)
+    book = load_workbook(wb)
+    ws = book["Basketball"]
+    hdr = [c.value for c in ws[2]]
+    ws.cell(row=3, column=hdr.index("Notes") + 1, value="listed on ebay 8/16")
+    book.save(wb)
+
+    out = run(wb)
+    after = load_workbook(wb)
+    assert "Basketball (typed on)" in after.sheetnames, after.sheetnames
+    kept = after["Basketball (typed on)"]
+    khdr = [c.value for c in kept[2]]
+    assert kept.cell(row=3, column=khdr.index("Notes") + 1).value \
+        == "listed on ebay 8/16"
+    assert "typed by hand" in out
+    # and the view still gets rebuilt alongside it
+    assert "Basketball" in after.sheetnames
+    assert len(rows_on(wb, "Basketball")) == 2
+
+
+def test_a_row_that_is_not_in_inventory_is_kept(wb):
+    """A whole card typed straight onto the tab -- the exact thing that was
+    lost."""
+    run(wb)
+    book = load_workbook(wb)
+    ws = book["Basketball"]
+    ws.cell(row=9, column=1, value="CRH-9999")
+    ws.cell(row=9, column=7, value="Typed straight onto the tab")
+    book.save(wb)
+
+    run(wb)
+    after = load_workbook(wb)
+    assert "Basketball (typed on)" in after.sheetnames
+    assert after["Basketball (typed on)"].cell(row=9, column=1).value \
+        == "CRH-9999"
+
+
+def test_an_untouched_tab_is_still_replaced_cleanly(wb):
+    """The guard must not make every refresh leave junk sheets behind."""
+    run(wb)
+    run(wb)
+    run(wb)
+    names = load_workbook(wb).sheetnames
+    assert not [n for n in names if "typed on" in n], names
+
+
 def test_list_reports_what_is_there(wb):
     run(wb)
     out = run(wb, "--list")
