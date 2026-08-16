@@ -18,11 +18,12 @@ one page, works offline, and knows three things a checklist normally does not:
   - what a card LOOKS like, since you are sorting by eye, not by checklist
   - the traps, spelled out -- the numbers that are a short print this year
 
-Ticking a line adds it to a list at the bottom, already carrying the set name,
-the parallel and the sport, so all you type is the player. That list copies out
-in the pipe-separated form the card desk's "Or paste a line" box reads, which
-is what makes this a way in to the workbook rather than a second place cards
-live. The sheet holds nothing itself -- close it and it is gone, by design.
+Ticking a line adds it to a list at the bottom, already carrying the year, the
+set and the parallel, so all you type is the player. That list copies out
+tab-separated in the order those columns sit on the Inventory tab, so one paste
+onto the Year cell fills all six at once. The sheet holds nothing itself --
+close it and it is gone, by design, because a second place cards live is the
+one thing this project keeps refusing to build.
 
 Nothing here is a price. Prices move weekly and a number baked into a file in
 August is a lie by October; what the sheet gives you is which cards are worth
@@ -37,17 +38,20 @@ import sys
 
 OUT = "Rip sheet.html"
 
-# The pipe format the card desk's paste box reads. Kept here so a change to the
-# desk's parser has one obvious other place to look.
-PASTE_FIELDS = ["card", "set", "number", "variant", "condition", "qty",
-                "worth", "sports or tcg"]
+# Six columns that sit next to each other on the Inventory tab, in that order.
+# Being contiguous is the whole point: the sheet copies tab-separated text, you
+# click the Year cell on the row you want and paste, and all six land in the
+# right places at once. Anything non-contiguous would need six pastes.
+INVENTORY_COLS = ["Year", "Brand / set", "Insert set", "Parallel",
+                  "Player or card name", "Card #"]
+FIRST_COL = "Year"
 
 SETS = [
     {
         "key": "asg",
         "name": "2026 Topps Series 2 — All-Star Game Mega Box",
         "sub": "Philadelphia · $49.99 · 14 packs × 14 cards · 196 cards",
-        "set_line": "2026 Topps Series 2 - All-Star Game",
+        "year": "2026", "brand": "Topps Series 2 - All-Star Game",
         "sport": "sports",
         "warn": "No autographs and no relics in this product — don't rip it "
                 "hunting a hit. Everything worth money here is either "
@@ -133,7 +137,7 @@ SETS = [
         "key": "prizmdraft",
         "name": "2025 Panini Prizm Draft Picks — Collegiate Football",
         "sub": "the 2025 draft class in college uniforms · mega box",
-        "set_line": "2025 Prizm Draft Picks",
+        "year": "2025", "brand": "Panini Prizm Draft Picks",
         "sport": "sports",
         "warn": "These are college cards, not NFL rookie cards. A Prizm Draft "
                 "Picks Shedeur Sanders is a pre-rookie — the player's official "
@@ -209,7 +213,7 @@ SETS = [
         "name": "Pokémon TCG — Pitch Black (ME05)",
         "sub": "Mega Evolution · released 17 Jul 2026 · 120 cards "
                "(84 main + 36 secret)",
-        "set_line": "Pokemon Pitch Black (ME05)",
+        "year": "2026", "brand": "Pokemon Pitch Black (ME05)",
         "sport": "tcg",
         "warn": "Sort by the CARD NUMBER first. A secret rare is numbered "
                 "higher than the set total — anything reading above /084 is "
@@ -360,9 +364,9 @@ var PULLS = [];
 
 function esc(s){ return String(s == null ? '' : s); }
 
-function addPull(setLine, sport, variant, who){
-  PULLS.push({set:setLine, sport:sport, variant:variant || '',
-              name:who || '', number:'', worth:''});
+function addPull(year, brand, sport, variant, who){
+  PULLS.push({year:year, brand:brand, sport:sport, variant:variant || '',
+              name:who || '', number:''});
   draw();
   var box = document.getElementById('got');
   var last = box.querySelectorAll('.pull .p-name');
@@ -385,10 +389,9 @@ function draw(){
       '<input class="p-name"  placeholder="player"   value="' + esc(p.name) + '">' +
       '<input class="p-var"   placeholder="parallel" value="' + esc(p.variant) + '">' +
       '<input class="p-num"   placeholder="card #"   value="' + esc(p.number) + '">' +
-      '<input class="p-worth" placeholder="worth"    value="' + esc(p.worth) + '">' +
       '<button class="rm" title="remove">&times;</button>';
     var ins = d.querySelectorAll('input');
-    var keys = ['name','variant','number','worth'];
+    var keys = ['name','variant','number'];
     ins.forEach(function(el, k){
       el.addEventListener('input', function(){
         PULLS[i][keys[k]] = el.value;
@@ -404,10 +407,12 @@ function draw(){
   writeOut();
 }
 
-/* card | set | number | variant | condition | qty | worth | sports or tcg */
+/* Year, Brand / set, Insert set, Parallel, Player or card name, Card #
+   -- tab separated, in the order those six sit on the Inventory tab, so one
+   paste onto the Year cell fills all six. */
 function lineFor(p){
-  return [p.name || '?', p.set, p.number || '', p.variant || '',
-          'NM', '1', p.worth || '', p.sport].join(' | ');
+  return [p.year, p.brand, '', p.variant || '', p.name || '',
+          p.number || ''].join('	');
 }
 
 function writeOut(){
@@ -418,7 +423,8 @@ function writeOut(){
 document.addEventListener('click', function(e){
   var b = e.target.closest('.add');
   if (!b) return;
-  addPull(b.dataset.set, b.dataset.sport, b.dataset.variant, b.dataset.who);
+  addPull(b.dataset.year, b.dataset.brand, b.dataset.sport,
+          b.dataset.variant, b.dataset.who);
 });
 
 document.getElementById('copy').addEventListener('click', function(){
@@ -475,11 +481,12 @@ def render_row(s, it):
     return (
         '<div class="row">'
         '<button class="add" title="I pulled one" '
-        'data-set="%s" data-sport="%s" data-variant="%s" data-who="%s">+</button>'
+        'data-year="%s" data-brand="%s" data-sport="%s" data-variant="%s" '
+        'data-who="%s">+</button>'
         '<div class="mid">%s</div>'
         '</div>'
-    ) % (e(s["set_line"]), e(s["sport"]), e(it.get("v", "")), e(who),
-         "".join(bits))
+    ) % (e(s["year"]), e(s["brand"]), e(s["sport"]), e(it.get("v", "")),
+         e(who), "".join(bits))
 
 
 def render(sets):
@@ -512,15 +519,16 @@ def render(sets):
     out.append('<button class="btn" id="clear">Clear</button>')
     out.append('<span class="msg" id="msg"></span></div>')
     out.append('<p class="fmt" style="margin-top:10px">%s</p>'
-               % e(" | ".join(PASTE_FIELDS)))
+               % e("  →  ".join(INVENTORY_COLS)))
     out.append('<textarea id="out" rows="4" readonly '
                'placeholder="lines appear here"></textarea>')
     out.append("</div>")
 
-    out.append('<footer>Paste these into the card desk under '
-               '<b>Or paste a line</b>. Nothing is saved here — close the '
-               'page and it is gone, so copy before you leave. '
-               'No prices are baked in: look up anything numbered before you '
+    out.append('<footer>Copy, then in <b>Card Run HQ - Master.xlsx</b> click '
+               'the <b>Year</b> cell on the first empty Inventory row and '
+               'paste — all six columns land at once. Nothing is saved here: '
+               'close the page and it is gone, so copy before you leave. '
+               'No prices are baked in — look up anything numbered before you '
                'price it.</footer>')
     out.append("</div>")
     out.append("<script>%s</script>" % JS)

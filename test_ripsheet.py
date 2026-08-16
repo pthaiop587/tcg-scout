@@ -2,13 +2,14 @@
 
 Run: python -m pytest test_ripsheet.py
 
-The sheet's whole job is to hand cards to the card desk. It writes lines in a
-pipe-separated order and the desk reads them back by position -- f[0] is the
-name, f[3] is the parallel, and nothing in either file says so out loud. Swap
-two columns on one side only and there is no error: cards import happily with
-the parallel in the condition slot and the worth in the quantity. So the first
-test here reads the ORDER OUT OF hq.js and compares it, rather than restating
-it, which is the only version of that test that can fail when it should.
+The sheet's whole job is to hand cards to the workbook. It copies six cells,
+tab separated, and you paste them onto the Year cell of an Inventory row --
+which only works because those six columns sit next to each other, in that
+order, on that tab. Reorder Inventory and there is no error: every pasted card
+lands with the parallel in the insert column and the name in the parallel. So
+the first test reads the real order out of make_workbook.py and compares,
+rather than restating it, which is the only version that can fail when it
+should.
 
 The second thing worth guarding is that the page works with no network. It gets
 opened on a phone, on a table, next to a pile of cards, quite possibly in a shop
@@ -34,65 +35,42 @@ def page(tmp_path_factory):
     return out.read_text(encoding="utf-8")
 
 
-# --- the contract with the card desk ----------------------------------------
+# --- the contract with the workbook ----------------------------------------
 
-def desk_field_order():
-    """Pull the positional meaning of each f[N] out of the desk's parser."""
-    js = open("hq.js", encoding="utf-8").read()
-    block = js[js.index("const mnImp"):]
-    block = block[:block.index("cdSave()")]
+def test_the_six_columns_are_contiguous_on_the_inventory_tab():
+    """The sheet copies six tab-separated cells and you paste them onto the
+    Year cell. That only works if those six sit next to each other, in that
+    order, on Inventory. Reorder Inventory and the paste silently puts the
+    parallel in the insert column -- so read the real order and compare."""
+    import make_workbook as mw
 
-    order = {}
-    # f[0] is checked for emptiness, the rest are read into named properties
-    for prop, idx in re.findall(r"(\w+)\s*:\s*f\[(\d)\]", block):
-        order[int(idx)] = prop
-    for idx, expr in re.findall(r"f\[(\d)\]\s*\|\|\s*'([^']*)'", block):
-        order.setdefault(int(idx), "?")
-    # the ones that go through a variable first
-    if re.search(r"cond\s*=\s*\(f\[4\]", block):
-        order[4] = "c"
-    if re.search(r"parseFloat\(f\[6\]\)", block):
-        order[6] = "v"
-    if re.search(r"f\[7\]", block):
-        order[7] = "kind"
-    if re.search(r"parseFloat\(f\[5\]\)", block):
-        order[5] = "q"
-    if re.search(r"!f\[0\]", block):
-        order[0] = "n"
-    return order
+    names = [n for n, _w in mw.INVENTORY_COLS]
+    first = names.index(rs.FIRST_COL)
+    assert names[first:first + len(rs.INVENTORY_COLS)] == rs.INVENTORY_COLS, (
+        "Inventory's columns have moved. ripsheet.INVENTORY_COLS must match "
+        "the run starting at %r, or every pasted card lands shifted."
+        % rs.FIRST_COL)
 
 
-def test_the_desk_still_reads_eight_fields():
-    o = desk_field_order()
-    assert sorted(o) == [0, 1, 2, 3, 4, 5, 6, 7], o
-    assert len(rs.PASTE_FIELDS) == 8
-
-
-def test_field_order_matches_the_desk_position_by_position():
-    """If either side is reordered, this is the test that goes red."""
-    o = desk_field_order()
-    expect = {0: "n", 1: "s", 2: "num", 3: "var", 4: "c", 5: "q", 6: "v",
-              7: "kind"}
-    assert o == expect, (
-        "hq.js now reads the pasted line differently. ripsheet.PASTE_FIELDS "
-        "and lineFor() in its JS must be reordered to match, or every card "
-        "imported from a rip sheet lands with its columns shifted.")
-
-
-def test_the_sheets_own_line_builder_uses_that_same_order():
-    """lineFor() lives in a JS string, so read it the same way."""
-    m = re.search(r"function lineFor\(p\)\{\s*return \[(.+?)\]", rs.JS,
-                  re.S)
+def test_the_line_builder_emits_those_six_in_that_order():
+    """lineFor() lives in a JS string, so read it rather than trusting it."""
+    m = re.search(r"function lineFor\(p\)\{\s*return \[(.+?)\]", rs.JS, re.S)
     assert m, "lineFor() has moved -- the order guard cannot see it"
-    parts = [p.strip() for p in m.group(1).split(",")]
-    assert parts[0].startswith("p.name")
-    assert parts[1] == "p.set"
-    assert parts[2].startswith("p.number")
+    parts = [x.strip() for x in m.group(1).split(",")]
+    assert len(parts) == len(rs.INVENTORY_COLS) == 6
+    assert parts[0] == "p.year"
+    assert parts[1] == "p.brand"
+    assert parts[2] == "''"                    # Insert set, left for you
     assert parts[3].startswith("p.variant")
-    assert parts[4] == "'NM'"
-    assert parts[5] == "'1'"
-    assert parts[6].startswith("p.worth")
-    assert parts[7] == "p.sport"
+    assert parts[4].startswith("p.name")
+    assert parts[5].startswith("p.number")
+
+
+def test_it_is_tab_separated_not_pipes():
+    """Excel splits a paste on tabs. A pipe would land the whole row in one
+    cell, which looks like it worked until you scroll right."""
+    assert "join('\t')" in rs.JS
+    assert "' | '" not in rs.JS
 
 
 # --- it has to work on a phone with no signal -------------------------------
@@ -112,6 +90,11 @@ def test_it_says_it_saves_nothing(page):
     assert "close the page" in page.lower() or "nothing is saved" in page.lower()
 
 
+def test_it_says_where_to_paste(page):
+    """A copy button with no destination is a dead end."""
+    assert "Year" in page and "Inventory" in page
+
+
 def test_it_does_not_pretend_to_know_prices(page):
     """Baked-in prices go stale and would be trusted. There are none."""
     assert "look up anything numbered" in page
@@ -126,13 +109,15 @@ def test_every_line_can_be_ticked(page):
 
 
 def test_each_button_carries_a_set_and_a_sport(page):
-    """Otherwise the pasted line has an empty set column and the card is
+    """Otherwise the pasted row has an empty year or set column and the card is
     orphaned from the box it came out of."""
     seen = set()
     for m in re.finditer(r'<button class="add"[^>]*>', page):
         tag = m.group(0)
-        s = re.search(r'data-set="([^"]*)"', tag)
+        y = re.search(r'data-year="([^"]*)"', tag)
+        s = re.search(r'data-brand="([^"]*)"', tag)
         k = re.search(r'data-sport="([^"]*)"', tag)
+        assert y and y.group(1).isdigit(), tag
         assert s and s.group(1), tag
         assert k and k.group(1) in ("sports", "tcg"), tag
         seen.add(k.group(1))
@@ -146,7 +131,7 @@ def test_a_pokemon_card_is_never_flagged_as_sports(page):
     nothing looking wrong anywhere."""
     for m in re.finditer(r'<button class="add"[^>]*>', page):
         tag = m.group(0)
-        st = re.search(r'data-set="([^"]*)"', tag).group(1)
+        st = re.search(r'data-brand="([^"]*)"', tag).group(1)
         kind = re.search(r'data-sport="([^"]*)"', tag).group(1)
         if "Pokemon" in st or "Pokémon" in st:
             assert kind == "tcg", tag
@@ -160,7 +145,7 @@ def test_the_sport_flag_agrees_with_autofills_category_map():
     import autofill
     checked = 0
     for s in rs.SETS:
-        hay = (s["set_line"] + " " + s["name"]).lower()
+        hay = (s["brand"] + " " + s["name"]).lower()
         for game, cat in autofill.CATEGORY_OF.items():
             if game in hay:
                 want = "tcg" if cat == "TCG" else "sports"
@@ -242,7 +227,7 @@ def test_list_names_every_set():
 
 def test_markup_in_a_set_name_cannot_break_the_page():
     hostile = {"key": "x", "name": "<script>bad()</script>", "sub": "s",
-               "set_line": "S", "sport": "sports",
+               "year": "2026", "brand": "S", "sport": "sports",
                "groups": [{"title": "t", "items": [{"v": "a & b"}]}]}
     body = rs.render([hostile])
     assert "<script>bad()</script>" not in body

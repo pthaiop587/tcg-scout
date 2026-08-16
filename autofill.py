@@ -9,8 +9,7 @@ than added by a script.
 file_batch.py and add_card.py assign a SKU when they add a card. Typing
 straight into the Inventory tab does not, and a row without one is invisible
 to everything downstream: make_ebay_csv.py cannot export it, add_photos.py has
-nothing to file a picture against, and export_inventory.py skips it, so it
-never reaches the dashboard either. Sixty cards typed in after a box rip is
+nothing to file a picture against. Sixty cards typed in after a box rip is
 sixty cards that quietly do not exist.
 
 So this fills the gaps, in the order the rows already sit in, carrying on from
@@ -148,8 +147,8 @@ def main():
         print("\nFilled %d Category cell(s) from the sport." % len(cats))
 
     print("\nWrote CRH-%04d to CRH-%04d." % (highest + 1, n))
-    print("Those cards can now be exported, photographed and shown on the "
-          "dashboard. Nothing that already had a SKU was changed.")
+    print("Those cards can now be exported to eBay and photographed. "
+          "Nothing that already had a SKU was changed.")
     return 0
 
 

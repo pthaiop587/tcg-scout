@@ -1,42 +1,40 @@
 # Card Run HQ — runbook
 
-## ⭐ PUBLIC URL, refreshes itself 4× a day (15 Aug 2026)
+## The dashboard is gone (16 Aug 2026)
 
-**https://pthaiop587.github.io/tcg-scout/**
+Retired on request. The workbook is the whole system now: there is no page, no
+public URL, no scheduled rebuild, and nothing to publish.
 
-Public, no login, works on any phone. **Bookmark this one** — it is the shopping URL.
+What went: `build_all.py`, `hq.js`, `hq.css`, `inventory.js`, `scan.js`,
+`export_inventory.py`, `pull_shelf.py`, the data files they fed on
+(`shelf.json`, `cards.json`, `boxes.json`, `lgs_clean.json`,
+`stores_clean.json`, `thumbs.json`), their tests, and
+`.github/workflows/refresh.yml` — which was the four-times-a-day rebuild and
+the GitHub Pages deploy. Deleting that workflow file is what stops the site
+updating.
 
-A GitHub Action (`.github/workflows/refresh.yml`) runs at **6am, noon, 6pm and
-midnight Pacific**, pulls fresh prices from TCGCSV, rebuilds and redeploys. Nothing on
-your machine needs to be running, and I don't need to be involved.
+All of it is in the git history. `git log --diff-filter=D --name-only` finds
+the commit; nothing needs rewriting to bring it back.
 
-- Force a refresh now: repo → **Actions → Refresh Card Run HQ → Run workflow**
-- Or `gh workflow run refresh.yml --repo pthaiop587/tcg-scout`
-- The build fails loudly if the page comes out under 300 KB, so a silently broken
-  pull can't overwrite a good page with a stub.
+What stayed: everything that touches the workbook. `make_workbook.py`,
+`upgrade_workbook.py`, `workbook_extra.py`, `sport_tabs.py`, `autofill.py`,
+`fill_blanks.py`, `prices.py`, `colleges.py`, `file_batch.py`, `add_card.py`,
+`add_photos.py`, `embed_photos.py`, `make_ebay_csv.py`, `crop_scans.py` and
+`ripsheet.py`.
 
-⚠ **The repo is now PUBLIC** — that is what makes free Pages possible. The map marker
-is labelled `91786` rather than `HOME` for that reason.
+`refresh.py` lost its last two steps and now only tidies the workbook — SKUs,
+categories, game tabs. `Update dashboard.cmd` became **`Update workbook.cmd`**
+to stop promising something it no longer does.
 
-⚠ **GitHub disables scheduled workflows after 60 days of repository inactivity.** If
-the dashboard ever stops updating, that is the first thing to check — pushing any
-commit re-enables it.
-
-### The private artifact still exists
-
-https://claude.ai/code/artifact/b2545d8c-69cc-4284-bc6c-cda0b061e88f — same page, but
-private, hand-republished, and under a CSP that blocks outside requests. The Pages URL
-is better for everything except privacy.
-
----
+The published artifact at claude.ai is a separate thing and has to be deleted
+from claude.ai; no script here can reach it.
 
 ## The master workbook and eBay uploads
 
 `Card Run HQ - Master.xlsx` in this folder is the real record. It is
 **gitignored on purpose** — the repo is public and the workbook holds the
 inventory, what each box cost and what each card sold for. CI generates a
-blank one for the dashboard's download link; your filled-in copy never leaves
-this machine.
+your filled-in copy never leaves this machine.
 
 | Script | What it does |
 |---|---|
@@ -44,7 +42,6 @@ this machine.
 | `python autofill.py --go` | Fills in what a hand-typed card can work out for itself: its **SKU**, and its **Category** from the sport. Never renumbers a card that has a SKU. |
 | `python upgrade_workbook.py` | Moves an **existing** workbook onto the current layout **keeping what you typed**. Dry run by default; `--go` to do it. Backs up first, always. |
 | `python embed_photos.py` | Rewrites the **Photos** tab from what is in `photos/`, thumbnails and all. Run it after adding photos. |
-| `python export_inventory.py` | Puts the Inventory tab onto the dashboard's **My inventory** tab. `--publish` also writes the money-free copy for the public site. |
 | `python sport_tabs.py` | Rebuilds a read-only tab per sport from Inventory. `--add Basketball` starts one before there are any cards; `--list` says what is there. |
 | `python file_batch.py batch.json` | Files a whole scanned batch: a row per card with a SKU, photos onto those SKUs. |
 | `python add_card.py --player "..." --year 2025 --brand "..." ...` | Appends one card to Inventory and assigns the next SKU. |
@@ -106,15 +103,15 @@ moves an existing workbook onto that layout instead.
 ### Set "Sport or game" on every row
 
 It is a dropdown, and it is what sorts a card onto its game tab and drives the
-dashboard's Sport filter. A card with it blank sits in Inventory and appears on
+it onto its game tab. A card with it blank sits in Inventory and appears on
 no game tab at all.
 
 ### A card typed by hand has no SKU
 
 `file_batch.py` and `add_card.py` assign one; typing into the sheet does not.
 A row without a SKU is **invisible** — `make_ebay_csv.py` cannot export it,
-`add_photos.py` has nothing to file a picture against, and it never reaches the
-dashboard. `refresh.py` runs `autofill.py` every time for exactly that reason.
+and `add_photos.py` has nothing to file a picture against. `refresh.py` runs
+`autofill.py` every time for exactly that reason.
 It only ever fills an empty cell, and never renumbers a card that has one,
 because a SKU is what your photos and any live listing are named after.
 
@@ -179,7 +176,7 @@ dropdown — Football, Basketball, Baseball, Hockey, Soccer, Pokemon, One Piece,
 Lorcana, Magic, Other — and every card goes in it whatever the sport.
 
 `sport_tabs.py` then builds a **read-only tab per sport**, so each can be looked
-at on its own. `Update dashboard.cmd` rebuilds them, and the dashboard's My
+at on its own. `Update workbook.cmd` rebuilds them, and the
 inventory grows a **Sport** filter row at the same time.
 
 ```
@@ -237,7 +234,7 @@ are rebuilt from Inventory every refresh.
 
 Everything downstream reads the **Inventory** tab and only that: `file_batch.py`
 takes the next SKU from it, `make_ebay_csv.py` exports from it, Summary and
-Audit count it, and `export_inventory.py` puts it on the dashboard.
+Audit count it.
 
 Type a basketball card into a tab of its own and it gets a SKU another card
 already has, **never reaches an eBay upload**, and is missing from every total —
@@ -254,62 +251,6 @@ Excel, so the tab would read "none" on a perfectly good workbook.)*
 
 ---
 
-## Seeing the workbook on the dashboard
-
-The page does **not** read the workbook. It is built once from files on disk,
-so typing a card into the spreadsheet changes nothing until you export and
-rebuild:
-
-**Double-click `Update dashboard.cmd`.** That is the whole thing — it reads the
-workbook out, rebuilds the page around it and opens it. Underneath it runs:
-
-```
-python refresh.py --open
-```
-
-which does `embed_photos.py`, then `export_inventory.py`, then `build_all.py`,
-in that order. Run those three yourself if you prefer; the wrapper exists
-because doing them in the right order every time is the kind of thing that
-stops getting done.
-
-**A button on the page cannot do this.** Every browser blocks a web page from
-running a command on the machine reading it — the same rule that stops any
-other site doing it. So the button on **My inventory** copies the command to
-your clipboard instead of pretending to run it, and the `.cmd` file is the
-one-click version.
-
-If the workbook is still on the old layout, `refresh.py` stops and tells you to
-run `upgrade_workbook.py --go` first, rather than rebuilding over the top and
-losing what you typed.
-
-Then **My inventory** shows every card with its photo, status, condition,
-quantity, cost, market and ask, with a search box and filters for ready-to-list,
-held-for-review, listed and sold. The tiles across the top are the same
-arithmetic as the workbook's Summary, so the two agree.
-
-### Two exports, and the difference is your privacy
-
-`inventory.json` is **everything** — cost, notes, lot. It is **gitignored**, so
-it stays on this machine and only a build done here shows it. CI has never seen
-your workbook and cannot: that is gitignored too.
-
-`export_inventory.py --publish` additionally writes `inventory-public.json`,
-which carries what a card *is* — name, set, number, parallel, condition,
-quantity, status, photo, market — and **not** what you paid, what it sold for,
-your notes, or the lot. That file is committed and served with the site, so
-treat everything in it as readable by anyone with the URL. Commit it to
-publish; delete it to stop.
-
-The build prefers the local file and falls back to the published one, and the
-page says which it is looking at — so a blank cost column reads as "deliberately
-not published" rather than missing data.
-
-**Photo paths are relative** (`photos/CRH-0001.jpg`) so the thumbnails load both
-in the copy built here and on the live site. eBay is the one consumer that needs
-a full public https address, and `make_ebay_csv.py` builds those itself.
-
----
-
 ## Scanning cards: a whole sheet in, one card out
 
 The Brother scans a full page and writes it to `G:\Scans`, whatever is on the
@@ -319,9 +260,8 @@ As of 15 Aug 2026 the profile is **TIFF single-page at 600 dpi** — the printer
 offers no PNG at all — and `G:\ScanTools\tiff2png.py` watches the folder and
 converts each one to **PNG** (5100 × 6600), moving the TIFF into
 `_tiff-originals\`. Two things follow from that: a 33-megapixel page is fine,
-the cropper takes about 0.6 s over one; and because the result is a PNG, scans
-now **drop straight into Card desk** — the browser could never open the PDFs
-the profile used to write.
+the cropper takes about 0.6 s over one; and a PNG is what `crop_scans.py`
+wants, which a PDF was not.
 
 ### The normal run
 
@@ -365,49 +305,6 @@ and border and centring are the first things a buyer inspects. A rim of
 plastic costs nothing and shows the card is protected. If a particular batch
 needs it, `--pad -40` trims a fixed 40 px off every side.
 
-### Or drop them in the page — the review queue
-
-**Card desk → Drop your scans** does the same job in the browser for PNG and
-JPEG — drag them in, click to choose, or paste with `Ctrl+V`. PNG is what the
-scanner produces now, so this is the everyday path.
-
-Every card found goes straight onto a **review queue** under the drop zone.
-It is captured immediately and kept — the queue survives closing the tab — but
-**it goes nowhere on its own.** Nothing on the queue is inventory until it has
-been through the workbook.
-
-**Confirm** on a card means only "I have looked at this one". It is off until
-the card has a name and nothing on it is still amber. **Save for the workbook**
-then downloads the pictures plus a `batch.json` naming every checked card, and:
-
-```
-   move the crh-*.jpg into photos/crops, batch.json beside the workbook
-python file_batch.py batch.json
-python make_ebay_csv.py
-```
-
-That is what gives a card a SKU, files its photos onto that SKU, and turns it
-into a listing. **The workbook is the inventory** — it is the only thing here
-that can be edited properly and the only thing that can produce an eBay upload.
-
-| Button | What it does |
-|---|---|
-| **Confirm** | mark this card checked; off until it has a name and no amber |
-| **Save for the workbook** | download the pictures and `batch.json` for every checked card |
-| **Clear saved** | take the handed-over cards off the queue |
-| **Add back** | attach another picture — the other side — to *this* card |
-| **Join to N** | make this card the back of the one above it |
-| **Split** | break a two-picture card back into two |
-| **Turn** / **Turn all round** | rotate a card, or the whole batch 180° |
-| **Save all crops** | download every picture without filing anything |
-| **Remove** / **Clear queue** | drop cards off the queue without adding them |
-
-The pictures are named `crh-001.jpg`, `crh-002.jpg` … in the order shown, front
-before back, because `file_batch.py` hands them out in filename order using
-each card's `photos` count. **The counts have to add up.** One picture out and
-every card after it gets somebody else's photo, so a mismatch files nothing at
-all and says what it found.
-
 ### The "Pricing scratchpad" is not your inventory
 
 What used to be **My cards** is now labelled that way on purpose. It is fine
@@ -448,35 +345,6 @@ cannot reach a live listing until you open the workbook, settle the field and
 change the status yourself. The guard sits at the export, which is the
 boundary that matters — not in a browser you might not be using.
 
-### Or hand a batch to the page instead
-
-If you would rather work in Card desk, drop the scans there and paste what
-Claude worked out into **Paste what Claude worked out**. One line per card
-*in the order shown*:
-
-```
-card | set | number | parallel | condition | qty | worth | sports or tcg
-```
-
-A `?` in front of a value makes that field **amber**, and **Confirm stays off
-until you have dealt with it** — type a correction, or press *looks right* to
-accept it. Same guard, different place.
-
-**Two sides of one card.** Every picture starts as its own card. There are
-three ways to say two of them are the same card, and they cover every order
-the pictures can arrive in:
-
-| | |
-|---|---|
-| **Add back** | on a card, then pick the picture. Works whatever order they were uploaded in, or if they came from different scans. |
-| **Join to N** | on a card, to make it the back of the one above. For when you already uploaded both separately. |
-| **Scanned front and back in order** | pairs the whole list off, 1 with 2, 3 with 4. For a batch scanned front, back, front, back in one go. |
-
-**Split** undoes any of them. A card with two pictures asks for one set of
-details, confirms as **one** row in My cards, and takes both pictures with it.
-Grouping is by an id each picture carries, not by its position, so joining and
-splitting never disturbs the rest of the list.
-
 ### Two things worth knowing
 
 **The full-size picture is session-only.** The queue stores each card's
@@ -504,7 +372,8 @@ Writes `Rip sheet.html` — one self-contained page, no network, fine on a phone
 next to the pile. It lists what is actually worth pulling out of a box, with
 the odds and with what the card *looks like*, because you sort by eye and not
 by checklist. Tick a line as you find it, type the player, then **Copy paste
-lines** and paste into the card desk's *Or paste a line* box.
+lines**, then click the **Year** cell on the first empty Inventory row and
+paste — all six columns land at once.
 
 It holds nothing. Close it and it is gone — copy before you leave. That is
 deliberate: a second place cards live is the one thing this project keeps
@@ -514,7 +383,7 @@ refusing to build.
 
 The obvious home for a checklist is the Baseball tab, and that is exactly wrong.
 Those tabs are views — `sport_tabs.py` rewrites them from Inventory on every
-refresh, so a checklist typed there survives until the next `Update dashboard`
+refresh, so a checklist typed there survives until the next `Update workbook`
 and then does not. The sheet is a separate page for that reason.
 
 ### The field order is a real contract
@@ -543,10 +412,8 @@ stale — and leaves the price to you.
 ### Tests
 
 ```
-python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py test_export_inventory.py test_sport_tabs.py
+python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py test_sport_tabs.py test_ripsheet.py test_fill_blanks.py
 node test_scan.mjs                      # 19, the browser geometry
-python build_all.py . card-run-hq.html  # the dashboard test needs the build
-node test_dashboard.cjs                 # every tab, every bookmark, no js errors
 node test_queue.cjs                     # the review queue, capture to confirm
 ```
 
@@ -556,148 +423,10 @@ duplicated on purpose. `crop_scans.py` needs `opencv-python`, `numpy` and
 
 ---
 
-## After a workstation restart: do nothing
-
-The dashboard is a **hosted page on claude.ai**. There is no local server, no
-tunnel, no background process. A reboot changes nothing.
-
-**Bookmark this on your phone:**
-https://claude.ai/code/artifact/b2545d8c-69cc-4284-bc6c-cda0b061e88f
-
-Nothing to start. Nothing to restart. It just loads.
-
-## Layout — 8 tabs, three groups (cut down from 20 on 15 Aug 2026)
-
-Navigation is a **left sidebar** on desktop and a **slide-in drawer** behind the
-☰ button on mobile. It **opens on Card desk**, because that is what a working
-day actually starts with.
-
-| Group | Sections |
-|---|---|
-| **My cards** | Card desk · Price a card · Master spreadsheet |
-| **Buying** | Shelf check · Price check anything · Box log · Map |
-| **Reference** | How it all works |
-
-### What changed and why
-
-It was 20 tabs, and 10 of them were pure reading material with no input on
-them at all — you could not find anything. They are now folds inside **How it
-all works**: Learn, Box types & ROI, Box breakdowns, Chase cards, Online
-shops, Where prices come from, Build plan. Three more that are really "what do
-I charge and where" — Pricing rules, Where to sell it, Sports singles — became
-folds inside **Price a card**, next to the calculator you use them with.
-
-**Drops, Preorders and Restock windows were deleted.** Not folded — deleted.
-Every date and price on them was typed into `build_all.py` by hand, so the
-countdowns rendered live off data that nothing refreshes. A tab that looks
-current and is not is worse than no tab. If release dates are wanted back they
-need a feed behind them, not a list.
-
-**No content was lost in the fold.** Every old `#hash` still works: the router
-now falls back to finding the id anywhere on the page, switches to whichever
-tab it now lives in, and opens the fold. So `#src`, `#learn`, `#types` and the
-rest still land on the right thing from an old bookmark.
-
-Every section deep-links, and now it works **from any section**, not just on a cold
-load — tapping a bookmark while the page is already open switches to it:
-
-```
-…/b2545d8c-69cc-4284-bc6c-cda0b061e88f#shelf   in-aisle lookup
-…/b2545d8c-69cc-4284-bc6c-cda0b061e88f#sell    price a card before you buy it
-```
-
-## The two sides behave differently — this matters
-
-- **Buy side is a snapshot.** Frozen at whatever date the page was last built.
-- **Sell side calculates live.** The pricing tools run in your browser, so they are
-  correct whenever you open the page. Nothing to refresh.
-
-## Card desk on your phone
-
-One tab. **Type a card name**, tap the price of the printing you have, done.
-
-- **5,280 cards across 37 sets are baked in** (Pokémon, One Piece, Lorcana) with
-  thumbnails, so it works with no connection at all.
-- Results show set, number and rarity, and a separate price chip per printing — which
-  is how you tell a Poke Ball Umbreon from a Master Ball one.
-- Quantity and condition are edited on the row afterwards. Nothing to memorise.
-- **Set codes are optional.** `pbl 86 *f nm x2` still jumps straight to one card, and
-  it's folded away under *"Know the set code?"* — a shortcut, not the way in.
-- Stock is saved in **that browser's localStorage** and survives a reload.
-- **Export CSV** hands you the file through the artifact download capability. If `.csv`
-  isn't permitted it falls back to `.csv.txt` — rename it.
-
-> Redesigned 15 Aug 2026. The first version made you type a set code you could only
-> find in a 37-row table further down the page. Searching by name removed the problem
-> rather than documenting it.
-
-⚠ **This is a second, separate stock list.** It does not sync with the desktop app's
-database. Use it for sorting away from the desk, export, and bring the CSV in. Prices
-here are a snapshot from the build date; the desktop app pulls live.
-
-**To refresh the embedded catalogue:**
-
-```powershell
-cd "G:\Claude\project tcg-lister"
-python export_web_catalog.py 20        # writes ..\project tcg-scout\cards.json
-cd "G:\Claude\project tcg-scout"
-python build_all.py . card-run-hq.html
-```
-
-Scanning, the stock ledger, cost basis, locations and marketplace CSV generation stay
-in the local app — a published page has no scanner, no real database, and is blocked
-from reaching tcgcsv.com. See `G:\Claude\project tcg-lister\RUNBOOK.md`.
-
----
-
-## To refresh the prices
-
-The page is a **snapshot** — it does not update itself. Prices are from the day it
-was last built. Two ways to get fresh numbers.
-
-### Option A — ask Claude (easiest)
-
-> "Refresh the TCG dashboard"
-
-Takes ~2 minutes. Claude runs both scripts from `G:\Claude\project tcg-scout\`
-and republishes to the same URL.
-
-### Option B — run it yourself
-
-```powershell
-cd "G:\Claude\project tcg-scout"
-python pull_shelf.py shelf.json          # ~3-6 min, ~140 requests to tcgcsv.com
-python build_all.py . card-run-hq.html
-```
-
-That produces `card-run-hq.html` locally. Open it in a browser to view. To get it
-back onto the phone-accessible URL, Claude has to republish it — the Artifact tool
-is the only thing that can write to that address.
-
----
-
-## Why there is no automatic daily refresh
-
-Tested and proven impossible on 2026-08-14, twice:
-
-- Scripts in a secret gist → sandbox returned `EGRESS_BLOCKED`
-- Scripts in an attached repo → repo cloned fine, then
-  `Tunnel connection failed: 403 Forbidden` on **tcgcsv.com**
-
-**Anthropic's cloud sandbox only whitelists package registries** (pypi, npm,
-crates, golang) and anthropic.com. It cannot reach tcgcsv.com at all, so no cloud
-agent can ever pull the price data.
-
-Routine `trig_01QJVEiYAbtJGwE5BoApNqSS` exists but is **disabled on purpose** —
-enabled, it would push a failure notification every morning. Leave it off.
-
----
-
 ## Where everything lives
 
 | Thing | Location |
 |---|---|
-| Live dashboard | https://claude.ai/code/artifact/b2545d8c-69cc-4284-bc6c-cda0b061e88f |
 | Scripts (local) | `G:\Claude\project tcg-scout\` |
 | Scripts (offsite) | https://github.com/pthaiop587/tcg-scout — private |
 | Design + findings | `SPEC.md` in this folder |

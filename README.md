@@ -1,54 +1,62 @@
 # tcg-scout
 
-Generates **Card Run HQ** — a sealed-TCG scouting dashboard for Pokémon,
-One Piece and Disney Lorcana, centred on ZIP 91786.
+Tooling around **Card Run HQ - Master.xlsx**, a trading-card resale inventory:
+what came out of which box, what it cost, what it is worth, and what it sold
+for. Sports and TCG in one workbook.
 
-## Daily run
+The workbook is the whole system. It is **gitignored on purpose** — this repo
+is public and the workbook holds the inventory, what each box cost and what
+each card sold for.
+
+> There was a dashboard: a generated page with price scouting, a card desk and
+> a scan queue, published to an artifact and rebuilt four times a day by
+> GitHub Actions. It was retired on 16 Aug 2026 and everything it needed was
+> deleted. It is all in the git history —
+> `git log --diff-filter=D --name-only` finds the commit.
+
+## After you type into the workbook
 
 ```bash
-python pull_shelf.py shelf.json     # fetch TCGCSV -> prices + chase cards
-python build_all.py . card-run-hq.html
+python refresh.py            # or double-click "Update workbook.cmd"
 ```
 
-Then republish `card-run-hq.html` to the existing artifact URL.
+Gives a SKU and a Category to anything typed by hand, then rebuilds the
+per-game tabs from Inventory. Safe to run every time: it only ever fills empty
+cells and never renumbers a card that already has a SKU.
 
-## Files
+## The scripts
 
 | File | Purpose |
 |---|---|
-| `pull_shelf.py` | Pulls TCGCSV (free TCGplayer mirror). Sets since 2025-01-01. Computes market ÷ retail per product, plus each set's chase card. |
-| `build_all.py` | Renders the 5-tab dashboard from `shelf.json` + store data. |
-| `hq.css` / `hq.js` | Page styles and interactivity, kept separate so the generator has no brace-escaping issues. |
-| `stores_clean.json` | 198 retail locations near 91786 (OpenStreetMap/Overpass). Rarely changes — not re-fetched daily. |
-| `lgs_clean.json` | Local game/hobby shops from the same source. |
+| `make_workbook.py` | Builds a fresh workbook. 11 tabs by default; `--full` adds Purchases, Box log, Expenses, Sales, Photos, Summary, Audit. |
+| `upgrade_workbook.py` | Moves an existing workbook onto the current layout **keeping what you typed**. Dry run by default; backs up first, always. |
+| `workbook_extra.py` | The tabs beyond Inventory — Costs, Summary, Audit, Reference — and their formulas. |
+| `refresh.py` | The three tidy-up steps in the right order. |
+| `autofill.py` | Fills a hand-typed row's **SKU** and its **Category** from the sport. |
+| `sport_tabs.py` | A read-only tab per game, rebuilt from Inventory. Keeps anything typed onto one instead of deleting it. |
+| `fill_blanks.py` | Copies a box's shared details from one row you filled in properly to the rest. Empty cells only. |
+| `prices.py` | Looks up raw / PSA 9 / PSA 10 prices **and when one last sold**, from sportscardspro.com. |
+| `colleges.py` | Reads a school out of a listing title. Longest-match, so "Texas A&M" beats "Texas". |
+| `file_batch.py` | Files a whole scanned batch: a row per card with a SKU, photos onto those SKUs. |
+| `add_card.py` | Appends one card and assigns the next SKU. |
+| `crop_scans.py` | A scanned page of cards in, one straightened card per file out. |
+| `add_photos.py` / `embed_photos.py` | File card photos against SKUs; put thumbnails in the Photos tab. |
+| `make_ebay_csv.py` | Writes `ebay-upload-<date>.csv` from every row marked **Unlisted**. |
+| `ripsheet.py` | Builds `Rip sheet.html`: what to look for in a box, ticked off as you sort, copied straight into Inventory. |
 
-## Retail prices are verified, never estimated
+## Tests
 
-`msrp_for()` only returns a figure that was checked against a source.
-Anything unverified returns `None` and the product is **excluded** rather
-than shown with a guessed ratio. Known values:
+```bash
+python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py \
+                 test_sport_tabs.py test_ripsheet.py test_fill_blanks.py
+```
 
-- Pokémon ETB $49.99 · Pokémon Center ETB $59.99 · booster box $143.64 ·
-  booster bundle $26.94 · mini tin $9.99 · 3-pack blister $13.99
-- One Piece booster box $119.76 (24 × $4.99) · pack $4.99 · starter deck $11.99
-- Lorcana booster box $143.76 (24 × $5.99) · pack $5.99 · Trove $49.99
+## Two things that will bite
 
-## Traps already handled — don't reintroduce these
+**Inventory is addressed by column letter** in `workbook_extra.py`. New columns
+go on the **end**; inserting one silently moves every formula.
 
-- **Multi-packs.** `[Set of 6]` / `Mini Tins 5-Pack` priced against a single
-  unit's retail produced fake 17× ratios. Excluded.
-- **Cases and displays** are distributor units, not shelf items. Excluded.
-- **Legacy backfill sets.** TCGCSV's `publishedOn` is a placeholder for old
-  groups — POP Series 1–9 and "Miscellaneous" all report today's date. Filtered
-  via `JUNK`, or the calendar claims nine sets drop today.
-- **TCIN length does not identify first-party Target stock.** `A-93165397` is
-  8 digits and still a third-party reseller.
-
-## Not covered, and why
-
-- **Palworld** (Bushiroad) — no TCGplayer category exists, so no price feed.
-  Hand-tracked in the Drops tab only.
-- **Sports cards** — every price source is paywalled, blocked, or singles-only.
-  Calendar only.
-- **Live store stock** — Target's inventory API returns 403 to scripts and
-  Walmart publishes no free per-store data. The map shows locations, not stock.
+**A game tab is a view.** `sport_tabs.py` rebuilds it from Inventory on every
+run. Type into Inventory, not onto a game tab — though since 16 Aug 2026 the
+rebuild checks first and keeps anything it cannot account for as
+`Football (typed on)` rather than deleting it.

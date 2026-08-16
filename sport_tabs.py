@@ -8,7 +8,7 @@ WHY THESE ARE VIEWS AND NOT SEPARATE INVENTORIES.
 
 Everything downstream reads the **Inventory** tab and only that: file_batch.py
 takes the next SKU from it, make_ebay_csv.py exports from it, the Summary and
-Audit tabs count it, and export_inventory.py puts it on the dashboard. Type a
+Audit tabs count it. Type a
 basketball card into a tab of its own and it gets a SKU somebody else already
 has, never reaches an eBay upload, and is missing from every total -- silently,
 because nothing is looking for a second inventory.
@@ -19,8 +19,7 @@ still be looked at on its own.
 
 They are regenerated from Inventory each run, which is why they carry a date
 and a warning not to type in them: anything typed here is overwritten the next
-time this runs. `Update dashboard.cmd` runs it, so they refresh whenever the
-dashboard does.
+time this runs, and `Update workbook.cmd` runs it.
 
 FILTER() would have made them live rather than generated, and was tried --
 it does not survive a real recalculation outside the newest Excel, so a
