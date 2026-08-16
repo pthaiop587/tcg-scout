@@ -23,6 +23,8 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 
+import workbook_extra as extra
+
 OUT = "Card Run HQ - Master.xlsx"
 
 # ---------------------------------------------------------------- eBay codes
@@ -401,6 +403,15 @@ def build_lists(wb):
 
 # ------------------------------------------------------------------ Read me
 README = [
+    ("Summary",
+     "What it all adds up to: spent, held, sold, and whether it is working. "
+     "Every figure is a formula over the other tabs, so nothing here can go "
+     "stale -- if a number looks wrong, the row it came from is wrong."),
+    ("Audit",
+     "What to fix before it costs you: cards held for review, a listing with "
+     "no price or no photo, a title over 80 characters, a purchase with no "
+     "receipt, a card that sold but is still marked in stock. All counts, all "
+     "live. Zero down the column means the workbook is clean."),
     ("Inventory",
      "Every card you own, one row each. This is the master -- everything else "
      "reads from it. Type into the white columns; the shaded ones work "
@@ -409,10 +420,24 @@ README = [
     ("eBay upload",
      "Written for you by make_ebay_csv.py. Do not type here -- it gets "
      "rebuilt. It holds only the Inventory rows marked Unlisted."),
+    ("Purchases",
+     "Every buy with its receipt -- boxes, singles, bulk lots, supplies. Put "
+     "the same Lot ID here, on the Box log and on the cards that came out, and "
+     "cost per card stops being a guess. Receipt file is the name you saved "
+     "the photo or PDF under; keep it for the tax year and for disputes."),
     ("Box log",
      "Every box and pack bought: where, when, what it cost with tax, how many "
      "cards came out and what they were worth. Net vs cost is the number that "
      "says whether ripping beat selling it sealed."),
+    ("Expenses",
+     "The costs that are not a card: toploaders, mailers, postage, the "
+     "scanner, subscriptions. These are what turn a gross profit into a real "
+     "one and they are the first thing forgotten."),
+    ("Photos",
+     "Which cards have a picture, with the picture in it -- run embed_photos.py "
+     "and scroll it as a visual stock check. The URL column is what eBay "
+     "fetches; it only works once the photos have been pushed, because the "
+     "workbook carries links rather than the image files themselves."),
     ("Sales",
      "What actually sold and what was left after fees. Profit is measured "
      "against cost basis, so allocate the box cost across the cards it "
@@ -512,8 +537,17 @@ def main():
     build_readme(wb)
     build_inventory(wb)
     build_upload_placeholder(wb)
+    # the money side: what went out, against what came back
+    extra.build_purchases(wb, head, note, dv, NOTEFILL, BOX)
     build_boxlog(wb)
+    extra.build_expenses(wb, head, note, dv, NOTEFILL)
     build_sales(wb)
+    extra.build_photos(wb, head, note, dv, NOTEFILL)
+    # these two read every other tab, so they are built last
+    extra.build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
+                        NOTEFILL, INV_ROWS)
+    extra.build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
+                      NOTEFILL, INV_ROWS)
     build_reference(wb)
     build_lists(wb)
     wb.save(args.out)

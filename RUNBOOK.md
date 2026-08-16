@@ -40,9 +40,52 @@ this machine.
 
 | Script | What it does |
 |---|---|
-| `python make_workbook.py` | Builds a fresh workbook. Refuses to overwrite without `--force`. |
+| `python make_workbook.py` | Builds a fresh workbook, 12 tabs. Refuses to overwrite without `--force`. |
+| `python embed_photos.py` | Rewrites the **Photos** tab from what is in `photos/`, thumbnails and all. Run it after adding photos. |
+| `python file_batch.py batch.json` | Files a whole scanned batch: a row per card with a SKU, photos onto those SKUs. |
 | `python add_card.py --player "..." --year 2025 --brand "..." ...` | Appends one card to Inventory and assigns the next SKU. |
 | `python make_ebay_csv.py` | Writes `ebay-upload-<date>.csv` from every Inventory row marked **Unlisted**, and rewrites the workbook's eBay upload tab to match. `--sku CRH-0001` for one card, `--all` to ignore status. |
+
+### The 12 tabs
+
+| Tab | What it is for |
+|---|---|
+| **Summary** | Spent, held, sold, and whether it is working. All formulas — nothing typed. |
+| **Audit** | What to fix before it costs you. All live counts. Zero down the column = clean. |
+| **Inventory** | Every card, one row. The master; everything else reads from it. |
+| **eBay upload** | Written by `make_ebay_csv.py`. Do not type here. |
+| **Purchases** | Every buy **with its receipt** — boxes, singles, lots, supplies. |
+| **Box log** | What came *out* of a box, against what it cost. |
+| **Expenses** | Toploaders, mailers, postage, subscriptions — the costs that are not a card. |
+| **Sales** | What sold and what was left after fees. |
+| **Photos** | Which cards have a picture, **with the picture in it**. |
+| **Reference** | The eBay codes, with sources. |
+| **Lists** | Dropdown sources. Leave it alone. |
+| **Read me** | The same thing you are reading, inside the file. |
+
+**Lot ID is the thread.** Put the same code on the Purchases row, the Box log
+row and every Inventory row that came out of that box, and cost per card stops
+being a guess — which is what makes the Summary's profit figure mean anything.
+
+**The Audit tab is worth reading before every upload run.** It catches the
+things that are cheap to fix now and expensive to hear about from a buyer: a
+card held for Review, one about to list at a price of nothing or with no
+photo, a title over eBay's 80 characters, a purchase with no receipt, a card
+that sold but is still marked in stock — which is how a card gets listed
+twice.
+
+### Photos: what is in the workbook and what is not
+
+`embed_photos.py` puts a **thumbnail** in the Photos tab and a **URL** in the
+column next to it, and they do different jobs. The thumbnail is for you —
+scroll the tab and see the stock. The URL is what eBay fetches, because eBay
+will not take an embedded picture; `PicURL` has to be a public https address.
+
+So **the image files do not travel with the workbook.** They live in `photos/`
+and are published with the site. Downloading the .xlsx gives you the
+spreadsheet and the links; the links only resolve once the photos have been
+pushed. That is also what keeps the file small — a hundred cards at full
+resolution would be a 200 MB spreadsheet nobody can open.
 
 ### Before the first upload
 
@@ -259,7 +302,7 @@ the browser to hold twenty 33-megapixel pages at once.
 ### Tests
 
 ```
-python -m pytest test_crop_scans.py test_file_batch.py   # 39
+python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py
 node test_scan.mjs                      # 19, the browser geometry
 python build_all.py . card-run-hq.html  # the dashboard test needs the build
 node test_dashboard.cjs                 # every tab, every bookmark, no js errors
