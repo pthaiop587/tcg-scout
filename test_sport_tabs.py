@@ -297,6 +297,35 @@ def test_a_tab_from_an_older_version_is_not_mistaken_for_hand_typed(wb):
     assert len(rows_on(wb, "Basketball")) == 2
 
 
+def test_a_stale_tab_is_not_mistaken_for_a_typed_one(wb):
+    """The one that would have bitten every morning. Prices change in
+    Inventory between rebuilds, so a tab that nobody has touched no longer
+    matches Inventory -- and comparing the two called it hand-edited and kept
+    a copy of the whole sheet, daily."""
+    run(wb)
+    book = load_workbook(wb)
+    inv = book["Inventory"]
+    hdr = [c.value for c in inv[1]]
+    col = hdr.index("Market value") + 1
+    for r in (2, 3, 4):                      # a price moves, as it does
+        inv.cell(row=r, column=col, value=99.99)
+    book.save(wb)
+
+    out = run(wb)
+    after = load_workbook(wb)
+    assert not [n for n in after.sheetnames if "typed on" in n], (
+        "a stale tab was mistaken for one somebody typed on:\n" + out)
+    # and the tab now carries the new price
+    assert any(r.get("Market value") == 99.99 for r in rows_on(wb, "Basketball"))
+
+
+def test_the_tab_carries_a_fingerprint_of_itself(wb):
+    run(wb)
+    a1 = str(load_workbook(wb)["Basketball"]["A1"].value)
+    assert st.stamped(load_workbook(wb)["Basketball"]) is not None, a1
+    assert "Rebuilt" in a1 and a1.startswith("VIEW")
+
+
 def test_an_untouched_tab_is_still_replaced_cleanly(wb):
     """The guard must not make every refresh leave junk sheets behind."""
     run(wb)

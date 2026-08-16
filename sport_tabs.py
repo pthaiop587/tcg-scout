@@ -27,7 +27,9 @@ formula-driven tab would show "none" on a perfectly good workbook.
 """
 
 import argparse
+import hashlib
 import os
+import re
 import sys
 from datetime import date
 
@@ -113,6 +115,32 @@ def sports_in(rows):
     return out
 
 
+def digest(ws, ncols):
+    """A fingerprint of what is actually on a generated tab.
+
+    Written into A1 when the tab is built, and checked before it is replaced.
+    Comparing the tab to ITSELF is the only way to tell "nobody touched this"
+    from "Inventory has moved on since" -- and those look identical if you
+    compare the tab to Inventory instead. Prices change daily, so that
+    comparison called every tab hand-edited and hoarded a copy of it every
+    morning.
+    """
+    h = hashlib.sha1()
+    for r in range(3, ws.max_row + 1):
+        for c in range(1, ncols + 1):
+            v = ws.cell(row=r, column=c).value
+            h.update(b"" if v is None else str(v).encode("utf-8", "replace"))
+            h.update(b"\x1f")
+        h.update(b"\x1e")
+    return h.hexdigest()[:16]
+
+
+def stamped(ws):
+    """The fingerprint A1 was stamped with, if this tab carries one."""
+    m = re.search(r"\[#([0-9a-f]{16})\]", str(ws["A1"].value or ""))
+    return m.group(1) if m else None
+
+
 def stray(ws, mine, cols):
     """Cells on a generated tab that Inventory cannot account for.
 
@@ -178,11 +206,29 @@ def build_tab(wb, sport, rows, hdr):
                   "by this script, so it was left alone." % sport)
             return 0
 
+        old = wb[sport]
         mine_now = [r for r in rows
                     if str(r.get("Sport or game") or "").strip().lower()
                     == sport.lower()]
         cols_now = [c for c in SHOW if c in hdr]
-        typed = stray(wb[sport], mine_now, cols_now)
+
+        was = stamped(old)
+        if was is not None:
+            # This tab knows what it looked like when we wrote it. If it still
+            # looks like that, nobody has typed on it -- whatever Inventory has
+            # done since.
+            width = len([c for c in
+                         (old.cell(row=2, column=i).value
+                          for i in range(1, old.max_column + 1)) if c])
+            typed = [] if digest(old, width) == was \
+                else stray(old, mine_now, cols_now)
+        else:
+            # An older tab with no fingerprint. Only trust the unambiguous
+            # signals -- a row Inventory has never heard of, or a column it
+            # does not have. A value that merely disagrees is far more likely
+            # to be a stale price than something typed.
+            typed = [t for t in stray(old, mine_now, cols_now)
+                     if t[1] == "A" or t[1] not in cols_now]
         if typed:
             keep = "%s (typed on)" % sport
             n = 2
@@ -230,6 +276,13 @@ def build_tab(wb, sport, rows, hdr):
     if cols:
         ws.auto_filter.ref = "A2:%s%d" % (get_column_letter(len(cols)),
                                           max(3, len(mine) + 2))
+
+    # Stamp what this tab looks like right now, so the next rebuild can tell
+    # "untouched" from "Inventory moved on" without guessing.
+    ws["A1"] = "%s  Rebuilt %s from the Inventory tab.  [#%s]" % (
+        MARK, date.today().isoformat(), digest(ws, len(cols)))
+    ws["A1"].font = SMALL
+    ws["A1"].fill = NOTEFILL
     return len(mine)
 
 
