@@ -31,17 +31,55 @@ WORKBOOK = "Card Run HQ - Master.xlsx"
 # the eBay upload are generated or fixed, so they come from the new build.
 CARRY = ["Inventory", "Box log", "Sales", "Purchases", "Expenses", "Photos"]
 
+# Purchases and Expenses became one Costs tab, and a Box log row is a box that
+# was bought. Without this the short layout has "no home" for all three and the
+# spending is dropped into the backup -- which is exactly the money you need to
+# know a box paid for itself. Old column -> new column, by name.
+MERGE_INTO = {
+    "Purchases": ("Costs", {
+        "Date": "Date", "What": "What", "Type": "Type",
+        "Vendor / store": "Vendor / store", "Lot ID": "Lot ID", "Qty": "Qty",
+        "Unit price": "Unit price", "Tax": "Tax", "Shipping": "Shipping",
+        "Paid with": "Paid with", "Order / receipt #": "Order / receipt #",
+        "Receipt file": "Receipt file", "Notes": "Notes"}),
+    "Expenses": ("Costs", {
+        "Date": "Date", "What": "What", "Category": "Type",
+        "Vendor": "Vendor / store", "Amount": "Unit price",
+        "Paid with": "Paid with", "Receipt file": "Receipt file",
+        "Notes": "Notes"}),
+    "Box log": ("Costs", {
+        "Date": "Date", "Product": "What", "Store": "Vendor / store",
+        "Lot ID": "Lot ID", "Qty": "Qty", "Unit price": "Unit price",
+        "Tax": "Tax", "Notes": "Notes"}),
+}
+
+# An Expenses row had no Qty and a Box log row had no Type, and Costs needs
+# both for its subtotal and its stock/running split.
+MERGE_DEFAULTS = {"Expenses": {"Qty": 1}, "Box log": {"Type": "Sealed box"}}
+
 
 def headers(ws):
     return [c.value for c in ws[1]]
 
 
 def data_rows(ws):
-    """Every row with something typed in it. Formulas are left behind -- the
-    new sheet brings its own, and they will be the current ones."""
+    """The typed rows, stopping where the data stops.
+
+    Formulas are left behind -- the new sheet brings its own, and they will be
+    the current ones.
+
+    It stops at the first completely empty row, and that is the whole point.
+    Every tab carries a block of explanatory notes below its data, separated by
+    a blank row. Reading "every row with something in it" swept those notes up
+    as records, and they were duly carried across: the Costs tab came out with
+    "The costs that are not a card." sitting in its Date column as though it
+    were a purchase. Anything typed after the gap is reported rather than
+    silently dropped.
+    """
     hdr = headers(ws)
     out = []
-    for row in ws.iter_rows(min_row=2, values_only=True):
+    stopped_at = None
+    for n, row in enumerate(ws.iter_rows(min_row=2, values_only=True), start=2):
         rec = {}
         for name, value in zip(hdr, row):
             if not name or value in (None, ""):
@@ -49,8 +87,19 @@ def data_rows(ws):
             if isinstance(value, str) and value.startswith("="):
                 continue
             rec[name] = value
-        if rec:
-            out.append(rec)
+        if not rec:
+            stopped_at = n
+            break
+        out.append(rec)
+
+    if stopped_at:
+        for row in ws.iter_rows(min_row=stopped_at + 1, values_only=True):
+            for name, value in zip(hdr, row):
+                if name and value not in (None, "") and not (
+                        isinstance(value, str) and value.startswith("=")):
+                    print("   note: %s has something below the blank row at %d "
+                          "-- left where it is" % (ws.title, stopped_at))
+                    return out
     return out
 
 
@@ -118,13 +167,26 @@ def main():
 
     lost = {}
     for name, rows in carried.items():
-        if name not in new.sheetnames:
-            # the short layout has no home for it -- say so loudly, because the
-            # rows are only in the backup from here on
-            lost[name] = ("%d row(s) -- the short layout has no %s tab. "
+        target, mapping = name, None
+        if name not in new.sheetnames and name in MERGE_INTO:
+            target, mapping = MERGE_INTO[name]
+        if target not in new.sheetnames:
+            # nowhere for it at all -- say so loudly, because the rows are only
+            # in the backup from here on
+            lost[name] = ("%d row(s) -- this layout has no %s tab. "
                           "Re-run with --full to keep it." % (len(rows), name))
             continue
-        ws = new[name]
+        if mapping:
+            defaults = MERGE_DEFAULTS.get(name, {})
+            moved = []
+            for rec in rows:
+                out = dict(defaults)
+                out.update({mapping[k]: v for k, v in rec.items() if k in mapping})
+                if out:
+                    moved.append(out)
+            rows = moved
+            print("   %s -> %s (%d row(s))" % (name, target, len(rows)))
+        ws = new[target]
         hdr = headers(ws)
         col = {h: i + 1 for i, h in enumerate(hdr) if h}
 
@@ -150,7 +212,7 @@ def main():
                 ws.cell(row=r, column=col[key], value=value)
             r += 1
         print("carried %d row(s) into %s%s"
-              % (len(rows) - skipped, name,
+              % (len(rows) - skipped, target,
                  "" if not skipped else
                  " (%d already there, left alone)" % skipped))
 
