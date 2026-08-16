@@ -17,14 +17,34 @@
    meant to find the same cards on the same page, and a different working
    resolution is a quiet way for them to disagree. */
 const SC_WORK = 1200;
-const SC_EDGE_PCT = 92;      /* top slice of the gradient that counts as edge */
-/* ...but a share is not a judgement. On a grainy scan the top 8% of gradients
-   IS the grain, spread evenly, and the close then welds that speckle into one
-   page-sized blob with no card in it. The threshold therefore also has a floor
-   at a multiple of the median gradient -- a robust read of the noise level
-   that a real card edge clears by an order of magnitude and paper grain never
-   does. Matches EDGE_NOISE_MULT in crop_scans.py; keep them the same. */
-const SC_EDGE_NOISE = 4.0;
+/* Top slice of the gradient that counts as edge. Same number as
+   EDGE_PERCENTILE in crop_scans.py, and it has to stay that way.
+
+   It was 92, which is far too generous once a scan has grain on it: 8% of a
+   page is a lot of scattered speckle, the close welds it together, and a
+   speck stuck to a card stretches its convex hull until the rectangularity
+   test throws the card out -- four cards on a sheet went to none. 98 still
+   finds a white border against a white lid, which is the faintest line this
+   has to see.
+
+   A floor at a multiple of the median gradient was tried and dropped: a
+   multiple of the median is a different threshold here than in the script,
+   because this downscale smooths more and the median ran about a third of
+   the script's. A percentile picks a share, so both agree by construction. */
+const SC_EDGE_PCT = 98;
+
+/* A percentile alone is still not enough, in the other direction: it always
+   admits its share, so a page with ONE card on it -- whose real edge is well
+   under 2% of the page -- drags the threshold down into the paper grain, and
+   a speck welded to the card stretches its convex hull until the
+   rectangularity test throws the card out. One card found none while four
+   found all four, which is a memorable way to be wrong.
+   So the threshold also has a floor at a multiple of the median gradient,
+   which reads the noise level: grain sits near it, a card edge is orders of
+   magnitude above. Matches EDGE_NOISE_MULT in crop_scans.py. It does nothing
+   there -- cv2's blur returns uint8, so those gradients tie heavily past the
+   threshold already -- but it is kept in both so the two cannot drift. */
+const SC_EDGE_NOISE = 20.0;
 const SC_COLOUR_TOL = 22;    /* how far off the lid colour a pixel must be */
 const SC_ASPECT_MIN = 0.55, SC_ASPECT_MAX = 0.95;
 const SC_MIN_AREA = 0.010, SC_MAX_AREA = 0.85;
@@ -371,18 +391,35 @@ const SC_FIELDS = [
 
 let SC_QUEUE = [];
 let SC_QPERSISTS = false;
+/* Front, back, front, back is how a batch comes off a flatbed, so two crops
+   are usually one card. With this on the queue pairs them up and asks for one
+   set of details per card instead of two -- and confirms one card, not two.
+   It is the same idea as add_photos.py --pairs, at the other end of the run. */
+let SC_PAIRS = false;
 const SC_FULL = new Map();     /* id -> {img, rect}; session only, never stored */
 
 function scQLoad(){
   try {
     const raw = localStorage.getItem(SC_QKEY);
     SC_QPERSISTS = true;
-    SC_QUEUE = raw ? (JSON.parse(raw).queue || []) : [];
-  } catch (e){ SC_QPERSISTS = false; SC_QUEUE = []; }
+    const saved = raw ? JSON.parse(raw) : {};
+    SC_QUEUE = saved.queue || [];
+    SC_PAIRS = !!saved.pairs;
+  } catch (e){ SC_QPERSISTS = false; SC_QUEUE = []; SC_PAIRS = false; }
 }
+
+/* the queue as cards rather than pictures: one entry each, or two when paired */
+function scGroups(){
+  if (!SC_PAIRS) return SC_QUEUE.map(e => [e]);
+  const out = [];
+  for (let i = 0; i < SC_QUEUE.length; i += 2) out.push(SC_QUEUE.slice(i, i + 2));
+  return out;
+}
+
 function scQSave(){
   if (!SC_QPERSISTS) return;
-  try { localStorage.setItem(SC_QKEY, JSON.stringify({ queue: SC_QUEUE, at: Date.now() })); }
+  try { localStorage.setItem(SC_QKEY,
+    JSON.stringify({ queue: SC_QUEUE, pairs: SC_PAIRS, at: Date.now() })); }
   catch (e){
     /* quota, almost certainly the thumbnails. Say so rather than failing mute. */
     SC_QPERSISTS = false;
@@ -467,18 +504,30 @@ if (scDropEl) {
     return wrap;
   }
 
-  function rowEl(entry, i){
+  function rowEl(group, i){
+    /* the first picture of a card carries its details; a back is just
+       another photo of the same card */
+    const entry = group[0];
     const row = document.createElement('div');
     row.className = 'qrow' + (scReady(entry) ? ' ready' : '');
 
     const left = document.createElement('div');
     left.className = 'qleft';
-    const im = document.createElement('img');
-    im.className = 'qshot'; im.src = entry.thumb; im.alt = 'card ' + (i + 1);
-    left.appendChild(im);
+    const shots = document.createElement('div');
+    shots.className = 'qshots';
+    group.forEach((e, k) => {
+      const im = document.createElement('img');
+      im.className = 'qshot' + (group.length > 1 ? ' pair' : '');
+      im.src = e.thumb;
+      im.alt = 'card ' + (i + 1) + (group.length > 1 ? (k ? ' back' : ' front') : '');
+      im.title = group.length > 1 ? (k ? 'back' : 'front') : '';
+      shots.appendChild(im);
+    });
+    left.appendChild(shots);
     const cap = document.createElement('div');
     cap.className = 'scname';
-    cap.textContent = (i + 1) + '. ' + entry.src;
+    cap.textContent = (i + 1) + '. ' + entry.src
+      + (group.length > 1 ? ' (front + back)' : '');
     left.appendChild(cap);
     row.appendChild(left);
 
@@ -489,7 +538,8 @@ if (scDropEl) {
 
     const acts = document.createElement('div');
     acts.className = 'qacts';
-    const has = SC_FULL.has(entry.id);
+    const has = group.every(e => SC_FULL.has(e.id));
+    const many = group.length > 1;
 
     const btn = (text, title, fn, cls) => {
       const b = document.createElement('button');
@@ -501,32 +551,39 @@ if (scDropEl) {
     };
 
     const conf = btn('Confirm', 'Move this card into My cards', () => {
-      confirmOne(entry);
+      confirmOne(group);
     }, 'go');
     conf.disabled = !scReady(entry);
     if (!(entry.n || '').trim()) conf.title = 'Needs a card name first';
     else if ((entry.flags || []).length) conf.title = 'Clear the amber fields first';
 
-    const turn = btn('Turn', 'Rotate a quarter turn', () => {
-      entry.turns = (entry.turns || 0) + 1;
-      const full = SC_FULL.get(entry.id);
-      entry.thumb = scThumb(full.img, full.rect, entry.turns);
+    const turn = btn(many ? 'Turn both' : 'Turn', 'Rotate a quarter turn', () => {
+      group.forEach(e => {
+        const full = SC_FULL.get(e.id);
+        if (!full) return;
+        e.turns = (e.turns || 0) + 1;
+        e.thumb = scThumb(full.img, full.rect, e.turns);
+      });
       scQSave(); render();
     });
-    turn.disabled = !has;
+    turn.disabled = !group.some(e => SC_FULL.has(e.id));
 
-    const save = btn('Save crop', 'Download the full-size picture', () => {
-      const full = SC_FULL.get(entry.id);
-      download(scExtract(full.img, full.rect, entry.turns),
-               entry.src + '-' + String(i + 1).padStart(2, '0') + '.jpg');
+    const save = btn(many ? 'Save both' : 'Save crop',
+                     'Download the full-size picture', async () => {
+      for (let k = 0; k < group.length; k++){
+        const full = SC_FULL.get(group[k].id);
+        if (!full) continue;
+        await download(scExtract(full.img, full.rect, group[k].turns),
+                       cropName(group[k]));
+      }
     });
-    save.disabled = !has;
+    save.disabled = !group.some(e => SC_FULL.has(e.id));
     if (!has) save.title = 'The full-size picture was only in this session. '
       + 'Drop the scan again to save it.';
 
     btn('Remove', 'Take it off the queue without adding it', () => {
-      SC_QUEUE = SC_QUEUE.filter(x => x !== entry);
-      SC_FULL.delete(entry.id);
+      SC_QUEUE = SC_QUEUE.filter(x => group.indexOf(x) < 0);
+      group.forEach(e => SC_FULL.delete(e.id));
       scQSave(); render();
     });
 
@@ -534,11 +591,21 @@ if (scDropEl) {
     return row;
   }
 
+  /* Numbered by position in the queue, not by card, so a paired batch comes
+     out front, back, front, back -- which is the order
+     add_photos.py --assign --pairs reads them back in. */
+  function cropName(entry){
+    const n = SC_QUEUE.indexOf(entry) + 1;
+    return entry.src + '-' + String(n).padStart(2, '0') + '.jpg';
+  }
+
   function renderFoot(){
-    const ready = SC_QUEUE.filter(scReady).length;
+    const groups = scGroups();
+    const ready = groups.filter(g => scReady(g[0])).length;
     if (countEl){
-      countEl.textContent = SC_QUEUE.length
-        ? SC_QUEUE.length + ' waiting \u00b7 ' + ready + ' ready to confirm'
+      countEl.textContent = groups.length
+        ? groups.length + (groups.length === 1 ? ' card' : ' cards')
+          + ' waiting \u00b7 ' + ready + ' ready to confirm'
         : '';
     }
     const c = document.getElementById('sc-qconfirm');
@@ -546,13 +613,17 @@ if (scDropEl) {
       c.disabled = !ready;
       c.textContent = ready ? 'Confirm ' + ready + ' \u2192 My cards' : 'Confirm all ready';
     }
+    const odd = document.getElementById('sc-odd');
+    if (odd) odd.hidden = !(SC_PAIRS && SC_QUEUE.length % 2);
   }
 
   function render(){
     if (wrapEl) wrapEl.hidden = !SC_QUEUE.length;
+    const pairEl = document.getElementById('sc-pairs');
+    if (pairEl) pairEl.checked = SC_PAIRS;
     if (!listEl) return;
     listEl.innerHTML = '';
-    SC_QUEUE.forEach((e, i) => listEl.appendChild(rowEl(e, i)));
+    scGroups().forEach((g, i) => listEl.appendChild(rowEl(g, i)));
     renderFoot();
 
     const lost = SC_QUEUE.filter(e => !SC_FULL.has(e.id)).length;
@@ -568,7 +639,8 @@ if (scDropEl) {
 
   /* ---- confirming ---- */
 
-  function confirmOne(entry){
+  function confirmOne(group){
+    const entry = group[0];
     if (!scReady(entry)) return;
     const cond = String(entry.c || 'NM').toUpperCase();
     CD_STOCK.unshift({
@@ -583,8 +655,10 @@ if (scDropEl) {
       v: (isFinite(parseFloat(entry.v)) && entry.v >= 0) ? parseFloat(entry.v) : 0
     });
     cdSave(); cdRenderStock();
-    SC_QUEUE = SC_QUEUE.filter(x => x !== entry);
-    SC_FULL.delete(entry.id);
+    /* both pictures of a card leave together -- the back was never a card of
+       its own, and leaving it behind would re-pair the whole queue */
+    SC_QUEUE = SC_QUEUE.filter(x => group.indexOf(x) < 0);
+    group.forEach(e => SC_FULL.delete(e.id));
     scQSave(); render();
     say('Confirmed \u2014 it is in My cards now'
         + (CD_PERSISTS ? '.' : ', but this browser is NOT saving. Export before you close.'));
@@ -708,7 +782,7 @@ if (scDropEl) {
   });
 
   on('sc-qconfirm', () => {
-    const ready = SC_QUEUE.filter(scReady);
+    const ready = scGroups().filter(g => scReady(g[0]));
     if (!ready.length) return;
     ready.forEach(confirmOne);
     say('Confirmed ' + ready.length + ' into My cards.'
@@ -724,12 +798,23 @@ if (scDropEl) {
       const e = have[i];
       say('Saving ' + (i + 1) + ' of ' + have.length + '\u2026');
       const full = SC_FULL.get(e.id);
-      await download(scExtract(full.img, full.rect, e.turns),
-                     e.src + '-' + String(SC_QUEUE.indexOf(e) + 1).padStart(2, '0') + '.jpg');
+      await download(scExtract(full.img, full.rect, e.turns), cropName(e));
     }
     btn.disabled = false;
-    say('Saved ' + have.length + ', numbered in the order above. Move them to '
-      + 'photos/crops and file them with add_photos.py --assign.');
+    say('Saved ' + have.length + ', numbered in the order shown. Move them to '
+      + 'photos/crops, then either  python file_batch.py batch.json  to let '
+      + 'Claude file the lot, or  add_photos.py --assign'
+      + (SC_PAIRS ? ' --pairs' : '') + '  to do it yourself.');
+  });
+
+  /* pairing changes what counts as a card, so the whole list redraws */
+  const pairEl = document.getElementById('sc-pairs');
+  if (pairEl) pairEl.addEventListener('change', () => {
+    SC_PAIRS = pairEl.checked;
+    scQSave(); render();
+    say(SC_PAIRS
+      ? 'Paired up: two pictures per card, front then back. Fill in each card once.'
+      : 'Unpaired: every picture is its own card again.');
   });
 
   on('sc-clear', () => {
@@ -749,10 +834,14 @@ if (scDropEl) {
     if (!lines.length){ say('Nothing to fill from.'); return; }
     if (!SC_QUEUE.length){ say('Drop some scans first \u2014 this fills the queue in order.'); return; }
 
+    /* one line per CARD, not per picture -- so with pairs on, line 2 is the
+       second card, not the back of the first */
+    const groups = scGroups();
     let n = 0, unsure = 0;
     lines.forEach((line, i) => {
-      const e = SC_QUEUE[i];
-      if (!e) return;
+      const g = groups[i];
+      if (!g) return;
+      const e = g[0];
       const cells = line.split('|').map(s => s.trim());
       const keys = ['n', 's', 'num', 'var', 'c', 'q', 'v', 'kind'];
       e.flags = [];
@@ -773,12 +862,12 @@ if (scDropEl) {
     });
     ta.value = '';
     scQSave(); render();
-    say('Filled ' + n + ' of ' + SC_QUEUE.length + '.'
+    say('Filled ' + n + ' of ' + groups.length + '.'
       + (unsure ? ' ' + unsure + ' field' + (unsure === 1 ? '' : 's')
                 + ' came through marked unsure \u2014 they are amber, and Confirm '
                 + 'stays off until you have looked at each one.' : '')
-      + (lines.length > SC_QUEUE.length
-         ? ' ' + (lines.length - SC_QUEUE.length) + ' extra line(s) ignored.' : ''));
+      + (lines.length > groups.length
+         ? ' ' + (lines.length - groups.length) + ' extra line(s) ignored.' : ''));
   });
 
   scQLoad();

@@ -448,6 +448,14 @@ color:var(--ink2);text-align:center;cursor:pointer;transition:border-color .15s,
 border:1px solid var(--line);border-radius:9px;background:var(--surface);align-items:start}
 .qrow.ready{border-color:var(--accent)}
 .qleft{display:flex;flex-direction:column;gap:5px}
+.qshots{display:flex;gap:5px}
+.qshot.pair{width:calc(50% - 3px)}
+.pairtog{display:flex;gap:9px;align-items:flex-start;padding:10px 12px;margin:0 0 11px;
+border:1px solid var(--line);border-radius:8px;background:var(--surface2);cursor:pointer;
+font-size:12px;color:var(--ink2);line-height:1.45}
+.pairtog input{margin-top:2px;flex-shrink:0;width:15px;height:15px;accent-color:var(--accent)}
+.pairtog b{color:var(--ink)}
+.warnline{color:#C8871B!important;font-weight:600}
 .scshot{width:100%;height:auto;border-radius:5px;background:var(--surface2);
 display:block;border:1px solid var(--line)}
 .scname{font-size:10.5px;color:var(--ink3);word-break:break-all;line-height:1.35}

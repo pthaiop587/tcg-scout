@@ -154,23 +154,58 @@ as a manual row, exactly as if you had typed it into *Add it by hand*.
 | **Turn all round** | flip the whole batch 180°, the usual scanner fix |
 | **Save all crops** | download every picture, numbered in the order shown |
 
-### Handing a batch to Claude
+### The path with no data entry at all
 
-The page cannot identify a card — it is static and published, so it can no
-more recognise a Prizm parallel than price one, and for **sports** there is no
-free image or price feed to match against at all. So: drop the scans, **Save
-all crops**, ask Claude to read them, and paste what comes back into **Paste
-what Claude worked out**. One line per card *in the order shown*:
+This is the one to use. You scan, you say "new scans", and nothing else is
+typed by hand:
+
+```
+python crop_scans.py --src "G:/Scans" --rotate 180
+      (Claude reads photos/crops and writes batch.json)
+python file_batch.py batch.json
+python make_ebay_csv.py
+```
+
+`file_batch.py` adds a row per card with its own SKU, renames the crops onto
+those SKUs — front and back together when the batch file says `"pairs": true`
+— and leaves the export ready. `batch.example.json` in this folder is the
+format; every field maps to an Inventory column and an unknown one is an
+error rather than a silent drop.
+
+**What can actually be read off a card.** Name, set and card number are
+printed on it, so those come back every time. The **parallel does not** — a
+Silver Prizm does not say "Silver" anywhere, so it is judged from the colour
+and pattern, and a serial number is what usually settles it. **Value cannot be
+read at all**: sports singles have no free price feed, so it needs eBay sold
+comps, not a picture.
+
+**So the Review gate.** Any card carrying an `"unsure"` field is filed with
+Status **Review** and a `CHECK:` note saying which fields, and
+`make_ebay_csv.py` exports only **Unlisted**. An uncertain card therefore
+cannot reach a live listing until you open the workbook, settle the field and
+change the status yourself. The guard sits at the export, which is the
+boundary that matters — not in a browser you might not be using.
+
+### Or hand a batch to the page instead
+
+If you would rather work in Card desk, drop the scans there and paste what
+Claude worked out into **Paste what Claude worked out**. One line per card
+*in the order shown*:
 
 ```
 card | set | number | parallel | condition | qty | worth | sports or tcg
 ```
 
-Put a `?` in front of anything Claude was not sure of. That field arrives
-**amber**, and **Confirm stays off until you have dealt with it** — either
-type a correction, or press *looks right* to accept the value as it stands.
-That is the whole guard: a guess cannot become a listing without a person
-looking at it.
+A `?` in front of a value makes that field **amber**, and **Confirm stays off
+until you have dealt with it** — type a correction, or press *looks right* to
+accept it. Same guard, different place.
+
+**Turn on "Scanned front and back"** if you scanned both sides. Without it
+every side becomes a card of its own and you fill each one in twice; with it
+the pictures pair up, you fill in one set of details per card, and confirming
+takes both pictures with it. It matches `add_photos.py --pairs` at the other
+end of the run. An odd number of pictures is called out rather than silently
+mispaired.
 
 ### Two things worth knowing
 
@@ -190,10 +225,11 @@ the browser to hold twenty 33-megapixel pages at once.
 ### Tests
 
 ```
-python -m pytest test_crop_scans.py     # 19, the script
-node test_scan.mjs                      # 17, the browser geometry
+python -m pytest test_crop_scans.py test_file_batch.py   # 39
+node test_scan.mjs                      # 19, the browser geometry
 python build_all.py . card-run-hq.html  # the dashboard test needs the build
 node test_dashboard.cjs                 # every tab, every bookmark, no js errors
+node test_queue.cjs                     # the review queue, capture to confirm
 ```
 
 Both croppers must number cards identically, so the reading-order cases are

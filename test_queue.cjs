@@ -21,6 +21,7 @@ const { execFileSync } = require('child_process');
 
 const PAGE = 'card-run-hq.html';
 const SCAN = path.join(require('os').tmpdir(), 'crh_test_scan.png');
+const SCAN4 = path.join(require('os').tmpdir(), 'crh_test_scan4.png');
 
 const fails = [];
 const check = (ok, msg) => { if (!ok) fails.push(msg); };
@@ -34,17 +35,24 @@ async function openPaste(page){
   await page.waitForTimeout(120);
 }
 
-function makeScan(){
-  /* a dark card on a pale sheet -- enough for the detector, no fixture to commit */
+/* Cards on a pale sheet, with grain on it. The grain is not decoration: a
+   clean synthetic page hides the whole class of bug where the edge threshold
+   is a share of the page rather than a judgement, and that is exactly the bug
+   that shipped here once already. */
+function makeScan(n, dest){
+  n = n || 1;
+  dest = dest || SCAN;
+  const spots = [[300, 300], [1400, 300], [300, 1700], [1400, 1700]].slice(0, n);
   const py = `
 import numpy as np, cv2
 page = np.full((3300,2550,3), 246, np.uint8)
 page = (page + np.random.default_rng(0).normal(0,2,page.shape)).clip(0,255).astype(np.uint8)
-card = np.full((1050,750,3), 60, np.uint8)
-card[60:990, 60:690] = (200,170,90)
-cv2.rectangle(card,(0,0),(749,1049),(30,30,30),6)
-page[300:1350, 300:1050] = card
-cv2.imwrite(r"${SCAN.replace(/\\/g, '\\\\')}", page)
+for i, (x, y) in enumerate(${JSON.stringify(spots)}):
+    card = np.full((1050,750,3), 60, np.uint8)
+    card[60:990, 60:690] = (200 - i*20, 170, 90 + i*20)
+    cv2.rectangle(card,(0,0),(749,1049),(30,30,30),6)
+    page[y:y+1050, x:x+750] = card
+cv2.imwrite(r"${dest.replace(/\\/g, '\\\\')}", page)
 `;
   execFileSync('python', ['-c', py]);
 }
@@ -152,10 +160,73 @@ cv2.imwrite(r"${SCAN.replace(/\\/g, '\\\\')}", page)
   check(saveOff, 'Save crop should be off when the full-size picture is gone');
   check(!(await confirmOff()), 'a reloaded row with a name and no flags should still confirm');
 
+  /* --- front/back pairing --------------------------------------------- */
+
+  makeScan(4, SCAN4);
+  const p2 = await ctx.newPage();
+  p2.on('pageerror', e => jsErrors.push('pageerror(pairs): ' + e.message));
+  p2.on('console', m => { if (m.type() === 'error') jsErrors.push('console(pairs): ' + m.text()); });
+  await p2.goto(url, { waitUntil: 'load' });
+  await p2.evaluate(() => { SC_QUEUE = []; SC_PAIRS = false; scQSave(); location.reload(); });
+  await p2.waitForTimeout(400);
+  await p2.goto(url, { waitUntil: 'load' });
+
+  const beforeStock = await p2.evaluate(() => CD_STOCK.length);
+
+  await p2.setInputFiles('#sc-file', SCAN4);
+  await p2.waitForSelector('.qrow', { timeout: 40000 });
+  await p2.waitForTimeout(400);
+
+  check(await p2.evaluate(() => SC_QUEUE.length) === 4,
+        'the 4-card sheet should give 4 pictures, got ' + await p2.evaluate(() => SC_QUEUE.length));
+  check(await p2.locator('.qrow').count() === 4, 'unpaired, 4 pictures should be 4 rows');
+
+  await p2.check('#sc-pairs');
+  await p2.waitForTimeout(300);
+  check(await p2.locator('.qrow').count() === 2,
+        'PAIRED, 4 PICTURES SHOULD BE 2 CARDS, got ' + await p2.locator('.qrow').count());
+  check(await p2.locator('.qshot').count() === 4, 'each paired row should show both sides');
+
+  /* one line per card, not per picture */
+  await openPaste(p2);
+  await p2.fill('#sc-qpaste',
+    'Shedeur Sanders | 2025 Prizm Draft Picks | 8 | Gold Cracked Ice | NM | 1 | 12.50 | sports\n' +
+    'Jonah Coleman | 2025 Prizm Draft Picks | 169 | Gold Cracked Ice | NM | 1 | 6 | sports');
+  await p2.click('#sc-qfill');
+  await p2.waitForTimeout(300);
+
+  const names = await p2.evaluate(() => SC_QUEUE.map(e => e.n));
+  check(names[0] === 'Shedeur Sanders' && names[2] === 'Jonah Coleman',
+        'a line per card should land on the FRONT of each pair, got ' + JSON.stringify(names));
+  check(names[1] === '' && names[3] === '',
+        'a back should not be filled in as its own card, got ' + JSON.stringify(names));
+
+  /* confirming a pair makes one card and takes both pictures with it */
+  await p2.click('#sc-qconfirm');
+  await p2.waitForTimeout(400);
+  check(await p2.evaluate(() => CD_STOCK.length) - beforeStock === 2,
+        'two paired cards should add 2 rows to My cards, not 4');
+  check(await p2.evaluate(() => SC_QUEUE.length) === 0,
+        'confirming a pair should take both its pictures off the queue');
+
+  /* the pairing setting itself survives a reload */
+  await p2.setInputFiles('#sc-file', SCAN4);
+  await p2.waitForSelector('.qrow', { timeout: 40000 });
+  await p2.reload({ waitUntil: 'load' });
+  await p2.waitForTimeout(400);
+  check(await p2.evaluate(() => SC_PAIRS) === true, 'pairing should survive a reload');
+  check(await p2.locator('.qrow').count() === 2, 'and should still render as 2 cards');
+
+  /* an odd count is called out rather than silently mispaired */
+  await p2.evaluate(() => { SC_QUEUE.pop(); scQSave(); render(); });
+  await p2.waitForTimeout(200);
+  check(await p2.isVisible('#sc-odd'), 'an odd number of pictures should be flagged');
+
   check(jsErrors.length === 0, 'js errors: ' + jsErrors.join(' | '));
 
   await browser.close();
   fs.unlinkSync(SCAN);
+  fs.unlinkSync(SCAN4);
 
   if (fails.length) {
     console.error('FAILED -- ' + fails.length + ':');

@@ -62,18 +62,34 @@ MAX_AREA_FRAC = 0.85
 # spill of glare or a shadow is not.
 MIN_RECTANGULARITY = 0.80
 
-# What share of the page counts as edge. Higher lets fainter card borders
-# through; too high and the lid's own paper noise starts to register.
-EDGE_PERCENTILE = 92
+# What share of the page counts as edge.
+#
+# This was 92, which is far too generous once a scan has grain on it: 8% of a
+# page is a lot of scattered speckle, the close welds it into one page-sized
+# blob, and either the card vanishes or a speck stuck to it stretches its
+# convex hull until the rectangularity test throws it out. 98 is enough edge
+# to outline four cards on a sheet and still finds a white border against a
+# white lid, which is the faintest line this has to see.
+#
+# A floor at a multiple of the median gradient was tried instead and dropped.
+# It worked, but a multiple of the median is a different threshold in each
+# implementation -- the browser's downscale smooths more, so its median ran
+# about a third of the script's and the same constant admitted four times as
+# much. A percentile picks a *share*, so both ends agree by construction,
+# which is the property that actually matters when two croppers must find the
+# same cards on the same page.
+EDGE_PERCENTILE = 98
 
-# ...but a percentile alone is a share, not a judgement: on a grainy scan the
-# top 8% of gradients IS grain, evenly spread, and the close then welds that
-# speckle into one page-sized blob with no card in it. So the threshold also
-# has a floor at a multiple of the median gradient, which is a robust read of
-# the noise level -- a real card edge clears it by an order of magnitude and
-# paper grain never does. With the floor the share that passes holds at about
-# 1.5% from a clean page through to heavy grain; without it, 8% regardless.
-EDGE_NOISE_MULT = 4.0
+# And a floor, because a percentile always admits its share: a page with one
+# card on it, whose real edge is well under 2% of the page, otherwise drags
+# the threshold down into the paper grain. The floor reads the noise level off
+# the median gradient -- grain sits near it, a card edge is orders of
+# magnitude above. Measured here it changes nothing at any value from 0 to 40,
+# because cv2.GaussianBlur returns uint8 and those gradients already tie
+# heavily past the threshold; in the browser, where the blur is float and
+# nothing ties, it is the difference between finding one card and finding
+# none. Kept in both, at the same value, so the two cannot drift apart.
+EDGE_NOISE_MULT = 20.0
 
 JPEG_QUALITY = 95
 

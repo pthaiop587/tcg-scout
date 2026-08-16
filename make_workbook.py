@@ -197,7 +197,13 @@ def build_inventory(wb):
     def span(name):
         return "{c}2:{c}{last}".format(c=c[name], last=last)
 
-    dv(ws, ["Unlisted", "Listed", "Sold", "Kept", "At COMC", "Bulk"],
+    # "Review" is where file_batch.py parks a card it could not fully work
+    # out -- a parallel read off the colour rather than off print, a market
+    # value that has no free feed to look up. make_ebay_csv.py exports only
+    # Unlisted, so a card sits in Review until a person settles the CHECK
+    # note in Notes and moves it. That is the guard against a guess reaching
+    # a live listing, and it lives here rather than in the browser.
+    dv(ws, ["Unlisted", "Review", "Listed", "Sold", "Kept", "At COMC", "Bulk"],
        span("Status"))
     dv(ws, ["Sports", "TCG", "Non-sport"], span("Category"))
     dv(ws, ["NCAA", "NFL", "NBA", "MLB", "NHL", "MLS", "WWE", "UFC"],

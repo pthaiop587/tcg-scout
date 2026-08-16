@@ -1,0 +1,29 @@
+{
+  "pairs": true,
+  "cards": [
+    {
+      "player": "Shedeur Sanders",
+      "year": 2025,
+      "brand": "Panini Prizm Draft Picks",
+      "insert": "Student Orientation",
+      "parallel": "Gold Cracked Ice",
+      "num": "8",
+      "team": "Colorado Buffaloes",
+      "sport": "Football",
+      "league": "NCAA",
+      "rc": true,
+      "unsure": ["parallel", "market"]
+    },
+    {
+      "player": "Jonah Coleman",
+      "year": 2025,
+      "brand": "Panini Prizm Draft Picks",
+      "parallel": "Gold Cracked Ice",
+      "num": "169",
+      "team": "Washington Huskies",
+      "sport": "Football",
+      "league": "NCAA",
+      "unsure": ["parallel", "market"]
+    }
+  ]
+}

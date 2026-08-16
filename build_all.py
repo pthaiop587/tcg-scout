@@ -532,6 +532,13 @@ BODY = f'''<title>Card Run HQ</title>
    My cards when somebody has said what it is.</div>
   <p class="hint" id="sc-lost" hidden></p>
 
+  <label class="pairtog"><input type="checkbox" id="sc-pairs">
+   <span><b>Scanned front and back</b> &mdash; pair the pictures up, two per card.
+   Scanning both sides is how a batch usually comes off the glass, and without
+   this every side becomes a card of its own and you fill each one in twice.</span></label>
+  <p class="hint warnline" id="sc-odd" hidden>There is an odd number of pictures,
+   so the last card has a front and no back. Check the pairs line up before you confirm.</p>
+
   <div id="sc-queue"></div>
 
   <div class="tools">
