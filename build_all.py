@@ -619,6 +619,7 @@ BODY = f'''<title>Card Run HQ</title>
   <details class="fold" id="lg-form-wrap" open><summary>Log a box</summary>
    <div class="calc">
     <div class="field"><label for="lg-date">Date bought</label><input id="lg-date" type="date"></div>
+    <div class="field"><label for="lg-time">Time</label><input id="lg-time" type="time"></div>
     <div class="field"><label for="lg-prod">Product</label>
      <input id="lg-prod" list="lg-prods" placeholder="Start typing&hellip;"><datalist id="lg-prods"></datalist></div>
     <div class="field"><label for="lg-store">Where</label>
@@ -1211,6 +1212,36 @@ BODY = f'''<title>Card Run HQ</title>
   <p class="hint" id="cd-resnote"></p>
   <div id="cd-results" class="results"></div>
   <div class="added" id="cd-added"></div>
+
+  <details class="fold" id="mn-wrap">
+   <summary>Not in the catalogue? Add it by hand &mdash; sports, sealed, anything</summary>
+   <p>The catalogue only covers TCG, because that is all TCGplayer publishes. <b>Sports singles have no free price feed anywhere</b>, so for those you enter what it is worth yourself &mdash; check <a href="#pc">Price check</a> first and put the eBay sold number in.</p>
+   <div class="calc">
+    <div class="field"><label for="mn-name">Card</label>
+     <input id="mn-name" placeholder="Arch Manning"></div>
+    <div class="field"><label for="mn-set">Set or product</label>
+     <input id="mn-set" placeholder="2025 Prizm Draft Picks"></div>
+    <div class="field"><label for="mn-num">Number</label>
+     <input id="mn-num" placeholder="e.g. 101"></div>
+    <div class="field"><label for="mn-var">Parallel / variant</label>
+     <input id="mn-var" placeholder="Gold Flash /49"></div>
+    <div class="field"><label for="mn-cond">Condition</label><select id="mn-cond">
+      <option value="NM" selected>Near Mint</option><option value="LP">Lightly Played</option>
+      <option value="MP">Moderately Played</option><option value="HP">Heavily Played</option>
+      <option value="DMG">Damaged</option></select></div>
+    <div class="field"><label for="mn-qty">Qty</label>
+     <input id="mn-qty" type="number" min="1" step="1" value="1" inputmode="numeric"></div>
+    <div class="field"><label for="mn-val">Worth each</label>
+     <input id="mn-val" type="number" min="0" step="0.5" placeholder="0.00" inputmode="decimal"></div>
+    <div class="field"><label for="mn-kind">Route it as</label><select id="mn-kind">
+      <option value="sports" selected>Sports &mdash; eBay vs COMC</option>
+      <option value="tcg">TCG &mdash; eBay vs TCGplayer</option></select></div>
+   </div>
+   <div class="tools" style="margin-top:11px">
+    <button class="btn2 go" id="mn-add">Add to my cards</button>
+    <span class="hint" id="mn-msg"></span>
+   </div>
+  </details>
 
   <details class="fold">
    <summary>Know the set code? Type it instead</summary>

@@ -61,6 +61,37 @@ showFromHash(tabs[0].id);
 const esc = s => (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 const money = n => '$' + n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 
+/* ================= SPORTS SINGLES: COMC vs eBAY =================
+   Sports has no TCGplayer, so a single cannot ride in a shared cart the way a
+   Pokemon single does -- it carries eBay's fixed costs alone. COMC is the
+   nearest equivalent: ship a box once, they photograph, list and fulfil.
+   Fees verified 15 Aug 2026: 5% transaction, 10% cash-out, ~$0.50-1 to submit. */
+const SPF = {fvf:0.1325, orderLo:0.30, orderHi:0.40, insert:0.35, post:0.85,
+             comcTxn:0.05, comcCash:0.10};
+
+function ebaySingle(p, cost, buyerPays, insertion){
+  const shipIn = buyerPays ? SPF.post : 0;
+  const gross = p + shipIn;
+  let fee = gross * SPF.fvf + (gross <= 10 ? SPF.orderLo : SPF.orderHi);
+  if (insertion) fee += SPF.insert;
+  return gross - fee - SPF.post - cost;
+}
+function comcSingle(p, cost, sub, cashOut){
+  let pr = p * (1 - SPF.comcTxn) - sub;
+  if (cashOut) pr *= (1 - SPF.comcCash);
+  return pr - cost;
+}
+/* price at which the two paths cross, for the current settings */
+function comcCrossover(cost, buyerPays, insertion, sub, cashOut){
+  let lo = 0, hi = 400;
+  for (let i = 0; i < 60; i++){
+    const mid = (lo + hi) / 2;
+    if (comcSingle(mid, cost, sub, cashOut) > ebaySingle(mid, cost, buyerPays, insertion))
+      lo = mid; else hi = mid;
+  }
+  return hi;
+}
+
 /* ---------------- where to buy it at MSRP ----------------
    Deep links into each retailer's own search. No API, no key, nothing to
    break -- and no live stock, because none of these publish it (Target 403s
@@ -170,7 +201,7 @@ if (lgBody) {
     lgBody.innerHTML = LOG.map((r, i) => {
       const n = net(r), roi = cost(r) ? Math.round(n / cost(r) * 100) : 0;
       const tone = r.status === 'sealed' ? 'flag' : (n >= 0 ? 'buy' : 'skip');
-      return '<tr><td class="mono">' + esc(r.bought || '') + '</td>' +
+      return '<tr><td class="mono">' + esc(r.bought || '') + (r.time ? '<br><span class="setname">' + esc(r.time) + '</span>' : '') + '</td>' +
         '<td><b>' + esc(r.prod) + '</b>' + (r.qty > 1 ? ' <span class="pill">\u00d7' + r.qty + '</span>' : '') + '</td>' +
         '<td>' + esc(r.store || '') + '</td>' +
         '<td class="num mono">' + m(cost(r)) + '</td>' +
@@ -224,7 +255,7 @@ if (lgBody) {
     });
     lgBody.querySelectorAll('[data-ed]').forEach(b => b.onclick = () => {
       const r = LOG[+b.dataset.ed];
-      $('lg-date').value = r.bought; $('lg-prod').value = r.prod; $('lg-store').value = r.store;
+      $('lg-date').value = r.bought; $('lg-time').value = r.time || ''; $('lg-prod').value = r.prod; $('lg-store').value = r.store;
       $('lg-paid').value = r.paid; $('lg-qty').value = r.qty; $('lg-status').value = r.status;
       $('lg-rec-in').value = r.rec; $('lg-hits').value = r.hits || '';
       LG_EDIT = +b.dataset.ed;
@@ -244,7 +275,7 @@ if (lgBody) {
   $('lg-add').addEventListener('click', () => {
     const prod = $('lg-prod').value.trim();
     if (!prod){ $('lg-msg').textContent = 'Give it a product name first.'; return; }
-    const row = {bought: $('lg-date').value, prod, store: $('lg-store').value.trim(),
+    const row = {bought: $('lg-date').value, time: $('lg-time').value, prod, store: $('lg-store').value.trim(),
                  paid: num($('lg-paid'), 0), qty: Math.max(1, Math.round(num($('lg-qty'), 1))),
                  status: $('lg-status').value, rec: num($('lg-rec-in'), 0),
                  hits: $('lg-hits').value.trim()};
@@ -261,9 +292,9 @@ if (lgBody) {
   });
 
   $('lg-export').addEventListener('click', async () => {
-    const rows = [['bought','product','where','qty','paid_each','total_cost',
+    const rows = [['bought','time','product','where','qty','paid_each','total_cost',
                    'recovered','net','roi_pct','status','hits']];
-    LOG.forEach(r => rows.push([r.bought, r.prod, r.store, r.qty, r.paid.toFixed(2),
+    LOG.forEach(r => rows.push([r.bought, r.time || '', r.prod, r.store, r.qty, r.paid.toFixed(2),
       cost(r).toFixed(2), r.rec.toFixed(2), net(r).toFixed(2),
       cost(r) ? Math.round(net(r)/cost(r)*100) : '', r.status, r.hits || '']));
     const csv = rows.map(r => r.map(v => {
@@ -951,7 +982,7 @@ const CD_COND_TOK = {nm:'NM', m:'NM', mint:'NM', lp:'LP', mp:'MP', hp:'HP',
 const THUMBS = __THUMBS__;
 const cdSetOf = c => CATALOG.sets[c.s] || {n:'', a:'', g:''};
 const cdThumb = c => THUMBS[c.i] || null;
-const cdM = n => '$' + n.toFixed(2);
+const cdM = n => (n < 0 ? '\u2212$' : '$') + Math.abs(n).toFixed(2);
 
 /* ---- search: a name, or the old shorthand, in one box ---- */
 function cdShorthand(q){
@@ -1044,6 +1075,7 @@ function cdPrice(market, cond){
   return routeCard(market, cond, 0, s.vol, s.orderSize, s.ship);
 }
 const cdBadge = d => d === 'tcgplayer' ? '<span class="pill buy">TCGplayer</span>'
+                   : d === 'comc'      ? '<span class="pill buy">COMC</span>'
                    : d === 'ebay'      ? '<span class="pill flag">eBay</span>'
                                        : '<span class="pill watch">Bulk lot</span>';
 
@@ -1114,13 +1146,49 @@ function cdAdd(idx, printing, pre){
   cdAdd._t = setTimeout(() => msg.classList.remove('show'), 2200);
 }
 
+/* A manual row carries its own value and identity -- sports has no feed, so
+   the number comes from the eBay sold check the user did. Sports routes on
+   COMC-vs-eBay, not the TCGplayer channel router. */
+function cdManualRoute(val, cond){
+  const s = cdSettings();
+  const mult = COND[cond] !== undefined ? COND[cond] : 1;
+  const ask = val * mult;
+  const eb = ebaySingle(ask, 0, true, true);
+  const cm = comcSingle(ask, 0, 0.75, true);
+  const best = Math.max(eb, cm);
+  return {ask, ebay:{net:eb}, tcg:{net:cm}, best,
+          decision: best < FLOOR_NET ? 'lot' : (cm > eb ? 'comc' : 'ebay')};
+}
+
 function cdRenderStock(){
   const tb = document.getElementById('cd-stock');
   if (!tb) return;
   let mkt = 0, net = 0, qty = 0;
-  const split = {tcgplayer:0, ebay:0, lot:0};
+  const split = {tcgplayer:0, ebay:0, comc:0, lot:0};
 
   tb.innerHTML = CD_STOCK.map((e, i) => {
+    /* ---- hand-entered row (sports, sealed, anything off-catalogue) ---- */
+    if (e.manual){
+      const val = e.v || 0;
+      const p = e.kind === 'sports' ? cdManualRoute(val, e.c) : cdPrice(val, e.c);
+      mkt += val * e.q; net += p.best * e.q; qty += e.q;
+      split[p.decision] = (split[p.decision] || 0) + e.q;
+      const conds = CD_CONDS.map(k =>
+        '<option value="' + k + '"' + (k === e.c ? ' selected' : '') + '>' + k + '</option>').join('');
+      const meta = [e.s, e.num ? '#' + e.num : '', e.var].filter(Boolean).join(' \u00b7 ');
+      return '<tr><td><div class="srow"><div><b>' + esc(e.n) + '</b> ' +
+          '<span class="pill">manual</span><br><span class="setname">' + esc(meta) + '</span></div></div></td>' +
+        '<td><div class="qty"><button class="qbtn" data-dec="' + i + '">\u2212</button>' +
+          '<span class="mono">' + e.q + '</span>' +
+          '<button class="qbtn" data-inc="' + i + '">+</button></div></td>' +
+        '<td><select class="condsel" data-cond="' + i + '">' + conds + '</select></td>' +
+        '<td class="num mono">' + cdM(val) + '</td>' +
+        '<td class="num mono">' + cdM(p.ask) + '</td>' +
+        '<td class="num mono">' + cdM(p.best) + '</td>' +
+        '<td>' + cdBadge(p.decision) + '</td>' +
+        '<td class="num"><button class="linkbtn" data-rm="' + i + '">remove</button></td></tr>';
+    }
+
     const c = CATALOG.cards[e.i];
     if (!c) return '';
     const s = cdSetOf(c);
@@ -1153,7 +1221,8 @@ function cdRenderStock(){
   document.getElementById('cd-s-mkt').textContent = cdM(mkt);
   document.getElementById('cd-s-net').textContent = cdM(net);
   document.getElementById('cd-s-split').textContent =
-    split.tcgplayer + ' TCGplayer \u00b7 ' + split.ebay + ' eBay \u00b7 ' + split.lot + ' bulk lot';
+    split.tcgplayer + ' TCGplayer \u00b7 ' + split.ebay + ' eBay \u00b7 ' +
+    (split.comc ? split.comc + ' COMC \u00b7 ' : '') + split.lot + ' bulk lot';
   document.getElementById('cd-export').disabled = !CD_STOCK.length;
   document.getElementById('cd-wipe').disabled = !CD_STOCK.length;
 
@@ -1174,6 +1243,14 @@ function cdCsv(){
   const rows = [['sku','set','set_code','card','number','rarity','printing',
                  'condition','qty','market_usd','ask_usd','best_net_usd','route']];
   CD_STOCK.forEach((e, i) => {
+    if (e.manual){
+      const val = e.v || 0;
+      const p = e.kind === 'sports' ? cdManualRoute(val, e.c) : cdPrice(val, e.c);
+      rows.push(['CD-W' + (i + 1), e.s || '', '', e.n, e.num || '', e.var || '',
+                 e.var || 'manual', e.c, e.q, val.toFixed(2),
+                 p.ask.toFixed(2), p.best.toFixed(2), p.decision]);
+      return;
+    }
     const c = CATALOG.cards[e.i]; if (!c) return;
     const s = cdSetOf(c), market = c.p[e.pr], p = cdPrice(market, e.c);
     rows.push(['CD-W' + (i + 1), s.n, s.a || '', c.n, c['#'], c.r || '', e.pr, e.c,
@@ -1194,6 +1271,29 @@ if (document.getElementById('cd-q')) {
   q.addEventListener('input', () => { clearTimeout(qt); qt = setTimeout(cdRenderResults, 110); });
   document.getElementById('cd-clearq').addEventListener('click', () => {
     q.value = ''; cdRenderResults(); q.focus();
+  });
+
+  /* ---- hand-entered cards: sports, sealed, anything off-catalogue ---- */
+  const mnAdd = document.getElementById('mn-add');
+  if (mnAdd) mnAdd.addEventListener('click', () => {
+    const g = i => document.getElementById(i).value.trim();
+    const name = g('mn-name');
+    const msg = document.getElementById('mn-msg');
+    if (!name){ msg.textContent = 'Give it a card name first.'; return; }
+    const v = parseFloat(g('mn-val'));
+    CD_STOCK.unshift({
+      manual: 1, kind: g('mn-kind'), n: name, s: g('mn-set'), num: g('mn-num'),
+      var: g('mn-var'), c: g('mn-cond'),
+      q: Math.max(1, Math.round(parseFloat(g('mn-qty')) || 1)),
+      v: isFinite(v) && v >= 0 ? v : 0
+    });
+    cdSave(); cdRenderStock();
+    ['mn-name','mn-num','mn-var','mn-val'].forEach(i => document.getElementById(i).value = '');
+    document.getElementById('mn-qty').value = 1;
+    document.getElementById('mn-name').focus();
+    msg.textContent = CD_PERSISTS ? 'Added \u2014 set field kept for the next one.'
+                                  : 'Added, but NOT saved. Export before closing.';
+    setTimeout(() => { msg.textContent = ''; }, 3200);
   });
 
   document.getElementById('cd-wipe').addEventListener('click', () => {
@@ -1245,37 +1345,6 @@ if (document.getElementById('cd-q')) {
   }
 
   cdRenderResults(); cdRenderStock();
-}
-
-/* ================= SPORTS SINGLES: COMC vs eBAY =================
-   Sports has no TCGplayer, so a single cannot ride in a shared cart the way a
-   Pokemon single does -- it carries eBay's fixed costs alone. COMC is the
-   nearest equivalent: ship a box once, they photograph, list and fulfil.
-   Fees verified 15 Aug 2026: 5% transaction, 10% cash-out, ~$0.50-1 to submit. */
-const SPF = {fvf:0.1325, orderLo:0.30, orderHi:0.40, insert:0.35, post:0.85,
-             comcTxn:0.05, comcCash:0.10};
-
-function ebaySingle(p, cost, buyerPays, insertion){
-  const shipIn = buyerPays ? SPF.post : 0;
-  const gross = p + shipIn;
-  let fee = gross * SPF.fvf + (gross <= 10 ? SPF.orderLo : SPF.orderHi);
-  if (insertion) fee += SPF.insert;
-  return gross - fee - SPF.post - cost;
-}
-function comcSingle(p, cost, sub, cashOut){
-  let pr = p * (1 - SPF.comcTxn) - sub;
-  if (cashOut) pr *= (1 - SPF.comcCash);
-  return pr - cost;
-}
-/* price at which the two paths cross, for the current settings */
-function comcCrossover(cost, buyerPays, insertion, sub, cashOut){
-  let lo = 0, hi = 400;
-  for (let i = 0; i < 60; i++){
-    const mid = (lo + hi) / 2;
-    if (comcSingle(mid, cost, sub, cashOut) > ebaySingle(mid, cost, buyerPays, insertion))
-      lo = mid; else hi = mid;
-  }
-  return hi;
 }
 
 const spEls = ['sp-price','sp-cost','sp-qty','sp-sub','sp-min'].map(i => document.getElementById(i));
