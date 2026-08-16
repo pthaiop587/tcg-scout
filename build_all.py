@@ -454,6 +454,7 @@ BODY = f'''<title>Card Run HQ</title>
     <p class="lbl">Buy &mdash; scouting</p>
     <button class="navlink" role="tab" id="t-drops" aria-controls="p-drops" aria-selected="true"><i></i>Drops</button>
     <button class="navlink" role="tab" id="t-shelf" aria-controls="p-shelf" aria-selected="false"><i></i>Shelf check</button>
+    <button class="navlink" role="tab" id="t-log"   aria-controls="p-log"   aria-selected="false"><i></i>Box log</button>
     <button class="navlink" role="tab" id="t-boxes" aria-controls="p-boxes"   aria-selected="false"><i></i>Box breakdowns</button>
     <button class="navlink" role="tab" id="t-pc"    aria-controls="p-pc"    aria-selected="false"><i></i>Price check anything</button>
     <button class="navlink" role="tab" id="t-types" aria-controls="p-types" aria-selected="false"><i></i>Box types &amp; ROI</button>
@@ -600,6 +601,70 @@ BODY = f'''<title>Card Run HQ</title>
  <section>
   <div class="note warn"><b>A high multiple usually means it&rsquo;s already gone.</b> Prismatic Evolutions sits at 4&times; precisely because shelves got cleared. A &ldquo;grab it instantly if you see it&rdquo; list, not a shopping list.</div>
   <div class="note"><b>Where you can buy it.</b> <span class="wtag w-store">store</span> Target / Walmart / card shops. <span class="wtag w-online">online</span> Pok&eacute;mon Center only. <span class="wtag w-preorder">preorder</span> not released, price is a guess.</div>
+ </section>
+</div>
+
+<!-- ============ BOX LOG ============ -->
+<div role="tabpanel" id="p-log" aria-labelledby="t-log" hidden>
+ <section>
+  <h2>Box log</h2>
+  <div class="out">
+   <div><span class="k">Boxes</span><span class="v" id="lg-n">0</span></div>
+   <div><span class="k">Spent</span><span class="v" id="lg-spent">$0.00</span></div>
+   <div><span class="k">Recovered</span><span class="v" id="lg-rec">$0.00</span></div>
+   <div><span class="k">Net</span><span class="v" id="lg-net">$0.00</span></div>
+   <div><span class="k">Return</span><span class="v" id="lg-roi">&mdash;</span></div>
+  </div>
+
+  <details class="fold" id="lg-form-wrap" open><summary>Log a box</summary>
+   <div class="calc">
+    <div class="field"><label for="lg-date">Date bought</label><input id="lg-date" type="date"></div>
+    <div class="field"><label for="lg-prod">Product</label>
+     <input id="lg-prod" list="lg-prods" placeholder="Start typing&hellip;"><datalist id="lg-prods"></datalist></div>
+    <div class="field"><label for="lg-store">Where</label>
+     <input id="lg-store" list="lg-stores" placeholder="Big 5, Target&hellip;"><datalist id="lg-stores"></datalist></div>
+    <div class="field"><label for="lg-paid">Paid each, with tax</label>
+     <input id="lg-paid" type="number" min="0" step="0.01" inputmode="decimal"></div>
+    <div class="field"><label for="lg-qty">Qty</label>
+     <input id="lg-qty" type="number" min="1" step="1" value="1" inputmode="numeric"></div>
+    <div class="field"><label for="lg-status">Status</label><select id="lg-status">
+      <option value="sealed">Sealed</option><option value="opened">Opened</option>
+      <option value="sold">Sold</option></select></div>
+    <div class="field"><label for="lg-rec-in">Recovered so far</label>
+     <input id="lg-rec-in" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
+    <div class="field"><label for="lg-hits">Hits &amp; notes</label>
+     <input id="lg-hits" placeholder="Gold Flash /49 Arch Manning&hellip;"></div>
+   </div>
+   <div class="tools" style="margin-top:11px">
+    <button class="btn2 go" id="lg-add">Add to log</button>
+    <button class="btn2" id="lg-cancel" hidden>Cancel edit</button>
+    <span class="hint" id="lg-msg"></span>
+   </div>
+  </details>
+
+  <div class="scroll"><table><thead><tr>
+    <th>Bought</th><th>Product</th><th>Where</th><th class="num">Cost</th>
+    <th class="num">Back</th><th class="num">Net</th><th class="num">ROI</th>
+    <th>Status</th><th>Hits</th><th></th></tr></thead>
+   <tbody id="lg-body"></tbody></table>
+   <div class="empty" id="lg-empty">Nothing logged yet. Add your first box above.</div></div>
+
+  <div class="tools">
+   <button class="btn2 go" id="lg-export" disabled>Export CSV</button>
+   <button class="btn2" id="lg-wipe" disabled>Clear log</button>
+   <span class="hint" id="lg-exmsg"></span>
+  </div>
+  <textarea id="lg-fallback" class="fallback" hidden readonly rows="8"></textarea>
+  <div class="note" id="lg-status-note"></div>
+ </section>
+
+ <section><h2>Which shop is actually paying you</h2>
+  <p class="hint">Every row you add sharpens these. This is the part a spreadsheet gives you that a pile of receipts does not.</p>
+  <div id="lg-bystore"></div>
+ </section>
+
+ <section><h2>Which products are worth repeating</h2>
+  <div id="lg-byprod"></div>
  </section>
 </div>
 

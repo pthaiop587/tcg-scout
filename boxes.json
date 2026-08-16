@@ -2,41 +2,42 @@
   "_comment": "Box breakdown library. Add an entry per product bought or considered; build_all.py renders it into the Box breakdowns tab. Keep every claim sourced - if a figure is not verified, leave it out rather than guess.",
   "boxes": [
     {
-      "id": "prizm-fb-2025-mega",
-      "name": "2025 Panini Prizm Football — Mega Box",
-      "cat": "Football · Panini",
+      "id": "prizm-draft-cfb-2025-mega",
+      "name": "2025 Panini Prizm Draft Picks College Football — Mega Box",
+      "cat": "College Football · Panini",
       "owned": true,
       "added": "2026-08-15",
-      "paid": 69.99,
-      "prices": "Shelf $69.99 · DA Card World $59.95 · Dick's $89.45 · PriceCharting ~$50",
-      "config": "6 packs × 7 cards = <b>42 cards</b>",
-      "tone": "watch",
+      "paid": 75.41,
+      "prices": "Paid $69.99 + tax = <b>$75.41</b> at Big 5 Upland · <b>list is $55.99</b>",
+      "config": "6 packs × 10 cards = <b>60 cards</b>",
+      "tone": "skip",
       "guaranteed": [
-        "<b>1 memorabilia card</b> — a real hit in every box",
-        "<b>5 Neon Green Pulsar Prizms</b> (3 base, 2 rookie) — mega-exclusive, do not exist in hobby"
+        "<b>18 mega-box exclusives</b> per box — Red Ice or Red Flash Prizms"
       ],
-      "typical": ["10 rookies", "3 base or rookie Prizms", "2 inserts"],
+      "typical": [
+        "Mega-only <b>Gold Ice</b> and <b>Gold Flash /49</b> Prizms",
+        "Silver and Mojo Prizms",
+        "Inserts: Color Blast, Dual Color Blast, Manga, Stained Glass, Brilliance, Fearless, Hype, Instant Impact, New Recruits, On Campus, Prizm Break, Student Orientation, Trophy Hunting"
+      ],
       "chase": [
-        {"n": "301", "p": "Travis Hunter", "note": "The chase. Heisman winner, only two-way player in the league. Top Prizm autos run $400–600 in PSA 10."},
-        {"n": "315", "p": "Ashton Jeanty", "note": "First RB taken top-10 since Saquon Barkley. Top autos $200–350, base rookies $5–12."},
-        {"n": "352", "p": "Cam Ward", "note": "#1 overall pick. Note he has <b>no autographs at all</b> in 2025 Prizm."},
-        {"n": "302", "p": "Shedeur Sanders", "note": "High-attention quarterback."},
-        {"n": "332", "p": "Jaxson Dart", "note": "Quarterback, rookie class."},
-        {"n": "—", "p": "Tetairoa McMillan", "note": "Silver auto PSA 10 runs $250–400; raw base $8–15."},
-        {"n": "—", "p": "Colston Loveland / Cam Skattebo", "note": "Also carry autographs in the wider set."}
+        {"n": "—", "p": "Arch Manning", "note": "On the box art. The single biggest name in college football cards and the main reason this product sells."},
+        {"n": "—", "p": "Travis Hunter", "note": "Heisman winner, two-way player. Also on the box art."},
+        {"n": "—", "p": "Shedeur Sanders", "note": "High-attention quarterback."},
+        {"n": "—", "p": "Riley Leonard", "note": "Named among the top prospects in this checklist."},
+        {"n": "—", "p": "Gold Flash /49", "note": "Mega-exclusive and serial numbered — the realistic ceiling in this box."},
+        {"n": "—", "p": "/10 Gold, /5 Black Gold, Black Finite 1/1, Black Shimmer 1/1, Gold Vinyl 1/1", "note": "The top of the parallel ladder. Long odds."}
       ],
       "values": [
-        ["Base rookies", "$5–15 — above eBay's break-even, and squarely in the COMC band"],
-        ["Base veterans (300-card set)", "Cents. Bulk only, do not list individually"],
-        ["Numbered parallels", "Hold value far better than base — always set these aside"],
-        ["Neon Green Pulsar", "Entirely player-dependent; a Hunter or Jeanty is the real upside"]
+        ["Base prospects", "Cents. These trade as 300+ card bulk lots on eBay"],
+        ["Serial-numbered parallels", "Where the value actually sits — always pull these"],
+        ["Mega exclusives (Red Ice / Red Flash)", "18 per box, so they are common by design. Value is player-driven"]
       ],
       "notin": [
-        "<b>No guaranteed autograph.</b> They are seeded as rare pulls only",
-        "<b>Color Blast</b> is effectively a case hit — do not expect one",
-        "Manga inserts are the toughest short print in the product"
+        "<b>No NFL licensing.</b> These are college uniforms and airbrushed versions, not NFL rookie cards",
+        "<b>No guaranteed autograph or memorabilia card</b>",
+        "<b>Colour Blast is effectively a case hit</b> — do not expect one"
       ],
-      "verdict": "Bought at $69.99 against a $59.95 distributor price, so it starts behind. Sealed resale would not recover it either, which makes opening the reasonable call once the money is spent — the upside is a Pulsar landing on a name."
+      "verdict": "<b>The trap in this product is structural.</b> Collegiate cards depreciate sharply once a player's official NFL-licensed rookies arrive — singles have been reported dropping as much as 40× against their NFL counterparts. 2025 NFL Prizm already released in February 2026, so that repricing has largely happened. On top of that, $75.41 all-in against a $55.99 list is a 35% premium. Open it for the fun; do not treat it as inventory."
     },
     {
       "id": "signature-class-nba-2526-mega",

@@ -118,6 +118,181 @@ function checkLinks(product, game){
               c.s + '</a>').join('') + '</span>';
 }
 
+/* ================= BOX LOG =================
+   Every box bought, what it cost, what came back. Kept in this browser, same
+   as the card desk -- no db capability exists for a published page, but
+   localStorage does. Export to CSV before you rely on it living forever.   */
+const LG_KEY = 'boxlog.v1';
+let LOG = [];
+let LG_PERSISTS = false, LG_EDIT = null;
+
+function lgLoad(){
+  try { const r = localStorage.getItem(LG_KEY); LG_PERSISTS = true;
+        LOG = r ? (JSON.parse(r).rows || []) : []; }
+  catch(e){ LG_PERSISTS = false; LOG = []; }
+}
+function lgSave(){
+  if (!LG_PERSISTS) return;
+  try { localStorage.setItem(LG_KEY, JSON.stringify({rows: LOG, at: Date.now()})); }
+  catch(e){ LG_PERSISTS = false; }
+}
+
+const lgBody = document.getElementById('lg-body');
+if (lgBody) {
+  lgLoad();
+  const $ = i => document.getElementById(i);
+  const m = v => (v < 0 ? '\u2212$' : '$') + Math.abs(v).toFixed(2);
+  const num = (el, d) => { const v = parseFloat(el.value); return isFinite(v) ? v : d; };
+  const cost = r => r.paid * r.qty;
+  const net  = r => r.rec - cost(r);
+
+  /* Product suggestions come from the breakdown library so the two line up.
+     Deferred: BOXES is declared below this block and `typeof` on a const in
+     its temporal dead zone throws rather than returning "undefined". */
+  setTimeout(() => {
+    const pl = $('lg-prods');
+    if (pl && Array.isArray(BOXES))
+      pl.innerHTML = BOXES.map(b => '<option value="' + esc(b.name) + '">').join('');
+  }, 0);
+
+  function lgRender(){
+    const spent = LOG.reduce((a, r) => a + cost(r), 0);
+    const rec   = LOG.reduce((a, r) => a + r.rec, 0);
+    const qty   = LOG.reduce((a, r) => a + r.qty, 0);
+    $('lg-n').textContent = qty;
+    $('lg-spent').textContent = m(spent);
+    $('lg-rec').textContent = m(rec);
+    $('lg-net').textContent = m(rec - spent);
+    $('lg-net').style.color = rec - spent >= 0 ? 'var(--buy)' : 'var(--skip)';
+    $('lg-roi').textContent = spent ? Math.round((rec - spent) / spent * 100) + '%' : '\u2014';
+    $('lg-roi').style.color = rec >= spent ? 'var(--buy)' : 'var(--skip)';
+
+    lgBody.innerHTML = LOG.map((r, i) => {
+      const n = net(r), roi = cost(r) ? Math.round(n / cost(r) * 100) : 0;
+      const tone = r.status === 'sealed' ? 'flag' : (n >= 0 ? 'buy' : 'skip');
+      return '<tr><td class="mono">' + esc(r.bought || '') + '</td>' +
+        '<td><b>' + esc(r.prod) + '</b>' + (r.qty > 1 ? ' <span class="pill">\u00d7' + r.qty + '</span>' : '') + '</td>' +
+        '<td>' + esc(r.store || '') + '</td>' +
+        '<td class="num mono">' + m(cost(r)) + '</td>' +
+        '<td class="num mono">' + m(r.rec) + '</td>' +
+        '<td class="num mono" style="color:' + (n >= 0 ? 'var(--buy)' : 'var(--skip)') + '">' + m(n) + '</td>' +
+        '<td class="num mono">' + (r.status === 'sealed' ? '\u2014' : roi + '%') + '</td>' +
+        '<td><span class="pill ' + tone + '">' + esc(r.status) + '</span></td>' +
+        '<td class="wnote">' + esc(r.hits || '') + '</td>' +
+        '<td class="num"><button class="linkbtn" data-ed="' + i + '">edit</button>' +
+        '<button class="linkbtn" data-del="' + i + '">del</button></td></tr>';
+    }).join('');
+    $('lg-empty').hidden = LOG.length > 0;
+    $('lg-export').disabled = $('lg-wipe').disabled = !LOG.length;
+
+    /* rollups -- the reason this beats a pile of receipts */
+    const roll = (key, into) => {
+      const g = {};
+      LOG.forEach(r => {
+        const k = (r[key] || '(not recorded)').trim() || '(not recorded)';
+        g[k] = g[k] || {spent:0, rec:0, n:0};
+        g[k].spent += cost(r); g[k].rec += r.rec; g[k].n += r.qty;
+      });
+      const rows = Object.entries(g).sort((a,b) => (b[1].rec-b[1].spent) - (a[1].rec-a[1].spent));
+      $(into).innerHTML = rows.length ? rows.map(([k, v]) => {
+        const n = v.rec - v.spent, roi = v.spent ? Math.round(n / v.spent * 100) : 0;
+        return '<article class="card ' + (n >= 0 ? 'buy' : 'skip') + '"><div class="pad">' +
+          '<b class="pname">' + esc(k) + '</b>' +
+          '<div class="prices mono"><span class="tag">' + v.n + ' box' + (v.n===1?'':'es') + '</span>' +
+          '<span class="tag">spent</span><span class="rp">' + m(v.spent) + '</span>' +
+          '<span class="arrow">\u2192</span><span class="tag">back</span>' +
+          '<span class="mp">' + m(v.rec) + '</span><span class="xx">' + roi + '%</span></div>' +
+          '</div></article>';
+      }).join('') : '<p class="hint">Log a few boxes and this fills in.</p>';
+    };
+    roll('store', 'lg-bystore');
+    roll('prod', 'lg-byprod');
+
+    const sl = $('lg-stores');
+    if (sl) sl.innerHTML = [...new Set(LOG.map(r => r.store).filter(Boolean))]
+      .map(s => '<option value="' + esc(s) + '">').join('');
+
+    const sn = $('lg-status-note');
+    sn.className = 'note' + (LG_PERSISTS ? '' : ' warn');
+    sn.innerHTML = LG_PERSISTS
+      ? 'Saved in this browser. <b>Export the CSV periodically</b> \u2014 clearing site data would take it with it.'
+      : '<b>This browser is blocking storage.</b> Nothing here will survive the tab closing \u2014 export before you go.';
+
+    lgBody.querySelectorAll('[data-del]').forEach(b => b.onclick = () => {
+      if (!confirm('Delete this row?')) return;
+      LOG.splice(+b.dataset.del, 1); lgSave(); lgRender();
+    });
+    lgBody.querySelectorAll('[data-ed]').forEach(b => b.onclick = () => {
+      const r = LOG[+b.dataset.ed];
+      $('lg-date').value = r.bought; $('lg-prod').value = r.prod; $('lg-store').value = r.store;
+      $('lg-paid').value = r.paid; $('lg-qty').value = r.qty; $('lg-status').value = r.status;
+      $('lg-rec-in').value = r.rec; $('lg-hits').value = r.hits || '';
+      LG_EDIT = +b.dataset.ed;
+      $('lg-add').textContent = 'Save changes'; $('lg-cancel').hidden = false;
+      $('lg-form-wrap').open = true;
+      $('lg-form-wrap').scrollIntoView({block:'start'});
+    });
+  }
+
+  function lgReset(){
+    LG_EDIT = null;
+    $('lg-add').textContent = 'Add to log'; $('lg-cancel').hidden = true;
+    ['lg-prod','lg-store','lg-paid','lg-hits'].forEach(i => $(i).value = '');
+    $('lg-qty').value = 1; $('lg-rec-in').value = 0; $('lg-status').value = 'sealed';
+  }
+
+  $('lg-add').addEventListener('click', () => {
+    const prod = $('lg-prod').value.trim();
+    if (!prod){ $('lg-msg').textContent = 'Give it a product name first.'; return; }
+    const row = {bought: $('lg-date').value, prod, store: $('lg-store').value.trim(),
+                 paid: num($('lg-paid'), 0), qty: Math.max(1, Math.round(num($('lg-qty'), 1))),
+                 status: $('lg-status').value, rec: num($('lg-rec-in'), 0),
+                 hits: $('lg-hits').value.trim()};
+    if (LG_EDIT !== null) LOG[LG_EDIT] = row; else LOG.unshift(row);
+    lgSave(); lgReset(); lgRender();
+    $('lg-msg').textContent = LG_PERSISTS ? 'Saved.' : 'Added \u2014 but NOT saved, export before closing.';
+    setTimeout(() => { $('lg-msg').textContent = ''; }, 3000);
+  });
+  $('lg-cancel').addEventListener('click', lgReset);
+
+  $('lg-wipe').addEventListener('click', () => {
+    if (!confirm('Delete the entire box log?')) return;
+    LOG = []; lgSave(); lgRender();
+  });
+
+  $('lg-export').addEventListener('click', async () => {
+    const rows = [['bought','product','where','qty','paid_each','total_cost',
+                   'recovered','net','roi_pct','status','hits']];
+    LOG.forEach(r => rows.push([r.bought, r.prod, r.store, r.qty, r.paid.toFixed(2),
+      cost(r).toFixed(2), r.rec.toFixed(2), net(r).toFixed(2),
+      cost(r) ? Math.round(net(r)/cost(r)*100) : '', r.status, r.hits || '']));
+    const csv = rows.map(r => r.map(v => {
+      const t = String(v == null ? '' : v);
+      return /[",\n]/.test(t) ? '"' + t.replace(/"/g,'""') + '"' : t;
+    }).join(',')).join('\n');
+    const msg = $('lg-exmsg'); msg.textContent = 'Preparing\u2026';
+    const stamp = new Date().toISOString().slice(0,10);
+    try {
+      const dl = await window.claude.use('downloads');
+      if (!dl) throw {code:'unavailable'};
+      try { await dl.save({filename:'box-log-' + stamp + '.csv', data:csv}); msg.textContent = 'Saved.'; }
+      catch(err){
+        if (err && err.code === 'extension_not_enabled'){
+          await dl.save({filename:'box-log-' + stamp + '.csv.txt', data:csv});
+          msg.textContent = 'Saved as .txt \u2014 rename it to .csv.';
+        } else if (err && err.code === 'declined'){ msg.textContent = 'Cancelled.'; }
+        else throw err;
+      }
+    } catch(err){
+      msg.textContent = 'Downloads unavailable here \u2014 copy the text below.';
+      const ta = $('lg-fallback'); ta.hidden = false; ta.value = csv; ta.select();
+    }
+  });
+
+  if (!$('lg-date').value) $('lg-date').valueAsDate = new Date();
+  lgRender();
+}
+
 /* ================= BOX BREAKDOWNS =================
    A searchable library rather than a tab per product -- adding a box is a line
    in boxes.json. Every claim here is sourced; anything unverified is left out
