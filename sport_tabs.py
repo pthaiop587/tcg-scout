@@ -47,8 +47,10 @@ MARK = "VIEW — generated from Inventory. Do not type here."
 SHOW = ["SKU", "Status", "Date in", "Year", "Brand / set", "Insert set",
         "Parallel", "Player or card name", "Card #", "Serial /", "Team",
         "League", "Card condition", "Qty", "Cost each", "Market value",
-        "Ask price", "Raw price", "Raw last sold", "PSA 9 price",
-        "PSA 9 last sold", "PSA 10 price", "PSA 10 last sold",
+        "Ask price",
+        "Raw price", "Raw last sold", "Raw last sale",
+        "PSA 9 price", "PSA 9 last sold", "PSA 9 last sale",
+        "PSA 10 price", "PSA 10 last sold", "PSA 10 last sale",
         "Listed on", "Sold on", "Notes"]
 
 WIDTH = {"SKU": 12, "Status": 12, "Date in": 11, "Year": 7,
@@ -56,16 +58,18 @@ WIDTH = {"SKU": 12, "Status": 12, "Date in": 11, "Year": 7,
          "Player or card name": 22, "Card #": 9, "Serial /": 9, "Team": 18,
          "League": 9, "Card condition": 18, "Qty": 6, "Cost each": 11,
          "Market value": 12, "Ask price": 11, "Listed on": 11, "Sold on": 11,
-         "Raw price": 11, "Raw last sold": 12, "PSA 9 price": 11,
-         "PSA 9 last sold": 13, "PSA 10 price": 11, "PSA 10 last sold": 14,
+         "Raw price": 11, "Raw last sold": 12, "Raw last sale": 12,
+         "PSA 9 price": 11, "PSA 9 last sold": 13, "PSA 9 last sale": 13,
+         "PSA 10 price": 11, "PSA 10 last sold": 14, "PSA 10 last sale": 14,
          "Notes": 34}
 
 # Dates arrive from openpyxl as datetimes and would otherwise render as a
 # five-digit serial number, which reads as a card number at a glance.
 DATES = ("Date in", "Listed on", "Sold on", "Raw last sold",
          "PSA 9 last sold", "PSA 10 last sold")
-CASH = ("Cost each", "Market value", "Ask price", "Raw price",
-        "PSA 9 price", "PSA 10 price")
+CASH = ("Cost each", "Market value", "Ask price",
+        "Raw price", "Raw last sale", "PSA 9 price", "PSA 9 last sale",
+        "PSA 10 price", "PSA 10 last sale")
 DATEFMT = "yyyy-mm-dd"
 
 MONEY = '"$"#,##0.00'
@@ -127,30 +131,41 @@ def stray(ws, mine, cols):
         if s:
             by_sku[s] = rec
 
+    # Compare against the tab's OWN header, not against the column list we are
+    # about to write. Those two drift every time a column is added, and
+    # comparing by position across that drift makes every cell on the tab look
+    # hand-edited -- which reports the whole sheet as precious and keeps a
+    # useless copy of it.
+    old_hdr = [ws.cell(row=2, column=c).value
+               for c in range(1, ws.max_column + 1)]
+
     found = []
-    width = len(cols)
     for r in range(3, ws.max_row + 1):
         vals = [ws.cell(row=r, column=c).value
                 for c in range(1, ws.max_column + 1)]
         if not any(v not in (None, "") for v in vals):
             continue
 
-        for c in range(width + 1, ws.max_column + 1):     # typed past the end
-            v = ws.cell(row=r, column=c).value
-            if v not in (None, ""):
-                found.append((r, get_column_letter(c), v))
-
         sku = str(vals[0] or "").strip()
         rec = by_sku.get(sku)
         if not rec:                                       # a row of its own
             found.append((r, "A", sku or "(no SKU)"))
             continue
-        for i, name in enumerate(cols):                   # edited in place
-            was, now = vals[i], rec.get(name)
-            if was in (None, "") or was == now:
+
+        for i, name in enumerate(old_hdr):
+            was = vals[i]
+            if was in (None, ""):
                 continue
-            if isinstance(was, float) and isinstance(now, (int, float)) \
-                    and abs(was - float(now)) < 0.005:
+            if not name or name not in rec:
+                # a column Inventory has never heard of, so nothing here came
+                # from it
+                found.append((r, name or get_column_letter(i + 1), was))
+                continue
+            now = rec.get(name)
+            if was == now:
+                continue
+            if isinstance(was, (int, float)) and isinstance(now, (int, float)) \
+                    and abs(float(was) - float(now)) < 0.005:
                 continue
             found.append((r, name, was))
     return found

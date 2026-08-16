@@ -277,6 +277,26 @@ def test_a_row_that_is_not_in_inventory_is_kept(wb):
         == "CRH-9999"
 
 
+def test_a_tab_from_an_older_version_is_not_mistaken_for_hand_typed(wb):
+    """A tab written before a column existed is narrower, and its columns sit
+    at different positions. Comparing it position-by-position against today's
+    column list first crashed, then reported every cell on the sheet as
+    precious -- so the guard has to read the tab's OWN header."""
+    run(wb)
+    book = load_workbook(wb)
+    ws = book["Basketball"]
+    # stand in for a tab from an older version: drop a column from the middle,
+    # which shifts every column after it
+    ws.delete_cols(4)
+    book.save(wb)
+
+    out = run(wb)          # must not raise, must not hoard
+    after = load_workbook(wb)
+    assert not [n for n in after.sheetnames if "typed on" in n], (
+        "an older tab was mistaken for one somebody typed on:\n" + out)
+    assert len(rows_on(wb, "Basketball")) == 2
+
+
 def test_an_untouched_tab_is_still_replaced_cleanly(wb):
     """The guard must not make every refresh leave junk sheets behind."""
     run(wb)

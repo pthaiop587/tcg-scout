@@ -20,3 +20,8 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .DS_Store
+
+# A day's price check leaves two things behind: a running log of what moved,
+# and every figure it read. Both are about YOUR cards and what they cost.
+price_history.csv
+price-check.log

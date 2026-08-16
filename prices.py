@@ -33,7 +33,9 @@ yourself unless you pass --overwrite.
 """
 
 import argparse
+import csv
 import datetime as dt
+import os
 import re
 import sys
 import time
@@ -42,7 +44,6 @@ from copy import copy
 from openpyxl import load_workbook
 
 import colleges
-
 import inuse
 
 WORKBOOK = "Card Run HQ - Master.xlsx"
@@ -53,14 +54,19 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 # The six columns this fills, in pairs. Appended to Inventory, never inserted:
 # workbook_extra.py addresses Inventory by column letter.
 PRICE_COLS = [
-    ("Raw price", 11), ("Raw last sold", 12),
-    ("PSA 9 price", 11), ("PSA 9 last sold", 13),
-    ("PSA 10 price", 11), ("PSA 10 last sold", 14),
+    ("Raw price", 11), ("Raw last sold", 12), ("Raw last sale", 12),
+    ("PSA 9 price", 11), ("PSA 9 last sold", 13), ("PSA 9 last sale", 13),
+    ("PSA 10 price", 11), ("PSA 10 last sold", 14), ("PSA 10 last sale", 14),
 ]
 TIERS = ["raw", "psa9", "psa10"]
-COL_OF = {"raw": ("Raw price", "Raw last sold"),
-          "psa9": ("PSA 9 price", "PSA 9 last sold"),
-          "psa10": ("PSA 10 price", "PSA 10 last sold")}
+# guide price, date of the most recent sale, and what THAT sale actually made.
+# The guide is a calculation over recent sales; the last sale is one real
+# number. They disagree, and the gap is the point -- a PSA 10 guided at $200
+# whose last one fetched $275 is telling you something a single figure cannot.
+COL_OF = {"raw": ("Raw price", "Raw last sold", "Raw last sale"),
+          "psa9": ("PSA 9 price", "PSA 9 last sold", "PSA 9 last sale"),
+          "psa10": ("PSA 10 price", "PSA 10 last sold", "PSA 10 last sale")}
+HISTORY = "price_history.csv"
 
 # Which console page a card lives on. Base cards and their parallels share one;
 # named inserts get their own.
@@ -87,9 +93,17 @@ SUFFIX = re.compile(r"\b(jr|sr|ii|iii|iv|v)\.?$", re.I)
 
 
 def norm(s):
-    """A name two sources will agree on: no case, no punctuation, no suffix."""
+    """A name two sources will agree on: no case, no punctuation, no suffix.
+
+    Dots and apostrophes are DELETED, not turned into spaces. One source
+    writes "T.J. Sanders" and the other "TJ Sanders"; spacing the dots gives
+    "t j sanders" against "tj sanders", which do not match -- and the card
+    then has to be found by number instead, or not at all. Everything else
+    becomes a space, so a hyphenated name still splits into words.
+    """
     s = str(s or "").strip().lower()
     s = s.replace("&", "and")
+    s = re.sub(r"[.'’]", "", s)
     s = re.sub(r"[^\w\s]", " ", s)
     s = re.sub(r"\s+", " ", s).strip()
     s = SUFFIX.sub("", s).strip()
@@ -243,7 +257,7 @@ def card_page(pg, url, delay):
       return out;
     }""")
 
-    best, titles = {}, []
+    best, last, titles = {}, {}, []
     for r in rows:
         titles.append(r["title"])
         d = r["date"].split("\n")[0].strip()
@@ -252,8 +266,12 @@ def card_page(pg, url, delay):
         g = grade_of(r["title"])
         if g and (g not in best or d > best[g]):
             best[g] = d
+            # The cell can hold two figures -- what the item made, then the
+            # same with postage. Take the first: it is the number the guide
+            # price is comparable with.
+            last[g] = money(r["price"])
     time.sleep(delay)
-    return prices, best, titles
+    return prices, best, last, titles
 
 
 # --- the workbook -----------------------------------------------------------
@@ -315,6 +333,15 @@ def main():
     p.add_argument("--go", action="store_true", help="write the values in")
     p.add_argument("--overwrite", action="store_true",
                    help="replace values already in the price columns")
+    p.add_argument("--daily", action="store_true",
+                   help="a day's check: refresh every price and audit what "
+                        "moved (same as --go --overwrite --teams)")
+    p.add_argument("--audit-pct", type=float, default=5.0, metavar="N",
+                   help="call out anything that moved N%% or more (default 5)")
+    p.add_argument("--history", default=HISTORY,
+                   help="CSV each run is appended to (default %s)" % HISTORY)
+    p.add_argument("--log", metavar="FILE",
+                   help="append the audit to FILE as well as printing it")
     p.add_argument("--teams", action="store_true",
                    help="also read each card's school out of its listings")
     p.add_argument("--team-min", type=int, default=2, metavar="N",
@@ -323,6 +350,12 @@ def main():
     p.add_argument("--fix-names", action="store_true",
                    help="rewrite mistyped player names to the site's spelling")
     a = p.parse_args()
+
+    if a.daily:
+        a.go = a.overwrite = a.teams = True
+        a.report = False
+        if not a.log:
+            a.log = "price-check.log"
 
     inuse.refuse_if_open(a.workbook)
 
@@ -342,6 +375,8 @@ def main():
     found = missed = 0
     typos = []          # matched by number, but the name you typed differs
     teams, weak = [], []    # schools read off the listings, confident and not
+    moves = []              # guide prices that changed since the last run
+    snapshot = []           # every figure this run, for price_history.csv
 
     with sync_playwright() as pw:
         b = pw.chromium.launch()
@@ -410,9 +445,9 @@ def main():
                 urls.append(card_url(SET_SLUG, c["name"], c["parallel"],
                                      c["num"]))
 
-            prices, dates, titles = None, {}, []
+            prices, dates, lasts, titles = None, {}, {}, []
             for u in urls:
-                prices, dates, titles = card_page(pg, u, a.delay)
+                prices, dates, lasts, titles = card_page(pg, u, a.delay)
                 if prices and any(v is not None for v in prices.values()):
                     break
             if not prices or not any(v is not None for v in prices.values()):
@@ -429,9 +464,12 @@ def main():
 
             # The school is not a field on any price guide, but sellers put it
             # in the title, so read it from there and take the commonest.
+            # Only ever fills a blank. --overwrite is about prices, which move;
+            # a player's college does not, so a daily run re-voting on 60
+            # already-correct schools is noise that buries the prices.
             if a.teams and "Team" in g:
                 cell = ws.cell(row=c["row"], column=g["Team"] + 1)
-                if blank_cell(cell.value) or a.overwrite:
+                if blank_cell(cell.value):
                     school, n = colleges.vote(titles)
                     if school and n >= a.team_min:
                         teams.append((c["sku"], c["name"], school, n))
@@ -440,22 +478,100 @@ def main():
                     else:
                         weak.append((c["sku"], c["name"], school, n))
 
+            # What the workbook said before this run, so the audit can say what
+            # moved rather than only what it is now.
+            for tier in TIERS:
+                pcol, _dcol, _scol = COL_OF[tier]
+                was = ws.cell(row=c["row"], column=g[pcol] + 1).value
+                now = prices[tier]
+                if isinstance(was, (int, float)) and isinstance(now, (int, float)):
+                    if abs(now - was) >= 0.005:
+                        moves.append((c["sku"], c["name"], tier, float(was),
+                                      float(now)))
+                snapshot.append((c["sku"], tier, prices[tier],
+                                 dates.get(tier) or "", lasts.get(tier)))
+
             if not a.go:
                 continue
             for tier in TIERS:
-                pcol, dcol = COL_OF[tier]
+                pcol, dcol, scol = COL_OF[tier]
+
                 cell = ws.cell(row=c["row"], column=g[pcol] + 1)
                 if prices[tier] is not None and (a.overwrite or cell.value in (None, "")):
                     cell.value = prices[tier]
                     cell.number_format = '"$"#,##0.00'
+
                 d = dates.get(tier)
                 cell = ws.cell(row=c["row"], column=g[dcol] + 1)
                 if d and (a.overwrite or cell.value in (None, "")):
                     cell.value = dt.date.fromisoformat(d)
                     cell.number_format = "yyyy-mm-dd"
+
+                s = lasts.get(tier)
+                cell = ws.cell(row=c["row"], column=g[scol] + 1)
+                if s is not None and (a.overwrite or cell.value in (None, "")):
+                    cell.value = s
+                    cell.number_format = '"$"#,##0.00'
         b.close()
 
     print("\nmatched %d, missed %d" % (found, missed))
+
+    # --- the audit: what actually moved -------------------------------------
+    def pct(w, n):
+        return 100.0 * (n - w) / w if w else 0.0
+
+    audit = []
+    if moves:
+        moves.sort(key=lambda m: abs(pct(m[3], m[4])), reverse=True)
+        up = [m for m in moves if m[4] > m[3]]
+        down = [m for m in moves if m[4] < m[3]]
+        net = sum(m[4] - m[3] for m in moves)
+
+        audit.append("%d price(s) moved since the last check -- %d up, %d "
+                     "down, %+.2f net across the lot."
+                     % (len(moves), len(up), len(down), net))
+        big = [m for m in moves if abs(pct(m[3], m[4])) >= a.audit_pct]
+        if big:
+            audit.append("")
+            audit.append("Moved %g%% or more:" % a.audit_pct)
+            audit.append("   %-9s %-22s %-6s %9s %9s %8s"
+                         % ("SKU", "card", "grade", "was", "now", "change"))
+            for sku, name, tier, was, now in big:
+                audit.append("   %-9s %-22s %-6s %9.2f %9.2f %+7.1f%%"
+                             % (sku, name[:22], tier, was, now, pct(was, now)))
+        else:
+            audit.append("Nothing moved by %g%% or more -- a quiet day."
+                         % a.audit_pct)
+    elif found:
+        audit.append("No price changed since the last check.")
+
+    if audit:
+        print("\n" + "\n".join(audit))
+
+    # The audit is the part worth keeping. Written by this script rather than
+    # by redirecting the whole run, so the log holds the answer and not four
+    # minutes of scrolling -- and so the site is asked once, not twice.
+    if a.log and audit:
+        with open(a.log, "a", encoding="utf-8") as fh:
+            fh.write("\n===== %s  (%d card(s) checked, %d missed)\n"
+                     % (dt.datetime.now().strftime("%Y-%m-%d %H:%M"),
+                        found, missed))
+            fh.write("\n".join(audit) + "\n")
+
+    # --- history, so a week from now this is a trend and not a snapshot -----
+    if a.go and snapshot:
+        new = not os.path.exists(a.history)
+        with open(a.history, "a", newline="", encoding="utf-8") as fh:
+            w = csv.writer(fh)
+            if new:
+                w.writerow(["checked", "sku", "grade", "guide price",
+                            "last sold", "last sale price"])
+            today = dt.date.today().isoformat()
+            for sku, tier, guide, sold, last in snapshot:
+                w.writerow([today, sku, tier,
+                            "" if guide is None else guide, sold,
+                            "" if last is None else last])
+        print("\nAppended %d row(s) to %s." % (len(snapshot), a.history))
 
     if teams:
         print("\nschool read off the listings for %d card(s)%s."
