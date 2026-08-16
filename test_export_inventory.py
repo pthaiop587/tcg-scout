@@ -168,3 +168,46 @@ def test_a_missing_workbook_is_a_clear_error(tmp_path):
                        capture_output=True, text=True)
     assert r.returncode != 0
     assert "no workbook" in (r.stdout + r.stderr)
+
+
+# --- the one-command refresh ------------------------------------------------
+
+def test_refresh_refuses_an_old_workbook_rather_than_rebuilding_over_it(tmp_path):
+    """make_workbook --force would throw the data away, so refresh must stop
+    and point at the upgrade instead of doing something destructive."""
+    import shutil as sh
+    old = tmp_path / "Card Run HQ - Master.xlsx"
+    # a 7-tab workbook is what "old" means: no Summary, Purchases, Photos...
+    from openpyxl import Workbook
+    w = Workbook()
+    for name in ("Read me", "Inventory", "eBay upload", "Box log", "Sales",
+                 "Reference", "Lists"):
+        w.create_sheet(name)
+    w.remove(w["Sheet"])
+    w.save(old)
+
+    r = subprocess.run([sys.executable, os.path.abspath("refresh.py"),
+                        "--workbook", str(old)],
+                       capture_output=True, text=True, cwd=str(tmp_path))
+    assert r.returncode == 1
+    assert "old layout" in r.stdout
+    assert "upgrade_workbook.py --go" in r.stdout
+
+
+def test_refresh_says_what_to_do_when_there_is_no_workbook(tmp_path):
+    r = subprocess.run([sys.executable, os.path.abspath("refresh.py"),
+                        "--workbook", str(tmp_path / "nope.xlsx")],
+                       capture_output=True, text=True, cwd=str(tmp_path))
+    assert r.returncode == 1
+    assert "make_workbook.py" in r.stdout
+
+
+def test_refresh_does_not_publish_unless_asked(wb, photos, tmp_path):
+    """The public copy goes on a public site, so it never happens by default."""
+    sh_page = tmp_path / "card-run-hq.html"
+    r = subprocess.run([sys.executable, os.path.abspath("refresh.py"),
+                        "--workbook", str(wb), "--out", str(sh_page)],
+                       capture_output=True, text=True, cwd=str(tmp_path))
+    # build_all needs its data files, so it may fail at the last step -- what
+    # matters is that no public export was written on the way
+    assert not os.path.exists(tmp_path / "inventory-public.json"), r.stdout

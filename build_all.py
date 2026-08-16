@@ -863,6 +863,22 @@ BODY = f'''<title>Card Run HQ</title>
 
   <p class="hint" id="inv-note"></p>
   <div id="inv-rows"></div>
+
+  <div class="bxh">When you have changed the workbook</div>
+  <div class="note"><b>Double-click <span class="mono">Update dashboard.cmd</span></b>
+   in <span class="mono">G:\\Claude\\project tcg-scout</span>. That is the whole
+   thing: it reads the workbook out, rebuilds this page around it and opens it.
+   <br><br>Or run it yourself &mdash; the button below puts the commands on your
+   clipboard, ready to paste into a terminal opened in that folder.</div>
+  <div class="tools">
+   <button class="btn2 go" type="button" id="inv-copy">Copy the refresh command</button>
+   <span class="hint" id="inv-copied" aria-live="polite"></span>
+  </div>
+  <p class="mono" id="inv-cmd" style="background:var(--surface2);padding:10px 13px;border-radius:6px;font-size:11.5px;overflow-x:auto;margin:9px 0 0">python export_inventory.py<br>python build_all.py . card-run-hq.html</p>
+  <p class="hint"><b>A web page cannot run a command on your computer.</b> Every
+   browser blocks that outright, and it is the same rule that stops any other
+   site doing it &mdash; so this copies the command rather than pretending to
+   run it. The <span class="mono">.cmd</span> file is the one-click version.</p>
  </section>
 </div>
 

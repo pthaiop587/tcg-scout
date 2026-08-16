@@ -161,5 +161,34 @@
     qEl.value = ''; term = ''; render(); qEl.focus();
   });
 
+  /* The command, on the clipboard. A page cannot run it -- browsers forbid
+     a website executing anything on the machine reading it, which is exactly
+     the rule you want everywhere else -- so the honest version is to hand it
+     over ready to paste, and point at the .cmd file for one-click. */
+  const copyBtn = document.getElementById('inv-copy');
+  if (copyBtn) copyBtn.addEventListener('click', async () => {
+    const cmd = 'python export_inventory.py\npython build_all.py . card-run-hq.html';
+    const said = document.getElementById('inv-copied');
+    const tell = t => { if (said) { said.textContent = t; setTimeout(() => { said.textContent = ''; }, 4000); } };
+    try {
+      await navigator.clipboard.writeText(cmd);
+      tell('Copied — paste it into a terminal opened in your project folder.');
+    } catch (e) {
+      /* clipboard access needs a secure context; a page opened straight off
+         disk is not one, so select the text instead of failing silently */
+      const el = document.getElementById('inv-cmd');
+      if (el && window.getSelection) {
+        const r = document.createRange();
+        r.selectNodeContents(el);
+        const sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(r);
+        tell('This browser will not let the page use the clipboard — the '
+           + 'command is selected above, press Ctrl+C.');
+      } else {
+        tell('Could not copy. The command is written out above.');
+      }
+    }
+  });
+
   render();
 })();

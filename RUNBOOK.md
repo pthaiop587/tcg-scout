@@ -125,11 +125,27 @@ The page does **not** read the workbook. It is built once from files on disk,
 so typing a card into the spreadsheet changes nothing until you export and
 rebuild:
 
+**Double-click `Update dashboard.cmd`.** That is the whole thing — it reads the
+workbook out, rebuilds the page around it and opens it. Underneath it runs:
+
 ```
-   (type into Card Run HQ - Master.xlsx)
-python export_inventory.py
-python build_all.py . card-run-hq.html
+python refresh.py --open
 ```
+
+which does `embed_photos.py`, then `export_inventory.py`, then `build_all.py`,
+in that order. Run those three yourself if you prefer; the wrapper exists
+because doing them in the right order every time is the kind of thing that
+stops getting done.
+
+**A button on the page cannot do this.** Every browser blocks a web page from
+running a command on the machine reading it — the same rule that stops any
+other site doing it. So the button on **My inventory** copies the command to
+your clipboard instead of pretending to run it, and the `.cmd` file is the
+one-click version.
+
+If the workbook is still on the old layout, `refresh.py` stops and tells you to
+run `upgrade_workbook.py --go` first, rather than rebuilding over the top and
+losing what you typed.
 
 Then **My inventory** shows every card with its photo, status, condition,
 quantity, cost, market and ask, with a search box and filters for ready-to-list,
