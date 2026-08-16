@@ -1241,6 +1241,16 @@ BODY = f'''<title>Card Run HQ</title>
     <button class="btn2 go" id="mn-add">Add to my cards</button>
     <span class="hint" id="mn-msg"></span>
    </div>
+
+   <div class="bxh">Or paste a line</div>
+   <p class="hint">One card per line, separated by <span class="mono">|</span>. Ask Claude to identify a card from a photo and it will hand you these ready to paste &mdash; the log lives in this browser, so it has to come in from your end.</p>
+   <p class="mono" style="background:var(--surface2);padding:9px 12px;border-radius:6px;font-size:11.5px;overflow-x:auto">card | set | number | variant | condition | qty | worth | sports&nbsp;or&nbsp;tcg</p>
+   <textarea id="mn-paste" class="fallback" rows="4" style="display:block"
+     placeholder="Shedeur Sanders | 2025 Prizm Draft Picks - Student Orientation | 8 | Gold Ice | NM | 1 | 12.00 | sports"></textarea>
+   <div class="tools" style="margin-top:9px">
+    <button class="btn2 go" id="mn-import">Import lines</button>
+    <span class="hint" id="mn-imsg"></span>
+   </div>
   </details>
 
   <details class="fold" id="anat">

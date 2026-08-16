@@ -1296,6 +1296,36 @@ if (document.getElementById('cd-q')) {
     setTimeout(() => { msg.textContent = ''; }, 3200);
   });
 
+  /* Paste-import: one card per line, pipe separated. Lets Claude hand over a
+     ready-made batch after a rip -- it cannot write to this browser's storage
+     itself, so the last step has to be a paste. */
+  const mnImp = document.getElementById('mn-import');
+  if (mnImp) mnImp.addEventListener('click', () => {
+    const ta = document.getElementById('mn-paste');
+    const msg = document.getElementById('mn-imsg');
+    const lines = ta.value.split('\n').map(s => s.trim()).filter(Boolean);
+    if (!lines.length){ msg.textContent = 'Nothing to import.'; return; }
+    let ok = 0; const bad = [];
+    lines.forEach((ln, i) => {
+      const f = ln.split('|').map(s => s.trim());
+      if (!f[0]){ bad.push(i + 1); return; }
+      const cond = (f[4] || 'NM').toUpperCase();
+      const val = parseFloat(f[6]);
+      const kind = /tcg/i.test(f[7] || '') ? 'tcg' : 'sports';
+      CD_STOCK.unshift({manual:1, kind, n:f[0], s:f[1] || '', num:f[2] || '',
+        var:f[3] || '', c: CD_CONDS.includes(cond) ? cond : 'NM',
+        q: Math.max(1, Math.round(parseFloat(f[5]) || 1)),
+        v: isFinite(val) && val >= 0 ? val : 0});
+      ok++;
+    });
+    cdSave(); cdRenderStock();
+    ta.value = '';
+    msg.textContent = 'Imported ' + ok + ' card' + (ok === 1 ? '' : 's') +
+      (bad.length ? ' \u00b7 skipped line ' + bad.join(', ') : '') +
+      (CD_PERSISTS ? '' : ' \u2014 NOT saved, export before closing.');
+    setTimeout(() => { msg.textContent = ''; }, 5000);
+  });
+
   document.getElementById('cd-wipe').addEventListener('click', () => {
     if (!confirm('Remove everything saved in this browser?')) return;
     CD_STOCK = []; cdSave(); cdRenderStock();
