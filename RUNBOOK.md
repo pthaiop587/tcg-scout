@@ -76,8 +76,16 @@ itself in when a matching file exists.
 
 ## Scanning cards: a whole sheet in, one card out
 
-The Brother scans a full page at 300 dpi and writes a **PDF** to `G:\Scans`,
-whatever is on the glass. Nothing downstream wants a page.
+The Brother scans a full page and writes it to `G:\Scans`, whatever is on the
+glass. Nothing downstream wants a page.
+
+As of 15 Aug 2026 the profile is **TIFF single-page at 600 dpi** — the printer
+offers no PNG at all — and `G:\ScanTools\tiff2png.py` watches the folder and
+converts each one to **PNG** (5100 × 6600), moving the TIFF into
+`_tiff-originals\`. Two things follow from that: a 33-megapixel page is fine,
+the cropper takes about 0.6 s over one; and because the result is a PNG, scans
+now **drop straight into Card desk** — the browser could never open the PDFs
+the profile used to write.
 
 ### The normal run
 
@@ -130,8 +138,13 @@ card** (drop a false positive); **Turn all round** flips the whole batch
 180° in one click, which is the usual fix. **Save all crops** downloads them
 numbered in the order shown.
 
-It will **not** open a scanner PDF — the page has no way to read one, so
-those go through `crop_scans.py`. And it does not know *which* card it is;
+PNG is what the scanner produces now, so this is the everyday path. It will
+**not** open a **PDF** — nothing on the page can read one — so if the profile
+ever goes back to PDF, those go through `crop_scans.py`. Use the script anyway
+for a big folder: it is one command for the lot, and it does not ask the
+browser to hold twenty 33-megapixel pages in memory at once.
+
+It does not know *which* card it is;
 the page is static and published, so it can no more recognise a Prizm
 parallel than price one. Save the crops, then ask Claude to read them and
 paste the lines back into **Or paste a line**.
@@ -140,7 +153,9 @@ paste the lines back into **Or paste a line**.
 
 ```
 python -m pytest test_crop_scans.py     # 19, the script
-node test_scan.mjs                      # 17, the browser port
+node test_scan.mjs                      # 17, the browser geometry
+python build_all.py . card-run-hq.html  # the dashboard test needs the build
+node test_dashboard.cjs                 # every tab, every bookmark, no js errors
 ```
 
 Both croppers must number cards identically, so the reading-order cases are
@@ -159,16 +174,37 @@ https://claude.ai/code/artifact/b2545d8c-69cc-4284-bc6c-cda0b061e88f
 
 Nothing to start. Nothing to restart. It just loads.
 
-## Layout — left sidebar, two groups (rebuilt 14 Aug 2026)
+## Layout — 8 tabs, three groups (cut down from 20 on 15 Aug 2026)
 
-The horizontal tab strip is gone. Navigation is a **left sidebar** on desktop and a
-**slide-in drawer** behind the ☰ button on mobile, split into two groups:
+Navigation is a **left sidebar** on desktop and a **slide-in drawer** behind the
+☰ button on mobile. It **opens on Card desk**, because that is what a working
+day actually starts with.
 
 | Group | Sections |
 |---|---|
-| **Buy — scouting** | Drops · Shelf check · Map · Chase cards · Learn |
-| **Sell — my cards** | Card desk |
-| **Sell — work it out** | Price a card · Where to sell it · Pricing rules · Build plan |
+| **My cards** | Card desk · Price a card · Master spreadsheet |
+| **Buying** | Shelf check · Price check anything · Box log · Map |
+| **Reference** | How it all works |
+
+### What changed and why
+
+It was 20 tabs, and 10 of them were pure reading material with no input on
+them at all — you could not find anything. They are now folds inside **How it
+all works**: Learn, Box types & ROI, Box breakdowns, Chase cards, Online
+shops, Where prices come from, Build plan. Three more that are really "what do
+I charge and where" — Pricing rules, Where to sell it, Sports singles — became
+folds inside **Price a card**, next to the calculator you use them with.
+
+**Drops, Preorders and Restock windows were deleted.** Not folded — deleted.
+Every date and price on them was typed into `build_all.py` by hand, so the
+countdowns rendered live off data that nothing refreshes. A tab that looks
+current and is not is worse than no tab. If release dates are wanted back they
+need a feed behind them, not a list.
+
+**No content was lost in the fold.** Every old `#hash` still works: the router
+now falls back to finding the id anywhere on the page, switches to whichever
+tab it now lives in, and opens the fold. So `#src`, `#learn`, `#types` and the
+rest still land on the right thing from an old bookmark.
 
 Every section deep-links, and now it works **from any section**, not just on a cold
 load — tapping a bookmark while the page is already open switches to it:

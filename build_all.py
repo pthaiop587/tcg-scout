@@ -455,35 +455,23 @@ BODY = f'''<title>Card Run HQ</title>
   <div class="brand"><b>Card Run HQ</b><span>Upland 91786 &middot; {STAMP}</span></div>
 
   <div class="navgroup">
-    <p class="lbl">Buy &mdash; scouting</p>
-    <button class="navlink" role="tab" id="t-drops" aria-controls="p-drops" aria-selected="true"><i></i>Drops</button>
-    <button class="navlink" role="tab" id="t-shelf" aria-controls="p-shelf" aria-selected="false"><i></i>Shelf check</button>
-    <button class="navlink" role="tab" id="t-log"   aria-controls="p-log"   aria-selected="false"><i></i>Box log</button>
-    <button class="navlink" role="tab" id="t-boxes" aria-controls="p-boxes"   aria-selected="false"><i></i>Box breakdowns</button>
-    <button class="navlink" role="tab" id="t-pc"    aria-controls="p-pc"    aria-selected="false"><i></i>Price check anything</button>
-    <button class="navlink" role="tab" id="t-types" aria-controls="p-types" aria-selected="false"><i></i>Box types &amp; ROI</button>
-    <button class="navlink" role="tab" id="t-shops" aria-controls="p-shops" aria-selected="false"><i></i>Online shops</button>
-    <button class="navlink" role="tab" id="t-pre"   aria-controls="p-pre"   aria-selected="false"><i></i>Preorders</button>
-    <button class="navlink" role="tab" id="t-drop"  aria-controls="p-drop"  aria-selected="false"><i></i>Restock windows</button>
-    <button class="navlink" role="tab" id="t-map"   aria-controls="p-map"   aria-selected="false"><i></i>Map</button>
-    <button class="navlink" role="tab" id="t-chase" aria-controls="p-chase" aria-selected="false"><i></i>Chase cards</button>
-    <button class="navlink" role="tab" id="t-learn" aria-controls="p-learn" aria-selected="false"><i></i>Learn</button>
-  </div>
-
-  <div class="navgroup">
-    <p class="lbl">Sell &mdash; my cards</p>
-    <button class="navlink" role="tab" id="t-add"   aria-controls="p-add"   aria-selected="false"><i></i>Card desk</button>
+    <p class="lbl">My cards</p>
+    <button class="navlink" role="tab" id="t-add"   aria-controls="p-add"   aria-selected="true"><i></i>Card desk</button>
+    <button class="navlink" role="tab" id="t-sell"  aria-controls="p-sell"  aria-selected="false"><i></i>Price a card</button>
     <button class="navlink" role="tab" id="t-sheet" aria-controls="p-sheet" aria-selected="false"><i></i>Master spreadsheet</button>
   </div>
 
   <div class="navgroup">
-    <p class="lbl">Sell &mdash; work it out</p>
-    <button class="navlink" role="tab" id="t-sell"  aria-controls="p-sell"  aria-selected="false"><i></i>Price a card</button>
-    <button class="navlink" role="tab" id="t-chan"  aria-controls="p-chan"  aria-selected="false"><i></i>Where to sell it</button>
-    <button class="navlink" role="tab" id="t-sport" aria-controls="p-sport" aria-selected="false"><i></i>Sports singles</button>
-    <button class="navlink" role="tab" id="t-rules" aria-controls="p-rules" aria-selected="false"><i></i>Pricing rules</button>
-    <button class="navlink" role="tab" id="t-src"   aria-controls="p-src"   aria-selected="false"><i></i>Where prices come from</button>
-    <button class="navlink" role="tab" id="t-plan"  aria-controls="p-plan"  aria-selected="false"><i></i>Build plan</button>
+    <p class="lbl">Buying</p>
+    <button class="navlink" role="tab" id="t-shelf" aria-controls="p-shelf" aria-selected="false"><i></i>Shelf check</button>
+    <button class="navlink" role="tab" id="t-pc"    aria-controls="p-pc"    aria-selected="false"><i></i>Price check anything</button>
+    <button class="navlink" role="tab" id="t-log"   aria-controls="p-log"   aria-selected="false"><i></i>Box log</button>
+    <button class="navlink" role="tab" id="t-map"   aria-controls="p-map"   aria-selected="false"><i></i>Map</button>
+  </div>
+
+  <div class="navgroup">
+    <p class="lbl">Reference</p>
+    <button class="navlink" role="tab" id="t-ref"   aria-controls="p-ref"   aria-selected="false"><i></i>How it all works</button>
   </div>
 
   <div class="sidefoot">Buy side is a snapshot from {STAMP}.<br>Sell side calculates live in your browser.</div>
@@ -497,713 +485,7 @@ BODY = f'''<title>Card Run HQ</title>
 </header>
 
 <!-- ============ DROPS ============ -->
-<div role="tabpanel" id="p-drops" aria-labelledby="t-drops">
- <section>
-  <h2>Next drops</h2>
-
-  <article class="card buy">
-   <div class="chead"><div class="ctitle"><span class="game">One Piece &middot; OP-17</span>
-     <b>The World&rsquo;s Strongest Warriors</b><span><span class="pill buy">Preorder at retail</span></span></div>
-    <div class="when"><span class="days mono">{_dayslabel("2026-08-28")}</span><span class="date mono">{_datelabel("2026-08-28")}</span></div></div>
-   <div class="rows">
-    <div class="row"><div class="rname">Booster Box <span class="lbl">24 packs</span></div>
-     <div class="rnums mono"><span class="now">$366.33</span><br><span class="base">retail $119.76</span></div>
-     <div class="bar"><div class="fill buy" style="width:76.5%"></div><div class="tick" style="left:25%"></div></div>
-     <div class="barnote mono"><span>&#9650; retail</span><span><b>3.06&times;</b></span></div></div>
-   </div>
-   <p class="why"><b>Why buy:</b> trading <b>66% above</b> where OP-16 sits today, and OP-16 is already 1.84&times; retail. <b>Preorder at retail &mdash; do not pay $366.</b></p>
-  </article>
-
-  <article class="card watch">
-   <div class="chead"><div class="ctitle"><span class="game">Pok&eacute;mon &middot; 30th anniversary</span>
-     <b>ME: 30th Celebration</b><span><span class="pill watch">Wait &mdash; overheated</span></span></div>
-    <div class="when"><span class="days mono">{_dayslabel("2026-09-16")}</span><span class="date mono">{_datelabel("2026-09-16")}</span></div></div>
-   <div class="rows">
-    <div class="row"><div class="rname">Pok&eacute;mon Center Elite Trainer Box</div>
-     <div class="rnums mono"><span class="now">$529.15</span><br><span class="base">last set $128.20</span></div>
-     <div class="bar"><div class="fill watch" style="width:100%"></div><div class="tick" style="left:24.2%"></div></div>
-     <div class="barnote mono"><span>last set&rsquo;s level</span><span><b>4.13&times;</b> that</span></div></div>
-   </div>
-   <p class="why"><b>Why wait:</b> a normal ETB settles at <b>1.4&times;</b> retail. This asks <b>4.13&times;</b> the equivalent product on preorder guesses. Anniversary hype prices in early and often unwinds.</p>
-  </article>
-
-  <article class="card flag">
-   <div class="chead"><div class="ctitle"><span class="game">Palworld &middot; Bushiroad</span>
-     <b>Legends Awaken (BP02)</b><span><span class="pill flag">Watch &mdash; no price feed</span></span></div>
-    <div class="when"><span class="days mono">{_dayslabel("2026-10-30")}</span><span class="date mono">{_datelabel("2026-10-30")}</span></div></div>
-   <div class="rows">
-    <div class="row"><div class="rname">Dawn of Palpagos box <span class="lbl">set 1, out 30 Jul</span></div>
-     <div class="rnums mono"><span class="now">$165&ndash;200</span><br><span class="base">preorder was $44.99</span></div>
-     <div class="bar"><div class="fill flag" style="width:82%"></div><div class="tick" style="left:22%"></div></div>
-     <div class="barnote mono"><span>preorder level</span><span><b>unverified</b></span></div></div>
-   </div>
-   <p class="why"><b>Read this carefully.</b> Palworld has <b>no TCGplayer listing</b>, so none of it is scored automatically &mdash; these are hand-checked retailer prices and they conflict. Set 1 preordered around <b>$44.99</b>; retailers now ask <b>$164.99&ndash;$199.95</b>, and buyers reported it going from ~$50 to ~$150 after launch. Thin, volatile data.
-   <br><br><b>What to do:</b> if you see Palworld at anywhere near $45, that is almost certainly worth taking. Don&rsquo;t trust a precise multiple. <b>Preorder BP02 &ldquo;Legends Awaken&rdquo; at retail</b> &mdash; GameStop and card shops carry Bushiroad.</p>
-  </article>
- </section>
-
- <section>
-  <h2>Confirmed calendar</h2>
-  <div class="scroll"><table>
-   <thead><tr><th>Date</th><th>Product</th><th>Line</th><th class="num">Out</th></tr></thead>
-   <tbody>
-{cal_rows}
-   </tbody></table></div>
-  <div class="note warn"><b>Palworld and sports are dates only.</b> Palworld has no TCGplayer listing and sports pricing is paywalled or singles-only, so neither is scored. Tracked, not priced.</div>
- </section>
-</div>
-
-<!-- ============ SHELF ============ -->
-<div role="tabpanel" id="p-shelf" aria-labelledby="t-shelf" hidden>
- <section><div class="rule"><p class="big">The rule, in one line</p>
-  <p><b>Buy anything at 2&times; or higher if it&rsquo;s priced at retail.</b> A 4&times; Elite Trainer Box costs $49.99 and is worth about $200. Below 1.5&times;, fees and shipping eat most of it. <b>Never pay above the shelf price shown.</b></p></div>
-  <p class="srcline"><span class="agechip" data-priceage></span>
-   <b>Shelf</b> is the verified MSRP &middot; <b>Worth</b> is the TCGplayer market price &middot;
-   <b>Multiple</b> is worth &divide; shelf, which is the upcharge. <a href="#src">Full sources &rarr;</a></p>
- </section>
- <details class="fold tierfold" open><summary>Grab it &mdash; 2&times; and up &nbsp;<span class="cnt">{len(_grab)}</span></summary>
-  <p class="hint">If you see any of these at the shelf price, take it. Every one clears fees comfortably.</p>
-  {tier_grab}
- </details>
-
- <details class="fold tierfold"><summary>Worth a look &mdash; 1.5&times; to 2&times; &nbsp;<span class="cnt">{len(_look)}</span></summary>
-  <p class="hint">Real margin, but not enough to fight over. Buy if it&rsquo;s in front of you and priced right.</p>
-  {tier_look}
- </details>
-
- <details class="fold tierfold"><summary>Why these are still sitting there &nbsp;<span class="cnt">{len(_skip)}</span></summary>
-  <p class="hint">The stock nobody clears. Useful to recognise so you stop picking it up &mdash; each one says what&rsquo;s wrong with it.</p>
-  {tier_skip}
- </details>
-
- <details class="fold tierfold"><summary>No published MSRP &mdash; market price only &nbsp;<span class="cnt">{len(_nomsrp)}</span></summary>
-  <div class="note warn"><b>Most games outside Pok&eacute;mon, One Piece and Lorcana have no MSRP to compare against.</b> Wizards stopped publishing one for Magic, and the smaller publishers never did &mdash; retailers set their own price, so there is no sticker to divide by and no honest upcharge to show.
-  <br><br>So these show the <b>TCGplayer market price</b> instead. Compare it to the tag in front of you: <b>if the tag is under the market price, that is your margin.</b></div>
-  {tier_nomsrp}
- </details>
-
- <section><h2>Tracked but not priced</h2>
-  <div class="note warn"><b>Sports cards have no free price feed anywhere &mdash; I checked again on 15 Aug 2026.</b> TCGplayer is trading-card-games only, so there is no Topps or Panini category to read, and every sports-specific API (SportsCardsPro CSV, Card Hedger, Zyla, Ximilar) is a paid subscription. <b>Palworld</b> has no TCGplayer listing either.
-  <br><br>So rather than invent a multiple, these get dates and one-tap links: <b>eBay sold prices</b> tells you what a thing actually goes for, and for sports the free <b>SportsCardsPro</b> guide does the same. That is the same answer I&rsquo;d get from an API, just checked by hand.</div>
-  <div class="scroll"><table><thead><tr><th>Date</th><th>Product</th><th>Line</th>
-   <th>Buy at MSRP</th><th>What it sells for</th></tr></thead>
-   <tbody id="unpriced"></tbody></table></div>
- </section>
- <section class="searchfirst">
-  <h2>Search everything &mdash; {len(rows)} products</h2>
-  <div class="tools sticky">
-   <input id="q" type="search" placeholder="Type what&rsquo;s on the shelf &mdash; prismatic, umbreon, fabled" autocomplete="off">
-   <button class="chipbtn" id="f-store" aria-pressed="true">In stores only</button>
-   <button class="chipbtn" id="f-buy" aria-pressed="false">2&times; and up</button>
-   <span class="count" id="count"></span>
-  </div>
-  <div class="scroll"><table><thead><tr><th>Product</th><th>Where</th><th class="num">Shelf &middot; MSRP</th>
-   <th class="num">Worth &middot; TCGplayer</th><th class="num">Upcharge</th><th>Buy at MSRP</th>
-   <th>Sells for</th><th>Best card in set</th></tr></thead>
-   <tbody id="tb"></tbody></table></div>
-  <div class="empty" id="empty" hidden>Nothing matches. Try a shorter word.</div>
- </section>
- <section>
-  <div class="note warn"><b>A high multiple usually means it&rsquo;s already gone.</b> Prismatic Evolutions sits at 4&times; precisely because shelves got cleared. A &ldquo;grab it instantly if you see it&rdquo; list, not a shopping list.</div>
-  <div class="note"><b>Where you can buy it.</b> <span class="wtag w-store">store</span> Target / Walmart / card shops. <span class="wtag w-online">online</span> Pok&eacute;mon Center only. <span class="wtag w-preorder">preorder</span> not released, price is a guess.</div>
- </section>
-</div>
-
-<!-- ============ BOX LOG ============ -->
-<div role="tabpanel" id="p-log" aria-labelledby="t-log" hidden>
- <section>
-  <h2>Box log</h2>
-  <div class="out">
-   <div><span class="k">Boxes</span><span class="v" id="lg-n">0</span></div>
-   <div><span class="k">Spent</span><span class="v" id="lg-spent">$0.00</span></div>
-   <div><span class="k">Recovered</span><span class="v" id="lg-rec">$0.00</span></div>
-   <div><span class="k">Net</span><span class="v" id="lg-net">$0.00</span></div>
-   <div><span class="k">Return</span><span class="v" id="lg-roi">&mdash;</span></div>
-  </div>
-
-  <details class="fold" id="lg-form-wrap" open><summary>Log a box</summary>
-   <div class="calc">
-    <div class="field"><label for="lg-date">Date bought</label><input id="lg-date" type="date"></div>
-    <div class="field"><label for="lg-time">Time</label><input id="lg-time" type="time"></div>
-    <div class="field"><label for="lg-prod">Product</label>
-     <input id="lg-prod" list="lg-prods" placeholder="Start typing&hellip;"><datalist id="lg-prods"></datalist></div>
-    <div class="field"><label for="lg-store">Where</label>
-     <input id="lg-store" list="lg-stores" placeholder="Big 5, Target&hellip;"><datalist id="lg-stores"></datalist></div>
-    <div class="field"><label for="lg-paid">Paid each, with tax</label>
-     <input id="lg-paid" type="number" min="0" step="0.01" inputmode="decimal"></div>
-    <div class="field"><label for="lg-qty">Qty</label>
-     <input id="lg-qty" type="number" min="1" step="1" value="1" inputmode="numeric"></div>
-    <div class="field"><label for="lg-status">Status</label><select id="lg-status">
-      <option value="sealed">Sealed</option><option value="opened">Opened</option>
-      <option value="sold">Sold</option></select></div>
-    <div class="field"><label for="lg-rec-in">Recovered so far</label>
-     <input id="lg-rec-in" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
-    <div class="field"><label for="lg-hits">Hits &amp; notes</label>
-     <input id="lg-hits" placeholder="Gold Flash /49 Arch Manning&hellip;"></div>
-   </div>
-   <div class="tools" style="margin-top:11px">
-    <button class="btn2 go" id="lg-add">Add to log</button>
-    <button class="btn2" id="lg-cancel" hidden>Cancel edit</button>
-    <span class="hint" id="lg-msg"></span>
-   </div>
-  </details>
-
-  <div class="scroll"><table><thead><tr>
-    <th>Bought</th><th>Product</th><th>Where</th><th class="num">Cost</th>
-    <th class="num">Back</th><th class="num">Net</th><th class="num">ROI</th>
-    <th>Status</th><th>Hits</th><th></th></tr></thead>
-   <tbody id="lg-body"></tbody></table>
-   <div class="empty" id="lg-empty">Nothing logged yet. Add your first box above.</div></div>
-
-  <div class="tools">
-   <button class="btn2 go" id="lg-export" disabled>Export CSV</button>
-   <button class="btn2" id="lg-wipe" disabled>Clear log</button>
-   <span class="hint" id="lg-exmsg"></span>
-  </div>
-  <textarea id="lg-fallback" class="fallback" hidden readonly rows="8"></textarea>
-  <div class="note" id="lg-status-note"></div>
- </section>
-
- <section><h2>Which shop is actually paying you</h2>
-  <p class="hint">Every row you add sharpens these. This is the part a spreadsheet gives you that a pile of receipts does not.</p>
-  <div id="lg-bystore"></div>
- </section>
-
- <section><h2>Which products are worth repeating</h2>
-  <div id="lg-byprod"></div>
- </section>
-</div>
-
-<!-- ============ BOX BREAKDOWNS ============ -->
-<div role="tabpanel" id="p-boxes" aria-labelledby="t-boxes" hidden>
- <section>
-  <h2>Box breakdowns <span class="hint">{BOX_N} products</span></h2>
-  <div class="rule"><p class="big">What you can actually pull, per product</p>
-   <p>One entry per box &mdash; the configuration, what is guaranteed, the cards worth chasing by number, and what the box quietly does <i>not</i> contain. Buy something new and I add it here, so the next time you see it on a shelf you already know what you are aiming at.</p></div>
-  <div class="searchbar sticky2">
-   <input id="bx-q" type="search" autocomplete="off" spellcheck="false"
-          placeholder="Filter by product, sport or brand&hellip;">
-   <button class="btn2" id="bx-clear">Clear</button>
-  </div>
-  <div id="bx-out"></div>
- </section>
-
- <section><h2>How to read these</h2>
-  <div class="teach">
-   <p><b>&ldquo;Guaranteed&rdquo; is the only number that matters up front.</b> Every box advertises its best possible card; the useful question is what lands in <i>every</i> box. A guaranteed memorabilia card beats a 1:425 autograph you will not see for forty boxes.</p>
-   <p><b>Check what is missing.</b> The <i>Not in this box</i> line is usually more informative than the chase list &mdash; a product called Signature Class with no guaranteed signature tells you what it is.</p>
-   <p style="margin-bottom:0"><b>Print runs decide base value.</b> A 383,000-copy veteran base card is bulk no matter how good the box looked. Scarce rookie or chrome base is where retail holds value.</p></div>
- </section>
-</div>
-
-<!-- ============ PRICE CHECK ANYTHING ============ -->
-<div role="tabpanel" id="p-pc" aria-labelledby="t-pc" hidden>
- <section>
-  <h2>Price check anything</h2>
-  <div class="searchbar sticky2">
-   <input id="pc-q" type="search" autocomplete="off" spellcheck="false"
-          placeholder="Any box, tin, single or sports product&hellip;">
-   <button class="btn2" id="pc-clear">Clear</button>
-  </div>
-  <div id="pc-out"></div>
- </section>
-
- <section><h2>Why these six</h2>
-  <div class="teach">
-   <p><b>PriceCharting</b> is the closest thing to one site that prices everything &mdash; TCG, sports, sealed boxes and singles, raw and graded, free to browse. Checked 15 Aug 2026: its TMNT Draft Night reads <b>$81.22</b> against this dashboard&rsquo;s <b>$79.79</b>, which is a reassuring independent agreement.</p>
-   <p><b>eBay sold</b> is the ground truth &mdash; actual completed sales, not asking prices. It is the only free way to see real sports numbers, because every sports price API is paid.</p>
-   <p><b>TCGplayer</b> is the feed this dashboard prices from, so it will always match the Shelf check numbers.</p>
-   <p style="margin-bottom:0"><b>Cardboard Connection</b> is not a price site &mdash; it is where you find <b>what is inside a box and at what odds</b>, which is the other half of deciding whether to open something.</p></div>
- </section>
-
- <section><h2>Reading a sealed product before you buy it</h2>
-  <div class="teach"><ol class="steps">
-   <li><div><b>Price it sealed first.</b> If it resells above the shelf tag, the decision is made and nothing else matters.</div></li>
-   <li><div><b>Then look at the odds, not the ceiling.</b> Every box advertises its best possible card. The number that matters is how often that happens &mdash; &ldquo;1:425&rdquo; on a 10-pack box means roughly one in forty boxes.</div></li>
-   <li><div><b>Check the base-card print run.</b> A 380,000-copy veteran base card is worth nothing no matter how good the box looked. Scarce rookie or chrome base is where retail products hold value.</div></li>
-   <li><div><b>Compare to buying the single.</b> You can almost always buy the exact card you are chasing for less than the boxes it would take to pull it.</div></li>
-  </ol>
-  <p style="margin-top:12px;margin-bottom:0"><b>Which is the whole argument for flipping sealed.</b> Opening is a bet against a house edge that the publisher printed on the side of the box.</p></div>
- </section>
-</div>
-
-<!-- ============ BOX TYPES & ROI ============ -->
-<div role="tabpanel" id="p-types" aria-labelledby="t-types" hidden>
- <section>
-  <h2>Why there are so many kinds of box</h2>
-  <div class="teach">
-   <p>They exist to hit <b>price points</b>, not to be different products. Publishers want something at $5, $10, $25, $50 and $145, so the same packs get repackaged with different amounts of plastic around them. A mini tin and a booster box contain the same cards &mdash; one has three packs and a promo, the other has thirty-six.</p>
-   <p style="margin-bottom:0">Which means the interesting question is not what is inside. It is <b>which wrapper returns the most on the cash you put in</b>, and that is answerable from your own shelf data.</p></div>
- </section>
-
- <section>
-  <h2>The short answer</h2>
-  <div class="rule"><p class="big">Best return on cash: {_best_pct["t"]} &mdash; {_best_pct["pct"]:,.0f}%</p>
-   <p>Roughly <b>${_best_pct["cost"]:,.2f}</b> in, <b>{_usd(_best_pct["net"])}</b> net out after eBay's cut and postage. Mini tins match it on percentage but return about a fifth as much per unit, so you would be doing five times the handling for the same money.</p></div>
-  <div class="rule"><p class="big">Most dollars per unit: {_best_cash["t"]} &mdash; {_usd(_best_cash["net"])}</p>
-   <p>But it ties up <b>${_best_cash["cost"]:,.2f}</b> a unit to do it. Fewer, bigger bets.</p></div>
-  <div class="note warn"><b>Multiple and profit are not the same thing, and this is where people get it wrong.</b> A mini tin at 3.3&times; sounds better than a booster box at 2.1&times;. But the tin returns about $19 and the box about $98. The multiple tells you how efficient the cash is; the dollars tell you whether it was worth the drive, the packing and the trip to the post office.</div>
- </section>
-
- <section>
-  <h2>Every type, ranked by return on cash</h2>
-  <p class="hint">Median across the {len([r for r in shelf_data["rows"] if r["ratio"] is not None])} shelf products that have a verified MSRP. Net is after a {FVF_R:.2%} final value fee, the ${ORDER_F:.2f} order fee and postage &mdash; buyer pays postage at cost, so it is a wash on the way in and a cost on the way out.</p>
-  {pt_cards}
- </section>
-
- <section>
-  <h2>What the numbers do not say</h2>
-  <div class="teach">
-   <p><b>Postage is an estimate per size class</b>, shown on each card. Weigh a real box and correct it if you want the figures exact &mdash; on cheap items the postage is most of the decision.</p>
-   <p><b>Sell-through is not modelled.</b> A booster box at 68% that sells in a week beats a premium collection at 362% that sits for six months. Nothing here can see how fast something moves.</p>
-   <p><b>Small samples are flagged.</b> Where a type has fewer than five products behind it, treat the number as a hint rather than a finding.</p>
-   <p style="margin-bottom:0"><b>Every figure assumes you paid MSRP.</b> Pay above the sticker and the whole table stops applying &mdash; which is the point of the Shelf check tab.</p></div>
- </section>
-</div>
-
-<!-- ============ ONLINE SHOPS ============ -->
-<div role="tabpanel" id="p-shops" aria-labelledby="t-shops" hidden>
- <section>
-  <h2>Who sells it online</h2>
-  <div class="rule"><p class="big">Twelve places, one table, so you stop tab-hopping</p>
-   <p>Every name links straight into its own TCG section. The column that matters is <b>price</b> &mdash; only some of these actually sell at MSRP, and the rest are just the market with extra steps.</p></div>
-  {shop_rows}
- </section>
-
- <section><h2>The thing that actually limits you</h2>
-  <div class="teach">
-   <p><b>Allocation, not price.</b> Distributors get a fixed case count per set, each retailer gets a fixed slice, and once a set hits its cap a reorder takes <b>6&ndash;10 weeks</b> to arrive. That is why a set can be sold out everywhere and still not be &ldquo;rare&rdquo;.</p>
-   <p><b>What that does to the price curve:</b> hot sets run <b>1.5&ndash;3&times; MSRP</b> in the first weeks, then settle to roughly <b>5&ndash;25% over MSRP</b> once restocks land in months two to six.</p>
-   <p style="margin-bottom:0">Which is the same conclusion the Learn tab reaches from the other direction: <b>your edge is access, not prediction.</b></p></div>
- </section>
-
- <section><h2>Getting told about a restock</h2>
-  <div class="teach">
-   <p>None of these retailers publish stock data &mdash; Target's inventory API refuses scripts outright &mdash; so this dashboard cannot show you live availability, and neither can anything else that is free. What works is a watcher that pings you:</p>
-   <ul>
-    <li><b>Restock Discords</b> (PokeAlerts and similar) &mdash; volunteers and monitors posting drops in real time. Free, and the fastest of these.</li>
-    <li><b>Page watchers</b> &mdash; Visualping or PageCrawl on a specific product URL, which emails you when the page changes. Free tiers are limited but fine for a handful of products.</li>
-    <li><b>Retailer accounts</b> &mdash; Best Buy invites and Pok&eacute;mon Center account alerts are the sanctioned routes, and on Best Buy it is the <i>only</i> route.</li>
-   </ul>
-   <p style="margin-bottom:0">Hot drops sell out in under a minute, so refreshing a page by hand almost never catches one. A notification is the whole game.</p></div>
- </section>
-</div>
-
-<!-- ============ PREORDERS ============ -->
-<div role="tabpanel" id="p-pre" aria-labelledby="t-pre" hidden>
- <section>
-  <h2>Preorders</h2>
-  <div class="rule"><p class="big">The only reliable way to pay MSRP</p>
-   <p>A preorder locks a unit out of the allocation before the scramble starts, at the sticker price, with no premium. Everything else on this dashboard is about reacting fast; this is the one route where being early costs you nothing.</p></div>
-  {pre_cards}
- </section>
-
- <section><h2>How preorders actually work</h2>
-  <div class="teach"><ol class="steps">
-   <li><div><b>A listing goes live, often months ahead.</b> Hobby distributors like DA Card World usually list before the big-box sites do.</div></li>
-   <li><div><b>Commit inside the first 48 hours.</b> That is the window that matters &mdash; allocation-limited sets sell through their preorder pool in days. Terastal Fest ex went in under three weeks in 2026.</div></li>
-   <li><div><b>You are charged at or near release</b>, not usually at order time, and the allocation is held for you.</div></li>
-   <li><div><b>It ships on street date.</b> If the set is hot, it is already trading above MSRP by the time your box lands.</div></li>
-  </ol></div>
- </section>
-
- <section><h2>Price guarantees &mdash; worth knowing which</h2>
-  <div class="scroll"><table><thead><tr><th>Retailer</th><th>What happens if the price moves</th></tr></thead>
-   <tbody>
-    <tr><td><b>Walmart</b></td><td>Price drops before your order ships &rarr; <b>you pay the lower one automatically</b>. Price rises &rarr; you keep yours.</td></tr>
-    <tr><td><b>Amazon</b></td><td><b>Pre-Order Price Guarantee</b> &mdash; charged the lowest price offered between ordering and release. No claim to file.</td></tr>
-    <tr><td><b>Most hobby shops</b></td><td>Price is <b>final at purchase</b>. No refund if it drops, no surcharge if it rises.</td></tr>
-    <tr><td><b>Pok&eacute;mon Center</b></td><td>MSRP by definition, so there is nothing to guarantee.</td></tr>
-   </tbody></table></div>
-  <div class="note"><b>Two things to check before committing.</b> That the retailer ships <b>sealed product</b> rather than singles pulled from cases, and what the cancellation terms are &mdash; a preorder you cannot cancel is a bet, not a reservation.</div>
- </section>
-
- <section><h2>Preordering at a card shop beats all of it</h2>
-  <div class="note"><b>A standing preorder at a local shop is the single most reliable way to buy at MSRP</b>, and it is the one channel no bot and no lottery can outrun. The Map tab lists <b>nine card shops</b> within 20 miles and OpenStreetMap under-counts them, so the real number is higher. Phone them and get on the list &mdash; it costs nothing and it is the highest-value thing on this whole dashboard.</div>
- </section>
-</div>
-
-<!-- ============ RESTOCK WINDOWS ============ -->
-<div role="tabpanel" id="p-drop" aria-labelledby="t-drop" hidden>
- <section>
-  <h2>When each store actually drops</h2>
-  <div class="rule"><p class="big">All times Pacific &mdash; yours, not the article's</p>
-   <p>Nearly every guide quotes Eastern. These are converted, so what you read is when to actually be looking.</p></div>
-  <div id="dropwins"></div>
- </section>
-
- <section><h2>The launch-day order</h2>
-  <div class="teach">
-   <p>On a new set, allocation lands in a fairly consistent sequence:</p>
-   <p class="mono" style="background:var(--surface2);padding:10px 13px;border-radius:6px;font-size:12.5px">Pok&eacute;mon Center &rarr; Best Buy + Target (30&ndash;90 min later) &rarr; Walmart (variable) &rarr; GameStop (usually last)</p>
-   <p style="margin-bottom:0">GameStop being last is <b>good news, not bad</b> &mdash; it is the least contested and the slowest to sell out.</p></div>
- </section>
-
- <section><h2>Why a bot would not help at Pok&eacute;mon Center</h2>
-  <div class="note warn"><b>The queue is randomised.</b> Pok&eacute;mon Center puts everyone into a lottery when a major drop opens, and position is assigned at random &mdash; there is no first-come advantage to win and nothing for speed to beat. Arriving in 5 milliseconds and arriving at 9:59am get the same treatment.
-  <br><br>What <i>does</i> move the odds is unglamorous: <b>be logged in, have payment and address saved, and be on the site before the queue opens.</b> And a bad queue number is not a loss &mdash; drops stay live for hours and the line keeps moving as people abandon carts and hit purchase limits.</div>
- </section>
-
- <section><h2>Where a person can genuinely win</h2>
-  <div class="teach">
-   <p><b>GameStop.</b> Hot product lasts <b>5&ndash;20 minutes</b> there, against under two minutes at Target or Walmart. That is a window a human with a notification can actually hit.</p>
-   <p><b>Card shops.</b> A standing preorder is allocation reserved in your name. Nothing to race.</p>
-   <p><b>Best Buy.</b> The invite lottery is the only route &mdash; request one on the product page early. Speed is irrelevant there by design.</p>
-   <p style="margin-bottom:0"><b>Barnes &amp; Noble and Costco.</b> Barely contested online, because almost nobody thinks to look.</p></div>
- </section>
-
- <section><h2>Getting the alert in time</h2>
-  <div class="teach">
-   <p>Hot drops at Target and Walmart clear in under two minutes, so a notification is the whole game &mdash; manual refreshing does not catch those.</p>
-   <ul>
-    <li><b>Restock Discords</b> &mdash; monitors posting drops the second they go live. The fastest free option.</li>
-    <li><b>Page watchers</b> &mdash; Visualping or PageCrawl on a specific product URL. Fine for a handful of items you care about.</li>
-    <li><b>Retailer alerts</b> &mdash; Pok&eacute;mon Center account notifications and Best Buy invites. Slower, but sanctioned and they never get you banned.</li>
-   </ul>
-   <p style="margin-bottom:0">Then have the checkout ready before you need it: account logged in, card saved, address confirmed. <b>Most losses are checkout friction, not arrival time.</b></p></div>
- </section>
-</div>
-
-<!-- ============ MAP ============ -->
-<div role="tabpanel" id="p-map" aria-labelledby="t-map" hidden>
- <section><div class="rule"><p class="big">{near3} card-selling stores inside 3 miles</p>
-  <p>That density is the whole advantage. A sweep of everything under 3 miles is a <b>25-minute loop</b> &mdash; short enough to run on a restock morning, which is what actually gets you product at retail.</p></div></section>
-
- <section>
-  <h2>Find a store</h2>
-  <div class="tools">
-   <input id="mq" type="search" placeholder="Search name, city or street &mdash; Upland, Foothill, Costco" autocomplete="off">
-   <span class="count" id="mcount"></span>
-  </div>
-  <div class="tools" id="chainchips">{chain_chips}</div>
-  <div class="tools" id="radchips">
-   <span class="lbl" style="align-self:center">Within</span>
-   <button class="chipbtn rad" data-r="3" aria-pressed="false">3 mi</button>
-   <button class="chipbtn rad" data-r="5" aria-pressed="false">5 mi</button>
-   <button class="chipbtn rad" data-r="10" aria-pressed="false">10 mi</button>
-   <button class="chipbtn rad" data-r="20" aria-pressed="true">20 mi</button>
-  </div>
-
-  <div class="mapbox"><svg viewBox="0 0 {W} {H}" role="img" aria-label="Map of card-selling stores around Upland">
-   {rings}
-   <g id="dots"></g>
-   <circle cx="{W/2}" cy="{H/2}" r="9" class="home"/>
-   <circle cx="{W/2}" cy="{H/2}" r="2.5" fill="var(--ink)"/>
-   <!-- labelled by ZIP, not "HOME" - this page is public, and a marker saying
-        HOME over your own coordinates is a different thing to publish -->
-   <text x="{W/2}" y="{H/2-15}" class="homelbl">91786</text>
-  </svg></div>
-  <p class="hint">Tap a store below to open directions. Filters change the map and the list together.</p>
-  <div id="storelist" class="storelist"></div>
-  <div class="empty" id="mempty" hidden>No stores match those filters.</div>
- </section>
-
- <section>
-  <h2>What to hunt at each chain</h2>
-  <div class="scroll"><table><thead><tr><th>Where</th><th>Restock</th><th>What to look for</th></tr></thead>
-   <tbody>{hunt_rows}</tbody></table></div>
- </section>
-
- <section>
-  <div class="note warn"><b>No live stock &mdash; blocked, not unfinished.</b> Target&rsquo;s inventory API returns 403 to any script, Walmart publishes no free per-store data, and Target.com&rsquo;s Pok&eacute;mon listings are third-party resellers marked &ldquo;not sold in stores&rdquo;. Use the Target app&rsquo;s own checker before driving.</div>
-  <div class="note"><b>Card shops are under-mapped.</b> OpenStreetMap lists only {hobby_n} in range; the real number is higher. Worth phoning &mdash; a standing preorder is the most reliable way to buy at retail.</div>
- </section>
-</div>
-
-<!-- ============ CHASE ============ -->
-<div role="tabpanel" id="p-chase" aria-labelledby="t-chase" hidden>
- <section><div class="teach"><h3>What a &ldquo;hit&rdquo; is</h3>
-  <p>A <b>hit</b> is a valuable rare card pulled from a pack. The <b>chase card</b> is the most valuable card in a set &mdash; what people buy boxes hoping to find.</p>
-  <ul><li><b>Pok&eacute;mon</b> &mdash; Special Illustration Rare, Mega Hyper Rare</li>
-  <li><b>One Piece</b> &mdash; Manga, SEC, SP</li>
-  <li><b>Lorcana</b> &mdash; Iconic, Enchanted</li></ul></div></section>
- <section><h2>Best card in each set</h2>
-  <div class="scroll"><table><thead><tr><th>Set</th><th>Card</th><th>Rarity</th><th class="num">Worth</th></tr></thead>
-  <tbody>{chase_rows}</tbody></table></div></section>
- <section>
-  <div class="note warn"><b>The trap that costs beginners most.</b> A top Lorcana card is worth thousands and a box costs about $144, which makes opening it tempting.
-   <ul><li><b>Don&rsquo;t.</b> Those cards turn up roughly once in many hundreds of packs.</li>
-   <li>The chase price tells you <b>why the box is in demand</b> &mdash; not what a box returns.</li>
-   <li><b>Selling sealed is the reliable trade.</b> Opening is gambling with a house edge.</li></ul></div>
-  <div class="note"><b>Prices above ~$2,000 are thin.</b> Those cards trade a handful of times a year, so the marks move on very few sales.</div>
- </section>
-</div>
-
-<!-- ============ LEARN ============ -->
-<div role="tabpanel" id="p-learn" aria-labelledby="t-learn" hidden>
- <section><h2>How this makes money</h2>
-  <div class="teach"><ol class="steps">
-   <li><div><b>Buy sealed product at retail (MSRP).</b> The sticker price at Target, Walmart, or a preorder at a card shop. This is the hard part.</div></li>
-   <li><div><b>Some sets sell far above retail.</b> A One Piece box costs $119.76 and trades at $366.33 today.</div></li>
-   <li><div><b>Resell it sealed &mdash; still shut.</b> You don&rsquo;t open it. That&rsquo;s the whole trade.</div></li>
-  </ol><p style="margin-top:12px"><b>Your edge is access, not prediction.</b> Everyone sees these prices. Almost nobody can buy at retail.</p></div></section>
-
- <section><h2>The one number: the ratio</h2>
-  <div class="teach"><p>Everywhere you see <b class="mono">3.06&times;</b> it means:</p>
-   <p class="mono" style="background:var(--surface2);padding:9px 12px;border-radius:6px;font-size:12.5px">market price &divide; retail price &nbsp;=&nbsp; the ratio</p>
-   <p><b>If I buy this at retail, what is it worth?</b></p>
-   <div class="scale"><div class="scalebar"><div class="seg s1">UNDER 1.2&times;</div>
-    <div class="seg s2">1.2&ndash;2&times;</div><div class="seg s3">OVER 2&times;</div></div>
-    <div class="scalekey"><span>No margin</span><span>Normal</span><span>Strong demand</span></div></div>
-   <ul><li><b class="mono">1.0&times;</b> &mdash; exactly retail. No profit.</li>
-   <li><b class="mono">1.4&times;</b> &mdash; where a normal Pok&eacute;mon ETB settles. A baseline.</li>
-   <li><b class="mono">3.0&times;</b> &mdash; real scarcity, or real hype.</li></ul>
-   <p style="margin-top:10px"><b>Careful:</b> only profit if you actually buy at retail.</p></div></section>
-
- <section><h2>What one box earns</h2>
-  <div class="teach"><h3>OP-17 booster box, bought at retail</h3>
-   <div class="scroll" style="margin-top:8px"><table class="mono" style="min-width:340px"><tbody>
-    <tr><td>Sells for (today)</td><td class="num">$366.33</td></tr>
-    <tr><td>You paid retail</td><td class="num">&minus;$119.76</td></tr>
-    <tr><td>eBay fees, ~13%</td><td class="num">&minus;$48.54</td></tr>
-    <tr><td>Shipping, boxed</td><td class="num">&minus;$15.00</td></tr>
-    <tr><td><b>Profit per box</b></td><td class="num"><b style="color:var(--buy)">&asymp; $183</b></td></tr>
-   </tbody></table></div>
-   <p style="margin-top:10px"><b>Two warnings.</b> That $366 is a preorder price on very few sales and will likely fall once boxes ship. And it only works if you buy at $119.76.</p></div></section>
-
- <section><h2>The pattern to act on</h2>
-  <div class="scroll"><table class="mono"><thead><tr><th>Set</th><th>Game</th><th>Released</th>
-   <th class="num">Box now</th><th class="num">&times; retail</th></tr></thead><tbody>
-   <tr><td>OP-16 Time of Battle</td><td>One Piece</td><td>&minus;62d</td><td class="num">$220.44</td><td class="num">1.84&times;</td></tr>
-   <tr><td>Wilds Unknown</td><td>Lorcana</td><td>&minus;97d</td><td class="num">$222.66</td><td class="num">1.55&times;</td></tr>
-   <tr><td>Attack of the Vine!</td><td>Lorcana</td><td>&minus;27d</td><td class="num">$205.44</td><td class="num">1.43&times;</td></tr>
-   <tr><td>ME04 Chaos Rising</td><td>Pok&eacute;mon</td><td>&minus;83d</td><td class="num">$189.99</td><td class="num">ETB 1.39&times;</td></tr>
-   <tr><td>ME05 Pitch Black</td><td>Pok&eacute;mon</td><td>&minus;27d</td><td class="num">$174.25</td><td class="num">ETB 1.42&times;</td></tr>
-  </tbody></table></div>
-  <div class="note"><b>Older sets are worth more than newer ones.</b> Chaos Rising is 83 days old and beats Pitch Black at 27 days. Same in Lorcana.
-   <p style="margin-top:7px">Sealed drifts <b>up</b> after release as shops sell through and nothing is reprinted.</p>
-   <ul><li>Paying a preorder premium means buying at the most expensive moment.</li>
-   <li>Buying <b>at retail on release day and holding</b> beats chasing preorder hype.</li></ul></div></section>
-
- <section><h2>What you&rsquo;re actually buying</h2>
-  <div class="teach"><dl>
-   <dt>Booster pack</dt><dd>A few random cards. Pok&eacute;mon 10, One Piece 12, Lorcana 12, <b>Palworld 7</b>.</dd>
-   <dt>Booster box</dt><dd>A box of packs &mdash; Pok&eacute;mon 36, One Piece and Lorcana 24, <b>Palworld 12</b>. <b>The main resale unit.</b></dd>
-   <dt>Case</dt><dd>Several booster boxes, usually 6&ndash;12. What shops buy from distributors.</dd>
-   <dt>Elite Trainer Box (ETB)</dt><dd>Pok&eacute;mon only. ~9 packs plus sleeves, dice, storage box. The most common thing on a Target shelf.</dd>
-   <dt>Illumineer&rsquo;s Trove</dt><dd>Lorcana&rsquo;s version of an ETB.</dd>
-   <dt>Trial deck</dt><dd>Palworld&rsquo;s starter product &mdash; <i>Dawn of Palpagos</i> shipped two, Red&amp;Blue and Green&amp;Purple.</dd>
-   <dt>MSRP</dt><dd>Retail price &mdash; the sticker. It never changes when a set gets hot. Anything above it is someone else&rsquo;s margin.</dd>
-  </dl></div></section>
-</div>
-
-<!-- ============ SELL: PRICE A CARD ============ -->
-<div role="tabpanel" id="p-sell" aria-labelledby="t-sell" hidden>
- <section>
-  <h2>Price a card</h2>
-  <div class="rule"><p class="big">The question this actually answers</p>
-   <p>Not &ldquo;what is this card worth&rdquo; &mdash; <b>&ldquo;is it worth listing on its own?&rdquo;</b> eBay&rsquo;s fixed fees eat cheap singles alive. Everything under the floor belongs in a bulk lot instead.</p></div>
-
-  <div class="calc">
-   <div class="field"><label for="c-market">Market price (NM)</label>
-    <input id="c-market" type="number" min="0" step="0.01" value="3.00" inputmode="decimal"></div>
-   <div class="field"><label for="c-cond">Condition</label><select id="c-cond">
-     <option value="NM" selected>Near Mint</option><option value="LP">Lightly Played</option>
-     <option value="MP">Moderately Played</option><option value="HP">Heavily Played</option>
-     <option value="DMG">Damaged</option></select></div>
-   <div class="field"><label for="c-cost">Your cost</label>
-    <input id="c-cost" type="number" min="0" step="0.01" value="0.30" inputmode="decimal"></div>
-   <div class="field"><label for="c-ship">Buyer pays shipping</label>
-    <input id="c-ship" type="number" min="0" step="0.01" value="1.00" inputmode="decimal"></div>
-   <div class="field"><label for="c-store">eBay store</label><select id="c-store">
-     <option value="none" selected>None &mdash; 250 free</option>
-     <option value="basic">Basic &mdash; 1,000 free</option></select></div>
-   <div class="field"><label for="c-vol">Listings this month</label>
-    <input id="c-vol" type="number" min="0" step="10" value="100" inputmode="numeric"></div>
-  </div>
-
-  <div class="out">
-   <div><span class="k">Ask</span><span class="v" id="o-ask">&mdash;</span></div>
-   <div><span class="k">Tier</span><span class="v" id="o-tier">&mdash;</span></div>
-   <div><span class="k">eBay takes</span><span class="v" id="o-fees">&mdash;</span></div>
-   <div><span class="k">You net</span><span class="v" id="o-net">&mdash;</span></div>
-  </div>
-
-  <div class="verdict v-list" id="o-verdict">&mdash;</div>
- </section>
-
- <section><h2>Where every cent goes</h2>
-  <div class="brk" id="o-brk"></div>
-  <p class="hint">Postage flips to parcel above $20 &mdash; eBay Standard Envelope only covers cards under that.</p>
- </section>
-</div>
-
-<!-- ============ SELL: WHERE TO SELL IT ============ -->
-<div role="tabpanel" id="p-chan" aria-labelledby="t-chan" hidden>
- <section>
-  <h2>eBay or TCGplayer?</h2>
-  <div class="rule"><p class="big">Same card, same ask, very different net</p>
-   <p><b>eBay&rsquo;s fixed costs land on every card, because a cheap single IS its own order</b> &mdash; its own $0.30, its own envelope, its own insertion fee. On TCGplayer buyers fill a cart, so those same fixed costs split across the whole order. That gap is structural, not a rate difference.</p></div>
-
-  <div class="calc">
-   <div class="field"><label for="h-market">Market price (NM)</label>
-    <input id="h-market" type="number" min="0" step="0.01" value="1.00" inputmode="decimal"></div>
-   <div class="field"><label for="h-cond">Condition</label><select id="h-cond">
-     <option value="NM" selected>Near Mint</option><option value="LP">Lightly Played</option>
-     <option value="MP">Moderately Played</option><option value="HP">Heavily Played</option>
-     <option value="DMG">Damaged</option></select></div>
-   <div class="field"><label for="h-cost">Your cost</label>
-    <input id="h-cost" type="number" min="0" step="0.01" value="0.00" inputmode="decimal"></div>
-   <div class="field"><label for="h-order">Cards per TCG order</label>
-    <input id="h-order" type="number" min="1" step="1" value="12" inputmode="numeric"></div>
-   <div class="field"><label for="h-ship">Postage per TCG order</label>
-    <input id="h-ship" type="number" min="0" step="0.01" value="1.00" inputmode="decimal"></div>
-   <div class="field"><label for="h-vol">eBay listings this month</label>
-    <input id="h-vol" type="number" min="0" step="10" value="300" inputmode="numeric"></div>
-  </div>
-
-  <div class="out">
-   <div><span class="k">Ask, both channels</span><span class="v" id="h-ask">&mdash;</span></div>
-   <div><span class="k">Tier</span><span class="v" id="h-tier">&mdash;</span></div>
-  </div>
-
-  <div class="vs">
-   <div class="chan" id="e-box">
-    <div class="hd"><span class="nm2">eBay</span><span class="badge"></span></div>
-    <span class="big">&mdash;</span><span class="sub2">one card, one order</span>
-    <div class="lines"></div>
-   </div>
-   <div class="chan" id="t-box">
-    <div class="hd"><span class="nm2">TCGplayer</span><span class="badge"></span></div>
-    <span class="big">&mdash;</span><span class="sub2">one of many in a cart</span>
-    <div class="lines"></div>
-   </div>
-  </div>
-
-  <div class="verdict v-list" id="h-verdict">&mdash;</div>
-  <div class="note" id="h-cross">&mdash;</div>
- </section>
-
- <section><h2>Net is not the only axis</h2>
-  <div class="note warn"><b>Read the comparison above carefully: TCGplayer wins on net almost everywhere.</b> That is a real result, not a bug &mdash; but net per sale is only half the question. <b>A card that nets $1 more and then sits unsold for six months is the worse card.</b> This calculator cannot see how fast something sells, and that is exactly where eBay earns its keep.</div>
-  <div class="teach">
-   <p><b>TCGplayer</b> &mdash; singles, and most of them. Better net, and buyers arrive already searching for a specific card by name.</p>
-   <p><b>eBay</b> &mdash; the things TCGplayer will not list at all: <b>sealed product, graded slabs, and multi-card lots</b>. Also worth it for high-value singles, where a far bigger audience usually beats a dollar of fee difference.</p>
-   <p><b>Bulk lot</b> &mdash; only what fails on <i>both</i>. Adding TCGplayer shrinks this pile a long way.</p>
-   <p style="margin-bottom:0">The floor didn&rsquo;t disappear when TCGplayer arrived. It moved: a card is only lotted now when neither channel will carry it profitably.</p></div>
- </section>
-
- <section><h2>One card, one channel</h2>
-  <div class="note warn"><b>Do not list the same physical card in both places.</b> Neither marketplace can be reached by API here, so nothing can pull a listing automatically when the other one sells. A double sale costs you a defect on eBay and a seller-level hit on TCGplayer. Card Desk allocates each copy to exactly one channel by default; overlap is opt-in, per card, and comes with a <b>Pull now</b> queue.</div>
- </section>
-
- <section><h2>Where the numbers come from</h2>
-  <div class="teach">
-   <p><b>TCGplayer, verified 2026:</b> 10.75% commission on Marketplace Seller levels 1&ndash;4 &mdash; up from 10.25% on 10 February 2026 &mdash; plus a 2.5% + $0.30 transaction fee on the whole order.</p>
-   <p><b>eBay, verified 2026:</b> 13.25% final value fee, $0.30 per order at or under $10, $0.35 insertion past your free 250, eBay Standard Envelope $0.74&ndash;$1.32 for cards under $20.</p>
-   <p style="margin-bottom:0"><b>Treat the TCGplayer side as modelled, not measured.</b> Order size is the dominant variable and it is a guess until real orders land. Postage is entered as a cost you absorb; TCGplayer shipping credits offset some of it, so the real figure is a little kinder than what is shown.</p></div>
- </section>
-</div>
-
-<!-- ============ SPORTS SINGLES ============ -->
-<div role="tabpanel" id="p-sport" aria-labelledby="t-sport" hidden>
- <section>
-  <h2>Sports singles &mdash; COMC or eBay</h2>
-  <div class="rule"><p class="big">Sports has no TCGplayer, and that is the whole problem</p>
-   <p>A Pok&eacute;mon single rides in a shared cart, so eBay-style fixed costs split a dozen ways. <b>A sports single carries them alone.</b> COMC is the nearest equivalent &mdash; you ship a box once and they photograph, list and fulfil every order.</p></div>
-
-  <div class="calc">
-   <div class="field"><label for="sp-price">Card sells for</label>
-    <input id="sp-price" type="number" min="0" step="0.5" value="8.00" inputmode="decimal"></div>
-   <div class="field"><label for="sp-cost">Your cost per card</label>
-    <input id="sp-cost" type="number" min="0" step="0.05" value="0.00" inputmode="decimal"></div>
-   <div class="field"><label for="sp-qty">How many cards</label>
-    <input id="sp-qty" type="number" min="1" step="5" value="50" inputmode="numeric"></div>
-   <div class="field"><label for="sp-sub">COMC submit fee/card</label>
-    <input id="sp-sub" type="number" min="0" step="0.25" value="0.75" inputmode="decimal"></div>
-   <div class="field"><label for="sp-min">Minutes per eBay listing</label>
-    <input id="sp-min" type="number" min="1" step="1" value="5" inputmode="numeric"></div>
-   <div class="field"><label for="sp-buyer">Buyer pays postage</label><select id="sp-buyer">
-     <option value="yes" selected>Yes</option><option value="no">No, free shipping</option></select></div>
-   <div class="field"><label for="sp-cash">COMC payout</label><select id="sp-cash">
-     <option value="cash" selected>Cash out (&minus;10%)</option>
-     <option value="credit">Keep as store credit</option></select></div>
-   <div class="field"><label for="sp-ins">Past eBay free listings</label><select id="sp-ins">
-     <option value="yes" selected>Yes (&minus;$0.35)</option><option value="no">No, still free</option></select></div>
-  </div>
-
-  <div class="out">
-   <div><span class="k">eBay, per card</span><span class="v" id="sp-ebay">&mdash;</span></div>
-   <div><span class="k">COMC, per card</span><span class="v" id="sp-comc">&mdash;</span></div>
-   <div><span class="k">eBay, all of them</span><span class="v" id="sp-ebay-all">&mdash;</span></div>
-   <div><span class="k">COMC, all of them</span><span class="v" id="sp-comc-all">&mdash;</span></div>
-  </div>
-  <div class="out" style="margin-top:11px">
-   <div><span class="k">Your time on eBay</span><span class="v" id="sp-hours">&mdash;</span></div>
-   <div><span class="k">Effective hourly</span><span class="v" id="sp-rate">&mdash;</span></div>
-  </div>
-
-  <div class="verdict v-list" id="sp-verdict">&mdash;</div>
-  <div class="note" id="sp-labour">&mdash;</div>
- </section>
-
- <section><h2>A correction I owe you</h2>
-  <div class="note warn"><b>I told you sports singles under $3 were unlistable. That was wrong on the fee maths.</b> Working it through properly: with the buyer paying postage, eBay breaks even at <b>$0.88</b>, and a $3 card nets about <b>$1.84</b>. The fees alone do not kill a $3 card.
-  <br><br><b>What actually kills it is the clock and the contents.</b> $1.84 for five minutes of listing, packing and posting is roughly $22 an hour &mdash; and most cards out of a retail box are not $3 cards, they are five-cent base with a <b>383,000</b> print run. Those are bulk no matter which platform you use.</div>
- </section>
-
- <section><h2>How the two actually differ</h2>
-  <div class="scroll"><table><thead><tr><th></th><th>eBay</th><th>COMC</th></tr></thead>
-   <tbody>
-    <tr><td><b>Cut</b></td><td>13.25% + $0.30&ndash;0.40 per order</td><td>5% + 10% to cash out</td></tr>
-    <tr><td><b>Up front</b></td><td>$0.35 insertion past your free 250</td><td>~$0.50&ndash;1.00 per card to submit</td></tr>
-    <tr><td><b>Postage</b></td><td>You pack and post every single card</td><td>One bulk shipment, then they handle it</td></tr>
-    <tr><td><b>Your time</b></td><td>Minutes per card, forever</td><td>Minutes per <i>batch</i></td></tr>
-    <tr><td><b>Speed</b></td><td>Sells when it sells</td><td>Can sit a long time</td></tr>
-    <tr><td><b>Best for</b></td><td>Cards above about $15</td><td>The $10&ndash;500 middle, 50+ at a time</td></tr>
-   </tbody></table></div>
-  <div class="note"><b>Taking COMC payout as store credit skips the 10%</b>, which makes it cheaper than eBay at every price. That only helps if you actually want to buy cards there &mdash; otherwise it is a discount on money you cannot spend.</div>
- </section>
-
- <section><h2>The tier split that works</h2>
-  <div class="teach">
-   <p><b>Above ~$15</b> &mdash; eBay. Worth the handling, and the audience is bigger.</p>
-   <p><b>$5 to $15</b> &mdash; COMC. Thin enough that the labour matters more than the fee.</p>
-   <p><b>Under ~$1</b> &mdash; neither. Dollar box at a show, throw-in on another sale, or sold by weight.</p>
-   <p style="margin-bottom:0"><b>And the honest one:</b> if you are opening retail sports boxes to get here, most of what you pull is that bottom tier. That is the design, not bad luck.</p></div>
- </section>
-</div>
-
-<!-- ============ SELL: PRICING RULES ============ -->
-<div role="tabpanel" id="p-rules" aria-labelledby="t-rules" hidden>
- <section><h2>Tiered % of market</h2>
-  <p class="hint">Cheap cards ask <i>above</i> market because the fees are fixed. Expensive cards ask <i>below</i> it to move.</p>
-  <div class="scroll"><table><thead><tr><th>Market price</th><th class="num">Ask</th><th>Why</th></tr></thead>
-   <tbody id="tierbody"></tbody></table></div>
- </section>
-
- <section><h2>Condition multipliers</h2>
-  <div class="note warn"><b>The easiest way to lose money here.</b> TCGCSV market price is a <b>Near Mint</b> price. List a played card at the NM figure and you earn returns, refunds, and defects on your account.</div>
-  <div class="scroll"><table><thead><tr><th>Condition</th><th class="num">Multiplier</th></tr></thead>
-   <tbody id="condbody"></tbody></table></div>
- </section>
-
- <section><h2>The two guards</h2>
-  <div class="teach">
-   <p><b>Margin guard &mdash; cost &times; 1.15.</b> Never list below what you paid plus 15%.</p>
-   <p><b>Net floor &mdash; $0.50.</b> Under this, the card routes to a bulk lot instead of a listing.</p>
-   <p><b>.99 rounding.</b> $4.37 becomes $4.49. $12.10 becomes $11.99.</p>
-   <p style="margin-bottom:0">They catch different failures, which is why there are two. The floor stops unprofitable <i>listings</i>. The margin guard stops selling <i>below cost</i>.</p></div>
- </section>
-
- <section><h2>Does an eBay Store pay for itself?</h2>
-  <div class="calc">
-   <div class="field"><label for="be-vol">Listings per month</label>
-    <input id="be-vol" type="number" min="0" step="10" value="300" inputmode="numeric"></div>
-   <div class="field"><label for="be-gross">Monthly gross sales</label>
-    <input id="be-gross" type="number" min="0" step="50" value="1500" inputmode="decimal"></div>
-  </div>
-  <div class="out">
-   <div><span class="k">No store, per month</span><span class="v" id="be-none">&mdash;</span></div>
-   <div><span class="k">Basic store, per month</span><span class="v" id="be-basic">&mdash;</span></div>
-  </div>
-  <div class="verdict v-list" id="be-out">&mdash;</div>
-  <p class="hint">No store: 250 free listings, then $0.35 each, 13.25% final value fee. Basic: ~$27.95/mo, 1,000 free listings, 12.35%.</p>
- </section>
-</div>
-
-<!-- ============ CARD DESK ============ -->
-<div role="tabpanel" id="p-add" aria-labelledby="t-add" hidden>
+<div role="tabpanel" id="p-add" aria-labelledby="t-add">
  <section>
   <h2>Drop your scans</h2>
   <p class="hint">The scanner gives you a whole sheet with the cards sitting
@@ -1237,9 +519,10 @@ BODY = f'''<title>Card Run HQ</title>
    left to right, then the next row down, and
    <span class="mono">add_photos.py --assign</span> files them onto SKUs in
    exactly that order. Check the numbers read the way you expect before saving.
-   <br><br><b>Scanner PDFs do not open here.</b> Scan-to-folder writes a PDF and
-   this page has no way to read one, so put those through the script instead
-   &mdash; it does the same job on the whole folder at once:
+   <br><br>The scanner writes <b>600 dpi TIFF</b> into <span class="mono">G:\\Scans</span>
+   and a watcher turns each one into a <b>PNG</b>, which drops straight in here.
+   A <b>PDF</b> will not &mdash; nothing on this page can read one &mdash; so if the
+   profile ever goes back to PDF, or you would rather do a whole folder in one go:
    <br><span class="mono">python crop_scans.py --src "G:/Scans" --rotate 180</span>
    <br><br>And it does not know <i>which</i> card it is. This page is static and
    published, so it cannot recognise a Prizm parallel any more than it can price
@@ -1422,7 +705,218 @@ BODY = f'''<title>Card Run HQ</title>
  </details>
 </div>
 
-<!-- ============ MASTER SPREADSHEET ============ -->
+<div role="tabpanel" id="p-sell" aria-labelledby="t-sell" hidden>
+ <section>
+  <h2>Price a card</h2>
+  <div class="rule"><p class="big">The question this actually answers</p>
+   <p>Not &ldquo;what is this card worth&rdquo; &mdash; <b>&ldquo;is it worth listing on its own?&rdquo;</b> eBay&rsquo;s fixed fees eat cheap singles alive. Everything under the floor belongs in a bulk lot instead.</p></div>
+
+  <div class="calc">
+   <div class="field"><label for="c-market">Market price (NM)</label>
+    <input id="c-market" type="number" min="0" step="0.01" value="3.00" inputmode="decimal"></div>
+   <div class="field"><label for="c-cond">Condition</label><select id="c-cond">
+     <option value="NM" selected>Near Mint</option><option value="LP">Lightly Played</option>
+     <option value="MP">Moderately Played</option><option value="HP">Heavily Played</option>
+     <option value="DMG">Damaged</option></select></div>
+   <div class="field"><label for="c-cost">Your cost</label>
+    <input id="c-cost" type="number" min="0" step="0.01" value="0.30" inputmode="decimal"></div>
+   <div class="field"><label for="c-ship">Buyer pays shipping</label>
+    <input id="c-ship" type="number" min="0" step="0.01" value="1.00" inputmode="decimal"></div>
+   <div class="field"><label for="c-store">eBay store</label><select id="c-store">
+     <option value="none" selected>None &mdash; 250 free</option>
+     <option value="basic">Basic &mdash; 1,000 free</option></select></div>
+   <div class="field"><label for="c-vol">Listings this month</label>
+    <input id="c-vol" type="number" min="0" step="10" value="100" inputmode="numeric"></div>
+  </div>
+
+  <div class="out">
+   <div><span class="k">Ask</span><span class="v" id="o-ask">&mdash;</span></div>
+   <div><span class="k">Tier</span><span class="v" id="o-tier">&mdash;</span></div>
+   <div><span class="k">eBay takes</span><span class="v" id="o-fees">&mdash;</span></div>
+   <div><span class="k">You net</span><span class="v" id="o-net">&mdash;</span></div>
+  </div>
+
+  <div class="verdict v-list" id="o-verdict">&mdash;</div>
+ </section>
+
+ <section><h2>Where every cent goes</h2>
+  <div class="brk" id="o-brk"></div>
+  <p class="hint">Postage flips to parcel above $20 &mdash; eBay Standard Envelope only covers cards under that.</p>
+ </section>
+
+<details class="fold" id="rules"><summary>Pricing rules &mdash; tiers, condition, the two guards</summary>
+ <section><h2>Tiered % of market</h2>
+  <p class="hint">Cheap cards ask <i>above</i> market because the fees are fixed. Expensive cards ask <i>below</i> it to move.</p>
+  <div class="scroll"><table><thead><tr><th>Market price</th><th class="num">Ask</th><th>Why</th></tr></thead>
+   <tbody id="tierbody"></tbody></table></div>
+ </section>
+
+ <section><h2>Condition multipliers</h2>
+  <div class="note warn"><b>The easiest way to lose money here.</b> TCGCSV market price is a <b>Near Mint</b> price. List a played card at the NM figure and you earn returns, refunds, and defects on your account.</div>
+  <div class="scroll"><table><thead><tr><th>Condition</th><th class="num">Multiplier</th></tr></thead>
+   <tbody id="condbody"></tbody></table></div>
+ </section>
+
+ <section><h2>The two guards</h2>
+  <div class="teach">
+   <p><b>Margin guard &mdash; cost &times; 1.15.</b> Never list below what you paid plus 15%.</p>
+   <p><b>Net floor &mdash; $0.50.</b> Under this, the card routes to a bulk lot instead of a listing.</p>
+   <p><b>.99 rounding.</b> $4.37 becomes $4.49. $12.10 becomes $11.99.</p>
+   <p style="margin-bottom:0">They catch different failures, which is why there are two. The floor stops unprofitable <i>listings</i>. The margin guard stops selling <i>below cost</i>.</p></div>
+ </section>
+
+ <section><h2>Does an eBay Store pay for itself?</h2>
+  <div class="calc">
+   <div class="field"><label for="be-vol">Listings per month</label>
+    <input id="be-vol" type="number" min="0" step="10" value="300" inputmode="numeric"></div>
+   <div class="field"><label for="be-gross">Monthly gross sales</label>
+    <input id="be-gross" type="number" min="0" step="50" value="1500" inputmode="decimal"></div>
+  </div>
+  <div class="out">
+   <div><span class="k">No store, per month</span><span class="v" id="be-none">&mdash;</span></div>
+   <div><span class="k">Basic store, per month</span><span class="v" id="be-basic">&mdash;</span></div>
+  </div>
+  <div class="verdict v-list" id="be-out">&mdash;</div>
+  <p class="hint">No store: 250 free listings, then $0.35 each, 13.25% final value fee. Basic: ~$27.95/mo, 1,000 free listings, 12.35%.</p>
+ </section>
+</details>
+
+<details class="fold" id="chan"><summary>Where to sell it &mdash; eBay or TCGplayer</summary>
+ <section>
+  <h2>eBay or TCGplayer?</h2>
+  <div class="rule"><p class="big">Same card, same ask, very different net</p>
+   <p><b>eBay&rsquo;s fixed costs land on every card, because a cheap single IS its own order</b> &mdash; its own $0.30, its own envelope, its own insertion fee. On TCGplayer buyers fill a cart, so those same fixed costs split across the whole order. That gap is structural, not a rate difference.</p></div>
+
+  <div class="calc">
+   <div class="field"><label for="h-market">Market price (NM)</label>
+    <input id="h-market" type="number" min="0" step="0.01" value="1.00" inputmode="decimal"></div>
+   <div class="field"><label for="h-cond">Condition</label><select id="h-cond">
+     <option value="NM" selected>Near Mint</option><option value="LP">Lightly Played</option>
+     <option value="MP">Moderately Played</option><option value="HP">Heavily Played</option>
+     <option value="DMG">Damaged</option></select></div>
+   <div class="field"><label for="h-cost">Your cost</label>
+    <input id="h-cost" type="number" min="0" step="0.01" value="0.00" inputmode="decimal"></div>
+   <div class="field"><label for="h-order">Cards per TCG order</label>
+    <input id="h-order" type="number" min="1" step="1" value="12" inputmode="numeric"></div>
+   <div class="field"><label for="h-ship">Postage per TCG order</label>
+    <input id="h-ship" type="number" min="0" step="0.01" value="1.00" inputmode="decimal"></div>
+   <div class="field"><label for="h-vol">eBay listings this month</label>
+    <input id="h-vol" type="number" min="0" step="10" value="300" inputmode="numeric"></div>
+  </div>
+
+  <div class="out">
+   <div><span class="k">Ask, both channels</span><span class="v" id="h-ask">&mdash;</span></div>
+   <div><span class="k">Tier</span><span class="v" id="h-tier">&mdash;</span></div>
+  </div>
+
+  <div class="vs">
+   <div class="chan" id="e-box">
+    <div class="hd"><span class="nm2">eBay</span><span class="badge"></span></div>
+    <span class="big">&mdash;</span><span class="sub2">one card, one order</span>
+    <div class="lines"></div>
+   </div>
+   <div class="chan" id="t-box">
+    <div class="hd"><span class="nm2">TCGplayer</span><span class="badge"></span></div>
+    <span class="big">&mdash;</span><span class="sub2">one of many in a cart</span>
+    <div class="lines"></div>
+   </div>
+  </div>
+
+  <div class="verdict v-list" id="h-verdict">&mdash;</div>
+  <div class="note" id="h-cross">&mdash;</div>
+ </section>
+
+ <section><h2>Net is not the only axis</h2>
+  <div class="note warn"><b>Read the comparison above carefully: TCGplayer wins on net almost everywhere.</b> That is a real result, not a bug &mdash; but net per sale is only half the question. <b>A card that nets $1 more and then sits unsold for six months is the worse card.</b> This calculator cannot see how fast something sells, and that is exactly where eBay earns its keep.</div>
+  <div class="teach">
+   <p><b>TCGplayer</b> &mdash; singles, and most of them. Better net, and buyers arrive already searching for a specific card by name.</p>
+   <p><b>eBay</b> &mdash; the things TCGplayer will not list at all: <b>sealed product, graded slabs, and multi-card lots</b>. Also worth it for high-value singles, where a far bigger audience usually beats a dollar of fee difference.</p>
+   <p><b>Bulk lot</b> &mdash; only what fails on <i>both</i>. Adding TCGplayer shrinks this pile a long way.</p>
+   <p style="margin-bottom:0">The floor didn&rsquo;t disappear when TCGplayer arrived. It moved: a card is only lotted now when neither channel will carry it profitably.</p></div>
+ </section>
+
+ <section><h2>One card, one channel</h2>
+  <div class="note warn"><b>Do not list the same physical card in both places.</b> Neither marketplace can be reached by API here, so nothing can pull a listing automatically when the other one sells. A double sale costs you a defect on eBay and a seller-level hit on TCGplayer. Card Desk allocates each copy to exactly one channel by default; overlap is opt-in, per card, and comes with a <b>Pull now</b> queue.</div>
+ </section>
+
+ <section><h2>Where the numbers come from</h2>
+  <div class="teach">
+   <p><b>TCGplayer, verified 2026:</b> 10.75% commission on Marketplace Seller levels 1&ndash;4 &mdash; up from 10.25% on 10 February 2026 &mdash; plus a 2.5% + $0.30 transaction fee on the whole order.</p>
+   <p><b>eBay, verified 2026:</b> 13.25% final value fee, $0.30 per order at or under $10, $0.35 insertion past your free 250, eBay Standard Envelope $0.74&ndash;$1.32 for cards under $20.</p>
+   <p style="margin-bottom:0"><b>Treat the TCGplayer side as modelled, not measured.</b> Order size is the dominant variable and it is a guess until real orders land. Postage is entered as a cost you absorb; TCGplayer shipping credits offset some of it, so the real figure is a little kinder than what is shown.</p></div>
+ </section>
+</details>
+
+<details class="fold" id="sport"><summary>Sports singles &mdash; COMC or eBay</summary>
+ <section>
+  <h2>Sports singles &mdash; COMC or eBay</h2>
+  <div class="rule"><p class="big">Sports has no TCGplayer, and that is the whole problem</p>
+   <p>A Pok&eacute;mon single rides in a shared cart, so eBay-style fixed costs split a dozen ways. <b>A sports single carries them alone.</b> COMC is the nearest equivalent &mdash; you ship a box once and they photograph, list and fulfil every order.</p></div>
+
+  <div class="calc">
+   <div class="field"><label for="sp-price">Card sells for</label>
+    <input id="sp-price" type="number" min="0" step="0.5" value="8.00" inputmode="decimal"></div>
+   <div class="field"><label for="sp-cost">Your cost per card</label>
+    <input id="sp-cost" type="number" min="0" step="0.05" value="0.00" inputmode="decimal"></div>
+   <div class="field"><label for="sp-qty">How many cards</label>
+    <input id="sp-qty" type="number" min="1" step="5" value="50" inputmode="numeric"></div>
+   <div class="field"><label for="sp-sub">COMC submit fee/card</label>
+    <input id="sp-sub" type="number" min="0" step="0.25" value="0.75" inputmode="decimal"></div>
+   <div class="field"><label for="sp-min">Minutes per eBay listing</label>
+    <input id="sp-min" type="number" min="1" step="1" value="5" inputmode="numeric"></div>
+   <div class="field"><label for="sp-buyer">Buyer pays postage</label><select id="sp-buyer">
+     <option value="yes" selected>Yes</option><option value="no">No, free shipping</option></select></div>
+   <div class="field"><label for="sp-cash">COMC payout</label><select id="sp-cash">
+     <option value="cash" selected>Cash out (&minus;10%)</option>
+     <option value="credit">Keep as store credit</option></select></div>
+   <div class="field"><label for="sp-ins">Past eBay free listings</label><select id="sp-ins">
+     <option value="yes" selected>Yes (&minus;$0.35)</option><option value="no">No, still free</option></select></div>
+  </div>
+
+  <div class="out">
+   <div><span class="k">eBay, per card</span><span class="v" id="sp-ebay">&mdash;</span></div>
+   <div><span class="k">COMC, per card</span><span class="v" id="sp-comc">&mdash;</span></div>
+   <div><span class="k">eBay, all of them</span><span class="v" id="sp-ebay-all">&mdash;</span></div>
+   <div><span class="k">COMC, all of them</span><span class="v" id="sp-comc-all">&mdash;</span></div>
+  </div>
+  <div class="out" style="margin-top:11px">
+   <div><span class="k">Your time on eBay</span><span class="v" id="sp-hours">&mdash;</span></div>
+   <div><span class="k">Effective hourly</span><span class="v" id="sp-rate">&mdash;</span></div>
+  </div>
+
+  <div class="verdict v-list" id="sp-verdict">&mdash;</div>
+  <div class="note" id="sp-labour">&mdash;</div>
+ </section>
+
+ <section><h2>A correction I owe you</h2>
+  <div class="note warn"><b>I told you sports singles under $3 were unlistable. That was wrong on the fee maths.</b> Working it through properly: with the buyer paying postage, eBay breaks even at <b>$0.88</b>, and a $3 card nets about <b>$1.84</b>. The fees alone do not kill a $3 card.
+  <br><br><b>What actually kills it is the clock and the contents.</b> $1.84 for five minutes of listing, packing and posting is roughly $22 an hour &mdash; and most cards out of a retail box are not $3 cards, they are five-cent base with a <b>383,000</b> print run. Those are bulk no matter which platform you use.</div>
+ </section>
+
+ <section><h2>How the two actually differ</h2>
+  <div class="scroll"><table><thead><tr><th></th><th>eBay</th><th>COMC</th></tr></thead>
+   <tbody>
+    <tr><td><b>Cut</b></td><td>13.25% + $0.30&ndash;0.40 per order</td><td>5% + 10% to cash out</td></tr>
+    <tr><td><b>Up front</b></td><td>$0.35 insertion past your free 250</td><td>~$0.50&ndash;1.00 per card to submit</td></tr>
+    <tr><td><b>Postage</b></td><td>You pack and post every single card</td><td>One bulk shipment, then they handle it</td></tr>
+    <tr><td><b>Your time</b></td><td>Minutes per card, forever</td><td>Minutes per <i>batch</i></td></tr>
+    <tr><td><b>Speed</b></td><td>Sells when it sells</td><td>Can sit a long time</td></tr>
+    <tr><td><b>Best for</b></td><td>Cards above about $15</td><td>The $10&ndash;500 middle, 50+ at a time</td></tr>
+   </tbody></table></div>
+  <div class="note"><b>Taking COMC payout as store credit skips the 10%</b>, which makes it cheaper than eBay at every price. That only helps if you actually want to buy cards there &mdash; otherwise it is a discount on money you cannot spend.</div>
+ </section>
+
+ <section><h2>The tier split that works</h2>
+  <div class="teach">
+   <p><b>Above ~$15</b> &mdash; eBay. Worth the handling, and the audience is bigger.</p>
+   <p><b>$5 to $15</b> &mdash; COMC. Thin enough that the labour matters more than the fee.</p>
+   <p><b>Under ~$1</b> &mdash; neither. Dollar box at a show, throw-in on another sale, or sold by weight.</p>
+   <p style="margin-bottom:0"><b>And the honest one:</b> if you are opening retail sports boxes to get here, most of what you pull is that bottom tier. That is the design, not bad luck.</p></div>
+ </section>
+</details>
+
+</div>
+
 <div role="tabpanel" id="p-sheet" aria-labelledby="t-sheet" hidden>
  <section>
   <h2>Master spreadsheet</h2>
@@ -1458,8 +952,363 @@ BODY = f'''<title>Card Run HQ</title>
  </section>
 </div>
 
-<!-- ============ WHERE PRICES COME FROM ============ -->
-<div role="tabpanel" id="p-src" aria-labelledby="t-src" hidden>
+<div role="tabpanel" id="p-shelf" aria-labelledby="t-shelf" hidden>
+ <section><div class="rule"><p class="big">The rule, in one line</p>
+  <p><b>Buy anything at 2&times; or higher if it&rsquo;s priced at retail.</b> A 4&times; Elite Trainer Box costs $49.99 and is worth about $200. Below 1.5&times;, fees and shipping eat most of it. <b>Never pay above the shelf price shown.</b></p></div>
+  <p class="srcline"><span class="agechip" data-priceage></span>
+   <b>Shelf</b> is the verified MSRP &middot; <b>Worth</b> is the TCGplayer market price &middot;
+   <b>Multiple</b> is worth &divide; shelf, which is the upcharge. <a href="#src">Full sources &rarr;</a></p>
+ </section>
+ <details class="fold tierfold" open><summary>Grab it &mdash; 2&times; and up &nbsp;<span class="cnt">{len(_grab)}</span></summary>
+  <p class="hint">If you see any of these at the shelf price, take it. Every one clears fees comfortably.</p>
+  {tier_grab}
+ </details>
+
+ <details class="fold tierfold"><summary>Worth a look &mdash; 1.5&times; to 2&times; &nbsp;<span class="cnt">{len(_look)}</span></summary>
+  <p class="hint">Real margin, but not enough to fight over. Buy if it&rsquo;s in front of you and priced right.</p>
+  {tier_look}
+ </details>
+
+ <details class="fold tierfold"><summary>Why these are still sitting there &nbsp;<span class="cnt">{len(_skip)}</span></summary>
+  <p class="hint">The stock nobody clears. Useful to recognise so you stop picking it up &mdash; each one says what&rsquo;s wrong with it.</p>
+  {tier_skip}
+ </details>
+
+ <details class="fold tierfold"><summary>No published MSRP &mdash; market price only &nbsp;<span class="cnt">{len(_nomsrp)}</span></summary>
+  <div class="note warn"><b>Most games outside Pok&eacute;mon, One Piece and Lorcana have no MSRP to compare against.</b> Wizards stopped publishing one for Magic, and the smaller publishers never did &mdash; retailers set their own price, so there is no sticker to divide by and no honest upcharge to show.
+  <br><br>So these show the <b>TCGplayer market price</b> instead. Compare it to the tag in front of you: <b>if the tag is under the market price, that is your margin.</b></div>
+  {tier_nomsrp}
+ </details>
+
+ <section><h2>Tracked but not priced</h2>
+  <div class="note warn"><b>Sports cards have no free price feed anywhere &mdash; I checked again on 15 Aug 2026.</b> TCGplayer is trading-card-games only, so there is no Topps or Panini category to read, and every sports-specific API (SportsCardsPro CSV, Card Hedger, Zyla, Ximilar) is a paid subscription. <b>Palworld</b> has no TCGplayer listing either.
+  <br><br>So rather than invent a multiple, these get dates and one-tap links: <b>eBay sold prices</b> tells you what a thing actually goes for, and for sports the free <b>SportsCardsPro</b> guide does the same. That is the same answer I&rsquo;d get from an API, just checked by hand.</div>
+  <div class="scroll"><table><thead><tr><th>Date</th><th>Product</th><th>Line</th>
+   <th>Buy at MSRP</th><th>What it sells for</th></tr></thead>
+   <tbody id="unpriced"></tbody></table></div>
+ </section>
+ <section class="searchfirst">
+  <h2>Search everything &mdash; {len(rows)} products</h2>
+  <div class="tools sticky">
+   <input id="q" type="search" placeholder="Type what&rsquo;s on the shelf &mdash; prismatic, umbreon, fabled" autocomplete="off">
+   <button class="chipbtn" id="f-store" aria-pressed="true">In stores only</button>
+   <button class="chipbtn" id="f-buy" aria-pressed="false">2&times; and up</button>
+   <span class="count" id="count"></span>
+  </div>
+  <div class="scroll"><table><thead><tr><th>Product</th><th>Where</th><th class="num">Shelf &middot; MSRP</th>
+   <th class="num">Worth &middot; TCGplayer</th><th class="num">Upcharge</th><th>Buy at MSRP</th>
+   <th>Sells for</th><th>Best card in set</th></tr></thead>
+   <tbody id="tb"></tbody></table></div>
+  <div class="empty" id="empty" hidden>Nothing matches. Try a shorter word.</div>
+ </section>
+ <section>
+  <div class="note warn"><b>A high multiple usually means it&rsquo;s already gone.</b> Prismatic Evolutions sits at 4&times; precisely because shelves got cleared. A &ldquo;grab it instantly if you see it&rdquo; list, not a shopping list.</div>
+  <div class="note"><b>Where you can buy it.</b> <span class="wtag w-store">store</span> Target / Walmart / card shops. <span class="wtag w-online">online</span> Pok&eacute;mon Center only. <span class="wtag w-preorder">preorder</span> not released, price is a guess.</div>
+ </section>
+</div>
+
+<div role="tabpanel" id="p-pc" aria-labelledby="t-pc" hidden>
+ <section>
+  <h2>Price check anything</h2>
+  <div class="searchbar sticky2">
+   <input id="pc-q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Any box, tin, single or sports product&hellip;">
+   <button class="btn2" id="pc-clear">Clear</button>
+  </div>
+  <div id="pc-out"></div>
+ </section>
+
+ <section><h2>Why these six</h2>
+  <div class="teach">
+   <p><b>PriceCharting</b> is the closest thing to one site that prices everything &mdash; TCG, sports, sealed boxes and singles, raw and graded, free to browse. Checked 15 Aug 2026: its TMNT Draft Night reads <b>$81.22</b> against this dashboard&rsquo;s <b>$79.79</b>, which is a reassuring independent agreement.</p>
+   <p><b>eBay sold</b> is the ground truth &mdash; actual completed sales, not asking prices. It is the only free way to see real sports numbers, because every sports price API is paid.</p>
+   <p><b>TCGplayer</b> is the feed this dashboard prices from, so it will always match the Shelf check numbers.</p>
+   <p style="margin-bottom:0"><b>Cardboard Connection</b> is not a price site &mdash; it is where you find <b>what is inside a box and at what odds</b>, which is the other half of deciding whether to open something.</p></div>
+ </section>
+
+ <section><h2>Reading a sealed product before you buy it</h2>
+  <div class="teach"><ol class="steps">
+   <li><div><b>Price it sealed first.</b> If it resells above the shelf tag, the decision is made and nothing else matters.</div></li>
+   <li><div><b>Then look at the odds, not the ceiling.</b> Every box advertises its best possible card. The number that matters is how often that happens &mdash; &ldquo;1:425&rdquo; on a 10-pack box means roughly one in forty boxes.</div></li>
+   <li><div><b>Check the base-card print run.</b> A 380,000-copy veteran base card is worth nothing no matter how good the box looked. Scarce rookie or chrome base is where retail products hold value.</div></li>
+   <li><div><b>Compare to buying the single.</b> You can almost always buy the exact card you are chasing for less than the boxes it would take to pull it.</div></li>
+  </ol>
+  <p style="margin-top:12px;margin-bottom:0"><b>Which is the whole argument for flipping sealed.</b> Opening is a bet against a house edge that the publisher printed on the side of the box.</p></div>
+ </section>
+</div>
+
+<div role="tabpanel" id="p-log" aria-labelledby="t-log" hidden>
+ <section>
+  <h2>Box log</h2>
+  <div class="out">
+   <div><span class="k">Boxes</span><span class="v" id="lg-n">0</span></div>
+   <div><span class="k">Spent</span><span class="v" id="lg-spent">$0.00</span></div>
+   <div><span class="k">Recovered</span><span class="v" id="lg-rec">$0.00</span></div>
+   <div><span class="k">Net</span><span class="v" id="lg-net">$0.00</span></div>
+   <div><span class="k">Return</span><span class="v" id="lg-roi">&mdash;</span></div>
+  </div>
+
+  <details class="fold" id="lg-form-wrap" open><summary>Log a box</summary>
+   <div class="calc">
+    <div class="field"><label for="lg-date">Date bought</label><input id="lg-date" type="date"></div>
+    <div class="field"><label for="lg-time">Time</label><input id="lg-time" type="time"></div>
+    <div class="field"><label for="lg-prod">Product</label>
+     <input id="lg-prod" list="lg-prods" placeholder="Start typing&hellip;"><datalist id="lg-prods"></datalist></div>
+    <div class="field"><label for="lg-store">Where</label>
+     <input id="lg-store" list="lg-stores" placeholder="Big 5, Target&hellip;"><datalist id="lg-stores"></datalist></div>
+    <div class="field"><label for="lg-paid">Paid each, with tax</label>
+     <input id="lg-paid" type="number" min="0" step="0.01" inputmode="decimal"></div>
+    <div class="field"><label for="lg-qty">Qty</label>
+     <input id="lg-qty" type="number" min="1" step="1" value="1" inputmode="numeric"></div>
+    <div class="field"><label for="lg-status">Status</label><select id="lg-status">
+      <option value="sealed">Sealed</option><option value="opened">Opened</option>
+      <option value="sold">Sold</option></select></div>
+    <div class="field"><label for="lg-rec-in">Recovered so far</label>
+     <input id="lg-rec-in" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
+    <div class="field"><label for="lg-hits">Hits &amp; notes</label>
+     <input id="lg-hits" placeholder="Gold Flash /49 Arch Manning&hellip;"></div>
+   </div>
+   <div class="tools" style="margin-top:11px">
+    <button class="btn2 go" id="lg-add">Add to log</button>
+    <button class="btn2" id="lg-cancel" hidden>Cancel edit</button>
+    <span class="hint" id="lg-msg"></span>
+   </div>
+  </details>
+
+  <div class="scroll"><table><thead><tr>
+    <th>Bought</th><th>Product</th><th>Where</th><th class="num">Cost</th>
+    <th class="num">Back</th><th class="num">Net</th><th class="num">ROI</th>
+    <th>Status</th><th>Hits</th><th></th></tr></thead>
+   <tbody id="lg-body"></tbody></table>
+   <div class="empty" id="lg-empty">Nothing logged yet. Add your first box above.</div></div>
+
+  <div class="tools">
+   <button class="btn2 go" id="lg-export" disabled>Export CSV</button>
+   <button class="btn2" id="lg-wipe" disabled>Clear log</button>
+   <span class="hint" id="lg-exmsg"></span>
+  </div>
+  <textarea id="lg-fallback" class="fallback" hidden readonly rows="8"></textarea>
+  <div class="note" id="lg-status-note"></div>
+ </section>
+
+ <section><h2>Which shop is actually paying you</h2>
+  <p class="hint">Every row you add sharpens these. This is the part a spreadsheet gives you that a pile of receipts does not.</p>
+  <div id="lg-bystore"></div>
+ </section>
+
+ <section><h2>Which products are worth repeating</h2>
+  <div id="lg-byprod"></div>
+ </section>
+</div>
+
+<div role="tabpanel" id="p-map" aria-labelledby="t-map" hidden>
+ <section><div class="rule"><p class="big">{near3} card-selling stores inside 3 miles</p>
+  <p>That density is the whole advantage. A sweep of everything under 3 miles is a <b>25-minute loop</b> &mdash; short enough to run on a restock morning, which is what actually gets you product at retail.</p></div></section>
+
+ <section>
+  <h2>Find a store</h2>
+  <div class="tools">
+   <input id="mq" type="search" placeholder="Search name, city or street &mdash; Upland, Foothill, Costco" autocomplete="off">
+   <span class="count" id="mcount"></span>
+  </div>
+  <div class="tools" id="chainchips">{chain_chips}</div>
+  <div class="tools" id="radchips">
+   <span class="lbl" style="align-self:center">Within</span>
+   <button class="chipbtn rad" data-r="3" aria-pressed="false">3 mi</button>
+   <button class="chipbtn rad" data-r="5" aria-pressed="false">5 mi</button>
+   <button class="chipbtn rad" data-r="10" aria-pressed="false">10 mi</button>
+   <button class="chipbtn rad" data-r="20" aria-pressed="true">20 mi</button>
+  </div>
+
+  <div class="mapbox"><svg viewBox="0 0 {W} {H}" role="img" aria-label="Map of card-selling stores around Upland">
+   {rings}
+   <g id="dots"></g>
+   <circle cx="{W/2}" cy="{H/2}" r="9" class="home"/>
+   <circle cx="{W/2}" cy="{H/2}" r="2.5" fill="var(--ink)"/>
+   <!-- labelled by ZIP, not "HOME" - this page is public, and a marker saying
+        HOME over your own coordinates is a different thing to publish -->
+   <text x="{W/2}" y="{H/2-15}" class="homelbl">91786</text>
+  </svg></div>
+  <p class="hint">Tap a store below to open directions. Filters change the map and the list together.</p>
+  <div id="storelist" class="storelist"></div>
+  <div class="empty" id="mempty" hidden>No stores match those filters.</div>
+ </section>
+
+ <section>
+  <h2>What to hunt at each chain</h2>
+  <div class="scroll"><table><thead><tr><th>Where</th><th>Restock</th><th>What to look for</th></tr></thead>
+   <tbody>{hunt_rows}</tbody></table></div>
+ </section>
+
+ <section>
+  <div class="note warn"><b>No live stock &mdash; blocked, not unfinished.</b> Target&rsquo;s inventory API returns 403 to any script, Walmart publishes no free per-store data, and Target.com&rsquo;s Pok&eacute;mon listings are third-party resellers marked &ldquo;not sold in stores&rdquo;. Use the Target app&rsquo;s own checker before driving.</div>
+  <div class="note"><b>Card shops are under-mapped.</b> OpenStreetMap lists only {hobby_n} in range; the real number is higher. Worth phoning &mdash; a standing preorder is the most reliable way to buy at retail.</div>
+ </section>
+</div>
+
+<div role="tabpanel" id="p-ref" aria-labelledby="t-ref" hidden>
+ <section>
+  <h2>Reference</h2>
+  <p class="hint">Everything that explains how any of this works, in one place. Open what you need &mdash; none of it is something you have to read to use the rest of the page.</p>
+ </section>
+
+<details class="fold" id="learn"><summary>How this makes money &mdash; start here</summary>
+ <section><h2>How this makes money</h2>
+  <div class="teach"><ol class="steps">
+   <li><div><b>Buy sealed product at retail (MSRP).</b> The sticker price at Target, Walmart, or a preorder at a card shop. This is the hard part.</div></li>
+   <li><div><b>Some sets sell far above retail.</b> A One Piece box costs $119.76 and trades at $366.33 today.</div></li>
+   <li><div><b>Resell it sealed &mdash; still shut.</b> You don&rsquo;t open it. That&rsquo;s the whole trade.</div></li>
+  </ol><p style="margin-top:12px"><b>Your edge is access, not prediction.</b> Everyone sees these prices. Almost nobody can buy at retail.</p></div></section>
+
+ <section><h2>The one number: the ratio</h2>
+  <div class="teach"><p>Everywhere you see <b class="mono">3.06&times;</b> it means:</p>
+   <p class="mono" style="background:var(--surface2);padding:9px 12px;border-radius:6px;font-size:12.5px">market price &divide; retail price &nbsp;=&nbsp; the ratio</p>
+   <p><b>If I buy this at retail, what is it worth?</b></p>
+   <div class="scale"><div class="scalebar"><div class="seg s1">UNDER 1.2&times;</div>
+    <div class="seg s2">1.2&ndash;2&times;</div><div class="seg s3">OVER 2&times;</div></div>
+    <div class="scalekey"><span>No margin</span><span>Normal</span><span>Strong demand</span></div></div>
+   <ul><li><b class="mono">1.0&times;</b> &mdash; exactly retail. No profit.</li>
+   <li><b class="mono">1.4&times;</b> &mdash; where a normal Pok&eacute;mon ETB settles. A baseline.</li>
+   <li><b class="mono">3.0&times;</b> &mdash; real scarcity, or real hype.</li></ul>
+   <p style="margin-top:10px"><b>Careful:</b> only profit if you actually buy at retail.</p></div></section>
+
+ <section><h2>What one box earns</h2>
+  <div class="teach"><h3>OP-17 booster box, bought at retail</h3>
+   <div class="scroll" style="margin-top:8px"><table class="mono" style="min-width:340px"><tbody>
+    <tr><td>Sells for (today)</td><td class="num">$366.33</td></tr>
+    <tr><td>You paid retail</td><td class="num">&minus;$119.76</td></tr>
+    <tr><td>eBay fees, ~13%</td><td class="num">&minus;$48.54</td></tr>
+    <tr><td>Shipping, boxed</td><td class="num">&minus;$15.00</td></tr>
+    <tr><td><b>Profit per box</b></td><td class="num"><b style="color:var(--buy)">&asymp; $183</b></td></tr>
+   </tbody></table></div>
+   <p style="margin-top:10px"><b>Two warnings.</b> That $366 is a preorder price on very few sales and will likely fall once boxes ship. And it only works if you buy at $119.76.</p></div></section>
+
+ <section><h2>The pattern to act on</h2>
+  <div class="scroll"><table class="mono"><thead><tr><th>Set</th><th>Game</th><th>Released</th>
+   <th class="num">Box now</th><th class="num">&times; retail</th></tr></thead><tbody>
+   <tr><td>OP-16 Time of Battle</td><td>One Piece</td><td>&minus;62d</td><td class="num">$220.44</td><td class="num">1.84&times;</td></tr>
+   <tr><td>Wilds Unknown</td><td>Lorcana</td><td>&minus;97d</td><td class="num">$222.66</td><td class="num">1.55&times;</td></tr>
+   <tr><td>Attack of the Vine!</td><td>Lorcana</td><td>&minus;27d</td><td class="num">$205.44</td><td class="num">1.43&times;</td></tr>
+   <tr><td>ME04 Chaos Rising</td><td>Pok&eacute;mon</td><td>&minus;83d</td><td class="num">$189.99</td><td class="num">ETB 1.39&times;</td></tr>
+   <tr><td>ME05 Pitch Black</td><td>Pok&eacute;mon</td><td>&minus;27d</td><td class="num">$174.25</td><td class="num">ETB 1.42&times;</td></tr>
+  </tbody></table></div>
+  <div class="note"><b>Older sets are worth more than newer ones.</b> Chaos Rising is 83 days old and beats Pitch Black at 27 days. Same in Lorcana.
+   <p style="margin-top:7px">Sealed drifts <b>up</b> after release as shops sell through and nothing is reprinted.</p>
+   <ul><li>Paying a preorder premium means buying at the most expensive moment.</li>
+   <li>Buying <b>at retail on release day and holding</b> beats chasing preorder hype.</li></ul></div></section>
+
+ <section><h2>What you&rsquo;re actually buying</h2>
+  <div class="teach"><dl>
+   <dt>Booster pack</dt><dd>A few random cards. Pok&eacute;mon 10, One Piece 12, Lorcana 12, <b>Palworld 7</b>.</dd>
+   <dt>Booster box</dt><dd>A box of packs &mdash; Pok&eacute;mon 36, One Piece and Lorcana 24, <b>Palworld 12</b>. <b>The main resale unit.</b></dd>
+   <dt>Case</dt><dd>Several booster boxes, usually 6&ndash;12. What shops buy from distributors.</dd>
+   <dt>Elite Trainer Box (ETB)</dt><dd>Pok&eacute;mon only. ~9 packs plus sleeves, dice, storage box. The most common thing on a Target shelf.</dd>
+   <dt>Illumineer&rsquo;s Trove</dt><dd>Lorcana&rsquo;s version of an ETB.</dd>
+   <dt>Trial deck</dt><dd>Palworld&rsquo;s starter product &mdash; <i>Dawn of Palpagos</i> shipped two, Red&amp;Blue and Green&amp;Purple.</dd>
+   <dt>MSRP</dt><dd>Retail price &mdash; the sticker. It never changes when a set gets hot. Anything above it is someone else&rsquo;s margin.</dd>
+  </dl></div></section>
+</details>
+
+<details class="fold" id="types"><summary>Box types &amp; ROI &mdash; which box is worth buying</summary>
+ <section>
+  <h2>Why there are so many kinds of box</h2>
+  <div class="teach">
+   <p>They exist to hit <b>price points</b>, not to be different products. Publishers want something at $5, $10, $25, $50 and $145, so the same packs get repackaged with different amounts of plastic around them. A mini tin and a booster box contain the same cards &mdash; one has three packs and a promo, the other has thirty-six.</p>
+   <p style="margin-bottom:0">Which means the interesting question is not what is inside. It is <b>which wrapper returns the most on the cash you put in</b>, and that is answerable from your own shelf data.</p></div>
+ </section>
+
+ <section>
+  <h2>The short answer</h2>
+  <div class="rule"><p class="big">Best return on cash: {_best_pct["t"]} &mdash; {_best_pct["pct"]:,.0f}%</p>
+   <p>Roughly <b>${_best_pct["cost"]:,.2f}</b> in, <b>{_usd(_best_pct["net"])}</b> net out after eBay's cut and postage. Mini tins match it on percentage but return about a fifth as much per unit, so you would be doing five times the handling for the same money.</p></div>
+  <div class="rule"><p class="big">Most dollars per unit: {_best_cash["t"]} &mdash; {_usd(_best_cash["net"])}</p>
+   <p>But it ties up <b>${_best_cash["cost"]:,.2f}</b> a unit to do it. Fewer, bigger bets.</p></div>
+  <div class="note warn"><b>Multiple and profit are not the same thing, and this is where people get it wrong.</b> A mini tin at 3.3&times; sounds better than a booster box at 2.1&times;. But the tin returns about $19 and the box about $98. The multiple tells you how efficient the cash is; the dollars tell you whether it was worth the drive, the packing and the trip to the post office.</div>
+ </section>
+
+ <section>
+  <h2>Every type, ranked by return on cash</h2>
+  <p class="hint">Median across the {len([r for r in shelf_data["rows"] if r["ratio"] is not None])} shelf products that have a verified MSRP. Net is after a {FVF_R:.2%} final value fee, the ${ORDER_F:.2f} order fee and postage &mdash; buyer pays postage at cost, so it is a wash on the way in and a cost on the way out.</p>
+  {pt_cards}
+ </section>
+
+ <section>
+  <h2>What the numbers do not say</h2>
+  <div class="teach">
+   <p><b>Postage is an estimate per size class</b>, shown on each card. Weigh a real box and correct it if you want the figures exact &mdash; on cheap items the postage is most of the decision.</p>
+   <p><b>Sell-through is not modelled.</b> A booster box at 68% that sells in a week beats a premium collection at 362% that sits for six months. Nothing here can see how fast something moves.</p>
+   <p><b>Small samples are flagged.</b> Where a type has fewer than five products behind it, treat the number as a hint rather than a finding.</p>
+   <p style="margin-bottom:0"><b>Every figure assumes you paid MSRP.</b> Pay above the sticker and the whole table stops applying &mdash; which is the point of the Shelf check tab.</p></div>
+ </section>
+</details>
+
+<details class="fold" id="boxes"><summary>Box breakdowns &mdash; what is actually in each one</summary>
+ <section>
+  <h2>Box breakdowns <span class="hint">{BOX_N} products</span></h2>
+  <div class="rule"><p class="big">What you can actually pull, per product</p>
+   <p>One entry per box &mdash; the configuration, what is guaranteed, the cards worth chasing by number, and what the box quietly does <i>not</i> contain. Buy something new and I add it here, so the next time you see it on a shelf you already know what you are aiming at.</p></div>
+  <div class="searchbar sticky2">
+   <input id="bx-q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Filter by product, sport or brand&hellip;">
+   <button class="btn2" id="bx-clear">Clear</button>
+  </div>
+  <div id="bx-out"></div>
+ </section>
+
+ <section><h2>How to read these</h2>
+  <div class="teach">
+   <p><b>&ldquo;Guaranteed&rdquo; is the only number that matters up front.</b> Every box advertises its best possible card; the useful question is what lands in <i>every</i> box. A guaranteed memorabilia card beats a 1:425 autograph you will not see for forty boxes.</p>
+   <p><b>Check what is missing.</b> The <i>Not in this box</i> line is usually more informative than the chase list &mdash; a product called Signature Class with no guaranteed signature tells you what it is.</p>
+   <p style="margin-bottom:0"><b>Print runs decide base value.</b> A 383,000-copy veteran base card is bulk no matter how good the box looked. Scarce rookie or chrome base is where retail holds value.</p></div>
+ </section>
+</details>
+
+<details class="fold" id="chase"><summary>Chase cards &mdash; the card that carries each set</summary>
+ <section><div class="teach"><h3>What a &ldquo;hit&rdquo; is</h3>
+  <p>A <b>hit</b> is a valuable rare card pulled from a pack. The <b>chase card</b> is the most valuable card in a set &mdash; what people buy boxes hoping to find.</p>
+  <ul><li><b>Pok&eacute;mon</b> &mdash; Special Illustration Rare, Mega Hyper Rare</li>
+  <li><b>One Piece</b> &mdash; Manga, SEC, SP</li>
+  <li><b>Lorcana</b> &mdash; Iconic, Enchanted</li></ul></div></section>
+ <section><h2>Best card in each set</h2>
+  <div class="scroll"><table><thead><tr><th>Set</th><th>Card</th><th>Rarity</th><th class="num">Worth</th></tr></thead>
+  <tbody>{chase_rows}</tbody></table></div></section>
+ <section>
+  <div class="note warn"><b>The trap that costs beginners most.</b> A top Lorcana card is worth thousands and a box costs about $144, which makes opening it tempting.
+   <ul><li><b>Don&rsquo;t.</b> Those cards turn up roughly once in many hundreds of packs.</li>
+   <li>The chase price tells you <b>why the box is in demand</b> &mdash; not what a box returns.</li>
+   <li><b>Selling sealed is the reliable trade.</b> Opening is gambling with a house edge.</li></ul></div>
+  <div class="note"><b>Prices above ~$2,000 are thin.</b> Those cards trade a handful of times a year, so the marks move on very few sales.</div>
+ </section>
+</details>
+
+<details class="fold" id="shops"><summary>Online shops &mdash; who sells it and who limits you</summary>
+ <section>
+  <h2>Who sells it online</h2>
+  <div class="rule"><p class="big">Twelve places, one table, so you stop tab-hopping</p>
+   <p>Every name links straight into its own TCG section. The column that matters is <b>price</b> &mdash; only some of these actually sell at MSRP, and the rest are just the market with extra steps.</p></div>
+  {shop_rows}
+ </section>
+
+ <section><h2>The thing that actually limits you</h2>
+  <div class="teach">
+   <p><b>Allocation, not price.</b> Distributors get a fixed case count per set, each retailer gets a fixed slice, and once a set hits its cap a reorder takes <b>6&ndash;10 weeks</b> to arrive. That is why a set can be sold out everywhere and still not be &ldquo;rare&rdquo;.</p>
+   <p><b>What that does to the price curve:</b> hot sets run <b>1.5&ndash;3&times; MSRP</b> in the first weeks, then settle to roughly <b>5&ndash;25% over MSRP</b> once restocks land in months two to six.</p>
+   <p style="margin-bottom:0">Which is the same conclusion the Learn tab reaches from the other direction: <b>your edge is access, not prediction.</b></p></div>
+ </section>
+
+ <section><h2>Getting told about a restock</h2>
+  <div class="teach">
+   <p>None of these retailers publish stock data &mdash; Target's inventory API refuses scripts outright &mdash; so this dashboard cannot show you live availability, and neither can anything else that is free. What works is a watcher that pings you:</p>
+   <ul>
+    <li><b>Restock Discords</b> (PokeAlerts and similar) &mdash; volunteers and monitors posting drops in real time. Free, and the fastest of these.</li>
+    <li><b>Page watchers</b> &mdash; Visualping or PageCrawl on a specific product URL, which emails you when the page changes. Free tiers are limited but fine for a handful of products.</li>
+    <li><b>Retailer accounts</b> &mdash; Best Buy invites and Pok&eacute;mon Center account alerts are the sanctioned routes, and on Best Buy it is the <i>only</i> route.</li>
+   </ul>
+   <p style="margin-bottom:0">Hot drops sell out in under a minute, so refreshing a page by hand almost never catches one. A notification is the whole game.</p></div>
+ </section>
+</details>
+
+<details class="fold" id="src"><summary>Where prices come from</summary>
  <section>
   <h2>Where prices come from</h2>
   <div class="note warn"><b>There is one price source in this whole dashboard, and it is TCGplayer.</b> Nothing here is an eBay price. eBay&rsquo;s sold-price API has been closed to new developers since 2024 and its replacement is partner-only, so <b>no free eBay price data exists</b> for me to use.</div>
@@ -1501,10 +1350,9 @@ BODY = f'''<title>Card Run HQ</title>
    <p><b>Graded prices.</b> TCGplayer has none, so nothing here prices a slab.</p>
    <p style="margin-bottom:0"><b>Sports cards.</b> TCGplayer is trading-card-games only &mdash; no Topps or Panini category exists to read.</p></div>
  </section>
-</div>
+</details>
 
-<!-- ============ SELL: BUILD PLAN ============ -->
-<div role="tabpanel" id="p-plan" aria-labelledby="t-plan" hidden>
+<details class="fold" id="plan"><summary>What this page can and cannot do</summary>
  <section><h2>What this page can and cannot do</h2>
   <div class="note"><b>Everything on the two tabs above runs live in your browser.</b> Scanning, inventory, and CSV export cannot &mdash; a published page has no scanner, no database, and is blocked from reaching tcgcsv.com. Those live in the local app.</div>
  </section>
@@ -1531,6 +1379,8 @@ BODY = f'''<title>Card Run HQ</title>
  <section><h2>Still unknown</h2>
   <div class="note warn"><b>Scan-to-text accuracy has not been measured yet.</b> It depends on your cards and your scanner, not on anything research can settle. That is the entire reason phase 0 exists and gates the rest.</div>
  </section>
+</details>
+
 </div>
 
 <footer class="mono">

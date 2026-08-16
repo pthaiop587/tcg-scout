@@ -50,8 +50,24 @@ setTimeout(() => { try { stampPriceAge(); } catch(e){} }, 0);
 
 function showFromHash(fallback){
   const h = (location.hash || '').slice(1);
-  const id = document.getElementById('t-' + h) ? 't-' + h : fallback;
-  if (id) show(id);
+  if (h && document.getElementById('t-' + h)){ show('t-' + h); return; }
+
+  /* Several sections that used to be tabs of their own are folds inside one
+     now. Their ids did not change, so an old bookmark or an in-page link
+     like #src still points somewhere real -- find it, switch to whichever
+     tab it ended up in, and open the fold so the reader lands on the thing
+     they asked for rather than the top of a long page. */
+  const el = h && document.getElementById(h);
+  if (el){
+    const panel = el.closest('[role="tabpanel"]');
+    if (panel){
+      show('t' + panel.id.slice(1));
+      if (el.tagName === 'DETAILS') el.open = true;
+      el.scrollIntoView({ block: 'start' });
+      return;
+    }
+  }
+  if (fallback) show(fallback);
 }
 /* respond to hash changes too, not just first load - the runbook documents
    bookmarking straight to a section, and that must work from any tab */
