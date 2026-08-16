@@ -424,9 +424,11 @@ def main():
 
     # Mirror it into the workbook so the sheet and the file never disagree.
     wb = load_workbook(args.workbook)
-    if "eBay upload" in wb.sheetnames:
-        del wb["eBay upload"]
-    ws = wb.create_sheet("eBay upload", 2)
+    # "eBay upload" was the old name; take either so an older workbook still works
+    for old in ("eBay", "eBay upload"):
+        if old in wb.sheetnames:
+            del wb[old]
+    ws = wb.create_sheet("eBay", 2)
     ws.append(header)
     for row in rows:
         ws.append(row)

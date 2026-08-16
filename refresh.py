@@ -6,6 +6,7 @@
 
 Run this after typing into Card Run HQ - Master.xlsx. It does, in order:
 
+    fill_skus.py         a SKU for anything typed in by hand
     embed_photos.py      thumbnails into the workbook's Photos tab
     sport_tabs.py        a read-only tab per sport, rebuilt from Inventory
     export_inventory.py  the Inventory tab out to JSON
@@ -29,7 +30,11 @@ import webbrowser
 
 WORKBOOK = "Card Run HQ - Master.xlsx"
 PAGE = "card-run-hq.html"
-NEEDED = {"Summary", "Purchases", "Expenses", "Photos", "Audit"}
+# The old layout called the upload tab "eBay upload" and had no per-game tabs.
+# That rename is the cleanest thing to test for -- checking for Summary or
+# Photos would wrongly reject the short layout, which does not have them.
+OLD_NAME = "eBay upload"
+NEW_NAME = "eBay"
 
 
 def run(args, why):
@@ -68,20 +73,31 @@ def main():
         return 1
 
     tabs = workbook_tabs(a.workbook)
-    missing = NEEDED - tabs
-    if missing:
-        print("%s is on the old layout -- it has no %s tab."
-              % (a.workbook, ", ".join(sorted(missing))))
+    if NEW_NAME not in tabs:
+        print("%s is on the old layout -- its upload tab is still called "
+              "\"%s\"." % (a.workbook, OLD_NAME))
         print("\nMove it across first. This keeps everything you have typed and "
               "writes a dated backup before it touches anything:")
         print("\n   python upgrade_workbook.py --go\n")
         print("Then run this again.")
         return 1
 
-    if os.path.isdir("photos") and any(f.startswith("CRH-") for f in os.listdir("photos")):
+    # the Photos tab only exists in the --full layout, so this step is skipped
+    # rather than failed when it is not there
+    if ("Photos" in tabs and os.path.isdir("photos")
+            and any(f.startswith("CRH-") for f in os.listdir("photos"))):
         if not run([sys.executable, "embed_photos.py", "--workbook", a.workbook],
                    "embed_photos.py"):
             return 1
+
+    # A card typed straight into Inventory has no SKU, and without one it is
+    # invisible to the eBay export, to photo filing and to the dashboard. This
+    # only ever fills an EMPTY cell and never renumbers a card that has one, so
+    # it is safe to do every run -- and doing it every run is the point, since
+    # the failure it prevents is sixty cards silently not existing.
+    if not run([sys.executable, "fill_skus.py", "--workbook", a.workbook, "--go"],
+               "fill_skus.py"):
+        return 1
 
     # a read-only tab per sport, rebuilt from Inventory each time
     if not run([sys.executable, "sport_tabs.py", "--workbook", a.workbook],

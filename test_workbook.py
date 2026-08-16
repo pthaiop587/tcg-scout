@@ -32,8 +32,17 @@ SOFFICE = [
     "/usr/bin/soffice", "/usr/local/bin/soffice", "soffice",
 ]
 
-TABS = ["Read me", "Summary", "Inventory", "eBay upload", "Purchases",
-        "Box log", "Expenses", "Sales", "Photos", "Audit", "Reference", "Lists"]
+GAMES = ["Football", "Basketball", "Baseball", "Pokemon", "Palworld",
+         "One Piece", "Disney"]
+
+# The short layout is the default and the one Mr. P actually uses: the record,
+# the upload, a tab per game, and the Read me. Lists is hidden -- it only feeds
+# the Graded by dropdown, whose entries are too long for an inline list.
+SHORT = ["Read me", "Inventory", "eBay"] + GAMES + ["Lists"]
+
+# --full brings back the money and audit side.
+TABS = (["Read me", "Summary", "Inventory", "eBay", "Purchases", "Box log",
+         "Expenses", "Sales", "Photos", "Audit", "Reference"] + GAMES + ["Lists"])
 
 
 def soffice():
@@ -49,7 +58,7 @@ def soffice():
 def blank(tmp_path_factory):
     d = tmp_path_factory.mktemp("wb")
     out = d / "Card Run HQ - Master.xlsx"
-    subprocess.run([sys.executable, "make_workbook.py", "--out", str(out)],
+    subprocess.run([sys.executable, "make_workbook.py", "--full", "--out", str(out)],
                    check=True, capture_output=True)
     return out
 
@@ -65,6 +74,40 @@ def wb(blank, tmp_path):
 
 def test_every_tab_is_there(blank):
     assert load_workbook(blank).sheetnames == TABS
+
+
+def test_the_short_layout_is_the_default(tmp_path):
+    """Ten tabs and no more: the record, the upload, one per game, the guide."""
+    out = tmp_path / "short.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(out)],
+                   check=True, capture_output=True)
+    book = load_workbook(out)
+    assert book.sheetnames == SHORT
+    visible = [n for n in book.sheetnames if book[n].sheet_state == "visible"]
+    assert len(visible) == 10, visible
+    assert book["Lists"].sheet_state == "hidden",         "Lists feeds a dropdown; it should not be a tab anybody sees"
+
+
+def test_a_tab_exists_for_every_game_before_any_cards(tmp_path):
+    """You want the tab when you start on a game, not after the first card."""
+    out = tmp_path / "short.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(out)],
+                   check=True, capture_output=True)
+    book = load_workbook(out)
+    for game in GAMES:
+        assert game in book.sheetnames, game
+        assert str(book[game]["A1"].value or "").startswith("VIEW")
+
+
+def test_the_sport_dropdown_matches_the_game_tabs(tmp_path):
+    """A value with no tab, or a tab with no value, is how a card gets lost."""
+    out = tmp_path / "short.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(out)],
+                   check=True, capture_output=True)
+    ws = load_workbook(out)["Inventory"]
+    lists = " ".join(d.formula1 for d in ws.data_validations.dataValidation)
+    for game in GAMES:
+        assert game in lists, game
 
 
 def test_purchases_records_a_receipt(blank):
@@ -87,6 +130,12 @@ def test_photos_tab_has_room_for_the_picture_and_the_link(blank):
     assert "Picture" in hdr, "nowhere to put the thumbnail"
     assert "Picture URL for eBay" in hdr, "nowhere to put the link eBay fetches"
     assert "Front" in hdr and "Back" in hdr
+
+
+def test_the_upload_tab_is_called_ebay(blank):
+    book = load_workbook(blank)
+    assert "eBay" in book.sheetnames
+    assert "eBay upload" not in book.sheetnames
 
 
 def test_inventory_columns_are_untouched(blank):
@@ -279,7 +328,7 @@ def test_upgrade_keeps_what_was_typed(wb, tmp_path):
     book.save(wb)
 
     rc = subprocess.run([sys.executable, "upgrade_workbook.py",
-                         "--workbook", str(wb), "--go"],
+                         "--workbook", str(wb), "--full", "--go"],
                         capture_output=True, text=True)
     assert rc.returncode == 0, rc.stdout + rc.stderr
 
@@ -306,14 +355,14 @@ def test_upgrade_does_not_duplicate_the_seeded_box(wb, tmp_path):
                     .iter_rows(min_row=2, max_row=6, values_only=True) if r[0]])
     before = boxes(wb)
     subprocess.run([sys.executable, "upgrade_workbook.py",
-                    "--workbook", str(wb), "--go"],
+                    "--workbook", str(wb), "--full", "--go"],
                    capture_output=True, check=True)
     assert boxes(wb) == before, "the seeded box was duplicated"
 
 
 def test_upgrade_backs_up_before_touching_anything(wb):
     subprocess.run([sys.executable, "upgrade_workbook.py",
-                    "--workbook", str(wb), "--go"],
+                    "--workbook", str(wb), "--full", "--go"],
                    capture_output=True, check=True)
     backups = [f for f in os.listdir(os.path.dirname(str(wb))) if "backup" in f]
     assert backups, "no backup was written"
@@ -325,3 +374,78 @@ def test_dry_run_changes_nothing(wb):
                          "--workbook", str(wb)], capture_output=True, text=True)
     assert "dry run" in rc.stdout
     assert os.path.getsize(wb) == before
+
+
+# --- SKUs for hand-typed cards ----------------------------------------------
+
+def typed_cards(path, names, start_row=2):
+    """Rows typed straight into Inventory: a name, no SKU."""
+    book = load_workbook(path)
+    ws = book["Inventory"]
+    hdr = [c.value for c in ws[1]]
+    name_col = hdr.index("Player or card name") + 1
+    for i, n in enumerate(names):
+        ws.cell(row=start_row + i, column=name_col, value=n)
+    book.save(path)
+
+
+def skus(path):
+    ws = load_workbook(path)["Inventory"]
+    hdr = [c.value for c in ws[1]]
+    s, n = hdr.index("SKU"), hdr.index("Player or card name")
+    return [(r[s], r[n]) for r in ws.iter_rows(min_row=2, values_only=True) if r[n]]
+
+
+def fill(path, *args):
+    r = subprocess.run([sys.executable, os.path.abspath("fill_skus.py"),
+                        "--workbook", str(path)] + list(args),
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    return r.stdout
+
+
+def test_a_hand_typed_card_gets_a_sku(wb):
+    """Without one it is invisible to the export, to photos and to the page."""
+    typed_cards(wb, ["Jalen Milroe", "Cam Ward"])
+    fill(wb, "--go")
+    assert skus(wb) == [("CRH-0001", "Jalen Milroe"), ("CRH-0002", "Cam Ward")]
+
+
+def test_it_carries_on_from_the_highest_already_used(wb):
+    fb.add_rows(str(wb), [{"player": "Shedeur Sanders"}])
+    typed_cards(wb, ["Jalen Milroe"], start_row=3)
+    fill(wb, "--go")
+    assert skus(wb) == [("CRH-0001", "Shedeur Sanders"), ("CRH-0002", "Jalen Milroe")]
+
+
+def test_a_card_that_has_a_sku_is_never_renumbered(wb):
+    """Photos on disk and any live listing are named after it."""
+    fb.add_rows(str(wb), [{"player": "Shedeur Sanders"}])
+    typed_cards(wb, ["Jalen Milroe"], start_row=3)
+    fill(wb, "--go")
+    fill(wb, "--go")
+    fill(wb, "--go")
+    assert skus(wb) == [("CRH-0001", "Shedeur Sanders"), ("CRH-0002", "Jalen Milroe")]
+
+
+def test_a_row_with_no_name_is_not_a_card(wb):
+    """A half-typed line should not be handed a permanent number."""
+    book = load_workbook(wb)
+    ws = book["Inventory"]
+    hdr = [c.value for c in ws[1]]
+    ws.cell(row=2, column=hdr.index("Qty") + 1, value=1)
+    book.save(wb)
+    fill(wb, "--go")
+    assert skus(wb) == []
+
+
+def test_dry_run_writes_nothing(wb):
+    typed_cards(wb, ["Jalen Milroe"])
+    out = fill(wb)
+    assert "dry run" in out
+    assert skus(wb) == [(None, "Jalen Milroe")]
+
+
+def test_it_says_so_when_there_is_nothing_to_do(wb):
+    fb.add_rows(str(wb), [{"player": "Shedeur Sanders"}])
+    assert "already has a SKU" in fill(wb)

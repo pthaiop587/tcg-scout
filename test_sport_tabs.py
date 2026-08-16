@@ -133,6 +133,10 @@ def test_a_new_card_shows_up_on_the_next_run(wb):
 def test_a_tab_you_made_yourself_is_never_overwritten(wb):
     """Only sheets carrying the generated marker are replaced."""
     book = load_workbook(wb)
+    # a fresh workbook already ships a generated Basketball tab, so stand in
+    # for someone who deleted it and made their own
+    if "Basketball" in book.sheetnames:
+        del book["Basketball"]
     mine = book.create_sheet("Basketball")
     mine["A1"] = "my own notes"
     mine["A2"] = "do not delete this"
@@ -161,11 +165,16 @@ def test_list_reports_what_is_there(wb):
     assert "2 card(s)" in out
 
 
-def test_a_workbook_with_no_sports_says_so(tmp_path):
+def test_a_fresh_workbook_already_has_a_tab_per_game(tmp_path):
+    """make_workbook builds them empty, so a game can be started before its
+    first card. sport_tabs then just keeps them up to date."""
     out = tmp_path / "wb.xlsx"
     subprocess.run([sys.executable, "make_workbook.py", "--out", str(out)],
                    check=True, capture_output=True)
     r = subprocess.run([sys.executable, os.path.abspath("sport_tabs.py"),
                         "--workbook", str(out)], capture_output=True, text=True)
-    assert r.returncode == 0
-    assert "--add Basketball" in r.stdout
+    assert r.returncode == 0, r.stdout + r.stderr
+    for game in ("Football", "Basketball", "Baseball", "Pokemon",
+                 "Palworld", "One Piece", "Disney"):
+        assert game in r.stdout
+    assert "0 card(s)" in r.stdout

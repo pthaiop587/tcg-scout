@@ -47,8 +47,13 @@ CARD_CONDITIONS = [
     ("Poor",                400013),
 ]
 
-SPORTS = ["Football", "Basketball", "Baseball", "Hockey", "Soccer",
-          "Pokemon", "One Piece", "Lorcana", "Magic", "Other"]
+SPORTS = ["Football", "Basketball", "Baseball", "Pokemon", "Palworld",
+          "One Piece", "Disney", "Other"]
+
+# One tab each, built empty so a category can be started before its first card.
+# "Other" deliberately has no tab -- it is the bucket for a one-off, and a tab
+# called Other that fills up with unrelated things is how a category gets lost.
+GAME_TABS = [g for g in SPORTS if g != "Other"]
 
 GRADERS = [
     "Professional Sports Authenticator (PSA)",
@@ -488,6 +493,25 @@ def build_lists(wb):
 
 
 # ------------------------------------------------------------------ Read me
+SHORT_README = [
+    ("Inventory",
+     "EVERY card, whatever the game. One row each, and the only tab you type "
+     "cards into. Type into the white columns; the shaded ones work themselves "
+     "out. The eBay title builds itself and Len turns red past 80 characters, "
+     "which is eBay's hard limit. Set Sport or game on every row -- that is "
+     "what sorts a card onto its own tab."),
+    ("eBay",
+     "The upload file, written for you by make_ebay_csv.py. Do not type here, "
+     "it gets rebuilt. It holds only the rows marked Unlisted, so a card set to "
+     "Review is deliberately left out until you have settled it."),
+    ("Football, Basketball, Baseball, Pokemon, Palworld, One Piece, Disney",
+     "One read-only view per game, rebuilt from Inventory by sport_tabs.py. "
+     "They are copies -- type into Inventory, not into these, or your typing is "
+     "overwritten next time they rebuild. They exist so one game can be looked "
+     "at on its own without splitting the record, which would break the SKUs "
+     "and quietly leave cards out of the eBay upload."),
+]
+
 README = [
     ("Summary",
      "What it all adds up to: spent, held, sold, and whether it is working. "
@@ -545,7 +569,7 @@ STEPS = [
 ]
 
 
-def build_readme(wb):
+def build_readme(wb, full=False):
     ws = wb.create_sheet("Read me", 0)
     ws.column_dimensions["A"].width = 20
     ws.column_dimensions["B"].width = 96
@@ -566,7 +590,8 @@ def build_readme(wb):
     r += 1
     ws.cell(row=r, column=1, value="The tabs").font = Font(bold=True, size=11)
     r += 1
-    for name, what in README:
+    tabs = SHORT_README + (README if full else [])
+    for name, what in tabs:
         c = ws.cell(row=r, column=1, value=name)
         c.font = Font(bold=True)
         c.alignment = Alignment(vertical="top")
@@ -597,7 +622,7 @@ def build_readme(wb):
 
 
 def build_upload_placeholder(wb):
-    ws = wb.create_sheet("eBay upload")
+    ws = wb.create_sheet("eBay")
     ws.column_dimensions["A"].width = 100
     ws["A1"] = "Generated -- do not type here"
     ws["A1"].font = TITLEFONT
@@ -617,6 +642,11 @@ def main():
                          "400). Fewer makes a much smaller file, which matters "
                          "when it has to be uploaded; drag the last row down "
                          "to get more.")
+    ap.add_argument("--full", action="store_true",
+                    help="also build Purchases, Box log, Expenses, Sales, "
+                         "Photos, Summary, Audit and Reference. The default is "
+                         "the short layout: Inventory, eBay, a tab per game, "
+                         "and the Read me.")
     ap.add_argument("--google", action="store_true",
                     help="build the copy meant for Google Sheets: the Photos "
                          "tab draws each card from its published URL instead "
@@ -636,22 +666,33 @@ def main():
 
     wb = Workbook()
     wb.remove(wb.active)
-    build_readme(wb)
+    build_readme(wb, full=args.full)
     build_inventory(wb, google=args.google)
     build_upload_placeholder(wb)
-    # the money side: what went out, against what came back
-    extra.build_purchases(wb, head, note, dv, NOTEFILL, BOX,
-                          google=args.google)
-    build_boxlog(wb, google=args.google)
-    extra.build_expenses(wb, head, note, dv, NOTEFILL)
-    build_sales(wb, google=args.google)
-    extra.build_photos(wb, head, note, dv, NOTEFILL, google=args.google)
-    # these two read every other tab, so they are built last
-    extra.build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
-                        NOTEFILL, INV_ROWS)
-    extra.build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
-                      NOTEFILL, INV_ROWS)
-    build_reference(wb)
+
+    if args.full:
+        # the money side: what went out, against what came back
+        extra.build_purchases(wb, head, note, dv, NOTEFILL, BOX,
+                              google=args.google)
+        build_boxlog(wb, google=args.google)
+        extra.build_expenses(wb, head, note, dv, NOTEFILL)
+        build_sales(wb, google=args.google)
+        extra.build_photos(wb, head, note, dv, NOTEFILL, google=args.google)
+        # these two read every other tab, so they are built last
+        extra.build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
+                            NOTEFILL, INV_ROWS)
+        extra.build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
+                          NOTEFILL, INV_ROWS)
+        build_reference(wb)
+
+    # one empty view tab per game, so a category can be started before its
+    # first card. sport_tabs.py rebuilds these from Inventory afterwards.
+    import sport_tabs
+    for game in GAME_TABS:
+        sport_tabs.build_tab(wb, game, [], [c[0] for c in INVENTORY_COLS])
+
+    # Lists is hidden and only feeds the Graded by dropdown, whose entries are
+    # too long for an inline list. It is not a tab anybody sees.
     build_lists(wb)
     wb.save(args.out)
     print("wrote %s (%d tabs)" % (args.out, len(wb.sheetnames)))

@@ -315,7 +315,7 @@ async function catchDownloads(page, fn){
   await page.click('#sc-blank');
   await page.waitForTimeout(300);
   check(await page.locator('.qrow').count() === 1, 'the blank card should be a row');
-  check(await page.locator('.noshot').count() === 1, 'it should show a "no picture" placeholder');
+  check(await page.locator('.qrow .noshot').count() === 1, 'it should show a "no picture" placeholder');
   check(await page.locator('.qacts').first().locator('button').nth(1).textContent()
         === 'Add picture', 'a card with no picture should offer Add picture');
 
@@ -346,7 +346,7 @@ async function catchDownloads(page, fn){
   await page.waitForTimeout(3000);
   check(await page.locator('.qrow').count() === 1,
         'adding the picture later must not make a second card');
-  check(await page.locator('.noshot').count() === 0, 'the placeholder should be gone');
+  check(await page.locator('.qrow .noshot').count() === 0, 'the placeholder should be gone');
   check(await page.evaluate(() => SC_QUEUE.length) === 1,
         'the empty stand-in should have been dropped, got ' + await page.evaluate(() => SC_QUEUE.length));
 

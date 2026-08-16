@@ -6,6 +6,8 @@ _site/
 # inventory, what each box cost and what it sold for. CI builds a blank one
 # for the download link instead.
 Card Run HQ - Master.xlsx
+Card Run HQ - Master (backup *).xlsx
+Card Run HQ - Master.new.xlsx
 ebay-upload-*.csv
 ebay-template.csv
 ~$*.xlsx

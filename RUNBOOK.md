@@ -40,7 +40,8 @@ this machine.
 
 | Script | What it does |
 |---|---|
-| `python make_workbook.py` | Builds a fresh workbook, 12 tabs. Refuses to overwrite without `--force`. |
+| `python make_workbook.py` | Builds a fresh workbook: **10 tabs** — Read me, Inventory, eBay, and one per game. `--full` adds Purchases, Box log, Expenses, Sales, Photos, Summary, Audit, Reference. Refuses to overwrite without `--force`. |
+| `python fill_skus.py --go` | Gives a SKU to every card typed straight into Inventory. Never renumbers one that has one. |
 | `python upgrade_workbook.py` | Moves an **existing** workbook onto the current layout **keeping what you typed**. Dry run by default; `--go` to do it. Backs up first, always. |
 | `python embed_photos.py` | Rewrites the **Photos** tab from what is in `photos/`, thumbnails and all. Run it after adding photos. |
 | `python export_inventory.py` | Puts the Inventory tab onto the dashboard's **My inventory** tab. `--publish` also writes the money-free copy for the public site. |
@@ -49,22 +50,38 @@ this machine.
 | `python add_card.py --player "..." --year 2025 --brand "..." ...` | Appends one card to Inventory and assigns the next SKU. |
 | `python make_ebay_csv.py` | Writes `ebay-upload-<date>.csv` from every Inventory row marked **Unlisted**, and rewrites the workbook's eBay upload tab to match. `--sku CRH-0001` for one card, `--all` to ignore status. |
 
-### The 12 tabs
+### The tabs
+
+**The default is ten tabs**, which is all the day-to-day needs:
 
 | Tab | What it is for |
 |---|---|
-| **Summary** | Spent, held, sold, and whether it is working. All formulas — nothing typed. |
-| **Audit** | What to fix before it costs you. All live counts. Zero down the column = clean. |
-| **Inventory** | Every card, one row. The master; everything else reads from it. |
-| **eBay upload** | Written by `make_ebay_csv.py`. Do not type here. |
-| **Purchases** | Every buy **with its receipt** — boxes, singles, lots, supplies. |
-| **Box log** | What came *out* of a box, against what it cost. |
-| **Expenses** | Toploaders, mailers, postage, subscriptions — the costs that are not a card. |
-| **Sales** | What sold and what was left after fees. |
-| **Photos** | Which cards have a picture, **with the picture in it**. |
-| **Reference** | The eBay codes, with sources. |
-| **Lists** | Dropdown sources. Leave it alone. |
-| **Read me** | The same thing you are reading, inside the file. |
+| **Read me** | What every tab is, inside the file. |
+| **Inventory** | **Every card, whatever the game.** One row each, and the only tab you type cards into. |
+| **eBay** | The upload, written by `make_ebay_csv.py`. Do not type here. Holds only rows marked Unlisted. |
+| **Football, Basketball, Baseball, Pokemon, Palworld, One Piece, Disney** | One read-only view per game, rebuilt from Inventory. |
+
+`Lists` is hidden — it feeds the Graded-by dropdown, whose entries are too long
+for an inline list. It is not a tab anybody sees.
+
+**`--full` brings back the rest** when you want them: Purchases (buys with
+receipts), Box log, Expenses, Sales, Photos, Summary and Audit. `upgrade_workbook.py --full`
+moves an existing workbook onto that layout instead.
+
+### Set "Sport or game" on every row
+
+It is a dropdown, and it is what sorts a card onto its game tab and drives the
+dashboard's Sport filter. A card with it blank sits in Inventory and appears on
+no game tab at all.
+
+### A card typed by hand has no SKU
+
+`file_batch.py` and `add_card.py` assign one; typing into the sheet does not.
+A row without a SKU is **invisible** — `make_ebay_csv.py` cannot export it,
+`add_photos.py` has nothing to file a picture against, and it never reaches the
+dashboard. `refresh.py` runs `fill_skus.py` every time for exactly that reason.
+It only ever fills an empty cell, and never renumbers a card that has one,
+because a SKU is what your photos and any live listing are named after.
 
 **Lot ID is the thread.** Put the same code on the Purchases row, the Box log
 row and every Inventory row that came out of that box, and cost per card stops

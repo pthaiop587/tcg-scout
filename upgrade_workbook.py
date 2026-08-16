@@ -71,6 +71,10 @@ def main():
     p = argparse.ArgumentParser(
         description="Rebuild the workbook on the current layout, keeping the data.")
     p.add_argument("--workbook", default=WORKBOOK)
+    p.add_argument("--full", action="store_true",
+                   help="rebuild on the FULL layout (Purchases, Box log, "
+                        "Expenses, Sales, Photos, Summary, Audit, Reference) "
+                        "instead of the short one")
     p.add_argument("--go", action="store_true",
                    help="do it; without this it only says what it would do")
     a = p.parse_args()
@@ -106,14 +110,19 @@ def main():
     print("\nbacked up to: %s" % backup)
 
     fresh = "%s.new.xlsx" % os.path.splitext(a.workbook)[0]
-    subprocess.run([sys.executable, "make_workbook.py", "--out", fresh, "--force"],
-                   check=True, capture_output=True)
+    build = [sys.executable, "make_workbook.py", "--out", fresh, "--force"]
+    if a.full:
+        build.append("--full")
+    subprocess.run(build, check=True, capture_output=True)
     new = load_workbook(fresh)
 
     lost = {}
     for name, rows in carried.items():
         if name not in new.sheetnames:
-            lost[name] = "the tab no longer exists"
+            # the short layout has no home for it -- say so loudly, because the
+            # rows are only in the backup from here on
+            lost[name] = ("%d row(s) -- the short layout has no %s tab. "
+                          "Re-run with --full to keep it." % (len(rows), name))
             continue
         ws = new[name]
         hdr = headers(ws)
