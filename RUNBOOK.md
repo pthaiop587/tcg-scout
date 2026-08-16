@@ -447,6 +447,46 @@ profile ever goes back to PDF, put those through `crop_scans.py`. Use the
 script for a big folder anyway: one command for the lot, and it does not ask
 the browser to hold twenty 33-megapixel pages at once.
 
+## Opening a box: the rip sheet
+
+```
+python ripsheet.py                 # every set it knows
+python ripsheet.py --set asg       # just one
+python ripsheet.py --list          # what it knows
+```
+
+Writes `Rip sheet.html` — one self-contained page, no network, fine on a phone
+next to the pile. It lists what is actually worth pulling out of a box, with
+the odds and with what the card *looks like*, because you sort by eye and not
+by checklist. Tick a line as you find it, type the player, then **Copy paste
+lines** and paste into the card desk's *Or paste a line* box.
+
+It holds nothing. Close it and it is gone — copy before you leave. That is
+deliberate: a second place cards live is the one thing this project keeps
+refusing to build.
+
+### It cannot go on a sport tab
+
+The obvious home for a checklist is the Baseball tab, and that is exactly wrong.
+Those tabs are views — `sport_tabs.py` rewrites them from Inventory on every
+refresh, so a checklist typed there survives until the next `Update dashboard`
+and then does not. The sheet is a separate page for that reason.
+
+### The field order is a real contract
+
+The sheet writes `card | set | number | variant | condition | qty | worth |
+sports or tcg` and `hq.js` reads it back **by position**. Nothing in either file
+announces that. Reorder one side and there is no error — cards import with the
+parallel sitting in the condition column and the worth in the quantity.
+`test_ripsheet.py` reads the order out of `hq.js` and compares, rather than
+restating it, so it can actually fail when it should.
+
+### No prices are baked in
+
+On purpose. A number written into a file in August is a lie by October. The
+sheet tells you *which* cards are worth looking up — that part does not go
+stale — and leaves the price to you.
+
 ### Tests
 
 ```
