@@ -469,6 +469,7 @@ BODY = f'''<title>Card Run HQ</title>
   <div class="navgroup">
     <p class="lbl">Sell &mdash; my cards</p>
     <button class="navlink" role="tab" id="t-add"   aria-controls="p-add"   aria-selected="false"><i></i>Card desk</button>
+    <button class="navlink" role="tab" id="t-sheet" aria-controls="p-sheet" aria-selected="false"><i></i>Master spreadsheet</button>
   </div>
 
   <div class="navgroup">
@@ -1372,6 +1373,42 @@ BODY = f'''<title>Card Run HQ</title>
    <tbody id="cd-sets"></tbody></table></div>
   <p class="hint">The desktop app can sync any set from TCGCSV. This page carries a snapshot of the recent ones so it keeps working with no signal.</p>
  </details>
+</div>
+
+<!-- ============ MASTER SPREADSHEET ============ -->
+<div role="tabpanel" id="p-sheet" aria-labelledby="t-sheet" hidden>
+ <section>
+  <h2>Master spreadsheet</h2>
+  <p class="sub">One workbook holding the inventory, the box log, the sales record and the eBay upload. This page is a snapshot you read; the workbook is the thing you type into.</p>
+
+  <p><a class="btn2 go" href="Card-Run-HQ-Master.xlsx" download>Download the workbook</a></p>
+  <p class="hint">Opens in Excel, Numbers or Google Sheets. Dropdowns, formulas and the eBay codes are already in it. This link hands you an <b>empty</b> one &mdash; your filled-in copy stays on your own machine, because this site is public and the workbook holds what you paid for everything.</p>
+
+  <div class="bxh">What is in it</div>
+  <div class="scroll"><table>
+   <thead><tr><th>Tab</th><th>What it holds</th></tr></thead>
+   <tbody>
+    <tr><td><b>Inventory</b></td><td>Every card, one row each. Type into the white columns; the shaded ones work themselves out. The eBay title builds itself and turns red past 80 characters, which is eBay&rsquo;s hard limit. Each row carries a <b>sold</b> link straight to the comps for that exact card.</td></tr>
+    <tr><td><b>eBay upload</b></td><td>Written by the export script. Holds only the rows marked Unlisted.</td></tr>
+    <tr><td><b>Box log</b></td><td>Every box bought: where, when, cost with tax, cards pulled, what they were worth. <b>Net vs cost</b> is the number that says whether ripping beat selling it sealed.</td></tr>
+    <tr><td><b>Sales</b></td><td>What sold and what survived the fees, measured against cost basis.</td></tr>
+    <tr><td><b>Reference</b></td><td>The eBay codes the upload depends on, and where each one came from. Check here first if an upload is rejected.</td></tr>
+   </tbody>
+  </table></div>
+
+  <div class="bxh">Photo to listing</div>
+  <ol class="steps">
+   <li><div>Photograph the card, front and back, and send it to Claude.</div></li>
+   <li><div>Claude reads the set, number and parallel off the card and adds the row.</div></li>
+   <li><div>Tap <b>sold</b> in that row to see what it actually sells for. Put that in Market value.</div></li>
+   <li><div>Set an Ask price. Fees, net and margin fill in on their own.</div></li>
+   <li><div>Run <span class="mono">python make_ebay_csv.py</span> and upload the CSV it writes.</div></li>
+  </ol>
+
+  <div class="note warn"><b>Download your own template before the first upload.</b> eBay retired File Exchange &mdash; bulk uploads now go through <b>Seller Hub &rarr; Reports &rarr; Uploads</b>. The header row there is tied to your account and template version, so a header copied out of documentation can be rejected even when every value under it is right. Download yours once, save it next to the workbook as <span class="mono">ebay-template.csv</span>, and the script matches it column for column. Upload one card first and read the results report before doing the rest in bulk.</div>
+
+  <div class="note"><b>Photos have to be hosted somewhere.</b> A bulk upload carries image <i>links</i>, not image files. Drop photos in the <span class="mono">photos</span> folder named after the SKU &mdash; <span class="mono">CRH-0001.jpg</span>, <span class="mono">CRH-0001-back.jpg</span> &mdash; and they publish with this site, which makes them valid eBay picture URLs.</div>
+ </section>
 </div>
 
 <!-- ============ WHERE PRICES COME FROM ============ -->

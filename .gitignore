@@ -2,6 +2,14 @@
 card-run-hq.html
 _site/
 
+# The working workbook and its exports stay off a PUBLIC repo - they hold the
+# inventory, what each box cost and what it sold for. CI builds a blank one
+# for the download link instead.
+Card Run HQ - Master.xlsx
+ebay-upload-*.csv
+ebay-template.csv
+~$*.xlsx
+
 # local thumbnail download cache (lives in the tcg-lister project, but just in case)
 .thumbcache/
 

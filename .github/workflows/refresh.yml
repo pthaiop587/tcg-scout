@@ -41,6 +41,21 @@ jobs:
           mkdir -p _site
           python build_all.py . _site/index.html
 
+      # A BLANK workbook is generated here rather than committed, because this
+      # repo is public and a filled-in one would publish the inventory and
+      # what each box cost. Photos are published deliberately: a bulk upload
+      # carries image links, never image files, so they need a public host.
+      - name: Publish the workbook and card photos
+        run: |
+          pip install --quiet openpyxl
+          python make_workbook.py -o _site/Card-Run-HQ-Master.xlsx
+          if [ -d photos ] && [ -n "$(ls -A photos 2>/dev/null)" ]; then
+            cp -r photos _site/photos
+            echo "published $(ls _site/photos | wc -l) photo(s)"
+          else
+            echo "no photos yet"
+          fi
+
       - name: Fail loudly if the build produced something implausible
         run: |
           test -f _site/index.html
