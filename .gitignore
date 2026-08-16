@@ -1,32 +1,20 @@
-# build output - CI regenerates this into _site/ on every run
-card-run-hq.html
-_site/
-
 # The working workbook and its exports stay off a PUBLIC repo - they hold the
-# inventory, what each box cost and what it sold for. CI builds a blank one
-# for the download link instead.
+# inventory, what each box cost and what it sold for.
 Card Run HQ - Master.xlsx
-Card Run HQ - Master (backup *).xlsx
+Card Run HQ - Master (*).xlsx
 Card Run HQ - Master.new.xlsx
 ebay-upload-*.csv
 ebay-template.csv
+
+# Excel's lock file, dropped beside a workbook it has open. inuse.py looks for
+# it; it should never be committed.
 ~$*.xlsx
 
-# local thumbnail download cache (lives in the tcg-lister project, but just in case)
-.thumbcache/
-
-# Scan staging. photos/ itself IS published -- that is what makes the eBay
-# picture URLs work -- but these two are the bench either side of it: pages
-# waiting to be cut up, and crops not yet identified or filed onto a SKU.
-# Neither belongs on a public repo.
+# Scan staging: pages waiting to be cut up, and crops not yet identified or
+# filed onto a SKU. photos/ itself is kept -- that is where filed card
+# pictures live.
 photos/scans/
 photos/crops/
-
-# The full inventory export: cost, notes, what every card is worth. It feeds
-# the dashboard's My inventory tab on this machine only. The public site can
-# show inventory-public.json instead, which export_inventory.py --publish
-# writes without any of the money, and which IS committed on purpose.
-inventory.json
 
 __pycache__/
 *.pyc
