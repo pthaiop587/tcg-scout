@@ -25,3 +25,4 @@ __pycache__/
 # and every figure it read. Both are about YOUR cards and what they cost.
 price_history.csv
 price-check.log
+daily-update.log

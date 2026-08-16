@@ -29,6 +29,53 @@ to stop promising something it no longer does.
 The published artifact at claude.ai is a separate thing and has to be deleted
 from claude.ai; no script here can reach it.
 
+## The 8am price check (16 Aug 2026)
+
+A Windows scheduled task, **"Card Run HQ - daily price check"**, runs every day
+at 08:00. It does two things in order:
+
+1. `git pull` — no point checking prices with last week's code
+2. `python prices.py --daily` — refresh raw / PSA 9 / PSA 10 for every card,
+   record when each last sold and what that sale made, and report what moved
+
+Roughly four minutes: one page per card with a pause between.
+
+### The launcher lives outside the repo
+
+`G:\Claude\card-run-daily.cmd`, **not** in the project folder. Its first act is
+to `git pull` that folder, and a launcher sitting inside the thing it is
+updating is one that can be overwritten halfway through doing it.
+
+It is therefore not in version control. If it is ever lost, it is four lines:
+`cd` to the project, `git pull`, `python prices.py --daily`.
+
+### What it leaves behind
+
+| File | What is in it |
+|---|---|
+| `price-check.log` | The audit, one block per run: what moved, by how much |
+| `price_history.csv` | Every figure from every run — 180 rows a day, so this becomes a trend |
+| `daily-update.log` | What `git pull` did, and the exit code |
+
+Both of the first two are gitignored: they are about your cards and what they
+cost.
+
+### If it does nothing one morning
+
+**The workbook was open in Excel.** `prices.py` refuses rather than racing
+Excel for the file, exits non-zero, and the reason is in `daily-update.log`.
+Close the workbook and double-click the launcher.
+
+**The pull was blocked.** Usually an untracked file in the project folder with
+the same name as one being pulled — git names it in `daily-update.log`. Move
+or delete that file.
+
+### Changing it
+
+Task Scheduler, under that name. Any time you like; 08:00 was picked because
+eBay sales settle overnight, so the movement you see with your coffee is
+yesterday's.
+
 ## The master workbook and eBay uploads
 
 `Card Run HQ - Master.xlsx` in this folder is the real record. It is
