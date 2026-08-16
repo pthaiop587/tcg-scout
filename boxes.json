@@ -1,0 +1,86 @@
+{
+  "_comment": "Box breakdown library. Add an entry per product bought or considered; build_all.py renders it into the Box breakdowns tab. Keep every claim sourced - if a figure is not verified, leave it out rather than guess.",
+  "boxes": [
+    {
+      "id": "prizm-fb-2025-mega",
+      "name": "2025 Panini Prizm Football — Mega Box",
+      "cat": "Football · Panini",
+      "owned": true,
+      "added": "2026-08-15",
+      "paid": 69.99,
+      "prices": "Shelf $69.99 · DA Card World $59.95 · Dick's $89.45 · PriceCharting ~$50",
+      "config": "6 packs × 7 cards = <b>42 cards</b>",
+      "tone": "watch",
+      "guaranteed": [
+        "<b>1 memorabilia card</b> — a real hit in every box",
+        "<b>5 Neon Green Pulsar Prizms</b> (3 base, 2 rookie) — mega-exclusive, do not exist in hobby"
+      ],
+      "typical": ["10 rookies", "3 base or rookie Prizms", "2 inserts"],
+      "chase": [
+        {"n": "301", "p": "Travis Hunter", "note": "The chase. Heisman winner, only two-way player in the league. Top Prizm autos run $400–600 in PSA 10."},
+        {"n": "315", "p": "Ashton Jeanty", "note": "First RB taken top-10 since Saquon Barkley. Top autos $200–350, base rookies $5–12."},
+        {"n": "352", "p": "Cam Ward", "note": "#1 overall pick. Note he has <b>no autographs at all</b> in 2025 Prizm."},
+        {"n": "302", "p": "Shedeur Sanders", "note": "High-attention quarterback."},
+        {"n": "332", "p": "Jaxson Dart", "note": "Quarterback, rookie class."},
+        {"n": "—", "p": "Tetairoa McMillan", "note": "Silver auto PSA 10 runs $250–400; raw base $8–15."},
+        {"n": "—", "p": "Colston Loveland / Cam Skattebo", "note": "Also carry autographs in the wider set."}
+      ],
+      "values": [
+        ["Base rookies", "$5–15 — above eBay's break-even, and squarely in the COMC band"],
+        ["Base veterans (300-card set)", "Cents. Bulk only, do not list individually"],
+        ["Numbered parallels", "Hold value far better than base — always set these aside"],
+        ["Neon Green Pulsar", "Entirely player-dependent; a Hunter or Jeanty is the real upside"]
+      ],
+      "notin": [
+        "<b>No guaranteed autograph.</b> They are seeded as rare pulls only",
+        "<b>Color Blast</b> is effectively a case hit — do not expect one",
+        "Manga inserts are the toughest short print in the product"
+      ],
+      "verdict": "Bought at $69.99 against a $59.95 distributor price, so it starts behind. Sealed resale would not recover it either, which makes opening the reasonable call once the money is spent — the upside is a Pulsar landing on a name."
+    },
+    {
+      "id": "signature-class-nba-2526-mega",
+      "name": "2025-26 Topps Signature Class NBA — Mega Box",
+      "cat": "Basketball · Topps",
+      "owned": false,
+      "added": "2026-08-15",
+      "paid": null,
+      "prices": "Retail $64.99",
+      "config": "10 packs × 8 cards = <b>80 cards</b>",
+      "tone": "skip",
+      "guaranteed": ["Nothing meaningful. The name says Signature; the odds do not."],
+      "typical": ["150-card base set, 50 rookies", "Paper and Chrome parallels", "Retail-exclusive Odyssey short prints"],
+      "chase": [
+        {"n": "—", "p": "Crystal Clear Autographs", "note": "<b>1:425.</b> On a 10-pack box that is roughly one autograph every 40-odd boxes, about $2,700 of product."},
+        {"n": "—", "p": "Odyssey short prints", "note": "Retail-exclusive to this Mega SKU — the only genuine reason it differs from any other box."},
+        {"n": "—", "p": "Dual and triple autos", "note": "15–20 copies each. Lottery territory."}
+      ],
+      "values": [
+        ["Veteran base", "<b>~383,000 print run per card.</b> Worthless by design"],
+        ["Rookie Chrome base", "~15,000 — 25× scarcer, the only base worth keeping"],
+        ["Inserts", "High Fidelity, Pure, Unfazed, Roses"]
+      ],
+      "notin": ["<b>No guaranteed autograph</b> despite the product name"],
+      "verdict": "The clearest example of a box priced above the expected value of its contents. If it appears at $64.99, the only question worth asking is whether it resells sealed above $65 — not what you might pull."
+    },
+    {
+      "id": "topps-chrome-bb-2026-mega",
+      "name": "2026 Topps Chrome Baseball — Mega Box",
+      "cat": "Baseball · Topps",
+      "owned": false,
+      "added": "2026-08-15",
+      "paid": null,
+      "prices": "Shelf $79.99 · a collector reported paying $84.23",
+      "config": "6 packs × 7 cards = <b>42 cards</b>",
+      "tone": "buy",
+      "guaranteed": ["<b>Mega-exclusive X-Fractor parallels</b> — this SKU is their only home"],
+      "typical": ["Chromium base set", "Inserts", "On-card autographs in the wider product"],
+      "chase": [
+        {"n": "—", "p": "X-Fractor parallels", "note": "Mega-box exclusive. The reason to buy this SKU over any other."}
+      ],
+      "values": [["Per-card cost", "About $2.00 a card at $84 — reviews rate it well"]],
+      "notin": [],
+      "verdict": "The best-reviewed box in the case at the time of looking, and $79.99 is under what at least one collector paid. Second choice behind Prizm on brand, first choice on reviews."
+    }
+  ]
+}

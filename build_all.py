@@ -398,6 +398,18 @@ else:
 
 # Thumbnails as data URIs. A published page's CSP blocks remote images, so the
 # picture has to travel inside the page. Produced by tcg-lister\fetch_thumbs.py.
+# Box breakdown library. One entry per product bought or considered -- adding a
+# box is a data edit, not a new tab, which is the only way this stays usable
+# once there are thirty of them.
+_boxes_path = f"{SP}/boxes.json"
+if os.path.exists(_boxes_path):
+    BOXES_JSON = json.dumps(
+        json.loads(io.open(_boxes_path, encoding="utf-8").read())["boxes"],
+        separators=(",", ":"))
+    BOX_N = len(json.loads(BOXES_JSON))
+else:
+    BOXES_JSON, BOX_N = "[]", 0
+
 _thumbs_path = f"{SP}/thumbs.json"
 if os.path.exists(_thumbs_path):
     THUMBS_JSON = io.open(_thumbs_path, encoding="utf-8").read()
@@ -413,6 +425,7 @@ JS  = JS.replace("__ROWS__", json.dumps(rows, separators=(",", ":"))) \
         .replace("__CARDS__", CARDS_JSON) \
         .replace("__BUILT__", json.dumps(TODAY.isoformat())) \
         .replace("__THUMBS__", THUMBS_JSON) \
+        .replace("__BOXES__", BOXES_JSON) \
         .replace("__PTYPES__", json.dumps(
             [{"t": lab, "re": pat, "blurb": blurb, "ship": ship,
               "st": next((s for s in pt_stats if s["t"] == lab), None)}
@@ -441,6 +454,7 @@ BODY = f'''<title>Card Run HQ</title>
     <p class="lbl">Buy &mdash; scouting</p>
     <button class="navlink" role="tab" id="t-drops" aria-controls="p-drops" aria-selected="true"><i></i>Drops</button>
     <button class="navlink" role="tab" id="t-shelf" aria-controls="p-shelf" aria-selected="false"><i></i>Shelf check</button>
+    <button class="navlink" role="tab" id="t-boxes" aria-controls="p-boxes"   aria-selected="false"><i></i>Box breakdowns</button>
     <button class="navlink" role="tab" id="t-pc"    aria-controls="p-pc"    aria-selected="false"><i></i>Price check anything</button>
     <button class="navlink" role="tab" id="t-types" aria-controls="p-types" aria-selected="false"><i></i>Box types &amp; ROI</button>
     <button class="navlink" role="tab" id="t-shops" aria-controls="p-shops" aria-selected="false"><i></i>Online shops</button>
@@ -586,6 +600,28 @@ BODY = f'''<title>Card Run HQ</title>
  <section>
   <div class="note warn"><b>A high multiple usually means it&rsquo;s already gone.</b> Prismatic Evolutions sits at 4&times; precisely because shelves got cleared. A &ldquo;grab it instantly if you see it&rdquo; list, not a shopping list.</div>
   <div class="note"><b>Where you can buy it.</b> <span class="wtag w-store">store</span> Target / Walmart / card shops. <span class="wtag w-online">online</span> Pok&eacute;mon Center only. <span class="wtag w-preorder">preorder</span> not released, price is a guess.</div>
+ </section>
+</div>
+
+<!-- ============ BOX BREAKDOWNS ============ -->
+<div role="tabpanel" id="p-boxes" aria-labelledby="t-boxes" hidden>
+ <section>
+  <h2>Box breakdowns <span class="hint">{BOX_N} products</span></h2>
+  <div class="rule"><p class="big">What you can actually pull, per product</p>
+   <p>One entry per box &mdash; the configuration, what is guaranteed, the cards worth chasing by number, and what the box quietly does <i>not</i> contain. Buy something new and I add it here, so the next time you see it on a shelf you already know what you are aiming at.</p></div>
+  <div class="searchbar sticky2">
+   <input id="bx-q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Filter by product, sport or brand&hellip;">
+   <button class="btn2" id="bx-clear">Clear</button>
+  </div>
+  <div id="bx-out"></div>
+ </section>
+
+ <section><h2>How to read these</h2>
+  <div class="teach">
+   <p><b>&ldquo;Guaranteed&rdquo; is the only number that matters up front.</b> Every box advertises its best possible card; the useful question is what lands in <i>every</i> box. A guaranteed memorabilia card beats a 1:425 autograph you will not see for forty boxes.</p>
+   <p><b>Check what is missing.</b> The <i>Not in this box</i> line is usually more informative than the chase list &mdash; a product called Signature Class with no guaranteed signature tells you what it is.</p>
+   <p style="margin-bottom:0"><b>Print runs decide base value.</b> A 383,000-copy veteran base card is bulk no matter how good the box looked. Scarce rookie or chrome base is where retail holds value.</p></div>
  </section>
 </div>
 

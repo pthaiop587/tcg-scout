@@ -118,6 +118,73 @@ function checkLinks(product, game){
               c.s + '</a>').join('') + '</span>';
 }
 
+/* ================= BOX BREAKDOWNS =================
+   A searchable library rather than a tab per product -- adding a box is a line
+   in boxes.json. Every claim here is sourced; anything unverified is left out
+   rather than estimated.                                                    */
+const BOXES = __BOXES__;
+
+const bxEl = document.getElementById('bx-q');
+if (bxEl) {
+  const li = (arr, cls) => arr && arr.length
+    ? '<ul class="bxlist ' + (cls || '') + '">' + arr.map(x => '<li>' + x + '</li>').join('') + '</ul>' : '';
+
+  function bxCard(b){
+    const paid = b.paid != null
+      ? '<span class="pill buy">you paid $' + b.paid.toFixed(2) + '</span>' : '';
+    const chase = (b.chase || []).map(c =>
+      '<tr><td class="mono">' + esc(c.n) + '</td><td><b>' + esc(c.p) + '</b></td>' +
+      '<td class="wnote">' + c.note + '</td></tr>').join('');
+    const vals = (b.values || []).map(v =>
+      '<tr><td><b>' + esc(v[0]) + '</b></td><td class="wnote">' + v[1] + '</td></tr>').join('');
+    const q = encodeURIComponent(b.name.replace(/[^\w\s]/g, ' ').replace(/\s+/g, ' ').trim());
+    return '<article class="card ' + (b.tone || 'flag') + '"><div class="pad">' +
+      '<div class="shophead"><b class="pname">' + esc(b.name) + '</b>' + paid + '</div>' +
+      '<div class="shopmeta"><span><b>' + esc(b.cat) + '</b></span>' +
+        '<span>' + b.config + '</span>' +
+        (b.prices ? '<span>' + esc(b.prices) + '</span>' : '') + '</div>' +
+
+      (b.guaranteed && b.guaranteed.length
+        ? '<div class="bxh">Guaranteed in every box</div>' + li(b.guaranteed, 'good') : '') +
+      (b.typical && b.typical.length
+        ? '<div class="bxh">Typical contents</div>' + li(b.typical) : '') +
+      (chase ? '<div class="bxh">Worth pulling out</div><div class="scroll"><table>' +
+        '<thead><tr><th>#</th><th>Card</th><th>Why</th></tr></thead><tbody>' +
+        chase + '</tbody></table></div>' : '') +
+      (vals ? '<div class="bxh">What things are worth</div><div class="scroll"><table><tbody>' +
+        vals + '</tbody></table></div>' : '') +
+      (b.notin && b.notin.length
+        ? '<div class="bxh warnh">Not in this box</div>' + li(b.notin, 'bad') : '') +
+      (b.verdict ? '<div class="bxh">Verdict</div><p class="shopnote">' + b.verdict + '</p>' : '') +
+
+      '<div class="linkrow">' +
+        '<a class="buylink hot" target="_blank" rel="noopener nofollow" href="' +
+          'https://www.ebay.com/sch/i.html?_nkw=' + q + '&LH_Sold=1&LH_Complete=1&_sop=13">eBay sold</a>' +
+        '<a class="buylink" target="_blank" rel="noopener nofollow" href="' +
+          'https://www.pricecharting.com/search-products?q=' + q + '&type=prices">PriceCharting</a>' +
+        '<a class="buylink" target="_blank" rel="noopener nofollow" href="' +
+          'https://www.cardboardconnection.com/?s=' + q + '">Odds &amp; checklist</a>' +
+      '</div></div></article>';
+  }
+
+  const bxRender = () => {
+    const t = bxEl.value.trim().toLowerCase();
+    const hits = BOXES.filter(b => !t ||
+      (b.name + ' ' + b.cat + ' ' + (b.verdict || '')).toLowerCase().includes(t));
+    const out = document.getElementById('bx-out');
+    out.innerHTML = hits.length
+      ? hits.map(bxCard).join('')
+      : '<p class="hint">Nothing matches. Ask me to add it &mdash; a new box is one entry in ' +
+        '<span class="mono">boxes.json</span>, not a new tab.</p>';
+  };
+  let bxT = null;
+  bxEl.addEventListener('input', () => { clearTimeout(bxT); bxT = setTimeout(bxRender, 110); });
+  document.getElementById('bx-clear').addEventListener('click', () => {
+    bxEl.value = ''; bxRender(); bxEl.focus();
+  });
+  bxRender();
+}
+
 /* ================= PRICE CHECK =================
    Type anything -- including things this dashboard has never heard of, like a
    sports mega box -- and get every price source in one tap, plus the local

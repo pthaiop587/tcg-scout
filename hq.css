@@ -170,6 +170,22 @@ color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:1p
 letter-spacing:0}
 .tierfold>*+*{margin-top:11px}
 
+/* ---------------- box breakdowns ---------------- */
+.bxh{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink3);
+font-weight:750;margin-top:11px}
+.bxh.warnh{color:var(--skip)}
+.bxlist{margin:5px 0 0;padding-left:17px;font-size:12.5px;color:var(--ink2)}
+.bxlist li{margin:3px 0}
+.bxlist b{color:var(--ink)}
+.bxlist.good li::marker{color:var(--buy)}
+.bxlist.bad li::marker{color:var(--skip)}
+#bx-out .card{margin-top:12px}
+#bx-out table{min-width:420px}
+#bx-out td{padding:8px 10px;vertical-align:top}
+#bx-q{flex:1;min-width:0;padding:13px 15px;font-size:16.5px;border-radius:9px;
+border:1px solid var(--accent);background:var(--surface);color:var(--ink);font-family:inherit}
+#bx-q:focus{outline:2px solid var(--accent);outline-offset:1px}
+
 /* ---------------- price check ---------------- */
 .searchbar.sticky2{position:sticky;top:0;z-index:15;background:var(--bg);padding:9px 0;margin-top:-9px}
 @media (max-width:899px){.searchbar.sticky2{top:57px}}
