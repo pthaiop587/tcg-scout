@@ -65,8 +65,15 @@ FALLBACK_HEADER = [
     "C:Team", "C:Autographed", "C:Graded", "C:Card Size", "C:Language",
     "C:Original/Licensed Reprint", "C:Type", "C:Vintage",
     "PicURL", "Description", "Format", "Duration", "StartPrice",
-    "Quantity", "Location", "DispatchTimeMax", "ReturnsAcceptedOption",
-    "ReturnsWithinOption", "RefundOption", "ShippingCostPaidByOption",
+    "Quantity", "Location", "DispatchTimeMax",
+    # Accounts opted into Business Policies -- most of them now -- take
+    # shipping, returns and payment from named profiles, and reject the
+    # loose fields below. Accounts that are not take the loose fields and
+    # ignore the profiles. Fill whichever pair your account uses; the other
+    # stays blank.
+    "ShippingProfileName", "ReturnProfileName", "PaymentProfileName",
+    "ReturnsAcceptedOption", "ReturnsWithinOption", "RefundOption",
+    "ShippingCostPaidByOption",
 ]
 
 
