@@ -13,6 +13,14 @@ ebay-template.csv
 # local thumbnail download cache (lives in the tcg-lister project, but just in case)
 .thumbcache/
 
+# Scan staging. photos/ itself IS published -- that is what makes the eBay
+# picture URLs work -- but these two are the bench either side of it: pages
+# waiting to be cut up, and crops not yet identified or filed onto a SKU.
+# Neither belongs on a public repo.
+photos/scans/
+photos/crops/
+
 __pycache__/
 *.pyc
+.pytest_cache/
 .DS_Store

@@ -74,6 +74,81 @@ itself in when a matching file exists.
 
 ---
 
+## Scanning cards: a whole sheet in, one card out
+
+The Brother scans a full page at 300 dpi and writes a **PDF** to `G:\Scans`,
+whatever is on the glass. Nothing downstream wants a page.
+
+### The normal run
+
+```
+python crop_scans.py --src "G:/Scans" --rotate 180
+```
+
+That reads every PDF (and image) in the folder, finds each card, straightens
+it, and writes one JPEG per card into `photos/crops/`. Add `--move` once you
+trust it and the source files clear themselves; add `--preview` to also get
+the page back with green boxes round what it took, which is the fastest way
+to see why a card was missed.
+
+Then file the crops onto SKUs:
+
+```
+python add_photos.py --src photos/crops --assign CRH-0001,CRH-0002 --pairs
+```
+
+**Scan front, back, front, back** and `--pairs` maps them two at a time. The
+crops are numbered top row left to right then the next row down, and
+`--assign` files strictly in that order — so check the numbers before running
+it. A miscount here puts one card's photo on another card's listing.
+
+### `--rotate 180` is not a default, and should not be
+
+Nothing about the shape of a card says which end is the top. The four scans
+from 15 Aug all came out upside down because the cards went face down with
+their tops pointing away from the operator — consistent, but consistent to
+*that* habit. Scan one page, look at it, and set `--rotate` to match how you
+actually load the glass. Options are 0, 90, 180, 270.
+
+### The crop includes the toploader, deliberately
+
+A card in a toploader measures 3 × 4 inches, not 2.5 × 3.5, because the
+holder is what has the outer edge. Three ways of trimming to the card inside
+were tried and all failed on the same thing: on a flatbed, "plastic beyond
+the card" and "the card's own white border" are both a flat pale margin, so
+nothing can reliably tell them apart. Guessing wrong shears the border off,
+and border and centring are the first things a buyer inspects. A rim of
+plastic costs nothing and shows the card is protected. If a particular batch
+needs it, `--pad -40` trims a fixed 40 px off every side.
+
+### Or drop them in the page
+
+**Card desk → Drop your scans** does the same job in the browser for
+JPEG/PNG — drag them in, click to choose, or paste with `Ctrl+V`. Each card
+gets a tile with **Turn** (a quarter turn, for that one card) and **Not a
+card** (drop a false positive); **Turn all round** flips the whole batch
+180° in one click, which is the usual fix. **Save all crops** downloads them
+numbered in the order shown.
+
+It will **not** open a scanner PDF — the page has no way to read one, so
+those go through `crop_scans.py`. And it does not know *which* card it is;
+the page is static and published, so it can no more recognise a Prizm
+parallel than price one. Save the crops, then ask Claude to read them and
+paste the lines back into **Or paste a line**.
+
+### Tests
+
+```
+python -m pytest test_crop_scans.py     # 19, the script
+node test_scan.mjs                      # 17, the browser port
+```
+
+Both croppers must number cards identically, so the reading-order cases are
+duplicated on purpose. `crop_scans.py` needs `opencv-python`, `numpy` and
+`PyMuPDF`.
+
+---
+
 ## After a workstation restart: do nothing
 
 The dashboard is a **hosted page on claude.ai**. There is no local server, no

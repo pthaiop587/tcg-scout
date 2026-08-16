@@ -383,6 +383,10 @@ tier_nomsrp = "".join(nomsrp_card(r) for r in _nomsrp[:12])
 
 CSS = io.open(f"{SP}/hq.css", encoding="utf-8").read()
 JS  = io.open(f"{SP}/hq.js",  encoding="utf-8").read()
+# The scan cropper lives on its own because it is image processing, not
+# dashboard wiring, and mixing 350 lines of gradients into hq.js would bury
+# both. It is inlined straight after, so it still ships as one file.
+SCAN_JS = io.open(f"{SP}/scan.js", encoding="utf-8").read()
 
 # Singles catalogue for the Card Desk tabs. Produced by
 #   project tcg-lister\export_web_catalog.py
@@ -1201,6 +1205,49 @@ BODY = f'''<title>Card Run HQ</title>
 <!-- ============ CARD DESK ============ -->
 <div role="tabpanel" id="p-add" aria-labelledby="t-add" hidden>
  <section>
+  <h2>Drop your scans</h2>
+  <p class="hint">The scanner gives you a whole sheet with the cards sitting
+   somewhere on it. Drop that here and it comes back as one picture per card,
+   straightened and in order. A phone photo goes through the same thing.</p>
+
+  <div id="sc-drop" class="dropzone" tabindex="0" role="button"
+       aria-label="Drop card scans here, or press Enter to choose files">
+   <b>Drop scans here</b>
+   <span>or click to choose &mdash; <span class="mono">Ctrl+V</span> pastes one in</span>
+  </div>
+  <input id="sc-file" type="file" accept="image/*" multiple hidden>
+
+  <p class="hint" id="sc-msg" aria-live="polite"></p>
+  <div id="sc-out" class="scgrid"></div>
+
+  <div class="tools" id="sc-tools" hidden>
+   <span class="hint" id="sc-count"></span>
+   <button class="btn2" type="button" id="sc-rotall">Turn all round</button>
+   <button class="btn2 go" type="button" id="sc-save">Save all crops</button>
+   <button class="btn2" type="button" id="sc-clear">Clear</button>
+  </div>
+
+  <div class="note"><b>Which way up is the one thing it cannot work out.</b>
+   Nothing in the shape of a card says which end is the top, so if they come
+   out upside down &mdash; which is what happens when they go face down on the
+   glass with the top pointing away from you &mdash; hit <b>Turn all round</b>
+   once and the whole batch is fixed. <b>Turn</b> on a single card does that
+   one only.
+   <br><br>The order matters as much as the picture: crops are numbered top row
+   left to right, then the next row down, and
+   <span class="mono">add_photos.py --assign</span> files them onto SKUs in
+   exactly that order. Check the numbers read the way you expect before saving.
+   <br><br><b>Scanner PDFs do not open here.</b> Scan-to-folder writes a PDF and
+   this page has no way to read one, so put those through the script instead
+   &mdash; it does the same job on the whole folder at once:
+   <br><span class="mono">python crop_scans.py --src "G:/Scans" --rotate 180</span>
+   <br><br>And it does not know <i>which</i> card it is. This page is static and
+   published, so it cannot recognise a Prizm parallel any more than it can price
+   one. The crops are the handover: save them, then ask Claude to read them and
+   paste the lines back in below.</div>
+ </section>
+
+ <section>
   <h2>Find a card</h2>
   <div class="searchbar">
    <input id="cd-q" type="search" autocomplete="off" spellcheck="false"
@@ -1495,6 +1542,7 @@ BODY = f'''<title>Card Run HQ</title>
 </main>
 </div>
 <script>{JS}</script>
+<script>{SCAN_JS}</script>
 '''
 
 io.open(OUT, "w", encoding="utf-8").write(BODY)
