@@ -41,6 +41,7 @@ this machine.
 | Script | What it does |
 |---|---|
 | `python make_workbook.py` | Builds a fresh workbook, 12 tabs. Refuses to overwrite without `--force`. |
+| `python upgrade_workbook.py` | Moves an **existing** workbook onto the current layout **keeping what you typed**. Dry run by default; `--go` to do it. Backs up first, always. |
 | `python embed_photos.py` | Rewrites the **Photos** tab from what is in `photos/`, thumbnails and all. Run it after adding photos. |
 | `python file_batch.py batch.json` | Files a whole scanned batch: a row per card with a SKU, photos onto those SKUs. |
 | `python add_card.py --player "..." --year 2025 --brand "..." ...` | Appends one card to Inventory and assigns the next SKU. |

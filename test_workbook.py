@@ -265,3 +265,63 @@ def test_a_photo_with_no_card_is_reported_not_dropped(wb, tmp_path, capsys):
                         capture_output=True, text=True)
     assert "CRH-0099" in rc.stdout
     assert "not on Inventory" in rc.stdout
+
+
+# --- upgrading an existing workbook -----------------------------------------
+
+def test_upgrade_keeps_what_was_typed(wb, tmp_path):
+    """make_workbook --force throws the data away; this must not."""
+    fb.add_rows(str(wb), [{"player": "Shedeur Sanders", "brand": "Prizm",
+                           "num": "8", "cost": 6.5, "lot": "LOT-001"}])
+    book = load_workbook(wb)
+    s = book["Sales"]
+    s["A2"], s["B2"], s["E2"] = date(2026, 8, 20), "CRH-0001", 12.0
+    book.save(wb)
+
+    rc = subprocess.run([sys.executable, "upgrade_workbook.py",
+                         "--workbook", str(wb), "--go"],
+                        capture_output=True, text=True)
+    assert rc.returncode == 0, rc.stdout + rc.stderr
+
+    after = load_workbook(wb)
+    assert after.sheetnames == TABS
+
+    inv = after["Inventory"]
+    hdr = [c.value for c in inv[1]]
+    row = {h: v for h, v in zip(hdr, next(inv.iter_rows(min_row=2, values_only=True)))}
+    assert row["SKU"] == "CRH-0001"
+    assert row["Player or card name"] == "Shedeur Sanders"
+    assert row["Cost each"] == 6.5, "a value landed in a different column"
+    assert row["Lot ID"] == "LOT-001"
+
+    sold = next(after["Sales"].iter_rows(min_row=2, values_only=True))
+    assert sold[1] == "CRH-0001", "the sale did not come across"
+
+
+def test_upgrade_does_not_duplicate_the_seeded_box(wb, tmp_path):
+    """A fresh workbook already holds the one box bought, straight off its
+    receipt. Carrying the old copy on top counted it twice."""
+    def boxes(p):
+        return len([r for r in load_workbook(p)["Box log"]
+                    .iter_rows(min_row=2, max_row=6, values_only=True) if r[0]])
+    before = boxes(wb)
+    subprocess.run([sys.executable, "upgrade_workbook.py",
+                    "--workbook", str(wb), "--go"],
+                   capture_output=True, check=True)
+    assert boxes(wb) == before, "the seeded box was duplicated"
+
+
+def test_upgrade_backs_up_before_touching_anything(wb):
+    subprocess.run([sys.executable, "upgrade_workbook.py",
+                    "--workbook", str(wb), "--go"],
+                   capture_output=True, check=True)
+    backups = [f for f in os.listdir(os.path.dirname(str(wb))) if "backup" in f]
+    assert backups, "no backup was written"
+
+
+def test_dry_run_changes_nothing(wb):
+    before = os.path.getsize(wb)
+    rc = subprocess.run([sys.executable, "upgrade_workbook.py",
+                         "--workbook", str(wb)], capture_output=True, text=True)
+    assert "dry run" in rc.stdout
+    assert os.path.getsize(wb) == before
