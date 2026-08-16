@@ -43,6 +43,8 @@ from openpyxl import load_workbook
 
 import colleges
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 BASE = "https://www.sportscardspro.com"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -321,6 +323,8 @@ def main():
     p.add_argument("--fix-names", action="store_true",
                    help="rewrite mistyped player names to the site's spelling")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     wb = load_workbook(a.workbook)
     ws = wb["Inventory"]

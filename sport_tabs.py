@@ -35,6 +35,8 @@ from openpyxl import load_workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 
 # Written into A1 of every tab this makes. Tabs are only ever replaced when
@@ -226,6 +228,8 @@ def main():
     p.add_argument("--list", action="store_true",
                    help="say what sports are in the workbook and stop")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     if not os.path.exists(a.workbook):
         sys.exit("no workbook at %s -- run make_workbook.py first" % a.workbook)

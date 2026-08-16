@@ -26,6 +26,8 @@ import os
 import subprocess
 import sys
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 # The old layout called the upload tab "eBay upload" and had no per-game tabs.
 # That rename is the cleanest thing to test for -- checking for Summary or
@@ -58,6 +60,8 @@ def main():
         description="Tidy the workbook: SKUs, categories and the game tabs.")
     p.add_argument("--workbook", default=WORKBOOK)
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     if not os.path.exists(a.workbook):
         print("There is no %s here." % a.workbook)

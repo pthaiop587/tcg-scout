@@ -19,6 +19,8 @@ import re
 import subprocess
 import sys
 
+import inuse
+
 from PIL import Image, ImageOps
 
 PHOTOS = "photos"
@@ -272,6 +274,8 @@ def main():
     p.add_argument("--publish", action="store_true",
                    help="commit and push the photos so they go live")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     os.makedirs(PHOTOS, exist_ok=True)
 

@@ -23,6 +23,7 @@ from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.datavalidation import DataValidation
 
+import inuse
 import workbook_extra as extra
 
 OUT = "Card Run HQ - Master.xlsx"
@@ -680,6 +681,10 @@ def main():
                          "tab draws each card from its published URL instead "
                          "of waiting for embed_photos.py")
     args = ap.parse_args()
+
+    # --force can overwrite an existing workbook, so it can overwrite one Excel
+    # is holding. Same race as everywhere else, worse consequence.
+    inuse.refuse_if_open(args.out, doing="overwrite")
 
     if os.path.exists(args.out) and not args.force:
         sys.exit("%s already exists. Use --force if you really mean to "

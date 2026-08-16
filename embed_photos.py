@@ -28,6 +28,8 @@ import sys
 from openpyxl import load_workbook
 from openpyxl.drawing.image import Image as XLImage
 from openpyxl.utils import get_column_letter
+
+import inuse
 from PIL import Image
 
 WORKBOOK = "Card Run HQ - Master.xlsx"
@@ -143,6 +145,8 @@ def main():
     p.add_argument("--workbook", default=WORKBOOK)
     p.add_argument("--photos", default=PHOTOS)
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     if not os.path.exists(a.workbook):
         sys.exit("no workbook at %s -- run make_workbook.py first" % a.workbook)

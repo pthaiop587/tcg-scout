@@ -37,6 +37,8 @@ import sys
 
 from openpyxl import load_workbook
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 NAME_COL = "Player or card name"
 
@@ -93,6 +95,8 @@ def main():
     p.add_argument("--go", action="store_true",
                    help="do it; without this it only says what it would do")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     if not os.path.exists(a.workbook):
         sys.exit("no workbook at %s" % a.workbook)

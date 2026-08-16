@@ -33,6 +33,8 @@ import sys
 
 from openpyxl import load_workbook
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 NAME = "Player or card name"
 
@@ -71,6 +73,8 @@ def main():
                    help="also set Market value to the looked-up raw price")
     p.add_argument("--go", action="store_true", help="write the values in")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     wb = load_workbook(a.workbook)
     ws = wb["Inventory"]

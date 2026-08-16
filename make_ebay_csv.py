@@ -24,6 +24,8 @@ from datetime import date
 
 from openpyxl import load_workbook
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 TEMPLATE = "ebay-template.csv"
 PAGES    = "https://pthaiop587.github.io/tcg-scout"
@@ -381,6 +383,8 @@ def main():
                     help="include rows whose Status is not Unlisted")
     ap.add_argument("-o", "--out")
     args = ap.parse_args()
+
+    inuse.refuse_if_open(args.workbook)
 
     if not os.path.exists(args.workbook):
         sys.exit("%s not found -- run make_workbook.py first" % args.workbook)

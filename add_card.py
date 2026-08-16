@@ -16,6 +16,8 @@ from datetime import date
 
 from openpyxl import load_workbook
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 
 
@@ -63,6 +65,8 @@ def main():
     p.add_argument("--source", default=""); p.add_argument("--lot", default="")
     p.add_argument("--notes", default="")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     wb = load_workbook(a.workbook)
     ws = wb["Inventory"]

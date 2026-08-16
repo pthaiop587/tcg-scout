@@ -25,6 +25,8 @@ from datetime import datetime
 
 from openpyxl import load_workbook
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 
 # Only tabs a person types into. Summary, Audit, Read me, Reference, Lists and
@@ -127,6 +129,8 @@ def main():
     p.add_argument("--go", action="store_true",
                    help="do it; without this it only says what it would do")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     if not os.path.exists(a.workbook):
         sys.exit("no workbook at %s -- there is nothing to upgrade. "

@@ -53,6 +53,8 @@ from openpyxl import load_workbook
 
 import add_photos
 
+import inuse
+
 WORKBOOK = "Card Run HQ - Master.xlsx"
 CROPS = os.path.join("photos", "crops")
 
@@ -204,6 +206,8 @@ def main():
     p.add_argument("--dry-run", action="store_true",
                    help="say what would happen and change nothing")
     a = p.parse_args()
+
+    inuse.refuse_if_open(a.workbook)
 
     if not os.path.exists(a.workbook):
         sys.exit("no workbook at %s -- run make_workbook.py first" % a.workbook)
