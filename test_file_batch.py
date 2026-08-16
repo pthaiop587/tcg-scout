@@ -179,6 +179,53 @@ def test_a_bare_list_of_cards_is_accepted(tmp_path):
     assert pairs is False and len(cards) == 1
 
 
+def test_the_example_batch_file_still_loads(wb):
+    """batch.example.json is the format Card desk writes and the runbook shows.
+
+    It is checked here rather than left as prose, because it is the handover
+    between the page and this script: if a field name drifts on either side,
+    a batch stops filing and the only symptom is a card that never appears.
+    """
+    pairs, cards = fb.load_batch("batch.example.json")
+    assert len(cards) == 2
+    added = fb.add_rows(str(wb), cards)
+    assert [e["sku"] for e in added] == ["CRH-0001", "CRH-0002"]
+
+    got = rows(wb)
+    assert got[0]["Status"] == "Review", "the card with unsure fields should be held"
+    assert got[1]["Status"] == "Unlisted", "the settled card should be ready"
+    assert got[0]["Insert set"] == "Student Orientation"
+    assert got[0]["RC"] == "Yes"
+    assert got[1]["Market value"] == 6
+
+    # photo counts are what file_photos hands out, so they have to survive
+    assert [e["photos"] for e in added] == [2, 1]
+
+
+def test_a_photo_count_that_does_not_match_files_nothing(wb, tmp_path, capsys):
+    """One picture out and every card after it gets somebody else's photo."""
+    crops = tmp_path / "crops"
+    crops.mkdir()
+    for n in range(3):                      # batch wants 2 + 1 = 3, give it 3
+        (crops / ("crh-%03d.jpg" % (n + 1))).write_bytes(b"")
+    added = [{"sku": "CRH-0001", "photos": 2}, {"sku": "CRH-0002", "photos": 2}]
+    rc = fb.file_photos(added, str(crops))
+    assert rc == 1, "a mismatch must fail rather than file"
+    assert "NOTHING FILED" in capsys.readouterr().out
+
+
+def test_pairs_is_shorthand_for_two_photos_each(tmp_path):
+    p = write_batch(tmp_path, [dict(CARD), dict(CARD)], pairs=True)
+    _, cards = fb.load_batch(str(p))
+    assert [c["photos"] for c in cards] == [2, 2]
+
+
+def test_a_silly_photo_count_is_rejected(tmp_path):
+    p = write_batch(tmp_path, [dict(CARD, photos=9)])
+    with pytest.raises(SystemExit):
+        fb.load_batch(str(p))
+
+
 def test_pairs_comes_through(tmp_path):
     p = write_batch(tmp_path, [dict(CARD)], pairs=True)
     pairs, _ = fb.load_batch(str(p))

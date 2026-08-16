@@ -1,5 +1,4 @@
 {
-  "pairs": true,
   "cards": [
     {
       "player": "Shedeur Sanders",
@@ -9,21 +8,26 @@
       "parallel": "Gold Cracked Ice",
       "num": "8",
       "team": "Colorado Buffaloes",
-      "sport": "Football",
       "league": "NCAA",
+      "sport": "Football",
+      "category": "Sports",
+      "condition": "Near Mint or Better",
       "rc": true,
+      "qty": 1,
+      "photos": 2,
       "unsure": ["parallel", "market"]
     },
     {
       "player": "Jonah Coleman",
-      "year": 2025,
-      "brand": "Panini Prizm Draft Picks",
-      "parallel": "Gold Cracked Ice",
+      "brand": "2025 Panini Prizm Draft Picks",
       "num": "169",
-      "team": "Washington Huskies",
+      "parallel": "Gold Cracked Ice",
+      "condition": "Near Mint or Better",
+      "category": "Sports",
       "sport": "Football",
-      "league": "NCAA",
-      "unsure": ["parallel", "market"]
+      "qty": 1,
+      "market": 6,
+      "photos": 1
     }
   ]
 }

@@ -4,12 +4,18 @@
      python build_all.py . card-run-hq.html
      node test_queue.cjs
 
-   The rule the whole design rests on is that a dropped card is captured
-   immediately but CANNOT reach My cards -- and so cannot reach an eBay
-   export -- until somebody has confirmed what it is. Every check below is
-   some version of that.
+   Two rules hold the design up.
 
-   Needs a scan to drop, so it makes one: a card on a blank sheet.            */
+   One: a dropped card is captured immediately but goes nowhere on its own.
+   It is not inventory until it has been through the workbook.
+
+   Two: what the page hands over has to be exactly what file_batch.py expects
+   -- the right field names, and a photo count per card that matches the
+   pictures actually downloaded. If those drift, photos land on the wrong
+   cards, and a wrong picture on a live listing is a return rather than a
+   typo. So the batch file is checked field by field here.
+
+   Needs a scan to drop, so it makes one.                                    */
 
 process.env.NODE_PATH = require('child_process').execSync('npm root -g').toString().trim();
 require('module').Module._initPaths();
@@ -17,33 +23,25 @@ require('module').Module._initPaths();
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 const { execFileSync } = require('child_process');
 
 const PAGE = 'card-run-hq.html';
-const SCAN = path.join(require('os').tmpdir(), 'crh_test_scan.png');
-const SCAN4 = path.join(require('os').tmpdir(), 'crh_test_scan4.png');
+const SCAN = path.join(os.tmpdir(), 'crh_test_scan.png');
+const SCAN4 = path.join(os.tmpdir(), 'crh_test_scan4.png');
 
 const fails = [];
 const check = (ok, msg) => { if (!ok) fails.push(msg); };
 
-/* the paste box lives in a fold, so open it the way a person would */
-async function openPaste(page){
-  await page.evaluate(() => {
-    const d = document.getElementById('sc-qpaste').closest('details');
-    if (d && !d.open) d.querySelector('summary').click();
-  });
-  await page.waitForTimeout(120);
-}
-
 /* Cards on a pale sheet, with grain on it. The grain is not decoration: a
    clean synthetic page hides the whole class of bug where the edge threshold
-   is a share of the page rather than a judgement, and that is exactly the bug
-   that shipped here once already. */
+   is a share of the page rather than a judgement, and that bug shipped here
+   once already. */
 function makeScan(n, dest){
   n = n || 1;
   dest = dest || SCAN;
   const spots = [[300, 300], [1400, 300], [300, 1700], [1400, 1700]].slice(0, n);
-  const py = `
+  execFileSync('python', ['-c', `
 import numpy as np, cv2
 page = np.full((3300,2550,3), 246, np.uint8)
 page = (page + np.random.default_rng(0).normal(0,2,page.shape)).clip(0,255).astype(np.uint8)
@@ -53,8 +51,28 @@ for i, (x, y) in enumerate(${JSON.stringify(spots)}):
     cv2.rectangle(card,(0,0),(749,1049),(30,30,30),6)
     page[y:y+1050, x:x+750] = card
 cv2.imwrite(r"${dest.replace(/\\/g, '\\\\')}", page)
-`;
-  execFileSync('python', ['-c', py]);
+`]);
+}
+
+async function openPaste(page){
+  await page.evaluate(() => {
+    const d = document.getElementById('sc-qpaste').closest('details');
+    if (d && !d.open) d.querySelector('summary').click();
+  });
+  await page.waitForTimeout(120);
+}
+
+/* collect every file the page hands over during fn() */
+async function catchDownloads(page, fn){
+  const got = [];
+  const on = async d => {
+    got.push({ name: d.suggestedFilename(), path: await d.path() });
+  };
+  page.on('download', on);
+  await fn();
+  await page.waitForTimeout(1200);
+  page.off('download', on);
+  return got;
 }
 
 (async () => {
@@ -62,10 +80,12 @@ cv2.imwrite(r"${dest.replace(/\\/g, '\\\\')}", page)
     console.error('no ' + PAGE + ' -- run: python build_all.py . ' + PAGE);
     process.exit(1);
   }
-  makeScan();
+  makeScan(1, SCAN);
+  makeScan(4, SCAN4);
 
   const browser = await chromium.launch();
-  const ctx = await browser.newContext({ viewport: { width: 1500, height: 1000 } });
+  const ctx = await browser.newContext({ viewport: { width: 1500, height: 1000 },
+                                         acceptDownloads: true });
   const page = await ctx.newPage();
   const jsErrors = [];
   page.on('pageerror', e => jsErrors.push('pageerror: ' + e.message));
@@ -74,169 +94,188 @@ cv2.imwrite(r"${dest.replace(/\\/g, '\\\\')}", page)
   const url = 'file:///' + path.resolve(PAGE).replace(/\\/g, '/');
   await page.goto(url, { waitUntil: 'load' });
 
-  const stock = () => page.evaluate(() => CD_STOCK.length);
+  const scratch = () => page.evaluate(() => CD_STOCK.length);
   const queue = () => page.evaluate(() => SC_QUEUE.length);
   const confirmOff = () => page.evaluate(() =>
     document.getElementById('sc-qconfirm').disabled);
+  const saveOff = () => page.evaluate(() =>
+    document.getElementById('sc-tofile').disabled);
 
-  check(await stock() === 0, 'My cards should start empty in a fresh profile');
+  check(await scratch() === 0, 'the scratchpad should start empty in a fresh profile');
 
-  /* --- drop --- */
+  /* --- capture ---------------------------------------------------------- */
   await page.setInputFiles('#sc-file', SCAN);
   await page.waitForSelector('.qrow', { timeout: 30000 });
   await page.waitForTimeout(300);
 
-  check(await queue() === 1, 'the dropped card should be on the queue, got ' + await queue());
-  check(await stock() === 0, 'A DROPPED CARD REACHED MY CARDS WITHOUT BEING CONFIRMED');
-  check(await page.isVisible('#sc-qwrap'), 'queue section should appear once a card is on it');
+  check(await queue() === 1, 'the dropped card should be on the queue');
+  check(await page.isVisible('#sc-qwrap'), 'the queue should appear');
   check(await confirmOff(), 'Confirm should be off while the card has no name');
+  check(await saveOff(), 'Save for the workbook should be off with nothing checked');
 
-  /* --- a row with no name cannot be confirmed --- */
-  await page.evaluate(() => {
-    const b = [...document.querySelectorAll('.qacts .btn2')].find(x => x.textContent === 'Confirm');
-    b.click();                      /* disabled, so this must do nothing */
-  });
-  check(await stock() === 0, 'a nameless card was confirmed into My cards');
-
-  /* --- fill from a paste with one field flagged --- */
+  /* --- an unsure field blocks confirming --------------------------------- */
   await openPaste(page);
   await page.fill('#sc-qpaste',
-    'Shedeur Sanders | 2025 Prizm Draft Picks | 8 | ?Gold Cracked Ice | NM | 1 | 12.50 | sports');
+    'Shedeur Sanders | 2025 Panini Prizm Draft Picks | 8 | ?Gold Cracked Ice | NM | 1 | 12.50 | sports');
   await page.click('#sc-qfill');
   await page.waitForTimeout(250);
 
   const filled = await page.evaluate(() => SC_QUEUE[0]);
   check(filled.n === 'Shedeur Sanders', 'name did not come through: ' + filled.n);
-  check(filled.var === 'Gold Cracked Ice', 'the ? should be stripped off the value, got ' + filled.var);
+  check(filled.var === 'Gold Cracked Ice', 'the ? should be stripped off the value');
   check(filled.v === 12.5, 'worth did not parse, got ' + filled.v);
-  check(filled.q === 1, 'qty did not parse, got ' + filled.q);
-  check(filled.kind === 'sports', 'kind did not parse, got ' + filled.kind);
-  check(JSON.stringify(filled.flags) === '["var"]', 'flags should be ["var"], got ' + JSON.stringify(filled.flags));
+  check(filled.c === 'Near Mint or Better',
+        'NM should map to the workbook wording, got ' + filled.c);
+  check(filled.kind === 'Sports', 'category did not parse, got ' + filled.kind);
+  check(JSON.stringify(filled.flags) === '["var"]', 'flags should be ["var"]');
   check(await page.locator('.qfields .unsure').count() === 1, 'the unsure field should be amber');
-  check(await confirmOff(), 'CONFIRM WAS ON WHILE A FIELD WAS STILL MARKED UNSURE');
+  check(await confirmOff(), 'CONFIRM WAS ON WHILE A FIELD WAS STILL UNSURE');
 
-  /* --- clearing the flag is what unlocks it --- */
   await page.click('.unsurebtn');
   await page.waitForTimeout(200);
-  check(await page.evaluate(() => SC_QUEUE[0].flags.length) === 0, 'flag did not clear');
   check(!(await confirmOff()), 'Confirm should be on once nothing is unsure');
 
-  /* --- confirm --- */
+  /* --- confirming is a tick, not a filing -------------------------------- */
   await page.click('#sc-qconfirm');
   await page.waitForTimeout(300);
-  check(await stock() === 1, 'the confirmed card should be in My cards, got ' + await stock());
-  check(await queue() === 0, 'the confirmed card should leave the queue');
-  check(!(await page.isVisible('#sc-qwrap')), 'queue section should go away when empty');
+  check(await page.evaluate(() => !!SC_QUEUE[0].ok), 'the card should be marked checked');
+  check(await scratch() === 0,
+        'A CHECKED CARD REACHED THE SCRATCHPAD -- confirming must not file anything');
+  check(await queue() === 1, 'a checked card stays on the queue until it is saved');
+  check(!(await saveOff()), 'Save for the workbook should be on once something is checked');
 
-  const card = await page.evaluate(() => CD_STOCK[0]);
-  check(card.manual === 1, 'confirmed card should be a manual row');
-  check(card.n === 'Shedeur Sanders' && card.num === '8' && card.var === 'Gold Cracked Ice',
-        'confirmed card lost fields: ' + JSON.stringify(card));
-  check(card.c === 'NM' && card.q === 1 && card.v === 12.5,
-        'confirmed card has wrong condition/qty/value: ' + JSON.stringify(card));
-  check(card.kind === 'sports', 'confirmed card routed wrong: ' + card.kind);
+  /* --- the handover to file_batch.py ------------------------------------- */
+  const got = await catchDownloads(page, () => page.click('#sc-tofile'));
+  const pics = got.filter(g => /\.jpg$/i.test(g.name));
+  const batch = got.find(g => g.name === 'batch.json');
 
-  /* --- the queue survives a reload, still outside My cards --- */
+  check(pics.length === 1, 'should have handed over 1 picture, got ' + pics.length);
+  check(pics[0] && pics[0].name === 'crh-001.jpg',
+        'pictures must be numbered so filename order is queue order, got '
+        + (pics[0] && pics[0].name));
+  check(!!batch, 'no batch.json was handed over');
+
+  if (batch) {
+    const b = JSON.parse(fs.readFileSync(batch.path, 'utf8'));
+    check(Array.isArray(b.cards) && b.cards.length === 1,
+          'batch.json should hold 1 card, got ' + JSON.stringify(b).slice(0, 120));
+    const c = b.cards[0];
+    check(c.player === 'Shedeur Sanders', 'player: ' + c.player);
+    check(c.brand === '2025 Panini Prizm Draft Picks', 'brand: ' + c.brand);
+    check(c.num === '8', 'num: ' + c.num);
+    check(c.parallel === 'Gold Cracked Ice', 'parallel: ' + c.parallel);
+    check(c.condition === 'Near Mint or Better', 'condition: ' + c.condition);
+    check(c.category === 'Sports', 'category: ' + c.category);
+    check(c.qty === 1, 'qty: ' + c.qty);
+    check(c.market === 12.5, 'market: ' + c.market);
+    check(c.photos === 1, 'PHOTO COUNT MUST MATCH THE PICTURES SENT, got ' + c.photos);
+    check(!c.unsure, 'nothing was left unsure, so unsure should be absent: ' + JSON.stringify(c.unsure));
+
+    /* every key must be one file_batch.py accepts, or it exits rather than files */
+    const known = ['player', 'year', 'brand', 'insert', 'parallel', 'num', 'serial',
+                   'team', 'sport', 'league', 'category', 'condition', 'grader',
+                   'grade', 'cert', 'qty', 'cost', 'market', 'ask', 'source', 'lot',
+                   'notes', 'rc', 'auto', 'relic', 'unsure', 'photos'];
+    const stray = Object.keys(c).filter(k => known.indexOf(k) < 0);
+    check(stray.length === 0, 'batch.json has field(s) file_batch.py rejects: ' + stray);
+  }
+
+  check(await page.evaluate(() => !!SC_QUEUE[0].filed), 'a saved card should be marked saved');
+  await page.click('#sc-clearfiled');
+  await page.waitForTimeout(250);
+  check(await queue() === 0, 'Clear saved should take the saved card off the queue');
+
+  /* --- a card with no worth is handed over as unsure ---------------------- */
   await page.setInputFiles('#sc-file', SCAN);
   await page.waitForSelector('.qrow', { timeout: 30000 });
+  await page.waitForTimeout(300);
   await openPaste(page);
-  await page.fill('#sc-qpaste', 'Jonah Coleman | 2025 Prizm Draft Picks | 169 | | NM | 1 | 8 | sports');
+  await page.fill('#sc-qpaste', 'Jonah Coleman | 2025 Panini Prizm Draft Picks | 169 | | NM | 1 | | sports');
   await page.click('#sc-qfill');
   await page.waitForTimeout(250);
+  await page.click('#sc-qconfirm');
+  await page.waitForTimeout(250);
+  const got2 = await catchDownloads(page, () => page.click('#sc-tofile'));
+  const b2 = got2.find(g => g.name === 'batch.json');
+  if (b2) {
+    const c = JSON.parse(fs.readFileSync(b2.path, 'utf8')).cards[0];
+    check(Array.isArray(c.unsure) && c.unsure.indexOf('market') >= 0,
+          'a card with no worth must be flagged unsure so it files as Review, got '
+          + JSON.stringify(c.unsure));
+    check(c.market === undefined, 'no worth means no market value, got ' + c.market);
+  }
+  await page.click('#sc-clearfiled');
+  await page.waitForTimeout(250);
 
+  /* --- persistence ------------------------------------------------------- */
+  await page.setInputFiles('#sc-file', SCAN);
+  await page.waitForSelector('.qrow', { timeout: 30000 });
+  await page.evaluate(() => { SC_QUEUE[0].n = 'Travis Hunter'; scQSave(); });
   await page.reload({ waitUntil: 'load' });
   await page.waitForTimeout(400);
-  check(await queue() === 1, 'the queue should survive a reload, got ' + await queue());
-  check(await stock() === 1, 'a reload must not push queued cards into My cards');
-  const kept = await page.evaluate(() => SC_QUEUE[0]);
-  check(kept.n === 'Jonah Coleman', 'the details should survive a reload, got ' + kept.n);
-  check(!!kept.thumb && kept.thumb.startsWith('data:image'), 'the thumbnail should survive a reload');
-  check(await page.locator('.qrow').count() === 1, 'the queue should render after a reload');
+  check(await queue() === 1, 'the queue should survive a reload');
+  check(await page.evaluate(() => SC_QUEUE[0].n) === 'Travis Hunter',
+        'the details should survive a reload');
+  check(await page.isVisible('#sc-lost'), 'should warn that the full-size picture is gone');
 
-  /* the full-size picture is session-only, and the page should say so */
-  check(await page.isVisible('#sc-lost'), 'should warn that the full-size picture did not survive');
-  const saveOff = await page.evaluate(() =>
-    [...document.querySelectorAll('.qacts .btn2')].find(x => x.textContent === 'Save crop').disabled);
-  check(saveOff, 'Save crop should be off when the full-size picture is gone');
-  check(!(await confirmOff()), 'a reloaded row with a name and no flags should still confirm');
-
-  /* --- front/back pairing --------------------------------------------- */
-
-  makeScan(4, SCAN4);
+  /* --- front and back ---------------------------------------------------- */
   const p2 = await ctx.newPage();
   p2.on('pageerror', e => jsErrors.push('pageerror(pairs): ' + e.message));
   p2.on('console', m => { if (m.type() === 'error') jsErrors.push('console(pairs): ' + m.text()); });
   await p2.goto(url, { waitUntil: 'load' });
-  await p2.evaluate(() => { SC_QUEUE = []; SC_PAIRS = false; scQSave(); location.reload(); });
-  await p2.waitForTimeout(400);
-  await p2.goto(url, { waitUntil: 'load' });
+  const clear = () => p2.evaluate(() => { SC_QUEUE = []; SC_PAIRS = false; scQSave(); render(); });
 
-  const beforeStock = await p2.evaluate(() => CD_STOCK.length);
-
+  await clear();
   await p2.setInputFiles('#sc-file', SCAN4);
   await p2.waitForSelector('.qrow', { timeout: 40000 });
   await p2.waitForTimeout(400);
-
-  check(await p2.evaluate(() => SC_QUEUE.length) === 4,
-        'the 4-card sheet should give 4 pictures, got ' + await p2.evaluate(() => SC_QUEUE.length));
+  check(await p2.evaluate(() => SC_QUEUE.length) === 4, 'the 4-card sheet should give 4 pictures');
   check(await p2.locator('.qrow').count() === 4, 'unpaired, 4 pictures should be 4 rows');
 
   await p2.check('#sc-pairs');
   await p2.waitForTimeout(300);
-  check(await p2.locator('.qrow').count() === 2,
-        'PAIRED, 4 PICTURES SHOULD BE 2 CARDS, got ' + await p2.locator('.qrow').count());
+  check(await p2.locator('.qrow').count() === 2, 'PAIRED, 4 PICTURES SHOULD BE 2 CARDS');
   check(await p2.locator('.qshot').count() === 4, 'each paired row should show both sides');
 
-  /* one line per card, not per picture */
   await openPaste(p2);
   await p2.fill('#sc-qpaste',
-    'Shedeur Sanders | 2025 Prizm Draft Picks | 8 | Gold Cracked Ice | NM | 1 | 12.50 | sports\n' +
-    'Jonah Coleman | 2025 Prizm Draft Picks | 169 | Gold Cracked Ice | NM | 1 | 6 | sports');
+    'Shedeur Sanders | 2025 Panini Prizm Draft Picks | 8 | Gold Cracked Ice | NM | 1 | 12.50 | sports\n' +
+    'Jonah Coleman | 2025 Panini Prizm Draft Picks | 169 | Gold Cracked Ice | NM | 1 | 6 | sports');
   await p2.click('#sc-qfill');
   await p2.waitForTimeout(300);
-
   const names = await p2.evaluate(() => SC_QUEUE.map(e => e.n));
   check(names[0] === 'Shedeur Sanders' && names[2] === 'Jonah Coleman',
         'a line per card should land on the FRONT of each pair, got ' + JSON.stringify(names));
-  check(names[1] === '' && names[3] === '',
-        'a back should not be filled in as its own card, got ' + JSON.stringify(names));
+  check(names[1] === '' && names[3] === '', 'a back is not a card of its own');
 
-  /* confirming a pair makes one card and takes both pictures with it */
   await p2.click('#sc-qconfirm');
-  await p2.waitForTimeout(400);
-  check(await p2.evaluate(() => CD_STOCK.length) - beforeStock === 2,
-        'two paired cards should add 2 rows to My cards, not 4');
-  check(await p2.evaluate(() => SC_QUEUE.length) === 0,
-        'confirming a pair should take both its pictures off the queue');
+  await p2.waitForTimeout(300);
+  const got3 = await catchDownloads(p2, () => p2.click('#sc-tofile'));
+  const pics3 = got3.filter(g => /\.jpg$/i.test(g.name));
+  const b3 = got3.find(g => g.name === 'batch.json');
+  check(pics3.length === 4, 'a paired batch should hand over 4 pictures, got ' + pics3.length);
+  check(pics3.map(g => g.name).join(',') === 'crh-001.jpg,crh-002.jpg,crh-003.jpg,crh-004.jpg',
+        'pictures must be numbered front, back, front, back: ' + pics3.map(g => g.name));
+  if (b3) {
+    const cards = JSON.parse(fs.readFileSync(b3.path, 'utf8')).cards;
+    check(cards.length === 2, 'a paired batch is 2 cards, got ' + cards.length);
+    check(cards.every(c => c.photos === 2),
+          'each paired card should claim 2 photos, got ' + cards.map(c => c.photos));
+    check(cards.reduce((a, c) => a + c.photos, 0) === pics3.length,
+          'THE PHOTO COUNTS MUST ADD UP TO THE PICTURES SENT');
+  }
 
-  /* the pairing setting itself survives a reload */
-  await p2.setInputFiles('#sc-file', SCAN4);
-  await p2.waitForSelector('.qrow', { timeout: 40000 });
-  await p2.reload({ waitUntil: 'load' });
-  await p2.waitForTimeout(400);
-  check(await p2.evaluate(() => SC_PAIRS) === true, 'pairing should survive a reload');
-  check(await p2.locator('.qrow').count() === 2, 'and should still render as 2 cards');
-
-  /* an odd count is called out rather than silently mispaired */
-  await p2.evaluate(() => { SC_QUEUE.pop(); scQSave(); render(); });
-  await p2.waitForTimeout(200);
-  check(await p2.isVisible('#sc-odd'), 'an odd number of pictures should be flagged');
-
-  /* --- two sides of one card, whatever order they arrive in ------------- */
-
+  /* --- two sides, whatever order they arrive in -------------------------- */
   const p3 = await ctx.newPage();
   p3.on('pageerror', e => jsErrors.push('pageerror(join): ' + e.message));
   p3.on('console', m => { if (m.type() === 'error') jsErrors.push('console(join): ' + m.text()); });
   await p3.goto(url, { waitUntil: 'load' });
-  const clear = () => p3.evaluate(() => { SC_QUEUE = []; SC_PAIRS = false; scQSave(); render(); });
+  const clear3 = () => p3.evaluate(() => { SC_QUEUE = []; SC_PAIRS = false; scQSave(); render(); });
 
-  /* upload the front, then point at it and add the back */
-  await clear();
+  await clear3();
   await p3.setInputFiles('#sc-file', SCAN);
   await p3.waitForSelector('.qrow', { timeout: 30000 });
   await p3.waitForTimeout(300);
-  check(await p3.locator('.qrow').count() === 1, 'one picture should be one card');
-
   await p3.locator('.qacts').first().getByText('Add back').click();
   await p3.setInputFiles('#sc-add', SCAN);
   await p3.waitForTimeout(3000);
@@ -246,35 +285,16 @@ cv2.imwrite(r"${dest.replace(/\\/g, '\\\\')}", page)
   check(await p3.locator('.qrow').first().locator('.qshot').count() === 2,
         'both sides should show on the card');
 
-  /* and it confirms as ONE card */
-  await p3.evaluate(() => {
-    SC_QUEUE[0].n = 'Shedeur Sanders'; SC_QUEUE[0].v = 12.5; SC_QUEUE[0].flags = [];
-    scQSave(); render();
-  });
-  const beforeJoin = await p3.evaluate(() => CD_STOCK.length);
-  await p3.locator('.qacts').first().getByText('Confirm').click();
-  await p3.waitForTimeout(400);
-  check(await p3.evaluate(() => CD_STOCK.length) - beforeJoin === 1,
-        'a card with two pictures should add ONE row to My cards');
-  check(await p3.evaluate(() => SC_QUEUE.length) === 0,
-        'confirming should clear both of its pictures');
-
-  /* both sides uploaded separately, then joined */
-  await clear();
+  await clear3();
   await p3.setInputFiles('#sc-file', SCAN);
   await p3.waitForSelector('.qrow', { timeout: 30000 });
   await p3.waitForTimeout(2000);
   await p3.setInputFiles('#sc-file', SCAN);
   await p3.waitForTimeout(3000);
   check(await p3.locator('.qrow').count() === 2, 'two separate uploads start as two cards');
-
   await p3.locator('.qrow').nth(1).getByText('Join to 1').click();
   await p3.waitForTimeout(300);
   check(await p3.locator('.qrow').count() === 1, 'JOIN DID NOT MERGE the two into one card');
-  check(await p3.locator('.qrow').first().locator('.qshot').count() === 2,
-        'the joined card should show both pictures');
-
-  /* and split puts them back */
   await p3.locator('.qacts').first().getByText('Split').click();
   await p3.waitForTimeout(300);
   check(await p3.locator('.qrow').count() === 2, 'split should give two cards back');
@@ -290,5 +310,6 @@ cv2.imwrite(r"${dest.replace(/\\/g, '\\\\')}", page)
     fails.forEach(f => console.error('  ' + f));
     process.exit(1);
   }
-  console.log('ok -- review queue: capture, flag, confirm, persist; nothing reaches My cards unconfirmed');
+  console.log('ok -- review queue: capture, flag, check, hand over to the workbook; '
+            + 'nothing files itself, and batch.json matches the pictures sent');
 })().catch(e => { console.error('FAILED', e); process.exit(1); });

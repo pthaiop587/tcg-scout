@@ -136,26 +136,49 @@ JPEG — drag them in, click to choose, or paste with `Ctrl+V`. PNG is what the
 scanner produces now, so this is the everyday path.
 
 Every card found goes straight onto a **review queue** under the drop zone.
-That is the answer to "does it add them to my collection": it captures the
-card immediately and keeps it — the queue survives closing the tab — but
-**nothing on the queue is in My cards, and nothing on it can reach an eBay
-export.** It only moves when somebody says what the card is.
+It is captured immediately and kept — the queue survives closing the tab — but
+**it goes nowhere on its own.** Nothing on the queue is inventory until it has
+been through the workbook.
 
-A row is confirmable when it has a card name and nothing on it is still
-marked unsure. Then **Confirm** (or **Confirm N → My cards**) moves it across
-as a manual row, exactly as if you had typed it into *Add it by hand*.
+**Confirm** on a card means only "I have looked at this one". It is off until
+the card has a name and nothing on it is still amber. **Save for the workbook**
+then downloads the pictures plus a `batch.json` naming every checked card, and:
+
+```
+   move the crh-*.jpg into photos/crops, batch.json beside the workbook
+python file_batch.py batch.json
+python make_ebay_csv.py
+```
+
+That is what gives a card a SKU, files its photos onto that SKU, and turns it
+into a listing. **The workbook is the inventory** — it is the only thing here
+that can be edited properly and the only thing that can produce an eBay upload.
 
 | Button | What it does |
 |---|---|
-| **Confirm** | that card into My cards; off until it has a name and no amber |
+| **Confirm** | mark this card checked; off until it has a name and no amber |
+| **Save for the workbook** | download the pictures and `batch.json` for every checked card |
+| **Clear saved** | take the handed-over cards off the queue |
 | **Add back** | attach another picture — the other side — to *this* card |
 | **Join to N** | make this card the back of the one above it |
 | **Split** | break a two-picture card back into two |
-| **Turn** | rotate that card a quarter turn |
-| **Save crop** | download that card's full-size picture |
-| **Remove** | drop it off the queue without adding it |
-| **Turn all round** | flip the whole batch 180°, the usual scanner fix |
-| **Save all crops** | download every picture, numbered in the order shown |
+| **Turn** / **Turn all round** | rotate a card, or the whole batch 180° |
+| **Save all crops** | download every picture without filing anything |
+| **Remove** / **Clear queue** | drop cards off the queue without adding them |
+
+The pictures are named `crh-001.jpg`, `crh-002.jpg` … in the order shown, front
+before back, because `file_batch.py` hands them out in filename order using
+each card's `photos` count. **The counts have to add up.** One picture out and
+every card after it gets somebody else's photo, so a mismatch files nothing at
+all and says what it found.
+
+### The "Pricing scratchpad" is not your inventory
+
+What used to be **My cards** is now labelled that way on purpose. It is fine
+for working out what a pile is worth while you are standing in a shop, but a
+card in it can only be nudged up and down by quantity, nothing else can be
+edited, and its CSV is a pricing worksheet rather than an eBay upload. Nothing
+in it reaches eBay. Scanned cards go to the workbook instead.
 
 ### The path with no data entry at all
 

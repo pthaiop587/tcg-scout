@@ -553,11 +553,26 @@ BODY = f'''<title>Card Run HQ</title>
   <div id="sc-queue"></div>
 
   <div class="tools">
-   <button class="btn2 go" type="button" id="sc-qconfirm" disabled>Confirm all ready</button>
+   <button class="btn2" type="button" id="sc-qconfirm" disabled>Check all ready</button>
+   <button class="btn2 go" type="button" id="sc-tofile" disabled>Save for the workbook</button>
+   <button class="btn2" type="button" id="sc-clearfiled" hidden>Clear saved</button>
    <button class="btn2" type="button" id="sc-rotall">Turn all round</button>
    <button class="btn2" type="button" id="sc-save">Save all crops</button>
    <button class="btn2" type="button" id="sc-clear">Clear queue</button>
   </div>
+
+  <div class="note"><b>Where a checked card goes.</b> <b>Confirm</b> on a card
+   just means you have looked at it. <b>Save for the workbook</b> then downloads
+   the pictures and a <span class="mono">batch.json</span> naming every checked
+   card. Put the <span class="mono">crh-*.jpg</span> files in
+   <span class="mono">photos/crops</span>, drop <span class="mono">batch.json</span>
+   beside the workbook, and run:
+   <br><span class="mono">python file_batch.py batch.json</span>
+   <br><span class="mono">python make_ebay_csv.py</span>
+   <br><br>That is what puts a card in the spreadsheet with its own SKU, files its
+   photos onto that SKU, and produces the eBay upload. <b>The workbook is the
+   inventory</b> &mdash; it is the only thing here that can be edited properly and
+   the only thing that can make a listing.</div>
 
   <details class="fold">
    <summary>Paste what Claude worked out &mdash; fills the whole queue at once</summary>
@@ -715,7 +730,16 @@ BODY = f'''<title>Card Run HQ</title>
  </section>
 
  <section>
-  <h2>My cards</h2>
+  <h2>Pricing scratchpad</h2>
+  <div class="note warn"><b>This is not your inventory.</b> It is a scratchpad for
+   working out what a pile is worth and where it should be sold &mdash; useful
+   standing in a shop, and it costs nothing to keep. But a card in here can only
+   be nudged up and down by quantity, nothing else can be edited, and its CSV is
+   a pricing worksheet rather than an eBay upload.
+   <br><br><b>The workbook is the inventory.</b> Cards you scan go there through
+   <b>Save for the workbook</b> above, which gives them real SKUs, files their
+   photos, and lets <span class="mono">make_ebay_csv.py</span> turn them into a
+   listing. Nothing in this scratchpad reaches eBay.</div>
   <div class="out">
    <div><span class="k">Lines</span><span class="v" id="cd-s-lines">0</span></div>
    <div><span class="k">Cards</span><span class="v" id="cd-s-qty">0</span></div>

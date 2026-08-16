@@ -86,7 +86,12 @@ FLAGS = {"rc": "RC", "auto": "Auto", "relic": "Relic"}
 DEFAULTS = {"sport": "Football", "category": "Sports",
             "condition": "Near Mint or Better", "qty": 1}
 
-ALLOWED = set(FIELDS) | set(FLAGS) | {"unsure"}
+# "photos" is how many pictures in the crops folder belong to this card: 1 for
+# a front only, 2 for front and back. Card desk writes it per card, because a
+# batch is rarely uniform -- you photograph the back of the ones worth it. It
+# is why the pictures are filed here rather than handed to add_photos --pairs,
+# which can only do the same count for every card in the batch.
+ALLOWED = set(FIELDS) | set(FLAGS) | {"unsure", "photos"}
 
 
 def norm(s):
@@ -115,7 +120,15 @@ def load_batch(path):
         if bad:
             sys.exit("card %d marks unknown field(s) unsure: %s"
                      % (i, ", ".join(bad)))
-    return bool(data.get("pairs")), cards
+        n = c.get("photos")
+        if n is not None and (not isinstance(n, int) or n < 0 or n > 4):
+            sys.exit("card %d wants %r photos; it has to be 0 to 4" % (i, n))
+
+    pairs = bool(data.get("pairs"))
+    if pairs:                       # shorthand for "every card has two"
+        for c in cards:
+            c.setdefault("photos", 2)
+    return pairs, cards
 
 
 def add_rows(wb_path, cards, dry_run=False):
@@ -169,7 +182,7 @@ def add_rows(wb_path, cards, dry_run=False):
             ws.cell(row=row, column=idx[norm("Date in")]).number_format = "yyyy-mm-dd"
 
         out.append({"sku": sku, "row": row, "player": card["player"],
-                    "unsure": unsure})
+                    "unsure": unsure, "photos": int(card.get("photos", 0))})
         row += 1
 
     if not dry_run:
@@ -221,11 +234,51 @@ def main():
         print("\nno crops folder at %s -- rows added, photos not filed." % a.crops)
         return 0
 
-    print("\nfiling pictures from %s:" % a.crops)
-    # add_photos refuses outright on a count mismatch rather than filing some
-    # of them onto the wrong cards, which is exactly what should happen here
-    add_photos.do_import(a.crops, assign=",".join(e["sku"] for e in added),
-                         pairs=pairs, move=a.move)
+    return file_photos(added, a.crops, a.move)
+
+
+def file_photos(added, crops, move=False):
+    """Put each card's pictures on its SKU, in order.
+
+    Pictures are taken in filename order and handed out a card at a time --
+    the first card's `photos` of them, then the next card's. Card desk names
+    its downloads so that order is the order shown on the queue, front before
+    back.
+
+    The count has to match exactly. One picture out and every card after it
+    gets somebody else's photo, which is a wrong picture on a live listing --
+    so a mismatch files nothing at all and says what it found instead.
+    """
+    files = sorted(f for f in os.listdir(crops)
+                   if os.path.splitext(f)[1].lower() in add_photos.EXTS)
+    want = sum(e["photos"] for e in added)
+
+    if not want:
+        print("\nno photo counts in the batch, so no pictures were filed.")
+        if files:
+            print("%d picture(s) are sitting in %s -- add \"photos\": 1 or 2 to "
+                  "each card, or file them by hand with add_photos.py --assign."
+                  % (len(files), crops))
+        return 0
+
+    if want != len(files):
+        print("\nNOTHING FILED. The batch accounts for %d picture%s and %s holds %d."
+              % (want, "" if want == 1 else "s", crops, len(files)))
+        print("Filing them anyway would put one card's photo on another card's "
+              "listing, so fix the count and run it again.")
+        return 1
+
+    print("\nfiling %d picture%s from %s:" % (len(files), "" if len(files) == 1 else "s", crops))
+    i = 0
+    for e in added:
+        for k in range(e["photos"]):
+            src = os.path.join(crops, files[i])
+            add_photos.place(src, e["sku"], add_photos.SLOTS[k][0])
+            if move:
+                os.remove(src)
+            i += 1
+    print("\nfiled %d onto %d card%s." % (len(files), len(added),
+                                          "" if len(added) == 1 else "s"))
     return 0
 
 

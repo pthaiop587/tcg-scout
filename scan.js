@@ -376,18 +376,38 @@ function scExtract(img, rect, turns, maxW){
 const SC_QKEY = 'carddesk.queue.v1';
 const SC_QTHUMB = 150;                 /* px wide; ~8 KB each in storage */
 
-/* Fields carry the same names a stored card uses, so confirming is a copy
-   rather than a translation that could quietly drop something. */
+/* These are the workbook's own columns and the workbook's own wording, on
+   purpose. The condition list is eBay's four rather than the collector's
+   NM/LP/MP/HP/DMG, because eBay's four is what a listing actually carries and
+   translating between them on the way out would quietly coarsen every card. */
+const SC_CONDS = ['Near Mint or Better', 'Excellent', 'Very Good', 'Poor'];
 const SC_FIELDS = [
   { k: 'n',    label: 'Card',      ph: 'Shedeur Sanders' },
-  { k: 's',    label: 'Set',       ph: '2025 Prizm Draft Picks' },
+  { k: 's',    label: 'Set',       ph: '2025 Panini Prizm Draft Picks' },
   { k: 'num',  label: 'Number',    ph: '8' },
   { k: 'var',  label: 'Parallel',  ph: 'Gold Cracked Ice' },
-  { k: 'c',    label: 'Condition', sel: ['NM', 'LP', 'MP', 'HP', 'DMG'] },
+  { k: 'c',    label: 'Condition', sel: SC_CONDS },
   { k: 'q',    label: 'Qty',       num: true },
   { k: 'v',    label: 'Worth ea',  num: true, ph: '0.00' },
-  { k: 'kind', label: 'Route as',  sel: ['sports', 'tcg'] }
+  { k: 'kind', label: 'Category',  sel: ['Sports', 'TCG', 'Non-sport'] }
 ];
+
+/* queue field -> the name file_batch.py knows it by */
+const SC_TO_BATCH = {
+  n: 'player', s: 'brand', num: 'num', var: 'parallel',
+  c: 'condition', q: 'qty', v: 'market', kind: 'category'
+};
+
+/* what an old queue, or a paste written the collector's way, gets turned into */
+const SC_COND_ALIAS = {
+  NM: 'Near Mint or Better', MINT: 'Near Mint or Better',
+  LP: 'Excellent', MP: 'Very Good', HP: 'Poor', DMG: 'Poor', DAMAGED: 'Poor'
+};
+function scCond(v){
+  const s = String(v || '').trim();
+  if (SC_CONDS.indexOf(s) >= 0) return s;
+  return SC_COND_ALIAS[s.toUpperCase()] || 'Near Mint or Better';
+}
 
 let SC_QUEUE = [];
 let SC_QPERSISTS = false;
@@ -535,7 +555,8 @@ if (scDropEl) {
        another photo of the same card */
     const entry = group[0];
     const row = document.createElement('div');
-    row.className = 'qrow' + (scReady(entry) ? ' ready' : '');
+    row.className = 'qrow' + (scReady(entry) ? ' ready' : '')
+      + (entry.ok ? ' ok' : '') + (entry.filed ? ' filed' : '');
 
     const left = document.createElement('div');
     left.className = 'qleft';
@@ -576,12 +597,18 @@ if (scDropEl) {
       return b;
     };
 
-    const conf = btn('Confirm', 'Move this card into My cards', () => {
-      confirmOne(group);
-    }, 'go');
-    conf.disabled = !scReady(entry);
-    if (!(entry.n || '').trim()) conf.title = 'Needs a card name first';
-    else if ((entry.flags || []).length) conf.title = 'Clear the amber fields first';
+    const conf = btn(entry.ok ? 'Checked' : 'Confirm',
+      entry.ok ? 'Press again to un-check it'
+               : 'Mark this card checked and ready for the workbook',
+      () => {
+        if (entry.ok){ entry.ok = false; entry.filed = false; scQSave(); render(); }
+        else confirmOne(group);
+      }, entry.ok ? '' : 'go');
+    conf.disabled = !entry.ok && !scReady(entry);
+    if (!entry.ok){
+      if (!(entry.n || '').trim()) conf.title = 'Needs a card name first';
+      else if ((entry.flags || []).length) conf.title = 'Clear the amber fields first';
+    }
 
     /* the answer to "how do I upload the back of THIS card" -- point at the
        card, pick the picture, done, whatever order they arrived in */
@@ -654,18 +681,27 @@ if (scDropEl) {
 
   function renderFoot(){
     const groups = scGroups();
-    const ready = groups.filter(g => scReady(g[0])).length;
+    const ready = groups.filter(g => scReady(g[0]) && !g[0].ok).length;
+    const ok = groups.filter(g => g[0].ok).length;
+    const filed = groups.filter(g => g[0].filed).length;
     if (countEl){
       countEl.textContent = groups.length
         ? groups.length + (groups.length === 1 ? ' card' : ' cards')
-          + ' waiting \u00b7 ' + ready + ' ready to confirm'
+          + ' \u00b7 ' + ok + ' checked' + (filed ? ' \u00b7 ' + filed + ' saved' : '')
         : '';
     }
     const c = document.getElementById('sc-qconfirm');
     if (c){
       c.disabled = !ready;
-      c.textContent = ready ? 'Confirm ' + ready + ' \u2192 My cards' : 'Confirm all ready';
+      c.textContent = ready ? 'Check ' + ready + ' off' : 'Check all ready';
     }
+    const t = document.getElementById('sc-tofile');
+    if (t){
+      t.disabled = !ok;
+      t.textContent = ok ? 'Save ' + ok + ' for the workbook' : 'Save for the workbook';
+    }
+    const cf = document.getElementById('sc-clearfiled');
+    if (cf){ cf.hidden = !filed; cf.textContent = 'Clear ' + filed + ' saved'; }
     const odd = document.getElementById('sc-odd');
     if (odd) odd.hidden = !(SC_PAIRS && groups.some(g => g.length === 1));
   }
@@ -692,29 +728,40 @@ if (scDropEl) {
 
   /* ---- confirming ---- */
 
+  /* Confirming means "I have checked this one", nothing more. It used to
+     push the card into My cards, which was a dead end: that list can only be
+     edited by nudging a quantity up and down, and its CSV is a pricing
+     worksheet, not an eBay upload. The workbook is the record and the only
+     thing that can produce a real listing, so a confirmed card waits here to
+     be filed into it instead. */
   function confirmOne(group){
     const entry = group[0];
     if (!scReady(entry)) return;
-    const cond = String(entry.c || 'NM').toUpperCase();
-    CD_STOCK.unshift({
-      manual: 1,
-      kind: entry.kind === 'tcg' ? 'tcg' : 'sports',
-      n: (entry.n || '').trim(),
-      s: (entry.s || '').trim(),
-      num: (entry.num || '').trim(),
-      var: (entry.var || '').trim(),
-      c: CD_CONDS.includes(cond) ? cond : 'NM',
-      q: Math.max(1, Math.round(parseFloat(entry.q) || 1)),
-      v: (isFinite(parseFloat(entry.v)) && entry.v >= 0) ? parseFloat(entry.v) : 0
-    });
-    cdSave(); cdRenderStock();
-    /* both pictures of a card leave together -- the back was never a card of
-       its own, and leaving it behind would re-pair the whole queue */
-    SC_QUEUE = SC_QUEUE.filter(x => group.indexOf(x) < 0);
-    group.forEach(e => SC_FULL.delete(e.id));
+    entry.ok = true;
     scQSave(); render();
-    say('Confirmed \u2014 it is in My cards now'
-        + (CD_PERSISTS ? '.' : ', but this browser is NOT saving. Export before you close.'));
+  }
+
+  /* the card as file_batch.py wants it */
+  function batchCard(group){
+    const e = group[0];
+    const unsure = (e.flags || []).map(f => SC_TO_BATCH[f]).filter(Boolean);
+    const kind = String(e.kind || 'Sports');
+    const card = {
+      player: (e.n || '').trim(),
+      brand: (e.s || '').trim(),
+      num: String(e.num || '').trim(),
+      parallel: (e.var || '').trim(),
+      condition: scCond(e.c),
+      category: kind,
+      sport: kind === 'Sports' ? 'Football' : 'TCG',
+      qty: Math.max(1, Math.round(parseFloat(e.q) || 1)),
+      photos: group.filter(x => SC_FULL.has(x.id)).length
+    };
+    const v = parseFloat(e.v);
+    if (isFinite(v) && v > 0) card.market = v;
+    else unsure.push('market');
+    if (unsure.length) card.unsure = Array.from(new Set(unsure));
+    return card;
   }
 
   /* ---- taking files ---- */
@@ -765,7 +812,7 @@ if (scDropEl) {
         SC_QUEUE.push({
           id: id, card: targetCard || id,
           src: stem(file.name), turns: 0, thumb: scThumb(img, rect, 0),
-          kind: 'sports', n: '', s: '', num: '', var: '', c: 'NM', q: 1, v: 0,
+          kind: 'Sports', n: '', s: '', num: '', var: '', c: SC_CONDS[0], q: 1, v: 0,
           flags: [], at: Date.now()
         });
         added++;
@@ -789,6 +836,14 @@ if (scDropEl) {
                     + ' had nothing card-shaped on it.';
     if (added) note += ' Nothing is in My cards yet \u2014 fill in what each one is, then confirm.';
     say(note);
+  }
+
+  function downloadText(text, name){
+    const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 200);
   }
 
   function download(canvas, name){
@@ -856,11 +911,59 @@ if (scDropEl) {
   });
 
   on('sc-qconfirm', () => {
-    const ready = scGroups().filter(g => scReady(g[0]));
+    const ready = scGroups().filter(g => scReady(g[0]) && !g[0].ok);
     if (!ready.length) return;
     ready.forEach(confirmOne);
-    say('Confirmed ' + ready.length + ' into My cards.'
-        + (CD_PERSISTS ? '' : ' This browser is NOT saving \u2014 export before you close.'));
+    say('Checked ' + ready.length + '. Now press "Save for the workbook" and '
+      + 'run file_batch.py \u2014 that is what puts them in the spreadsheet.');
+  });
+
+  /* The handover. Downloads the pictures, numbered so filename order is the
+     order shown here, then a batch file naming each card and how many of
+     those pictures are its own. file_batch.py reads the two together. */
+  on('sc-tofile', async () => {
+    const groups = scGroups().filter(g => g[0].ok);
+    if (!groups.length){ say('Nothing confirmed yet \u2014 check a card first.'); return; }
+
+    const btn = document.getElementById('sc-tofile');
+    btn.disabled = true;
+    const cards = [];
+    let n = 0, missing = 0;
+    for (const g of groups){
+      for (const e of g){
+        const full = SC_FULL.get(e.id);
+        if (!full){ missing++; continue; }
+        n++;
+        say('Saving picture ' + n + '\u2026');
+        await download(scExtract(full.img, full.rect, e.turns),
+                       'crh-' + String(n).padStart(3, '0') + '.jpg');
+      }
+      cards.push(batchCard(g));
+    }
+    downloadText(JSON.stringify({ cards: cards }, null, 2), 'batch.json');
+    btn.disabled = false;
+
+    groups.forEach(g => { g[0].filed = true; });
+    scQSave(); render();
+
+    say('Saved ' + n + ' picture' + (n === 1 ? '' : 's') + ' and batch.json for '
+      + cards.length + ' card' + (cards.length === 1 ? '' : 's') + '. '
+      + (missing ? missing + ' picture(s) were gone from this session and are not in it. ' : '')
+      + 'Move the crh-*.jpg files into photos/crops, put batch.json beside the '
+      + 'workbook, then run:  python file_batch.py batch.json  and  '
+      + 'python make_ebay_csv.py');
+  });
+
+  on('sc-clearfiled', () => {
+    const gone = scGroups().filter(g => g[0].filed);
+    if (!gone.length) return;
+    const ids = new Set();
+    gone.forEach(g => g.forEach(e => ids.add(e.id)));
+    SC_QUEUE = SC_QUEUE.filter(e => !ids.has(e.id));
+    ids.forEach(id => SC_FULL.delete(id));
+    scQSave(); render();
+    say('Cleared ' + gone.length + ' filed card' + (gone.length === 1 ? '' : 's')
+      + ' off the queue.');
   });
 
   on('sc-save', async () => {
@@ -927,11 +1030,11 @@ if (scDropEl) {
         if (val.charAt(0) === '?'){ val = val.slice(1).trim(); e.flags.push(k); unsure++; }
         if (k === 'q') e.q = Math.max(1, Math.round(parseFloat(val) || 1));
         else if (k === 'v') e.v = Math.max(0, parseFloat(val) || 0);
-        else if (k === 'c'){
-          const c = val.toUpperCase();
-          e.c = ['NM', 'LP', 'MP', 'HP', 'DMG'].includes(c) ? c : 'NM';
+        else if (k === 'c') e.c = scCond(val);
+        else if (k === 'kind'){
+          e.kind = /tcg/i.test(val) ? 'TCG'
+                 : /non.?sport/i.test(val) ? 'Non-sport' : 'Sports';
         }
-        else if (k === 'kind') e.kind = /tcg/i.test(val) ? 'tcg' : 'sports';
         else e[k] = val;
       });
       n++;
