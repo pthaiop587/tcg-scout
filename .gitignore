@@ -20,6 +20,12 @@ ebay-template.csv
 photos/scans/
 photos/crops/
 
+# The full inventory export: cost, notes, what every card is worth. It feeds
+# the dashboard's My inventory tab on this machine only. The public site can
+# show inventory-public.json instead, which export_inventory.py --publish
+# writes without any of the money, and which IS committed on purpose.
+inventory.json
+
 __pycache__/
 *.pyc
 .pytest_cache/

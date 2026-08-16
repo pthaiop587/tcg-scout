@@ -22,7 +22,7 @@ const PAGE = 'card-run-hq.html';
 /* Every hash that has ever been a tab. They must all still resolve, because
    the runbook tells you to bookmark them and several are linked in-page. A
    section that became a fold keeps its id, so the router finds it either way. */
-const HASHES = ['add', 'sell', 'sheet', 'shelf', 'pc', 'log', 'map', 'ref',
+const HASHES = ['add', 'inv', 'sell', 'sheet', 'shelf', 'pc', 'log', 'map', 'ref',
                 'src', 'learn', 'types', 'boxes', 'chase', 'shops', 'plan',
                 'rules', 'chan', 'sport'];
 
@@ -92,6 +92,27 @@ const check = (ok, msg) => { if (!ok) fails.push(msg); };
   await page.goto(url);
   check(await page.isVisible('#sc-drop'), 'scan drop zone missing from Card desk');
   check(!(await page.isVisible('#sc-qwrap')), 'review queue shows before anything is dropped');
+
+  /* the inventory tab renders whatever export_inventory.py produced, and
+     says so plainly when that is nothing rather than showing a blank page */
+  await page.click('#t-inv');
+  await page.waitForTimeout(250);
+  const inv = await page.evaluate(() => ({
+    cards: (typeof INVENTORY === 'object' && INVENTORY.cards) ? INVENTORY.cards.length : -1,
+    money: (typeof INVENTORY === 'object') ? !!INVENTORY.money : null,
+    body: document.getElementById('inv-rows').innerText.trim().length,
+    rows: document.querySelectorAll('#inv-rows tbody tr').length
+  }));
+  check(inv.cards >= 0, 'the page has no INVENTORY object at all');
+  check(inv.body > 40, 'the inventory tab rendered nothing, not even an explanation');
+  if (inv.cards > 0) {
+    check(inv.rows === inv.cards, inv.cards + ' cards exported but ' + inv.rows + ' rows shown');
+  }
+  /* a published build must never carry cost -- see export_inventory.py */
+  const leaked = await page.evaluate(() =>
+    (typeof INV_SOURCE === 'string' && INV_SOURCE === 'published' &&
+     typeof INVENTORY === 'object' && (INVENTORY.cards || []).some(c => 'cost' in c)));
+  check(!leaked, 'A PUBLISHED BUILD IS CARRYING COST DATA');
 
   check(jsErrors.length === 0, 'js errors: ' + jsErrors.join(' | '));
 

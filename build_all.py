@@ -387,6 +387,21 @@ JS  = io.open(f"{SP}/hq.js",  encoding="utf-8").read()
 # dashboard wiring, and mixing 350 lines of gradients into hq.js would bury
 # both. It is inlined straight after, so it still ships as one file.
 SCAN_JS = io.open(f"{SP}/scan.js", encoding="utf-8").read()
+INV_JS  = io.open(f"{SP}/inventory.js", encoding="utf-8").read()
+
+# The workbook's Inventory, if it has been exported. Two files on purpose:
+# inventory.json is everything and is gitignored, so a build on Mr. P's
+# machine shows cost and notes; inventory-public.json is the subset he chose
+# to publish and is all CI can ever see. Local first, published second,
+# nothing third -- and the page says which it is looking at.
+INVENTORY, INV_SOURCE = None, ""
+for _f, _where in ((f"{SP}/inventory.json", "local"),
+                   (f"{SP}/inventory-public.json", "published")):
+    if os.path.exists(_f):
+        INVENTORY = io.open(_f, encoding="utf-8").read()
+        INV_SOURCE = _where
+        break
+INVENTORY_JSON = INVENTORY or '{"money":false,"totals":{},"cards":[]}'
 
 # The download button points at two different files depending on where the
 # page is being read, and it was only ever right in one of them.
@@ -489,6 +504,7 @@ BODY = f'''<title>Card Run HQ</title>
   <div class="navgroup">
     <p class="lbl">My cards</p>
     <button class="navlink" role="tab" id="t-add"   aria-controls="p-add"   aria-selected="true"><i></i>Card desk</button>
+    <button class="navlink" role="tab" id="t-inv"   aria-controls="p-inv"   aria-selected="false"><i></i>My inventory</button>
     <button class="navlink" role="tab" id="t-sell"  aria-controls="p-sell"  aria-selected="false"><i></i>Price a card</button>
     <button class="navlink" role="tab" id="t-sheet" aria-controls="p-sheet" aria-selected="false"><i></i>Master spreadsheet</button>
   </div>
@@ -818,6 +834,36 @@ BODY = f'''<title>Card Run HQ</title>
    <tbody id="cd-sets"></tbody></table></div>
   <p class="hint">The desktop app can sync any set from TCGCSV. This page carries a snapshot of the recent ones so it keeps working with no signal.</p>
  </details>
+</div>
+
+<div role="tabpanel" id="p-inv" aria-labelledby="t-inv" hidden>
+ <section>
+  <h2>My inventory <span class="hint" id="inv-count"></span></h2>
+  <p class="hint">Straight out of <span class="mono">Card Run HQ - Master.xlsx</span>
+   &mdash; the workbook is the record, this is the view of it. Type into the
+   spreadsheet, then run
+   <span class="mono">python export_inventory.py</span> and
+   <span class="mono">python build_all.py . card-run-hq.html</span> and what you
+   typed shows up here.</p>
+
+  <div class="out" id="inv-tiles"></div>
+
+  <div class="tools" style="margin-top:13px">
+   <button class="btn2" type="button" data-invf="all">Everything</button>
+   <button class="btn2" type="button" data-invf="Unlisted">Ready to list</button>
+   <button class="btn2" type="button" data-invf="Review">Held for review</button>
+   <button class="btn2" type="button" data-invf="Listed">Listed</button>
+   <button class="btn2" type="button" data-invf="Sold">Sold</button>
+  </div>
+  <div class="searchbar" style="margin-top:11px">
+   <input id="inv-q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Find a card &mdash; name, set, number, SKU&hellip;">
+   <button class="btn2" id="inv-clear">Clear</button>
+  </div>
+
+  <p class="hint" id="inv-note"></p>
+  <div id="inv-rows"></div>
+ </section>
 </div>
 
 <div role="tabpanel" id="p-sell" aria-labelledby="t-sell" hidden>
@@ -1507,7 +1553,10 @@ BODY = f'''<title>Card Run HQ</title>
 </main>
 </div>
 <script>{JS}</script>
+<script>const INVENTORY = {INVENTORY_JSON};
+const INV_SOURCE = "{INV_SOURCE}";</script>
 <script>{SCAN_JS}</script>
+<script>{INV_JS}</script>
 '''
 
 io.open(OUT, "w", encoding="utf-8").write(BODY)

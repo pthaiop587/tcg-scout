@@ -43,6 +43,7 @@ this machine.
 | `python make_workbook.py` | Builds a fresh workbook, 12 tabs. Refuses to overwrite without `--force`. |
 | `python upgrade_workbook.py` | Moves an **existing** workbook onto the current layout **keeping what you typed**. Dry run by default; `--go` to do it. Backs up first, always. |
 | `python embed_photos.py` | Rewrites the **Photos** tab from what is in `photos/`, thumbnails and all. Run it after adding photos. |
+| `python export_inventory.py` | Puts the Inventory tab onto the dashboard's **My inventory** tab. `--publish` also writes the money-free copy for the public site. |
 | `python file_batch.py batch.json` | Files a whole scanned batch: a row per card with a SKU, photos onto those SKUs. |
 | `python add_card.py --player "..." --year 2025 --brand "..." ...` | Appends one card to Inventory and assigns the next SKU. |
 | `python make_ebay_csv.py` | Writes `ebay-upload-<date>.csv` from every Inventory row marked **Unlisted**, and rewrites the workbook's eBay upload tab to match. `--sku CRH-0001` for one card, `--all` to ignore status. |
@@ -115,6 +116,46 @@ A bulk upload carries image *links*, not image files. Put photos in `photos/`
 named after the SKU — `CRH-0001.jpg`, `CRH-0001-back.jpg` — and they publish
 with the Pages site, which makes them valid eBay picture URLs. `PicURL` fills
 itself in when a matching file exists.
+
+---
+
+## Seeing the workbook on the dashboard
+
+The page does **not** read the workbook. It is built once from files on disk,
+so typing a card into the spreadsheet changes nothing until you export and
+rebuild:
+
+```
+   (type into Card Run HQ - Master.xlsx)
+python export_inventory.py
+python build_all.py . card-run-hq.html
+```
+
+Then **My inventory** shows every card with its photo, status, condition,
+quantity, cost, market and ask, with a search box and filters for ready-to-list,
+held-for-review, listed and sold. The tiles across the top are the same
+arithmetic as the workbook's Summary, so the two agree.
+
+### Two exports, and the difference is your privacy
+
+`inventory.json` is **everything** — cost, notes, lot. It is **gitignored**, so
+it stays on this machine and only a build done here shows it. CI has never seen
+your workbook and cannot: that is gitignored too.
+
+`export_inventory.py --publish` additionally writes `inventory-public.json`,
+which carries what a card *is* — name, set, number, parallel, condition,
+quantity, status, photo, market — and **not** what you paid, what it sold for,
+your notes, or the lot. That file is committed and served with the site, so
+treat everything in it as readable by anyone with the URL. Commit it to
+publish; delete it to stop.
+
+The build prefers the local file and falls back to the published one, and the
+page says which it is looking at — so a blank cost column reads as "deliberately
+not published" rather than missing data.
+
+**Photo paths are relative** (`photos/CRH-0001.jpg`) so the thumbnails load both
+in the copy built here and on the live site. eBay is the one consumer that needs
+a full public https address, and `make_ebay_csv.py` builds those itself.
 
 ---
 
@@ -303,7 +344,7 @@ the browser to hold twenty 33-megapixel pages at once.
 ### Tests
 
 ```
-python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py
+python -m pytest test_crop_scans.py test_file_batch.py test_workbook.py test_export_inventory.py
 node test_scan.mjs                      # 19, the browser geometry
 python build_all.py . card-run-hq.html  # the dashboard test needs the build
 node test_dashboard.cjs                 # every tab, every bookmark, no js errors
