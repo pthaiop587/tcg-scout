@@ -181,14 +181,50 @@ def test_the_date_is_formatted_as_a_date(wb):
 
 
 def test_every_date_column_carries_a_date_format(wb):
-    """Listed on and Sold on travel to the tab too, and have the same trap."""
+    """Listed on and Sold on travel to the tab too, and have the same trap.
+
+    Only the ones the workbook actually has: the price-lookup columns are added
+    by prices.py and a workbook that has never been priced will not carry
+    them."""
     run(wb)
     ws = load_workbook(wb)["Basketball"]
     hdr = [c.value for c in ws[2]]
+    checked = 0
     for name in st.DATES:
-        assert name in hdr, "%s missing from the tab" % name
+        if name not in hdr:
+            continue
         cell = ws.cell(row=3, column=hdr.index(name) + 1)
         assert cell.number_format == st.DATEFMT, (name, cell.number_format)
+        checked += 1
+    assert checked >= 3, "expected at least Date in, Listed on, Sold on"
+
+
+def test_a_priced_workbook_shows_its_prices_and_their_dates(wb):
+    """prices.py appends six columns; the tab has to carry them, formatted, or
+    a price sits next to a five-digit serial where its date should be."""
+    import datetime
+    book = load_workbook(wb)
+    inv = book["Inventory"]
+    start = inv.max_column
+    for i, name in enumerate(["Raw price", "Raw last sold", "PSA 9 price",
+                              "PSA 9 last sold", "PSA 10 price",
+                              "PSA 10 last sold"], start=1):
+        inv.cell(row=1, column=start + i, value=name)
+        for r in (2, 3, 4):
+            inv.cell(row=r, column=start + i,
+                     value=datetime.date(2026, 8, 1) if "sold" in name
+                     else 12.34)
+    book.save(wb)
+
+    run(wb)
+    ws = load_workbook(wb)["Basketball"]
+    hdr = [c.value for c in ws[2]]
+    for name in ("Raw price", "PSA 9 price", "PSA 10 price"):
+        assert name in hdr, name
+        assert ws.cell(row=3, column=hdr.index(name) + 1).number_format == st.MONEY
+    for name in ("Raw last sold", "PSA 9 last sold", "PSA 10 last sold"):
+        assert name in hdr, name
+        assert ws.cell(row=3, column=hdr.index(name) + 1).number_format == st.DATEFMT
 
 
 def test_the_date_survives_a_rebuild(wb):

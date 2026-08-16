@@ -46,18 +46,25 @@ MARK = "VIEW — generated from Inventory. Do not type here."
 SHOW = ["SKU", "Status", "Date in", "Year", "Brand / set", "Insert set",
         "Parallel", "Player or card name", "Card #", "Serial /", "Team",
         "League", "Card condition", "Qty", "Cost each", "Market value",
-        "Ask price", "Listed on", "Sold on", "Notes"]
+        "Ask price", "Raw price", "Raw last sold", "PSA 9 price",
+        "PSA 9 last sold", "PSA 10 price", "PSA 10 last sold",
+        "Listed on", "Sold on", "Notes"]
 
 WIDTH = {"SKU": 12, "Status": 12, "Date in": 11, "Year": 7,
          "Brand / set": 24, "Insert set": 20, "Parallel": 18,
          "Player or card name": 22, "Card #": 9, "Serial /": 9, "Team": 18,
          "League": 9, "Card condition": 18, "Qty": 6, "Cost each": 11,
          "Market value": 12, "Ask price": 11, "Listed on": 11, "Sold on": 11,
+         "Raw price": 11, "Raw last sold": 12, "PSA 9 price": 11,
+         "PSA 9 last sold": 13, "PSA 10 price": 11, "PSA 10 last sold": 14,
          "Notes": 34}
 
 # Dates arrive from openpyxl as datetimes and would otherwise render as a
 # five-digit serial number, which reads as a card number at a glance.
-DATES = ("Date in", "Listed on", "Sold on")
+DATES = ("Date in", "Listed on", "Sold on", "Raw last sold",
+         "PSA 9 last sold", "PSA 10 last sold")
+CASH = ("Cost each", "Market value", "Ask price", "Raw price",
+        "PSA 9 price", "PSA 10 price")
 DATEFMT = "yyyy-mm-dd"
 
 MONEY = '"$"#,##0.00'
@@ -131,7 +138,7 @@ def build_tab(wb, sport, rows, hdr):
     for n, rec in enumerate(mine, start=3):
         for i, name in enumerate(cols, start=1):
             cell = ws.cell(row=n, column=i, value=rec.get(name))
-            if name in ("Cost each", "Market value", "Ask price"):
+            if name in CASH:
                 cell.number_format = MONEY
             elif name in DATES:
                 cell.number_format = DATEFMT
