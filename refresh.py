@@ -6,7 +6,7 @@
 
 Run this after typing into Card Run HQ - Master.xlsx. It does, in order:
 
-    fill_skus.py         a SKU for anything typed in by hand
+    autofill.py         SKU and Category for anything typed in by hand
     embed_photos.py      thumbnails into the workbook's Photos tab
     sport_tabs.py        a read-only tab per sport, rebuilt from Inventory
     export_inventory.py  the Inventory tab out to JSON
@@ -95,8 +95,8 @@ def main():
     # only ever fills an EMPTY cell and never renumbers a card that has one, so
     # it is safe to do every run -- and doing it every run is the point, since
     # the failure it prevents is sixty cards silently not existing.
-    if not run([sys.executable, "fill_skus.py", "--workbook", a.workbook, "--go"],
-               "fill_skus.py"):
+    if not run([sys.executable, "autofill.py", "--workbook", a.workbook, "--go"],
+               "autofill.py"):
         return 1
 
     # a read-only tab per sport, rebuilt from Inventory each time

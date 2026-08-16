@@ -26,6 +26,84 @@ PURCHASE_ROWS = 400
 EXPENSE_ROWS = 300
 PHOTO_ROWS = 400
 
+
+# ---------------------------------------------------------------------- Costs
+# Everything that leaves your pocket, in one tab: the boxes and packs, and the
+# toploaders, mailers and postage that go around them. It was two tabs
+# (Purchases and Expenses) and that was a distinction without a difference --
+# a trip to Target that buys a blaster and a pack of sleeves is one receipt.
+#
+# The Type column is what keeps the split that actually matters: STOCK is money
+# that turned into cards and can be earned back, RUNNING is money that just
+# goes. Summary totals them separately off that.
+COST_COLS = [
+    ("Date", 11), ("What", 40), ("Type", 16), ("Vendor / store", 22),
+    ("Lot ID", 11), ("Qty", 6), ("Unit price", 11), ("Subtotal", 11),
+    ("Tax", 9), ("Shipping", 10), ("Total paid", 12), ("Paid with", 14),
+    ("Order / receipt #", 20), ("Receipt file", 24), ("Notes", 34),
+]
+
+# Anything not in STOCK_TYPES is running cost. Keep the two lists in step with
+# the dropdown or the Summary quietly stops adding up.
+STOCK_TYPES = ["Sealed box", "Sealed case", "Pack", "Single card", "Bulk lot"]
+RUNNING_TYPES = ["Toploaders", "Sleeves", "Mailers", "Boxes", "Postage",
+                 "Shipping", "Fees", "Equipment", "Other"]
+COST_TYPES = STOCK_TYPES + RUNNING_TYPES
+COST_ROWS = 400
+
+
+def build_costs(wb, head, note, dv, NOTEFILL, google=False):
+    ws = wb.create_sheet("Costs")
+    head(ws, COST_COLS)
+    c = {n: get_column_letter(i) for i, (n, _w) in enumerate(COST_COLS, 1)}
+
+    if google:
+        ws["%s2" % c["Subtotal"]] = (
+            '=ARRAYFORMULA(IF({q}2:{q}="","",{q}2:{q}*{u}2:{u}))'
+            .format(q=c["Qty"], u=c["Unit price"]))
+        ws["%s2" % c["Total paid"]] = (
+            '=ARRAYFORMULA(IF({s}2:{s}="","",N({s}2:{s})+N({t}2:{t})+N({sh}2:{sh})))'
+            .format(s=c["Subtotal"], t=c["Tax"], sh=c["Shipping"]))
+
+    for r in range(2, COST_ROWS + 2):
+        if not google:
+            ws["%s%d" % (c["Subtotal"], r)] = (
+                '=IF(N({q}{r})=0,"",{q}{r}*{u}{r})'
+                .format(q=c["Qty"], u=c["Unit price"], r=r))
+            ws["%s%d" % (c["Total paid"], r)] = (
+                '=IF(AND(N({s}{r})=0,N({t}{r})=0,N({sh}{r})=0),"",'
+                'N({s}{r})+N({t}{r})+N({sh}{r}))'
+                .format(s=c["Subtotal"], t=c["Tax"], sh=c["Shipping"], r=r))
+        for col in ("Unit price", "Subtotal", "Tax", "Shipping", "Total paid"):
+            ws["%s%d" % (c[col], r)].number_format = MONEY
+        ws["%s%d" % (c["Date"], r)].number_format = "yyyy-mm-dd"
+
+    span = lambda n: "%s2:%s%d" % (c[n], c[n], COST_ROWS + 1)
+    dv(ws, COST_TYPES, span("Type"))
+    dv(ws, ["Card", "Cash", "PayPal", "Gift card", "Other"], span("Paid with"))
+
+    r = COST_ROWS + 3
+    ws.cell(row=r, column=1, value="Everything you paid for.").font = Font(bold=True)
+    note(ws, "A%d" % (r + 1),
+         "Boxes and packs, and the toploaders, sleeves, mailers and postage "
+         "that go around them. One tab, because a trip that buys a blaster and "
+         "a pack of sleeves is one receipt.\n"
+         "Subtotal and Total paid work themselves out -- type Qty, Unit price, "
+         "Tax and Shipping.\n"
+         "Type is what splits it: Sealed box, Pack, Single card and Bulk lot "
+         "are money that turned into cards and can be earned back. Everything "
+         "else is money that simply goes, and it is what turns a gross profit "
+         "into a real one -- it is also the first thing forgotten.\n"
+         "Lot ID ties a box to the cards that came out of it: put the same code "
+         "here and on every Inventory row from that box, and cost per card "
+         "stops being a guess.\n"
+         "Receipt file is the name you saved the photo or PDF under. Keep it -- "
+         "the tax year will want it, and so will eBay if a buyer disputes.")
+    ws["A%d" % (r + 1)].fill = NOTEFILL
+    ws.merge_cells("A%d:H%d" % (r + 1, r + 8))
+    return ws
+
+
 # ------------------------------------------------------------------ Purchases
 # Everything bought, whether it was a sealed box, a lot off eBay, a single at
 # a show, or a stack of toploaders. The Box log stays for what came OUT of a
@@ -212,10 +290,16 @@ def build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_RO
     end = INV_ROWS + 1
     rows = [
         ("MONEY OUT", None, None),
-        ("Spent on stock", "=N(SUM(Purchases!M2:M%d))" % (PURCHASE_ROWS + 1),
-         "Every row on Purchases, tax and shipping included."),
-        ("Spent on everything else", "=N(SUM(Expenses!E2:E%d))" % (EXPENSE_ROWS + 1),
-         "Supplies, postage, subscriptions — the Expenses tab."),
+        ("Spent on stock",
+         "=N(SUMPRODUCT((COUNTIF({%s},Costs!C2:C%d)>0)*N(Costs!K2:K%d)))"
+         % (",".join('"%s"' % t for t in STOCK_TYPES), COST_ROWS + 1, COST_ROWS + 1),
+         "Boxes, packs, singles and lots on Costs — money that turned into cards."),
+        ("Spent on everything else",
+         "=N(SUM(Costs!K2:K%d))-N(SUMPRODUCT((COUNTIF({%s},Costs!C2:C%d)>0)"
+         "*N(Costs!K2:K%d)))"
+         % (COST_ROWS + 1, ",".join('"%s"' % t for t in STOCK_TYPES),
+            COST_ROWS + 1, COST_ROWS + 1),
+         "Toploaders, mailers, postage — everything else on Costs."),
         ("Total out of pocket", "={Spent on stock}+{Spent on everything else}",
          "The real number, not the card cost."),
 
@@ -354,9 +438,9 @@ def build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_ROWS
          '=SUMPRODUCT((LEN({i}A2:A{e})>0)*(LEN({i}E2:E{e})=0))'.format(i=i, e=e),
          "Nothing ties them back to a purchase, so you cannot tell which box "
          "paid for itself."),
-        ("Purchases with no receipt file",
-         '=SUMPRODUCT((LEN(Purchases!A2:A{p})>0)*(LEN(Purchases!P2:P{p})=0))'
-         .format(p=PURCHASE_ROWS + 1),
+        ("Costs with no receipt file",
+         '=SUMPRODUCT((LEN(Costs!B2:B{p})>0)*(LEN(Costs!N2:N{p})=0))'
+         .format(p=COST_ROWS + 1),
          "The tax year will want them, and so will eBay if a buyer disputes."),
         ("Sales with no cost basis",
          '=SUMPRODUCT((LEN(Sales!B2:B301)>0)*(N(Sales!L2:L301)=0))',

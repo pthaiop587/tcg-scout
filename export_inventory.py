@@ -57,11 +57,14 @@ FIELDS = {
     "Cert #": "cert", "Card condition": "cond", "Qty": "qty",
     "Cost each": "cost", "Market value": "market", "Ask price": "ask",
     "eBay title": "title", "Notes": "notes",
+    # the selling side, so the page can show what is out and what has gone
+    "Listed on": "listed", "eBay item #": "item", "Sold on": "sold",
+    "Sold for": "soldfor", "Fees paid": "fees", "Net": "net", "Profit": "profit",
 }
 
 # What NEVER goes in the published copy. Money you paid, money you made, and
 # free text that could hold anything.
-PRIVATE = {"cost", "notes", "lot"}
+PRIVATE = {"cost", "notes", "lot", "soldfor", "fees", "net", "profit", "item"}
 
 
 def photos_for(sku, folder=PHOTOS):
@@ -145,11 +148,13 @@ def totals(cards, money=True):
         "unlisted": sum(1 for c in cards if c.get("status") == "Unlisted"),
         "listed": sum(1 for c in cards if c.get("status") == "Listed"),
         "sold": sum(1 for c in cards if c.get("status") == "Sold"),
+        "made": round(sum(num(c.get("profit")) for c in cards), 2),
         "nophoto": sum(1 for c in cards
                        if c.get("status") == "Unlisted" and not c.get("photos")),
     }
     if not money:
         t.pop("cost")
+        t.pop("made")
     return t
 
 

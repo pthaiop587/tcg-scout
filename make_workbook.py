@@ -136,6 +136,13 @@ INVENTORY_COLS = [
     ("Market value", 12), ("Ask price", 11), ("Est fees", 10),
     ("Est net", 10), ("Margin", 9), ("eBay title", 52), ("Len", 6),
     ("Sold comps", 12), ("Notes", 34),
+    # The selling side. In the short layout there is no Sales tab, so a card's
+    # whole life is on its own row: listed when, under what item number, sold
+    # when, for what, less what eBay took. Appended rather than slotted in
+    # beside the money columns on purpose -- workbook_extra.py addresses
+    # Inventory by letter, and inserting a column would move every one of them.
+    ("Listed on", 11), ("eBay item #", 15), ("Sold on", 11),
+    ("Sold for", 11), ("Fees paid", 11), ("Net", 11), ("Profit", 11),
 ]
 
 # Column letters are derived from the headers above, never typed. Inserting a
@@ -183,6 +190,10 @@ def google_inventory(ws, c):
         .format(n=net, c=cost))
     put("eBay title", '=ARRAYFORMULA(IF({w}="","",{t}))'.format(w=who, t=title))
     put("Len", '=ARRAYFORMULA(IF({t}="","",LEN({t})))'.format(t=col("eBay title")))
+    put("Net", '=ARRAYFORMULA(IF({s}="","",{s}-N({f})))'
+        .format(s=col("Sold for"), f=col("Fees paid")))
+    put("Profit", '=ARRAYFORMULA(IF({n}="","",{n}-N({c})*MAX(1,1)))'
+        .format(n=col("Net"), c=col("Cost each")))
     put("Sold comps",
         '=ARRAYFORMULA(IF({w}="","",HYPERLINK('
         '"https://www.ebay.com/sch/i.html?_nkw="&SUBSTITUTE(TRIM({yr}&" "&{b}'
@@ -236,6 +247,13 @@ def build_inventory(wb, google=False):
             who=f["Player or card name"], t=title)
         ws[f["Len"]] = '=IF({t}="","",LEN({t}))'.format(t=f["eBay title"])
 
+        # What the sale actually left, and what it made over the card's cost.
+        ws[f["Net"]] = '=IF(N({sold})=0,"",{sold}-N({fee}))'.format(
+            sold=f["Sold for"], fee=f["Fees paid"])
+        ws[f["Profit"]] = (
+            '=IF(N({net})=0,"",{net}-N({cost})*MAX(1,N({qty})))'
+        ).format(net=f["Net"], cost=f["Cost each"], qty=f["Qty"])
+
         # One tap to the sold comps for this exact card.
         ws[f["Sold comps"]] = (
             '=IF({who}="","",HYPERLINK('
@@ -248,12 +266,15 @@ def build_inventory(wb, google=False):
                  par=f["Parallel"], num=f["Card #"])
 
         for name in ("Cost each", "Market value", "Ask price",
-                     "Est fees", "Est net"):
+                     "Est fees", "Est net", "Sold for", "Fees paid",
+                     "Net", "Profit"):
             ws[f[name]].number_format = MONEY
+        for name in ("Listed on", "Sold on"):
+            ws[f[name]].number_format = "yyyy-mm-dd"
         ws[f["Margin"]].number_format = PCT
         ws[f["Date in"]].number_format = "yyyy-mm-dd"
         for name in ("Est fees", "Est net", "Margin", "eBay title", "Len",
-                     "Sold comps"):
+                     "Sold comps", "Net", "Profit"):
             ws[f[name]].fill = CALCFILL
 
     last = INV_ROWS + 1
@@ -500,6 +521,13 @@ SHORT_README = [
      "out. The eBay title builds itself and Len turns red past 80 characters, "
      "which is eBay's hard limit. Set Sport or game on every row -- that is "
      "what sorts a card onto its own tab."),
+    ("Costs",
+     "Everything you paid for: the boxes and packs, and the toploaders, "
+     "sleeves, mailers and postage that go around them. Type splits it -- "
+     "Sealed box, Pack, Single card and Bulk lot are money that turned into "
+     "cards; the rest is money that simply goes, and it is what turns a gross "
+     "profit into a real one. Put the same Lot ID here and on the cards that "
+     "came out of a box and cost per card stops being a guess."),
     ("eBay",
      "The upload file, written for you by make_ebay_csv.py. Do not type here, "
      "it gets rebuilt. It holds only the rows marked Unlisted, so a card set to "
@@ -669,13 +697,12 @@ def main():
     build_readme(wb, full=args.full)
     build_inventory(wb, google=args.google)
     build_upload_placeholder(wb)
+    # money out, in both layouts -- boxes and packs and everything around them
+    extra.build_costs(wb, head, note, dv, NOTEFILL, google=args.google)
 
     if args.full:
         # the money side: what went out, against what came back
-        extra.build_purchases(wb, head, note, dv, NOTEFILL, BOX,
-                              google=args.google)
         build_boxlog(wb, google=args.google)
-        extra.build_expenses(wb, head, note, dv, NOTEFILL)
         build_sales(wb, google=args.google)
         extra.build_photos(wb, head, note, dv, NOTEFILL, google=args.google)
         # these two read every other tab, so they are built last

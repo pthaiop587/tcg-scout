@@ -61,6 +61,9 @@
       html += tile('Unrealised', cash(totals.market - totals.cost));
     }
     html += tile('Ready to list', totals.unlisted || 0);
+    if (totals.listed) html += tile('Listed now', totals.listed);
+    if (totals.sold) html += tile('Sold', totals.sold);
+    if (money && totals.made) html += tile('Made on sales', cash(totals.made));
     if (totals.review) html += tile('Held for review', totals.review);
     tilesEl.innerHTML = html;
   }
@@ -103,6 +106,15 @@
     cells += '<td class="mono">' + (card.market ? cash(card.market) : '—') + '</td>'
            + '<td class="mono">' + (card.ask ? cash(card.ask) : '—') + '</td>';
 
+    /* what actually happened to it: when it went up, when it went, and what
+       it made. Blank until it is listed, which is most of them. */
+    cells += '<td class="mono">' + esc(card.listed || '—') + '</td>'
+           + '<td class="mono">' + esc(card.sold || '—') + '</td>';
+    if (money) {
+      cells += '<td class="mono">' + (card.soldfor ? cash(card.soldfor) : '—') + '</td>'
+             + '<td class="mono">' + (card.profit ? cash(card.profit) : '—') + '</td>';
+    }
+
     return '<tr>' + cells + '</tr>';
   }
 
@@ -121,7 +133,9 @@
     let head = '<tr><th>Photo</th><th>Card</th><th>SKU</th><th>Status</th>'
              + '<th>Cond</th><th>Qty</th>';
     if (money) head += '<th>Cost</th>';
-    head += '<th>Market</th><th>Ask</th></tr>';
+    head += '<th>Market</th><th>Ask</th><th>Listed</th><th>Sold</th>';
+    if (money) head += '<th>Sold for</th><th>Profit</th>';
+    head += '</tr>';
 
     host.innerHTML = shown.length
       ? '<div class="scroll"><table><thead>' + head + '</thead><tbody>'

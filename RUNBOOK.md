@@ -41,7 +41,7 @@ this machine.
 | Script | What it does |
 |---|---|
 | `python make_workbook.py` | Builds a fresh workbook: **10 tabs** — Read me, Inventory, eBay, and one per game. `--full` adds Purchases, Box log, Expenses, Sales, Photos, Summary, Audit, Reference. Refuses to overwrite without `--force`. |
-| `python fill_skus.py --go` | Gives a SKU to every card typed straight into Inventory. Never renumbers one that has one. |
+| `python autofill.py --go` | Fills in what a hand-typed card can work out for itself: its **SKU**, and its **Category** from the sport. Never renumbers a card that has a SKU. |
 | `python upgrade_workbook.py` | Moves an **existing** workbook onto the current layout **keeping what you typed**. Dry run by default; `--go` to do it. Backs up first, always. |
 | `python embed_photos.py` | Rewrites the **Photos** tab from what is in `photos/`, thumbnails and all. Run it after adding photos. |
 | `python export_inventory.py` | Puts the Inventory tab onto the dashboard's **My inventory** tab. `--publish` also writes the money-free copy for the public site. |
@@ -59,7 +59,42 @@ this machine.
 | **Read me** | What every tab is, inside the file. |
 | **Inventory** | **Every card, whatever the game.** One row each, and the only tab you type cards into. |
 | **eBay** | The upload, written by `make_ebay_csv.py`. Do not type here. Holds only rows marked Unlisted. |
+| **Costs** | **Everything you paid for** — boxes and packs, and the toploaders, sleeves, mailers and postage around them. |
 | **Football, Basketball, Baseball, Pokemon, Palworld, One Piece, Disney** | One read-only view per game, rebuilt from Inventory. |
+
+### Costs: one tab, split by Type
+
+A trip that buys a blaster and a pack of sleeves is one receipt, so it is one
+tab. The **Type** column is what keeps the distinction that matters:
+
+- **Sealed box, Sealed case, Pack, Single card, Bulk lot** — money that turned
+  into cards, and can be earned back.
+- **Toploaders, Sleeves, Mailers, Boxes, Postage, Shipping, Fees, Equipment** —
+  money that simply goes. This is what turns a gross profit into a real one,
+  and it is the first thing forgotten.
+
+Subtotal and Total paid work themselves out. Put the same **Lot ID** on a box
+here and on the cards that came out of it and cost per card stops being a guess.
+
+### Listed and sold live on the card's own row
+
+The short layout has no Sales tab, so a card's whole life is one row:
+**Listed on · eBay item # · Sold on · Sold for · Fees paid · Net · Profit**.
+Net and Profit calculate themselves — Net is what the sale left after fees,
+Profit is that less what the card cost. Set **Status** to Listed or Sold to
+match; the eBay export only ever takes rows still marked Unlisted.
+
+### Category fills itself in
+
+**Sport or game** is a dropdown, and `autofill.py` derives **Category** from it
+— Football, Basketball and Baseball are *Sports*; Pokemon, Palworld, One Piece
+and Disney are *TCG*. `make_ebay_csv.py` picks the eBay category code off that
+column, so a blank one lists the card under the wrong category.
+
+It is written in rather than left as a formula on purpose: `make_ebay_csv.py`
+reads the workbook with `data_only=True`, and a formula Excel has not
+recalculated reads as empty. The listing would be miscategorised with nothing
+looking wrong in the sheet.
 
 `Lists` is hidden — it feeds the Graded-by dropdown, whose entries are too long
 for an inline list. It is not a tab anybody sees.
@@ -79,7 +114,7 @@ no game tab at all.
 `file_batch.py` and `add_card.py` assign one; typing into the sheet does not.
 A row without a SKU is **invisible** — `make_ebay_csv.py` cannot export it,
 `add_photos.py` has nothing to file a picture against, and it never reaches the
-dashboard. `refresh.py` runs `fill_skus.py` every time for exactly that reason.
+dashboard. `refresh.py` runs `autofill.py` every time for exactly that reason.
 It only ever fills an empty cell, and never renumbers a card that has one,
 because a SKU is what your photos and any live listing are named after.
 

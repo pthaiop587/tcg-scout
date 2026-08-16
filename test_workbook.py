@@ -38,11 +38,11 @@ GAMES = ["Football", "Basketball", "Baseball", "Pokemon", "Palworld",
 # The short layout is the default and the one Mr. P actually uses: the record,
 # the upload, a tab per game, and the Read me. Lists is hidden -- it only feeds
 # the Graded by dropdown, whose entries are too long for an inline list.
-SHORT = ["Read me", "Inventory", "eBay"] + GAMES + ["Lists"]
+SHORT = ["Read me", "Inventory", "eBay", "Costs"] + GAMES + ["Lists"]
 
 # --full brings back the money and audit side.
-TABS = (["Read me", "Summary", "Inventory", "eBay", "Purchases", "Box log",
-         "Expenses", "Sales", "Photos", "Audit", "Reference"] + GAMES + ["Lists"])
+TABS = (["Read me", "Summary", "Inventory", "eBay", "Costs", "Box log",
+         "Sales", "Photos", "Audit", "Reference"] + GAMES + ["Lists"])
 
 
 def soffice():
@@ -84,7 +84,7 @@ def test_the_short_layout_is_the_default(tmp_path):
     book = load_workbook(out)
     assert book.sheetnames == SHORT
     visible = [n for n in book.sheetnames if book[n].sheet_state == "visible"]
-    assert len(visible) == 10, visible
+    assert len(visible) == 11, visible
     assert book["Lists"].sheet_state == "hidden",         "Lists feeds a dropdown; it should not be a tab anybody sees"
 
 
@@ -110,18 +110,41 @@ def test_the_sport_dropdown_matches_the_game_tabs(tmp_path):
         assert game in lists, game
 
 
-def test_purchases_records_a_receipt(blank):
+def test_costs_records_a_receipt(blank):
     """A purchase nobody can produce a receipt for is a problem in April."""
-    hdr = [c.value for c in load_workbook(blank)["Purchases"][1]]
-    for col in ("Date", "Vendor / store", "What", "Total paid", "Tax",
+    hdr = [c.value for c in load_workbook(blank)["Costs"][1]]
+    for col in ("Date", "Vendor / store", "What", "Type", "Total paid", "Tax",
                 "Order / receipt #", "Receipt file", "Lot ID", "Paid with"):
         assert col in hdr, col
 
 
-def test_expenses_covers_the_costs_that_are_not_cards(blank):
-    hdr = [c.value for c in load_workbook(blank)["Expenses"][1]]
-    for col in ("Date", "Category", "Amount", "Receipt file", "Deductible"):
+def test_costs_covers_boxes_and_the_things_around_them(blank):
+    """One tab, because a trip that buys a blaster and sleeves is one receipt."""
+    ws = load_workbook(blank)["Costs"]
+    lists = " ".join(d.formula1 for d in ws.data_validations.dataValidation)
+    for kind in ("Sealed box", "Pack", "Toploaders", "Mailers", "Postage",
+                 "Shipping"):
+        assert kind in lists, kind
+
+
+def test_the_selling_columns_are_on_inventory(blank):
+    """The short layout has no Sales tab, so a card's whole life is its row."""
+    hdr = [c.value for c in load_workbook(blank)["Inventory"][1]]
+    for col in ("Listed on", "eBay item #", "Sold on", "Sold for",
+                "Fees paid", "Net", "Profit"):
         assert col in hdr, col
+
+
+def test_the_letters_workbook_extra_depends_on_have_not_moved(blank):
+    """workbook_extra.py addresses Inventory by letter. A column inserted in
+    the middle would move every one of them and the Summary would go quietly
+    wrong, so the positions are pinned here."""
+    from openpyxl.utils import get_column_letter
+    hdr = [c.value for c in load_workbook(blank)["Inventory"][1]]
+    want = {"SKU": "A", "Status": "B", "Qty": "X", "Cost each": "Y",
+            "Market value": "Z", "Len": "AF"}
+    for name, letter in want.items():
+        assert get_column_letter(hdr.index(name) + 1) == letter, name
 
 
 def test_photos_tab_has_room_for_the_picture_and_the_link(blank):
@@ -159,14 +182,18 @@ def test_status_can_be_review(blank):
 def populate(path):
     """A box, a bag of toploaders, two cards out of it, one of them sold."""
     book = load_workbook(path)
-    p = book["Purchases"]
-    p["A2"], p["B2"], p["C2"] = "PUR-001", date(2026, 8, 15), "Target"
-    p["E2"], p["F2"], p["G2"] = "Prizm blaster", "Sealed box", "LOT-001"
-    p["H2"], p["I2"], p["K2"] = 1, 29.99, 2.62
-    p["P2"] = "receipts/target.jpg"
+    # Costs: A Date, B What, C Type, D Vendor, E Lot ID, F Qty, G Unit price,
+    # H Subtotal, I Tax, J Shipping, K Total paid ... N Receipt file
+    c = book["Costs"]
+    c["A2"], c["B2"], c["C2"] = date(2026, 8, 15), "Prizm blaster", "Sealed box"
+    c["D2"], c["E2"] = "Target", "LOT-001"
+    c["F2"], c["G2"], c["I2"] = 1, 29.99, 2.62
+    c["N2"] = "receipts/target.jpg"
 
-    e = book["Expenses"]
-    e["A2"], e["B2"], e["E2"] = date(2026, 8, 15), "Supplies", 12.49
+    # and the running cost that is not a card
+    c["A3"], c["B3"], c["C3"] = date(2026, 8, 15), "100 toploaders", "Toploaders"
+    c["D3"], c["F3"], c["G3"] = "Amazon", 1, 12.49
+    c["N3"] = "receipts/amz.pdf"
 
     s = book["Sales"]
     s["A2"], s["B2"], s["D2"] = date(2026, 8, 20), "CRH-0002", "eBay"
@@ -397,7 +424,7 @@ def skus(path):
 
 
 def fill(path, *args):
-    r = subprocess.run([sys.executable, os.path.abspath("fill_skus.py"),
+    r = subprocess.run([sys.executable, os.path.abspath("autofill.py"),
                         "--workbook", str(path)] + list(args),
                        capture_output=True, text=True)
     assert r.returncode == 0, r.stdout + r.stderr
@@ -448,4 +475,4 @@ def test_dry_run_writes_nothing(wb):
 
 def test_it_says_so_when_there_is_nothing_to_do(wb):
     fb.add_rows(str(wb), [{"player": "Shedeur Sanders"}])
-    assert "already has a SKU" in fill(wb)
+    assert "Nothing to fill in" in fill(wb)
