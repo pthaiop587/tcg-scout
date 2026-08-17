@@ -580,6 +580,12 @@ def main():
         audit.append("%d price(s) moved since the last check -- %d up, %d "
                      "down, %+.2f net across the lot."
                      % (len(moves), len(up), len(down), net))
+        # The trap: --go fills BLANKS only, so a card that already had a price
+        # keeps it while the audit cheerfully reports the change. It reads
+        # exactly like a successful update and is not one.
+        if not a.overwrite:
+            audit.append("NOT written -- --go only fills empty cells. Add "
+                         "--overwrite to replace prices already there.")
         big = [m for m in moves if abs(pct(m[3], m[4])) >= a.audit_pct]
         if big:
             audit.append("")

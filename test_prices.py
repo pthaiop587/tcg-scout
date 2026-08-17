@@ -204,3 +204,24 @@ def test_the_set_page_is_only_fetched_when_it_is_needed():
     i = src.index("urls = [card_url(")
     j = src.index("hit = find()", i)
     assert i < j, "the set page is consulted before the card's own URL"
+
+
+def test_a_reported_move_says_so_when_it_was_not_written():
+    """--go fills empty cells only. A card that already had a price keeps it
+    while the audit reports the change anyway, which reads exactly like a
+    successful update and is not one. That cost a wrong price sitting in the
+    sheet for two runs."""
+    src = open("prices.py", encoding="utf-8").read()
+    i = src.index("price(s) moved since the last check")
+    block = src[i:i + 700]
+    assert "not a.overwrite" in block
+    assert "NOT written" in block
+
+
+def test_daily_always_overwrites():
+    """Which is why the daily check does not hit that trap: prices move, and a
+    check that could only ever fill blanks would report movement it never
+    recorded, every morning."""
+    src = open("prices.py", encoding="utf-8").read()
+    i = src.index("if a.daily:")
+    assert "a.overwrite" in src[i:i + 220]
