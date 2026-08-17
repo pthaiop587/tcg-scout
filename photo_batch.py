@@ -108,11 +108,20 @@ def card_box(im, pad=0.02):
     ys, xs = np.nonzero(mask)
     if len(xs) < mask.size * 0.02:
         return None
+    # Percentiles, not min and max. A knitted shirt is textured enough that a
+    # scattering of its pixels clears any threshold, and one stray pixel in
+    # each corner stretches a min/max box to the whole frame -- which is what
+    # happened to the card BACKS, being white on grey rather than black on
+    # grey. Trimming 2% off each end throws the strays away and keeps the card.
+    x0, x1 = np.percentile(xs, (2, 98))
+    y0, y1 = np.percentile(ys, (2, 98))
+    if x1 - x0 < w * 0.15 or y1 - y0 < h * 0.15:
+        return None
     sx, sy = im.size[0] / float(w), im.size[1] / float(h)
     px, py = im.size[0] * pad, im.size[1] * pad
-    return (max(0, int(xs.min() * sx - px)), max(0, int(ys.min() * sy - py)),
-            min(im.size[0], int(xs.max() * sx + px)),
-            min(im.size[1], int(ys.max() * sy + py)))
+    return (max(0, int(x0 * sx - px)), max(0, int(y0 * sy - py)),
+            min(im.size[0], int(x1 * sx + px)),
+            min(im.size[1], int(y1 * sy + py)))
 
 
 def contact_sheet(paths, labels, out):
