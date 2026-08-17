@@ -23,9 +23,13 @@ import inuse
 WRITERS = [
     "autofill.py", "sport_tabs.py", "prices.py", "fill_blanks.py",
     "refresh.py", "make_ebay_csv.py", "add_card.py", "embed_photos.py",
-    "add_photos.py", "upgrade_workbook.py", "file_batch.py",
-    "make_workbook.py",
+    "upgrade_workbook.py", "file_batch.py", "make_workbook.py",
 ]
+
+# Reads the workbook but never saves it, so there is nothing to race. Guarding
+# it was worse than useless: it refused to file photos onto a card while the
+# workbook was open, which is exactly when you would be doing it.
+READS_ONLY = ["add_photos.py"]
 
 
 def test_the_lock_file_is_the_one_excel_actually_writes(tmp_path):
@@ -73,19 +77,38 @@ def test_every_writer_checks_before_it_writes(script):
 
 
 def test_no_writer_was_missed():
-    """Anything that calls wb.save() and is not on the list is unguarded, and
-    nobody would notice until it ate somebody's afternoon."""
+    """Anything that saves a WORKBOOK and is not on the list is unguarded, and
+    nobody would notice until it ate somebody's afternoon.
+
+    The pattern has to name the workbook. Matching a bare ".save(" also caught
+    add_photos.py, which saves JPEGs -- and guarding that one stopped photos
+    being filed while the workbook was open, which is precisely when you would
+    be filing them."""
     missed = []
     for path in sorted(glob.glob("*.py")):
         if path.startswith("test_") or path in ("inuse.py", "colleges.py"):
             continue
+        if path in READS_ONLY:
+            continue
         src = open(path, encoding="utf-8").read()
-        saves = re.search(r"\.save\(", src)
+        saves = re.search(r"\b(wb|book|workbook)\.save\(", src)
         if saves and path not in WRITERS and "inuse.refuse_if_open" not in src:
             missed.append(path)
     assert not missed, (
         "these save a workbook but never check whether Excel has it: %s"
         % ", ".join(missed))
+
+
+def test_a_read_only_script_is_not_guarded():
+    """Refusing to run because Excel is open, when you were only going to read,
+    blocks the one workflow that has no conflict."""
+    for path in READS_ONLY:
+        src = open(path, encoding="utf-8").read()
+        assert "inuse.refuse_if_open" not in src, (
+            "%s only reads the workbook; guarding it stops work for no reason"
+            % path)
+        assert not re.search(r"\b(wb|book|workbook)\.save\(", src), (
+            "%s is on READS_ONLY but saves a workbook" % path)
 
 
 def test_the_guard_actually_stops_a_real_script(tmp_path):

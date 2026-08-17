@@ -19,7 +19,6 @@ import re
 import subprocess
 import sys
 
-import inuse
 
 from PIL import Image, ImageOps
 
@@ -275,7 +274,6 @@ def main():
                    help="commit and push the photos so they go live")
     a = p.parse_args()
 
-    inuse.refuse_if_open(a.workbook)
 
     os.makedirs(PHOTOS, exist_ok=True)
 
