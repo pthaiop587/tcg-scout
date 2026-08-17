@@ -146,7 +146,13 @@ def do_status():
         print("every card has at least one photo")
 
 
-EXTS = (".jpg", ".jpeg", ".png", ".heic", ".webp", ".tif", ".tiff", ".bmp")
+# .dng is here because a phone shooting RAW writes it and Pillow reads it --
+# a DNG is a TIFF wrapper carrying a full-size baked preview, which is the same
+# picture for our purposes. Other RAW formats (.cr2, .nef, .arw) need libraw
+# and are deliberately NOT listed: accepting a file we cannot open would fail
+# at the point of filing rather than here, where the message is useful.
+EXTS = (".jpg", ".jpeg", ".png", ".heic", ".webp", ".tif", ".tiff", ".bmp",
+        ".dng")
 
 
 def do_import(src_dir, assign=None, pairs=False, move=False):

@@ -95,6 +95,14 @@ def main():
                "autofill.py"):
         return 1
 
+    # a clickable link from each row to that card's pictures. Cheap, and it
+    # runs every time so a photo filed since the last run is reachable from
+    # the sheet rather than a folder away.
+    if os.path.isdir("photos"):
+        if not run([sys.executable, "link_photos.py", "--workbook",
+                    a.workbook, "--go"], "link_photos.py"):
+            return 1
+
     # a read-only tab per sport, rebuilt from Inventory each time
     if not run([sys.executable, "sport_tabs.py", "--workbook", a.workbook],
                "sport_tabs.py"):
