@@ -113,3 +113,39 @@ def test_the_export_writes_the_ask_price_as_the_start_price(tmp_path):
     assert rows[0]["StartPrice"] == "25.99"
     assert "Arch Manning" in rows[0]["Title"]
     assert rows[0]["CustomLabel"] == "CRH-0001"
+
+
+def test_the_postage_charge_reaches_the_file(tmp_path):
+    """$1.50 to the buyer is what makes a dollar card worth listing. If it
+    does not reach the CSV the listing goes up with free postage and every
+    cheap card sells at a loss."""
+    wb = tmp_path / "Card Run HQ - Master.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(wb)],
+                   check=True, capture_output=True)
+    book = load_workbook(wb)
+    ws = book["Inventory"]
+    hdr = [c.value for c in ws[1]]
+    g = {n: i + 1 for i, n in enumerate(hdr) if n}
+    for col, val in (("SKU", "CRH-0001"), ("Status", "Unlisted"),
+                     ("Player or card name", "Arch Manning"),
+                     ("Ask price", 13.0), ("Sport or game", "Football")):
+        ws.cell(row=2, column=g[col]).value = val
+    book.save(wb)
+
+    out = tmp_path / "e.csv"
+    r = subprocess.run([sys.executable, "make_ebay_csv.py", "--workbook",
+                        str(wb), "-o", str(out)], capture_output=True,
+                       text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    with open(out, newline="", encoding="utf-8-sig") as fh:
+        row = next(iter(csv.DictReader(fh)))
+    assert row["ShippingService-1:Cost"] == "1.50"
+    assert row["ShippingType"] == "Flat"
+    assert row["ShippingCostPaidByOption"] == "Buyer"
+
+
+def test_the_pricer_and_the_exporter_agree_on_the_postage():
+    """Two files each holding their own copy of 1.50 is two files that can
+    disagree. If they ever do, the margin in the sheet is fiction."""
+    import price_listings
+    assert m.SHIP_COST == price_listings.SHIP_CHARGE

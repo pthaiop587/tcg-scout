@@ -307,7 +307,11 @@ def card_page(pg, url, delay):
     r = pg.goto(url, wait_until="domcontentloaded", timeout=60000)
     if r is not None and r.status >= 400:
         time.sleep(delay)
-        return None, {}, []
+        # Four values, like the success path. Returning three worked only for
+        # as long as no URL ever 404'd; the moment one did -- which trying a
+        # second spelling of a name makes routine -- the caller unpacked a
+        # short tuple and the whole run died on one missing page.
+        return None, {}, {}, []
     pg.wait_for_timeout(1200)
 
     # PriceCharting inherits its field names from video games; these are the

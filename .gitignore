@@ -31,3 +31,8 @@ daily-update.log
 # sheets are scratch, and the JSON holds which card each shot is.
 photos/_batch/
 batch-photos.json
+
+# An eBay user token is a password. ebay_pics.py reads this file; it must
+# never be committed, and the environment variables are there for anyone who
+# would rather not have it on disk at all.
+ebay-credentials.json

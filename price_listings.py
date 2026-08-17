@@ -1,33 +1,41 @@
-"""Set Market value and Ask price from what the cards are actually worth.
+"""Set Market value and Ask price from what the cards actually sold for.
 
     python price_listings.py              # say what it would do
     python price_listings.py --go         # write it in
 
-WHY THIS EXISTS.
+THE RULE, as Mr. P set it:
 
-make_ebay_csv.py puts Ask price into StartPrice, and Ask price was empty on
-every row. An export from that is a set of listings with no price, which eBay
-will not take. Something has to decide the number, and "the guide price" is
-not that number, because a sale is not the guide price:
+    ask       the last price the card actually SOLD for on eBay, rounded up
+              to the next whole dollar
+    postage   $1.50, charged to the buyer, per single card
+    floor     under 50c it is not a listing, it goes in the bulk pile
 
-    net = ask x (1 - fee%) - fee_fixed - postage
+WHY THE LAST SALE AND NOT THE GUIDE PRICE.
 
-At eBay's 13.25% plus $0.30, and about $0.70 to send one card in a tracked
-envelope, a card sold at $1.00 returns -13c. The seller pays to sell it. That
-stays true up to about $1.15, and the card does not repay what it cost until
-about $2.61. On a collection whose median card is worth a dollar that is not a
-rounding detail -- it is the difference between a listing and a bulk lot, and
-it applies to most of the rows.
+The guide is a smoothed average of past sales; the last sale is what somebody
+paid. They disagree often and by a lot -- Dante Moore's guide said $1.19 while
+the most recent sale was $3.57 -- and when they disagree the guide is the one
+describing a market that has moved on. prices.py records both, so this uses
+the sale and falls back to the guide only when a card has no recorded sale.
 
-So: cards that can carry their own postage get an Ask price. Cards that cannot
-are marked for a bulk lot instead of being listed at a loss one at a time.
+WHY THE POSTAGE CHARGE CHANGES EVERYTHING.
 
-Market value is rewritten, not just filled. It was set once from the raw price
-and then 34 LOT-001 cards turned out to be base rather than Silver and were
-re-priced -- but re-pricing writes the price columns, not Market value, so it
-sat there remembering the Silver. James Cook read $10.56 against a real price
-of $0.37. Reading a stale number is worse than reading a blank one, because a
-blank does not look like an answer.
+eBay takes about 13.25% plus $0.30, and that percentage applies to the postage
+the buyer pays as well as the item. Charging $1.50 against a real cost of
+about $0.70 leaves roughly 80c, which is what covers the fixed fee. That is
+the difference between a dollar card being worth listing and not:
+
+    seller-paid postage   $1.00 card returns  -$0.13   (you pay to sell it)
+    buyer-paid $1.50      $1.00 card returns  +$1.17
+
+So the same collection that was 5 listings and 155 bulk under the old
+assumption is mostly listable under this one. The arithmetic did not change;
+who pays the postman did.
+
+Market value is rewritten, not just filled -- it was set once from the guide
+price and went stale when 34 cards were re-priced after the Silver/base
+correction. A stale number is worse than a blank one; a blank does not look
+like an answer.
 
 Nothing is written without --go.
 """
@@ -42,67 +50,56 @@ import inuse
 
 WORKBOOK = "Card Run HQ - Master.xlsx"
 
-# eBay's cut on a trading card, and what a plain tracked envelope costs.
-# Both are arguments because both change, and a wrong postage figure moves
-# the listing/bulk line for a hundred cards at once.
-FEE_PCT = 13.25
-FEE_FIXED = 0.30
-POSTAGE = 0.70
-MARKUP = 1.25
+FEE_PCT = 13.25          # eBay's cut, charged on the postage too
+FEE_FIXED = 0.30         # per order
+SHIP_CHARGE = 1.50       # what the buyer pays for one card
+POSTAGE = 0.70           # what it really costs to send one card, tracked
+MIN_LIST = 0.50          # under this it is bulk, not a listing
 BULK = "Bulk"
 
 
-def net_of(ask, fee_pct, fee_fixed, postage):
-    """What actually lands in the bank from a sale at this price."""
-    return ask * (1 - fee_pct / 100.0) - fee_fixed - postage
+def net_of(ask, fee_pct, fee_fixed, ship_charge, postage):
+    """What lands in the bank once eBay and the postman are paid.
+
+    The fee percentage applies to the postage as well, which is why charging
+    more for postage does not simply add to the margin.
+    """
+    return (ask + ship_charge) * (1 - fee_pct / 100.0) - fee_fixed - postage
 
 
-def floor_ask(cost, fee_pct, fee_fixed, postage):
-    """The lowest price that gets the card's cost back after fees and postage."""
-    return (cost + fee_fixed + postage) / (1 - fee_pct / 100.0)
-
-
-def to_99(x):
-    """Up to the next price ending in .99, which is what card listings use."""
-    return math.ceil(round(x - 0.99, 6)) + 0.99
+def ask_for(price):
+    """Up to the next whole dollar. $1.19 asks $2; $3.00 stays $3."""
+    return float(math.ceil(round(price, 6) - 1e-9))
 
 
 def num(x):
     return x if isinstance(x, (int, float)) else None
 
 
-def plan(cards, fee_pct, fee_fixed, postage, markup, ignore_cost=False):
+def plan(cards, min_list=MIN_LIST):
     """Decide each card's market value, ask price, and whether it is bulk.
-
-    ignore_cost moves the line. By default a card has to repay what it cost
-    before it earns its own listing. With ignore_cost it only has to beat the
-    fees and the postage -- which is the right call if the money spent on the
-    box is already gone and the choice is between some cash and none.
 
     Kept apart from the workbook so the arithmetic can be tested without one.
     """
     out = []
     for c in cards:
         row = dict(c, was=num(c.get("market")), market=None, ask=None,
-                   bulk=False, why="")
-        raw = num(c.get("raw"))
-        if raw is None:
+                   bulk=False, src="", why="")
+        sale, guide = num(c.get("sale")), num(c.get("raw"))
+        price, src = (sale, "sold") if sale is not None else (guide, "guide")
+        if price is None:
             row["bulk"] = True
             row["why"] = "no price found for it"
             out.append(row)
             continue
-        row["market"] = raw
-        cost = 0.0 if ignore_cost else (num(c.get("cost")) or 0.0)
-        low = floor_ask(cost, fee_pct, fee_fixed, postage)
-        if raw < low:
+        row["market"], row["src"] = price, src
+        if price < min_list:
             row["bulk"] = True
-            row["why"] = ("worth $%.2f; needs $%.2f to clear %s"
-                          % (raw, low,
-                             "fees and postage" if ignore_cost
-                             else "cost and postage"))
+            row["why"] = "last %s %.2f, under the %.2f floor" % (src, price,
+                                                                 min_list)
             out.append(row)
             continue
-        row["ask"] = round(max(to_99(raw * markup), to_99(low)), 2)
+        row["ask"] = ask_for(price)
         out.append(row)
     return out
 
@@ -116,9 +113,11 @@ def read(ws, g):
         cards.append({
             "row": r, "sku": sku,
             "name": ws.cell(row=r, column=g["Player or card name"]).value,
-            "status": str(ws.cell(row=r, column=g["Status"]).value or "").strip(),
+            "status": str(ws.cell(row=r, column=g["Status"]).value
+                          or "").strip(),
             "cost": ws.cell(row=r, column=g["Cost each"]).value,
             "raw": ws.cell(row=r, column=g["Raw price"]).value,
+            "sale": ws.cell(row=r, column=g["Raw last sale"]).value,
             "market": ws.cell(row=r, column=g["Market value"]).value,
         })
     return cards
@@ -126,23 +125,21 @@ def read(ws, g):
 
 def main():
     p = argparse.ArgumentParser(
-        description="Set Market value and Ask price from the looked-up price.")
+        description="Price the listings from what each card last sold for.")
     p.add_argument("--workbook", default=WORKBOOK)
-    p.add_argument("--fee-pct", type=float, default=FEE_PCT,
-                   help="eBay's percentage cut (default %.2f)" % FEE_PCT)
-    p.add_argument("--fee-fixed", type=float, default=FEE_FIXED,
-                   help="per-order fee (default %.2f)" % FEE_FIXED)
+    p.add_argument("--fee-pct", type=float, default=FEE_PCT)
+    p.add_argument("--fee-fixed", type=float, default=FEE_FIXED)
+    p.add_argument("--ship-charge", type=float, default=SHIP_CHARGE,
+                   help="postage charged to the buyer (default %.2f)"
+                        % SHIP_CHARGE)
     p.add_argument("--postage", type=float, default=POSTAGE,
-                   help="what one card costs to send (default %.2f)" % POSTAGE)
-    p.add_argument("--markup", type=float, default=MARKUP,
-                   help="ask this multiple of the guide price (default %.2f)"
-                        % MARKUP)
-    p.add_argument("--ignore-cost", action="store_true",
-                   help="list anything that beats fees and postage, even if "
-                        "it does not repay what the card cost")
+                   help="what sending one card really costs (default %.2f)"
+                        % POSTAGE)
+    p.add_argument("--min-list", type=float, default=MIN_LIST,
+                   help="below this a card is bulk, not a listing "
+                        "(default %.2f)" % MIN_LIST)
     p.add_argument("--no-bulk", action="store_true",
-                   help="leave Status alone on cards that cannot pay their "
-                        "own postage")
+                   help="leave Status alone on cards under the floor")
     p.add_argument("--go", action="store_true", help="write the values in")
     a = p.parse_args()
 
@@ -151,8 +148,8 @@ def main():
     ws = wb["Inventory"]
     hdr = [c.value for c in ws[1]]
     g = {n: i + 1 for i, n in enumerate(hdr) if n}
-    for need in ("SKU", "Status", "Cost each", "Raw price", "Market value",
-                 "Ask price"):
+    for need in ("SKU", "Status", "Cost each", "Raw price", "Raw last sale",
+                 "Market value", "Ask price"):
         if need not in g:
             sys.exit("no %s column in %s" % (need, a.workbook))
 
@@ -161,27 +158,26 @@ def main():
     held = [c for c in cards if c["status"].lower() == "review"]
     live = [c for c in cards if c["status"].lower() != "review"]
 
-    rows = plan(live, a.fee_pct, a.fee_fixed, a.postage, a.markup,
-                a.ignore_cost)
+    rows = plan(live, a.min_list)
     priced = [r for r in rows if r["ask"] is not None]
     bulk = [r for r in rows if r["bulk"]]
-    # Market value that already held a number and is about to hold a different
-    # one. Worth printing before writing: a figure that moves on its own is
-    # how a stale one hides.
+    guessed = [r for r in priced if r["src"] == "guide"]
     moved = [r for r in rows if r["market"] is not None
              and r["was"] is not None and abs(r["was"] - r["market"]) > 0.005]
 
-    print("%d card(s): %d priced to list, %d for a bulk lot, %d held on Review"
+    print("%d card(s): %d to list, %d for the bulk pile, %d held on Review"
           % (len(cards), len(priced), len(bulk), len(held)))
-    print("assuming eBay takes %.2f%% + $%.2f and postage is $%.2f"
-          % (a.fee_pct, a.fee_fixed, a.postage))
-    print("a card earns its own listing if it clears %s\n"
-          % ("fees and postage (--ignore-cost)" if a.ignore_cost
-             else "fees, postage AND what it cost"))
+    print("ask = last sold price rounded up to the dollar; under $%.2f is bulk"
+          % a.min_list)
+    print("buyer pays $%.2f postage; eBay takes %.2f%% of that too, and $%.2f"
+          % (a.ship_charge, a.fee_pct, a.fee_fixed))
+    if guessed:
+        print("%d card(s) have no recorded sale -- priced off the guide "
+              "instead" % len(guessed))
+    print()
 
     if moved:
-        print("Market value was stale on %d row(s) -- rewriting from the "
-              "current price:" % len(moved))
+        print("Market value changed on %d row(s):" % len(moved))
         for r in sorted(moved, key=lambda x: -abs(x["was"] - x["market"]))[:6]:
             print("   %-9s %-22s %6.2f -> %6.2f"
                   % (r["sku"], str(r["name"])[:22], r["was"], r["market"]))
@@ -189,16 +185,21 @@ def main():
             print("   ... and %d more" % (len(moved) - 6))
         print()
 
-    print("priced to list:")
-    for r in sorted(priced, key=lambda x: -x["ask"]):
-        print("   %-9s %-24s guide %6.2f  ask %6.2f  net %6.2f"
-              % (r["sku"], str(r["name"])[:24], r["market"], r["ask"],
-                 net_of(r["ask"], a.fee_pct, a.fee_fixed, a.postage)))
+    take = sum(net_of(r["ask"], a.fee_pct, a.fee_fixed, a.ship_charge,
+                      a.postage) for r in priced)
+    cost = sum(num(r["cost"]) or 0 for r in priced)
+    print("top of the list:")
+    for r in sorted(priced, key=lambda x: -x["ask"])[:12]:
+        print("   %-9s %-24s %-5s %6.2f  ask %6.2f  net %6.2f"
+              % (r["sku"], str(r["name"])[:24], r["src"], r["market"],
+                 r["ask"], net_of(r["ask"], a.fee_pct, a.fee_fixed,
+                                  a.ship_charge, a.postage)))
+    if len(priced) > 12:
+        print("   ... and %d more" % (len(priced) - 12))
 
-    worth = sum(r["market"] for r in bulk if r["market"])
-    print("\nbulk lot: %d card(s), $%.2f of guide value between them"
-          % (len(bulk), worth))
-    print("   sold one at a time they would lose money on postage alone.")
+    print("\nif every listing sold: $%.2f net against $%.2f of card cost"
+          % (take, cost))
+    print("bulk pile: %d card(s)" % len(bulk))
 
     if not a.go:
         print("\nNothing written. Add --go.")
@@ -209,12 +210,13 @@ def main():
             ws.cell(row=r["row"], column=g["Market value"]).value = r["market"]
         if r["ask"] is not None:
             ws.cell(row=r["row"], column=g["Ask price"]).value = r["ask"]
+            if ws.cell(row=r["row"], column=g["Status"]).value == BULK:
+                ws.cell(row=r["row"], column=g["Status"]).value = "Unlisted"
         elif r["bulk"] and not a.no_bulk:
+            ws.cell(row=r["row"], column=g["Ask price"]).value = None
             ws.cell(row=r["row"], column=g["Status"]).value = BULK
     wb.save(a.workbook)
     print("\nSaved %s." % a.workbook)
-    print("make_ebay_csv.py exports Unlisted rows, so the %d bulk card(s) "
-          "stay out of it." % (0 if a.no_bulk else len(bulk)))
 
 
 if __name__ == "__main__":

@@ -17,6 +17,7 @@ which Seller Hub still accepts but which is a best effort, not a guarantee.
 
 import argparse
 import csv
+import json
 import os
 import re
 import sys
@@ -28,10 +29,18 @@ import inuse
 
 WORKBOOK = "Card Run HQ - Master.xlsx"
 TEMPLATE = "ebay-template.csv"
+# Written by ebay_pics.py: SKU -> the URLs eBay hosts for it.
+EPS_URLS = "photos/eps-urls.json"
 PAGES    = "https://pthaiop587.github.io/tcg-scout"
 
 CAT = {"Sports": 261328, "Non-sport": 183050, "TCG": 183454}
 COND_GRADED, COND_UNGRADED = 2750, 4000
+
+# Postage charged to the buyer for a single card. It is not a detail: eBay
+# takes its percentage of the postage as well, and charging $1.50 against a
+# real cost of about $0.70 is what covers the fixed fee and makes a dollar
+# card worth listing at all. price_listings.py assumes the same figure.
+SHIP_COST = 1.50
 
 # Defaults for the columns eBay needs but that are not a property of the card.
 DEFAULTS = {
@@ -43,6 +52,13 @@ DEFAULTS = {
     "ReturnsWithinOption": "Days_30",
     "RefundOption": "MoneyBack",
     "ShippingCostPaidByOption": "Buyer",
+    # Flat $1.50 for one card, which is what Mr. P charges. These loose
+    # fields are for accounts NOT on Business Policies; an account that is on
+    # them takes postage from ShippingProfileName and rejects these. Fill
+    # whichever pair your account uses -- same either/or as returns below.
+    "ShippingType": "Flat",
+    "ShippingService-1:Option": "USPSFirstClass",
+    "ShippingService-1:Cost": "%.2f" % SHIP_COST,
     "Country": "US",
     "Currency": "USD",
     "PayPalAccepted": "0",
@@ -76,6 +92,7 @@ FALLBACK_HEADER = [
     "ShippingProfileName", "ReturnProfileName", "PaymentProfileName",
     "ReturnsAcceptedOption", "ReturnsWithinOption", "RefundOption",
     "ShippingCostPaidByOption",
+    "ShippingType", "ShippingService-1:Option", "ShippingService-1:Cost",
 ]
 
 
@@ -309,8 +326,43 @@ def read_inventory(path):
     return cards
 
 
+def eps_urls(path=None):
+    """SKU -> the URLs eBay gave back, if ebay_pics.py has run.
+
+    Read once per path and cached, because this is consulted for every card.
+    The default is looked up at call time, not bound at definition time: as a
+    default argument it would freeze the module constant and quietly ignore
+    anyone who changed it.
+    """
+    if path is None:
+        path = EPS_URLS
+    cache = getattr(eps_urls, "_cache", None)
+    if cache is None:
+        cache = eps_urls._cache = {}
+    if path not in cache:
+        got = {}
+        if os.path.exists(path):
+            try:
+                with open(path, encoding="utf-8") as fh:
+                    got = json.load(fh)
+            except (ValueError, OSError):
+                got = {}
+        cache[path] = got
+    return cache[path]
+
+
 def photo_urls(sku):
-    """PicURL must be a public https URL, so use the Pages site as the host."""
+    """PicURL must be a public https URL.
+
+    Prefer a picture eBay is already hosting: it needs no public site at all,
+    it cannot 404 mid-upload, and it does not put 500KB scans into a git
+    history that keeps them for ever. The Pages site is the fallback for
+    cards that have not been through ebay_pics.py.
+    """
+    hosted = eps_urls().get(str(sku or ""))
+    if hosted:
+        return "|".join(hosted)
+
     found = []
     for suffix in ("", "-back", "-2", "-3"):
         for ext in (".jpg", ".jpeg", ".png"):
@@ -462,6 +514,22 @@ def main():
         print("\nleft blank (%d): %s" % (len(unfilled),
                                          ", ".join(sorted(unfilled)[:12])))
         print("fill anything eBay marks required before uploading.")
+
+    # A picture eBay cannot fetch fails the listing, and the exporter has no
+    # way to know what is actually published -- os.path.exists says the file
+    # is on THIS disk, which is a different question. So count the two hosts
+    # and say so, rather than handing over a file that looks complete.
+    hosted = eps_urls()
+    on_ebay = sum(1 for c in cards if str(c["sku"]) in hosted)
+    on_pages = len(cards) - on_ebay
+    if on_pages:
+        print("\n%d of %d listing(s) still point at the Pages site."
+              % (on_pages, len(cards)))
+        print("Only what is committed to the repo is actually served there;"
+              " the rest will 404 and eBay will reject those listings.")
+        print("Run ebay_pics.py --go to hand the pictures to eBay instead.")
+    if on_ebay:
+        print("%d listing(s) use pictures eBay already hosts." % on_ebay)
 
 
 if __name__ == "__main__":

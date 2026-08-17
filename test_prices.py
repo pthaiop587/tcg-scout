@@ -342,3 +342,17 @@ def test_an_unknown_set_does_not_trigger_a_two_minute_harvest():
     src = open("prices.py", encoding="utf-8").read()
     i = src.index("if not usable(prices)")
     assert "on_default_set" in src[i:i + 160]
+
+
+def test_a_missing_page_returns_the_same_shape_as_a_found_one():
+    """card_page unpacks into four names at every call site. Its 404 path
+    returned three, which was invisible until a URL actually 404'd -- and
+    trying a second spelling of a name makes that routine. One missing page
+    then killed the whole daily run."""
+    import ast
+    import inspect
+    src = inspect.getsource(prices.card_page)
+    tree = ast.parse(src.lstrip())
+    widths = {len(n.value.elts) for n in ast.walk(tree)
+              if isinstance(n, ast.Return) and isinstance(n.value, ast.Tuple)}
+    assert widths == {4}, "card_page returns tuples of %s" % sorted(widths)
