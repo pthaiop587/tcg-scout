@@ -150,10 +150,30 @@ def test_a_link_is_cleared_when_the_photo_goes(shop):
 
 # --- the landmine -----------------------------------------------------------
 
-def test_the_column_is_appended_never_inserted(shop):
-    """workbook_extra.py addresses Inventory by column LETTER."""
+def test_the_column_layout_is_left_alone(shop):
+    """make_workbook now ships Photos as the first column, so there is nothing
+    to add. Whatever the layout is, this must not rearrange it."""
     wb, shots = shop
     before = [c.value for c in load_workbook(wb)["Inventory"][1]]
+    (shots / "CRH-0001.jpg").write_bytes(b"x")
+    run(wb, shots, "--go")
+    after = [c.value for c in load_workbook(wb)["Inventory"][1]]
+    assert after == before, "the column order changed"
+    assert lp.COLUMN in after
+
+
+def test_it_still_adds_the_column_to_a_workbook_without_one(shop):
+    """An older workbook predates the column, and appending is the only safe
+    place to put one."""
+    wb, shots = shop
+    book = load_workbook(wb)
+    ws = book["Inventory"]
+    hdr = [c.value for c in ws[1]]
+    ws.delete_cols(hdr.index(lp.COLUMN) + 1)
+    book.save(wb)
+
+    before = [c.value for c in load_workbook(wb)["Inventory"][1]]
+    assert lp.COLUMN not in before
     (shots / "CRH-0001.jpg").write_bytes(b"x")
     run(wb, shots, "--go")
     after = [c.value for c in load_workbook(wb)["Inventory"][1]]

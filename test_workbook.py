@@ -16,6 +16,7 @@ recalculation catches that.
 
 import os
 import shutil
+import re
 import subprocess
 import sys
 from datetime import date
@@ -135,16 +136,34 @@ def test_the_selling_columns_are_on_inventory(blank):
         assert col in hdr, col
 
 
-def test_the_letters_workbook_extra_depends_on_have_not_moved(blank):
-    """workbook_extra.py addresses Inventory by letter. A column inserted in
-    the middle would move every one of them and the Summary would go quietly
-    wrong, so the positions are pinned here."""
-    from openpyxl.utils import get_column_letter
+def test_workbook_extra_never_addresses_inventory_by_letter():
+    """It used to, and the letters were pinned by a test so nobody moved a
+    column. That is backwards -- it made the layout hostage to the formulas.
+    The letters are now derived from INVENTORY_COLS and passed in, so this
+    asserts there are none left to go stale."""
+    src = open("workbook_extra.py", encoding="utf-8").read()
+    stray = re.findall(r"\{i\}[A-Z]{1,2}\d", src)
+    assert not stray, (
+        "workbook_extra.py is addressing Inventory by letter again: %s. "
+        "Use {c[Column Name]} so a moved column cannot go quietly wrong."
+        % sorted(set(stray)))
+
+
+def test_the_builders_are_given_the_column_map():
+    """If COL stops being passed, the formulas fall back to whatever the
+    format string says, which is the bug this replaced."""
+    src = open("make_workbook.py", encoding="utf-8").read()
+    assert "extra.build_summary(" in src and "INV_ROWS, COL)" in src
+    extra = open("workbook_extra.py", encoding="utf-8").read()
+    assert "INV_ROWS, COL):" in extra
+
+
+def test_photos_is_the_first_column(blank):
+    """A card with no picture cannot be listed, so it is the first thing worth
+    knowing about a row."""
     hdr = [c.value for c in load_workbook(blank)["Inventory"][1]]
-    want = {"SKU": "A", "Status": "B", "Qty": "X", "Cost each": "Y",
-            "Market value": "Z", "Len": "AF"}
-    for name, letter in want.items():
-        assert get_column_letter(hdr.index(name) + 1) == letter, name
+    assert hdr[0] == "Photos", hdr[:3]
+    assert hdr[1] == "SKU"
 
 
 def test_photos_tab_has_room_for_the_picture_and_the_link(blank):

@@ -51,13 +51,21 @@ def run(wb, *args):
 
 
 def rows_on(wb, tab):
+    """Rows on a game tab, keyed off the SKU column wherever it now is --
+    column 1 stopped being the SKU when Photos moved to the front."""
     ws = load_workbook(wb)[tab]
     hdr = [c.value for c in ws[2]]
+    sku = hdr.index("SKU") if "SKU" in hdr else 0
     out = []
     for row in ws.iter_rows(min_row=3, values_only=True):
-        if row[0]:
+        if row[sku]:
             out.append(dict(zip(hdr, row)))
     return out
+
+
+def col_of(wb, tab, name):
+    hdr = [c.value for c in load_workbook(wb)[tab][2]]
+    return hdr.index(name) + 1
 
 
 # --- the split --------------------------------------------------------------
@@ -92,7 +100,9 @@ def test_inventory_still_holds_every_card(wb):
     """The views are copies. Inventory stays the one record."""
     run(wb)
     ws = load_workbook(wb)["Inventory"]
-    skus = [r[0] for r in ws.iter_rows(min_row=2, values_only=True) if r[0]]
+    ih = [c.value for c in ws[1]]
+    si = ih.index("SKU")
+    skus = [r[si] for r in ws.iter_rows(min_row=2, values_only=True) if r[si]]
     assert skus == ["CRH-0001", "CRH-0002", "CRH-0003"]
 
 
@@ -266,15 +276,17 @@ def test_a_row_that_is_not_in_inventory_is_kept(wb):
     run(wb)
     book = load_workbook(wb)
     ws = book["Basketball"]
-    ws.cell(row=9, column=1, value="CRH-9999")
-    ws.cell(row=9, column=7, value="Typed straight onto the tab")
+    sku_col = col_of(wb, "Basketball", "SKU")
+    ws.cell(row=9, column=sku_col, value="CRH-9999")
+    ws.cell(row=9, column=sku_col + 5, value="Typed straight onto the tab")
     book.save(wb)
 
     run(wb)
     after = load_workbook(wb)
     assert "Basketball (typed on)" in after.sheetnames
-    assert after["Basketball (typed on)"].cell(row=9, column=1).value \
-        == "CRH-9999"
+    kept = after["Basketball (typed on)"]
+    khdr = [c.value for c in kept[2]]
+    assert kept.cell(row=9, column=khdr.index("SKU") + 1).value == "CRH-9999"
 
 
 def test_a_tab_from_an_older_version_is_not_mistaken_for_hand_typed(wb):

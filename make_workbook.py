@@ -127,6 +127,12 @@ def dv_range(ws, ref, cells, allow_blank=True):
 # Column order is load-bearing: make_ebay_csv.py looks columns up by header
 # text, but the formulas below are written with these letters.
 INVENTORY_COLS = [
+    # Photos first, and first on purpose: a card without a picture cannot be
+    # listed, so "which of these can I actually sell today" is the question
+    # this sheet gets asked most, and it should be answerable without
+    # scrolling to column AY. Everything addresses Inventory by NAME, and the
+    # letters the formulas use are derived below, so moving it costs nothing.
+    ("Photos", 12),
     ("SKU", 12), ("Status", 13), ("Date in", 11), ("Source", 18),
     ("Lot ID", 11), ("Category", 10), ("Sport or game", 14), ("League", 10),
     ("Year", 7), ("Brand / set", 24), ("Insert set", 20), ("Parallel", 18),
@@ -711,10 +717,13 @@ def main():
         build_sales(wb, google=args.google)
         extra.build_photos(wb, head, note, dv, NOTEFILL, google=args.google)
         # these two read every other tab, so they are built last
+        # COL goes with them: those tabs address Inventory, and the only
+        # correct answer to "which letter is Status" is the one derived from
+        # INVENTORY_COLS rather than one typed in and hoped for.
         extra.build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
-                            NOTEFILL, INV_ROWS)
+                            NOTEFILL, INV_ROWS, COL)
         extra.build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT,
-                          NOTEFILL, INV_ROWS)
+                          NOTEFILL, INV_ROWS, COL)
         build_reference(wb)
 
     # one empty view tab per game, so a category can be started before its

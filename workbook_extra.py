@@ -275,7 +275,8 @@ def build_photos(wb, head, note, dv, NOTEFILL, google=False):
 
 
 # -------------------------------------------------------------------- Summary
-def build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_ROWS):
+def build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL,
+                  INV_ROWS, COL):
     """Everything as one number each, all of it formulas over the other tabs."""
     ws = wb.create_sheet("Summary", 1)
     ws.column_dimensions["A"].width = 34
@@ -304,23 +305,23 @@ def build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_RO
          "The real number, not the card cost."),
 
         ("THE STOCK", None, None),
-        ("Cards on hand", '=N(SUMIFS({i}X2:X{e},{i}B2:B{e},"Unlisted"))+'
-                          'N(SUMIFS({i}X2:X{e},{i}B2:B{e},"Listed"))+'
-                          'N(SUMIFS({i}X2:X{e},{i}B2:B{e},"Review"))'.format(i=inv, e=end),
+        ("Cards on hand", '=N(SUMIFS({i}{c[Qty]}2:{c[Qty]}{e},{i}{c[Status]}2:{c[Status]}{e},"Unlisted"))+'
+                          'N(SUMIFS({i}{c[Qty]}2:{c[Qty]}{e},{i}{c[Status]}2:{c[Status]}{e},"Listed"))+'
+                          'N(SUMIFS({i}{c[Qty]}2:{c[Qty]}{e},{i}{c[Status]}2:{c[Status]}{e},"Review"))'.format(i=inv, e=end, c=COL),
          "Quantity, not rows — Unlisted, Listed and Review."),
-        ("What they cost", '=N(SUMPRODUCT({i}X2:X{e},{i}Y2:Y{e}))'.format(i=inv, e=end),
+        ("What they cost", '=N(SUMPRODUCT({i}{c[Qty]}2:{c[Qty]}{e},{i}{c[Cost each]}2:{c[Cost each]}{e}))'.format(i=inv, e=end, c=COL),
          "Qty times cost each, across everything logged."),
-        ("What they are worth", '=N(SUMPRODUCT({i}X2:X{e},{i}Z2:Z{e}))'.format(i=inv, e=end),
+        ("What they are worth", '=N(SUMPRODUCT({i}{c[Qty]}2:{c[Qty]}{e},{i}{c[Market value]}2:{c[Market value]}{e}))'.format(i=inv, e=end, c=COL),
          "Qty times market value. A guess for sports; there is no free feed."),
         ("Unrealised gain", "={What they are worth}-{What they cost}",
          "Worth minus cost. Not money until it sells."),
 
         ("WAITING ON YOU", None, None),
-        ("Held for review", '=COUNTIF({i}B2:B{e},"Review")'.format(i=inv, e=end),
+        ("Held for review", '=COUNTIF({i}{c[Status]}2:{c[Status]}{e},"Review")'.format(i=inv, e=end, c=COL),
          "Something on the card was uncertain. These cannot be exported."),
-        ("Ready to list", '=COUNTIF({i}B2:B{e},"Unlisted")'.format(i=inv, e=end),
+        ("Ready to list", '=COUNTIF({i}{c[Status]}2:{c[Status]}{e},"Unlisted")'.format(i=inv, e=end, c=COL),
          "What make_ebay_csv.py will pick up next run."),
-        ("Listed now", '=COUNTIF({i}B2:B{e},"Listed")'.format(i=inv, e=end), ""),
+        ("Listed now", '=COUNTIF({i}{c[Status]}2:{c[Status]}{e},"Listed")'.format(i=inv, e=end, c=COL), ""),
 
         ("MONEY IN", None, None),
         ("Sold", "=COUNTA(Sales!B2:B301)", "Rows on the Sales tab."),
@@ -396,7 +397,8 @@ def build_summary(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_RO
 
 
 # ---------------------------------------------------------------------- Audit
-def build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_ROWS):
+def build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL,
+                INV_ROWS, COL):
     """The things that quietly cost money, counted."""
     ws = wb.create_sheet("Audit")
     ws.column_dimensions["A"].width = 44
@@ -411,31 +413,31 @@ def build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_ROWS
     checks = [
         ("STOPS A LISTING", None, None),
         ("Cards held for review",
-         '=COUNTIF({i}B2:B{e},"Review")'.format(i=i, e=e),
+         '=COUNTIF({i}{c[Status]}2:{c[Status]}{e},"Review")'.format(i=i, e=e, c=COL),
          "Something was uncertain when it was filed — usually the parallel or "
          "the value. make_ebay_csv.py skips these on purpose. Settle the CHECK "
          "note in Notes, then set Status to Unlisted."),
         ("Ready to list but worth nothing",
-         '=SUMPRODUCT(({i}B2:B{e}="Unlisted")*(N({i}Z2:Z{e})=0))'.format(i=i, e=e),
+         '=SUMPRODUCT(({i}{c[Status]}2:{c[Status]}{e}="Unlisted")*(N({i}{c[Market value]}2:{c[Market value]}{e})=0))'.format(i=i, e=e, c=COL),
          "It will export at a price of nothing. Put a market value on it, or "
          "move it to Review until you have one."),
         ("Ready to list with no photo",
-         '=SUMPRODUCT(({i}B2:B{e}="Unlisted")*'
-         '(COUNTIF(Photos!A2:A{p},{i}A2:A{e})=0))'.format(i=i, e=e, p=PHOTO_ROWS + 1),
+         '=SUMPRODUCT(({i}{c[Status]}2:{c[Status]}{e}="Unlisted")*'
+         '(COUNTIF(Photos!A2:A{p},{i}{c[SKU]}2:{c[SKU]}{e})=0))'.format(i=i, e=e, p=PHOTO_ROWS + 1, c=COL),
          "eBay needs a picture. Run embed_photos.py after adding photos so this "
          "tab knows about them."),
         ("Titles over 80 characters",
-         '=SUMPRODUCT((N({i}AF2:AF{e})>80)*1)'.format(i=i, e=e),
+         '=SUMPRODUCT((N({i}{c[Len]}2:{c[Len]}{e})>80)*1)'.format(i=i, e=e, c=COL),
          "eBay truncates at 80. The Len column on Inventory shows each one."),
 
         ("COSTS YOU MONEY", None, None),
         ("Cards with no cost recorded",
-         '=SUMPRODUCT((LEN({i}A2:A{e})>0)*(N({i}Y2:Y{e})=0))'.format(i=i, e=e),
+         '=SUMPRODUCT((LEN({i}{c[SKU]}2:{c[SKU]}{e})>0)*(N({i}{c[Cost each]}2:{c[Cost each]}{e})=0))'.format(i=i, e=e, c=COL),
          "Profit on a sale is meaningless without it, and so is the Summary. "
          "If a card came out of a box, put the box's Lot ID on it and use cost "
          "per card from the Box log."),
         ("Cards with no Lot ID",
-         '=SUMPRODUCT((LEN({i}A2:A{e})>0)*(LEN({i}E2:E{e})=0))'.format(i=i, e=e),
+         '=SUMPRODUCT((LEN({i}{c[SKU]}2:{c[SKU]}{e})>0)*(LEN({i}{c[Lot ID]}2:{c[Lot ID]}{e})=0))'.format(i=i, e=e, c=COL),
          "Nothing ties them back to a purchase, so you cannot tell which box "
          "paid for itself."),
         ("Costs with no receipt file",
@@ -448,20 +450,20 @@ def build_audit(wb, head, note, TITLEFONT, SUBFILL, HEADFONT, NOTEFILL, INV_ROWS
 
         ("PROBABLY A MISTAKE", None, None),
         ("Duplicate SKUs",
-         '=SUMPRODUCT((LEN({i}A2:A{e})>0)*'
-         '(COUNTIF({i}A2:A{e},{i}A2:A{e}&"")>1))'.format(i=i, e=e),
+         '=SUMPRODUCT((LEN({i}{c[SKU]}2:{c[SKU]}{e})>0)*'
+         '(COUNTIF({i}{c[SKU]}2:{c[SKU]}{e},{i}{c[SKU]}2:{c[SKU]}{e}&"")>1))'.format(i=i, e=e, c=COL),
          "A SKU is meant to be one physical card. Two rows sharing one means "
          "photos and sales will attach to whichever Excel finds first."),
         ("Serial numbered with quantity over 1",
-         '=SUMPRODUCT((LEN({i}O2:O{e})>0)*(N({i}X2:X{e})>1))'.format(i=i, e=e),
+         '=SUMPRODUCT((LEN({i}{c[Serial /]}2:{c[Serial /]}{e})>0)*(N({i}{c[Qty]}2:{c[Qty]}{e})>1))'.format(i=i, e=e, c=COL),
          "A numbered card is one of one at that number. Two of them is two "
          "different cards and wants two rows."),
         ("Graded with no cert number",
-         '=SUMPRODUCT((LEN({i}T2:T{e})>0)*(LEN({i}V2:V{e})=0))'.format(i=i, e=e),
+         '=SUMPRODUCT((LEN({i}{c[Graded by]}2:{c[Graded by]}{e})>0)*(LEN({i}{c[Cert #]}2:{c[Cert #]}{e})=0))'.format(i=i, e=e, c=COL),
          "Buyers check the cert. eBay has a field for it."),
         ("Sold but still Unlisted or Listed",
-         '=SUMPRODUCT((COUNTIF(Sales!B2:B301,{i}A2:A{e})>0)*'
-         '({i}B2:B{e}<>"Sold"))'.format(i=i, e=e),
+         '=SUMPRODUCT((COUNTIF(Sales!B2:B301,{i}{c[SKU]}2:{c[SKU]}{e})>0)*'
+         '({i}{c[Status]}2:{c[Status]}{e}<>"Sold"))'.format(i=i, e=e, c=COL),
          "It is on the Sales tab but the stock still thinks you have it. That "
          "is how a card gets listed twice."),
     ]

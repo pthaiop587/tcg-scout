@@ -46,7 +46,7 @@ WORKBOOK = "Card Run HQ - Master.xlsx"
 # it happened to be called Basketball.
 MARK = "VIEW — generated from Inventory. Do not type here."
 
-SHOW = ["SKU", "Status", "Date in", "Year", "Brand / set", "Insert set",
+SHOW = ["Photos", "SKU", "Status", "Date in", "Year", "Brand / set", "Insert set",
         "Parallel", "Player or card name", "Card #", "Serial /", "Team",
         "League", "Card condition", "Qty", "Cost each", "Market value",
         "Ask price",
@@ -55,7 +55,7 @@ SHOW = ["SKU", "Status", "Date in", "Year", "Brand / set", "Insert set",
         "PSA 10 price", "PSA 10 last sold", "PSA 10 last sale",
         "Listed on", "Sold on", "Notes"]
 
-WIDTH = {"SKU": 12, "Status": 12, "Date in": 11, "Year": 7,
+WIDTH = {"Photos": 12, "SKU": 12, "Status": 12, "Date in": 11, "Year": 7,
          "Brand / set": 24, "Insert set": 20, "Parallel": 18,
          "Player or card name": 22, "Card #": 9, "Serial /": 9, "Team": 18,
          "League": 9, "Card condition": 18, "Qty": 6, "Cost each": 11,
@@ -166,6 +166,10 @@ def stray(ws, mine, cols):
     # useless copy of it.
     old_hdr = [ws.cell(row=2, column=c).value
                for c in range(1, ws.max_column + 1)]
+    # Which column holds the SKU, asked rather than assumed. It was column 1
+    # until Photos moved in front of it, and a guard that reads the wrong
+    # column decides every row is unknown and hoards the whole sheet.
+    sku_at = old_hdr.index("SKU") if "SKU" in old_hdr else 0
 
     found = []
     for r in range(3, ws.max_row + 1):
@@ -174,10 +178,10 @@ def stray(ws, mine, cols):
         if not any(v not in (None, "") for v in vals):
             continue
 
-        sku = str(vals[0] or "").strip()
+        sku = str(vals[sku_at] or "").strip() if sku_at < len(vals) else ""
         rec = by_sku.get(sku)
         if not rec:                                       # a row of its own
-            found.append((r, "A", sku or "(no SKU)"))
+            found.append((r, "SKU", sku or "(no SKU)"))
             continue
 
         for i, name in enumerate(old_hdr):
@@ -228,7 +232,7 @@ def build_tab(wb, sport, rows, hdr):
             # does not have. A value that merely disagrees is far more likely
             # to be a stale price than something typed.
             typed = [t for t in stray(old, mine_now, cols_now)
-                     if t[1] == "A" or t[1] not in cols_now]
+                     if t[1] == "SKU" or t[1] not in cols_now]
         if typed:
             keep = "%s (typed on)" % sport
             n = 2
