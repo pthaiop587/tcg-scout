@@ -222,6 +222,20 @@ def match(card, inv):
         exact = [c for c in hits if norm(c["parallel"]) == p]
         if exact:
             hits = exact
+    # The insert set, which the front announces in large letters -- STUDENT
+    # ORIENTATION, INSTANT IMPACT, NEW RECRUITS. Two Shedeur Sanders Gold Ices
+    # differ by nothing else, and it is far easier to read off a photo than a
+    # card number, which lives on the back.
+    ins = norm(card.get("insert"))
+    if ins:
+        exact = [c for c in hits if norm(c["insert"]) == ins]
+        if exact:
+            hits = exact
+    elif len(hits) > 1:
+        # no insert named: prefer the plain base card over an insert
+        base = [c for c in hits if not norm(c["insert"])]
+        if base:
+            hits = base
     if card.get("num"):
         want = str(card["num"]).strip().lstrip("#")
         byn = [c for c in hits if str(c["num"] or "").strip() == want]

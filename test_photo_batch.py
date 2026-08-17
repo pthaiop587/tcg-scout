@@ -184,3 +184,42 @@ def test_a_named_sku_that_does_not_exist_matches_nothing():
     inv = [{"sku": "CRH-0015", "name": "Saquon Barkley", "parallel": "Silver",
             "num": "190", "insert": None}]
     assert pb.match({"sku": "CRH-9999", "name": "Saquon Barkley"}, inv) == []
+
+
+# --- the insert set, which the front announces in large letters -------------
+
+SHEDEUR = [
+    {"sku": "CRH-0001", "name": "Shedeur Sanders", "parallel": "Gold Ice",
+     "num": "8", "insert": "Student Orientation"},
+    {"sku": "CRH-0018", "name": "Shedeur Sanders", "parallel": "Gold Ice",
+     "num": "II-SSS", "insert": "Instant Impact"},
+    {"sku": "CRH-0019", "name": "Shedeur Sanders", "parallel": "Gold Ice",
+     "num": "19", "insert": None},
+]
+
+
+def test_the_insert_separates_cards_the_parallel_cannot():
+    """Three Shedeur Sanders Gold Ices. Name and parallel are identical on all
+    three; the insert is printed across the front of two of them."""
+    assert [h["sku"] for h in pb.match(
+        {"name": "Shedeur Sanders", "parallel": "Gold Ice",
+         "insert": "Student Orientation"}, SHEDEUR)] == ["CRH-0001"]
+    assert [h["sku"] for h in pb.match(
+        {"name": "Shedeur Sanders", "parallel": "Gold Ice",
+         "insert": "Instant Impact"}, SHEDEUR)] == ["CRH-0018"]
+
+
+def test_no_insert_named_means_the_base_card():
+    """A front with no insert banner is the base card, and saying nothing
+    should not leave it ambiguous against two inserts."""
+    assert [h["sku"] for h in pb.match(
+        {"name": "Shedeur Sanders", "parallel": "Gold Ice"},
+        SHEDEUR)] == ["CRH-0019"]
+
+
+def test_an_insert_that_matches_nothing_does_not_narrow_to_zero():
+    """Better to report two candidates than to file nothing because the insert
+    was spelled differently."""
+    got = pb.match({"name": "Shedeur Sanders", "parallel": "Gold Ice",
+                    "insert": "Signing Day"}, SHEDEUR)
+    assert len(got) == 3
