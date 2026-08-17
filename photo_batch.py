@@ -205,7 +205,17 @@ def inventory(path):
 
 
 def match(card, inv):
-    """Every Inventory row a photographed card could be."""
+    """Every Inventory row a photographed card could be.
+
+    A named SKU wins outright. That is not laziness -- two of the SAME card
+    cannot be told apart by anything printed on either of them, and this
+    inventory has a pair of Saquon Barkley #190 Silvers. No amount of looking
+    at the photo resolves that, so somebody has to say which one, and this is
+    where they say it."""
+    if card.get("sku"):
+        want = str(card["sku"]).strip().upper()
+        return [c for c in inv if str(c["sku"] or "").strip().upper() == want]
+
     n, p = norm(card.get("name")), norm(card.get("parallel"))
     hits = [c for c in inv if norm(c["name"]) == n]
     if p:

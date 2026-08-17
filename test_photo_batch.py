@@ -160,3 +160,27 @@ def test_a_dry_run_is_the_default(tmp_path):
     src = open("photo_batch.py", encoding="utf-8").read()
     assert 'if not a.go:' in src
     assert '"--go"' in src or "'--go'" in src
+
+
+def test_a_named_sku_wins_outright():
+    """Two of the SAME card cannot be told apart by anything printed on
+    either. This inventory holds a pair of Saquon Barkley #190 Silvers, and no
+    amount of looking at the photo resolves that -- somebody has to say which,
+    and this is where they say it."""
+    inv = [{"sku": "CRH-0015", "name": "Saquon Barkley", "parallel": "Silver",
+            "num": "190", "insert": None},
+           {"sku": "CRH-0017", "name": "Saquon Barkley", "parallel": "Silver",
+            "num": "190", "insert": None}]
+    assert [h["sku"] for h in pb.match(
+        {"name": "Saquon Barkley", "parallel": "Silver"}, inv)] == \
+        ["CRH-0015", "CRH-0017"]
+    assert [h["sku"] for h in pb.match(
+        {"sku": "CRH-0017", "name": "Saquon Barkley"}, inv)] == ["CRH-0017"]
+
+
+def test_a_named_sku_that_does_not_exist_matches_nothing():
+    """It must not fall back to the name -- a typo'd SKU would then file onto
+    whatever the name happened to hit."""
+    inv = [{"sku": "CRH-0015", "name": "Saquon Barkley", "parallel": "Silver",
+            "num": "190", "insert": None}]
+    assert pb.match({"sku": "CRH-9999", "name": "Saquon Barkley"}, inv) == []

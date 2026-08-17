@@ -26,3 +26,8 @@ __pycache__/
 price_history.csv
 price-check.log
 daily-update.log
+
+# A batch of photos being worked through: the converted copies and the contact
+# sheets are scratch, and the JSON holds which card each shot is.
+photos/_batch/
+batch-photos.json
