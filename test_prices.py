@@ -140,3 +140,67 @@ def test_a_school_is_never_overwritten_by_a_daily_run():
     block = src[i:i + 260]
     assert "blank_cell(cell.value)" in block
     assert "or a.overwrite" not in block
+
+
+# --- picking one card -------------------------------------------------------
+
+def test_skus_can_be_repeated_or_comma_separated_or_both():
+    """All three are what somebody reaches for; none of them is wrong."""
+    assert prices.wanted_skus(["CRH-0062"]) == {"CRH-0062"}
+    assert prices.wanted_skus(["CRH-0062,CRH-0039"]) == {"CRH-0062", "CRH-0039"}
+    assert prices.wanted_skus(["CRH-0062", "CRH-0039"]) == {"CRH-0062", "CRH-0039"}
+    assert prices.wanted_skus(["crh-0062"]) == {"CRH-0062"}
+    assert prices.wanted_skus(["CRH-0062, CRH-0039 ,"]) == {"CRH-0062", "CRH-0039"}
+
+
+def test_no_skus_asked_for_is_empty_not_none():
+    assert prices.wanted_skus(None) == set()
+    assert prices.wanted_skus([]) == set()
+
+
+def test_an_unknown_sku_stops_before_it_opens_a_browser(tmp_path):
+    """Four minutes of scraping to be told the SKU was a typo would be a poor
+    way to find out. It also means this test needs no network."""
+    wb = tmp_path / "Card Run HQ - Master.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(wb)],
+                   check=True, capture_output=True)
+    import file_batch as fb
+    fb.add_rows(str(wb), [{"player": "Travis Hunter", "sport": "Football"}])
+
+    r = subprocess.run([sys.executable, "prices.py", "--workbook", str(wb),
+                        "--sku", "CRH-9999"], capture_output=True, text=True,
+                       timeout=90)
+    assert r.returncode != 0
+    body = r.stdout + r.stderr
+    assert "CRH-9999" in body
+    assert "playwright" not in body.lower()
+
+
+def test_naming_a_sku_ignores_the_sport_filter(tmp_path):
+    """--sport defaults to Football. Asking for a Pokemon card by SKU should
+    fetch it, not answer "no Football cards found", which is true and
+    useless."""
+    wb = tmp_path / "Card Run HQ - Master.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(wb)],
+                   check=True, capture_output=True)
+    import file_batch as fb
+    fb.add_rows(str(wb), [{"player": "Mega Darkrai ex", "sport": "Pokemon"}])
+
+    # It must get PAST selection -- proved by the failure being about the
+    # lookup rather than about the card not existing.
+    r = subprocess.run([sys.executable, "prices.py", "--workbook", str(wb),
+                        "--sku", "CRH-0001", "--report"],
+                       capture_output=True, text=True, timeout=300)
+    body = r.stdout + r.stderr
+    assert "no card with SKU" not in body, body
+    assert "no Football cards found" not in body, body
+
+
+def test_the_set_page_is_only_fetched_when_it_is_needed():
+    """It costs a couple of minutes and two thousand rows. A card whose own
+    URL works should never trigger it."""
+    src = open("prices.py", encoding="utf-8").read()
+    assert "def console(slug):" in src
+    i = src.index("urls = [card_url(")
+    j = src.index("hit = find()", i)
+    assert i < j, "the set page is consulted before the card's own URL"

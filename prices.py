@@ -298,6 +298,19 @@ def ensure_columns(ws):
     return hdr, added
 
 
+def wanted_skus(values):
+    """The SKUs asked for on the command line.
+
+    --sku CRH-0062, or repeated, or comma-separated, or any mix of those,
+    because all three are what somebody reaches for and none of them is wrong.
+    Case is levelled: a workbook holds CRH-0062 and a person types crh-62 at
+    their own risk, but not crh-0062."""
+    out = set()
+    for v in (values or []):
+        out.update(x.strip().upper() for x in str(v).split(",") if x.strip())
+    return out
+
+
 def read_cards(ws, hdr, sport):
     g = {n: i for i, n in enumerate(hdr)}
     out = []
@@ -325,6 +338,9 @@ def main():
         description="Fill raw / PSA 9 / PSA 10 prices and last-sold dates.")
     p.add_argument("--workbook", default=WORKBOOK)
     p.add_argument("--sport", default="Football")
+    p.add_argument("--sku", action="append", metavar="CRH-0062",
+                   help="just this card. Repeat it, or comma-separate, for a "
+                        "few. Skips the sport filter, so any card works.")
     p.add_argument("--limit", type=int, help="only the first N cards")
     p.add_argument("--delay", type=float, default=1.5,
                    help="seconds between card pages (default 1.5)")
@@ -362,13 +378,28 @@ def main():
     wb = load_workbook(a.workbook)
     ws = wb["Inventory"]
     hdr, added = ensure_columns(ws)
-    cards = read_cards(ws, hdr, a.sport)
+    # Naming a card means you want THAT card, whatever sport it is. Applying
+    # the sport filter as well would answer "no Football cards found" for a
+    # Pokemon SKU, which is true and useless.
+    wanted = wanted_skus(a.sku)
+
+    cards = read_cards(ws, hdr, None if wanted else a.sport)
+    if wanted:
+        cards = [c for c in cards
+                 if str(c["sku"] or "").strip().upper() in wanted]
+        missing = wanted - {str(c["sku"] or "").strip().upper() for c in cards}
+        if missing:
+            sys.exit("no card with SKU %s in %s"
+                     % (", ".join(sorted(missing)), a.workbook))
     if a.limit:
         cards = cards[:a.limit]
     if not cards:
         sys.exit("no %s cards found in %s" % (a.sport, a.workbook))
-    print("%d %s card(s)%s" % (len(cards), a.sport,
-                               "; added columns: " + ", ".join(added) if added else ""))
+
+    what = ", ".join(c["sku"] for c in cards) if wanted \
+        else "%d %s card(s)" % (len(cards), a.sport)
+    print("%s%s" % (what, "; added columns: " + ", ".join(added)
+                    if added else ""))
 
     from playwright.sync_api import sync_playwright
     g = {n: i for i, n in enumerate(hdr)}
@@ -382,42 +413,55 @@ def main():
         b = pw.chromium.launch()
         pg = b.new_page(user_agent=UA)
 
+        # The set page is only needed when a card cannot be found by its own
+        # URL -- which in practice means the name is mistyped. Harvesting it
+        # costs a couple of minutes and two thousand rows, so it is fetched on
+        # demand rather than up front. A run where every name is right never
+        # touches it at all.
         consoles = {}
-        wanted = {(c["insert"] or "").strip().lower() for c in cards}
-        for ins in sorted(wanted):
-            slug = INSERT_SLUG.get(ins, SET_SLUG) if ins else SET_SLUG
-            if slug in consoles:
-                continue
-            consoles[slug] = harvest_console(pg, slug)
-            print("   set page %-58s %4d card(s)"
-                  % (slug, len(consoles[slug].get("byname", {}))))
+
+        def console(slug):
+            if slug not in consoles:
+                print("   (looking a card up the slow way -- fetching %s)"
+                      % slug)
+                consoles[slug] = harvest_console(pg, slug)
+                print("   set page %-56s %4d card(s)"
+                      % (slug, len(consoles[slug].get("byname", {}))))
+            return consoles[slug]
+
+        def all_slugs(first):
+            out = [first]
+            if first != SET_SLUG:
+                out.append(SET_SLUG)
+            return out
 
         for c in cards:
             ins = (c["insert"] or "").strip().lower()
             set_slug = INSERT_SLUG.get(ins, SET_SLUG) if ins else SET_SLUG
-            order = [set_slug] + [s for s in consoles if s != set_slug]
             nk = key(c["name"], c["parallel"], c["num"])
             numk = (norm(c["parallel"]), str(c["num"]).strip().lstrip("#"))
+            order = all_slugs(set_slug)
 
-            hit = None
-            for s in order:
-                hit = (consoles.get(s) or {}).get("byname", {}).get(nk)
-                if hit:
-                    break
-            if not hit:                       # name mistyped: go by number
+            def find():
+                """The set page, consulted only because the URL did not work."""
                 for s in order:
-                    hit = (consoles.get(s) or {}).get("bynum", {}).get(numk)
-                    if hit:
-                        break
-                if hit:
-                    typos.append((c["sku"], c["name"], hit["site_name"],
-                                  c["parallel"], c["num"], c["row"]))
-            if not hit:                       # insert numbering differs
-                for s in order:
-                    hit = (consoles.get(s) or {}).get("noname", {}).get(
+                    h = console(s).get("byname", {}).get(nk)
+                    if h:
+                        return h
+                for s in order:                   # name mistyped: by number
+                    h = console(s).get("bynum", {}).get(numk)
+                    if h:
+                        typos.append((c["sku"], c["name"], h["site_name"],
+                                      c["parallel"], c["num"], c["row"]))
+                        return h
+                for s in order:                   # inserts number differently
+                    h = console(s).get("noname", {}).get(
                         (norm(c["name"]), norm(c["parallel"])))
-                    if hit:
-                        break
+                    if h:
+                        return h
+                return None
+
+            hit = find() if a.report else None
 
             if a.report:
                 # fast sanity check: index only, no card pages
@@ -436,20 +480,26 @@ def main():
             # The card page is the source of truth: it carries the dates, and
             # taking the prices from the same page means the two can never
             # disagree. The index is only consulted for a URL it may not have.
-            urls = []
-            if hit:
-                h = hit["href"]
-                urls.append(h if h.startswith("http") else BASE + h)
-            urls.append(card_url(set_slug, c["name"], c["parallel"], c["num"]))
-            if set_slug != SET_SLUG:
-                urls.append(card_url(SET_SLUG, c["name"], c["parallel"],
-                                     c["num"]))
+            def usable(pr):
+                return bool(pr) and any(v is not None for v in pr.values())
+
+            urls = [card_url(s, c["name"], c["parallel"], c["num"])
+                    for s in order]
 
             prices, dates, lasts, titles = None, {}, {}, []
             for u in urls:
                 prices, dates, lasts, titles = card_page(pg, u, a.delay)
-                if prices and any(v is not None for v in prices.values()):
+                if usable(prices):
                     break
+
+            if not usable(prices):
+                # The built URL got nowhere. NOW the set page is worth its two
+                # minutes: the name is probably spelled differently there.
+                hit = find()
+                if hit:
+                    h = hit["href"]
+                    u = h if h.startswith("http") else BASE + h
+                    prices, dates, lasts, titles = card_page(pg, u, a.delay)
             if not prices or not any(v is not None for v in prices.values()):
                 missed += 1
                 print("   MISS %-9s %-22s %-10s #%s"
