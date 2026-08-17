@@ -16,6 +16,7 @@ import sys
 
 import pytest
 from PIL import Image
+from openpyxl import load_workbook
 
 import file_batch as fb
 import photo_batch as pb
@@ -223,3 +224,139 @@ def test_an_insert_that_matches_nothing_does_not_narrow_to_zero():
     got = pb.match({"name": "Shedeur Sanders", "parallel": "Gold Ice",
                     "insert": "Signing Day"}, SHEDEUR)
     assert len(got) == 3
+
+
+# --- add: a box nobody has typed in yet -------------------------------------
+
+DEFAULTS = {"year": 2025, "brand": "Panini Prizm Draft Picks",
+            "sport": "Football", "league": "NCAA", "source": "Big 5 Upland",
+            "lot": "LOT-002", "condition": "Near Mint or Better", "qty": 1}
+
+
+def new_box(tmp_path, cards):
+    """A workbook, two photos per card, and a batch file describing them."""
+    wb = tmp_path / "Card Run HQ - Master.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(wb)],
+                   check=True, capture_output=True)
+    work = tmp_path / "work"
+    work.mkdir(exist_ok=True)
+    for c in cards:
+        for side in ("front", "back"):
+            if c.get(side):
+                shot(str(work / (c[side] + ".jpg")))
+    batch = tmp_path / "b.json"
+    batch.write_text(json.dumps({"work": str(work), "defaults": DEFAULTS,
+                                 "cards": cards}), encoding="utf-8")
+    return wb, batch
+
+
+def add(wb, batch, *args):
+    r = subprocess.run([sys.executable, os.path.abspath("photo_batch.py"),
+                        "add", str(batch), "--workbook", str(wb)] + list(args),
+                       capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    return r.stdout
+
+
+def inv_rows(wb):
+    ws = load_workbook(wb)["Inventory"]
+    hdr = [c.value for c in ws[1]]
+    g = {n: i + 1 for i, n in enumerate(hdr) if n}
+    out = []
+    for r in range(2, ws.max_row + 1):
+        if ws.cell(row=r, column=g["SKU"]).value:
+            out.append({n: ws.cell(row=r, column=i).value
+                        for n, i in g.items()})
+    return out
+
+
+CARDS = [
+    {"n": 1, "front": "A1", "back": "A2", "name": "Cam Ward",
+     "parallel": "Silver", "num": "12", "team": "Miami Hurricanes"},
+    {"n": 2, "front": "B1", "back": "B2", "name": "Ashton Jeanty",
+     "parallel": "Gold Ice", "num": "77", "unsure": ["parallel"]},
+]
+
+
+def test_a_new_box_becomes_rows_with_skus(tmp_path):
+    wb, batch = new_box(tmp_path, [dict(c) for c in CARDS])
+    add(wb, batch, "--go")
+    rows = inv_rows(wb)
+    assert [r["SKU"] for r in rows] == ["CRH-0001", "CRH-0002"]
+    assert [r["Player or card name"] for r in rows] == ["Cam Ward",
+                                                        "Ashton Jeanty"]
+
+
+def test_what_the_box_shares_is_written_once_and_lands_on_every_card(tmp_path):
+    """Sixty cards out of one box share the shop and the lot. Typing that
+    sixty times is how row sixty-one disagrees with the rest."""
+    wb, batch = new_box(tmp_path, [dict(c) for c in CARDS])
+    add(wb, batch, "--go")
+    for r in inv_rows(wb):
+        assert r["Lot ID"] == "LOT-002"
+        assert r["Source"] == "Big 5 Upland"
+        assert r["Brand / set"] == "Panini Prizm Draft Picks"
+        assert r["Card condition"] == "Near Mint or Better"
+
+
+def test_a_per_card_value_beats_the_shared_one(tmp_path):
+    cards = [dict(CARDS[0], parallel="Gold Ice", condition="Played")]
+    wb, batch = new_box(tmp_path, cards)
+    add(wb, batch, "--go")
+    r = inv_rows(wb)[0]
+    assert r["Parallel"] == "Gold Ice"
+    assert r["Card condition"] == "Played"
+
+
+def test_an_unsure_card_lands_on_review(tmp_path):
+    """A parallel is a judgement, not something printed on the card. Review is
+    what stops a guess reaching an eBay export."""
+    wb, batch = new_box(tmp_path, [dict(c) for c in CARDS])
+    out = add(wb, batch, "--go")
+    rows = {r["SKU"]: r for r in inv_rows(wb)}
+    assert rows["CRH-0001"]["Status"] == "Unlisted"
+    assert rows["CRH-0002"]["Status"] == "Review"
+    assert "CHECK" in str(rows["CRH-0002"]["Notes"])
+    assert "Review" in out
+
+
+def test_the_category_is_derived_not_assumed(tmp_path):
+    """A Pokemon card from a batch used to arrive as Sports."""
+    cards = [dict(CARDS[0], name="Mega Darkrai ex", sport="Pokemon")]
+    wb, batch = new_box(tmp_path, cards)
+    add(wb, batch, "--go")
+    assert inv_rows(wb)[0]["Category"] == "TCG"
+
+
+def test_photos_are_filed_onto_the_new_skus(tmp_path):
+    wb, batch = new_box(tmp_path, [dict(c) for c in CARDS])
+    add(wb, batch, "--go")
+    shots = os.listdir(tmp_path / "photos")
+    assert "CRH-0001.jpg" in shots and "CRH-0001-back.jpg" in shots
+    assert "CRH-0002.jpg" in shots
+
+
+def test_a_dry_run_adds_nothing(tmp_path):
+    wb, batch = new_box(tmp_path, [dict(c) for c in CARDS])
+    out = add(wb, batch)
+    assert "Nothing added" in out
+    assert inv_rows(wb) == []
+
+
+def test_a_card_already_in_the_workbook_is_pointed_out(tmp_path):
+    """A second copy out of a second box is normal. Running the same batch
+    twice is not, and looks identical from here."""
+    wb, batch = new_box(tmp_path, [dict(c) for c in CARDS])
+    add(wb, batch, "--go")
+    out = add(wb, batch)
+    assert "already in the workbook" in out
+    assert "CRH-0001" in out
+
+
+def test_a_card_with_no_name_is_skipped_not_guessed(tmp_path):
+    cards = [dict(CARDS[0]), {"n": 2, "front": "B1", "back": "B2",
+                              "name": "", "parallel": "Silver"}]
+    wb, batch = new_box(tmp_path, cards)
+    out = add(wb, batch, "--go")
+    assert "no name" in out
+    assert len(inv_rows(wb)) == 1

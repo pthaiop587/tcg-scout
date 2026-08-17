@@ -1,8 +1,10 @@
 """A folder of card photos in; the whole batch filed onto its SKUs.
 
     python photo_batch.py prep G:/Scans
+    python photo_batch.py prep G:/Scans --backs        # sheet the backs too
     python photo_batch.py prep G:/Scans --singles      # fronts only, no backs
-    python photo_batch.py file batch-photos.json
+    python photo_batch.py file batch-photos.json       # onto cards already logged
+    python photo_batch.py add  batch-photos.json       # a box that is not logged yet
 
 Six cards was fine done by hand. Sixty is not: every photo has to be looked at
 to know which card it is, and looking at them one at a time is the whole cost
@@ -19,12 +21,23 @@ It assumes the shots alternate front, back, front, back -- which is how a stack
 gets photographed -- and prints the pairing so a slip is visible before
 anything is filed. --singles says there are no backs.
 
+--backs sheets the backs as well, numbered to match. That is for a box being
+logged for the first time: a card NUMBER is printed on the back and nowhere
+else, and prices.py needs it to find the card. For a box already in the
+workbook the fronts are enough.
+
 FILE takes the identifications back, matches each to a SKU, and files the
 photos onto it. The match is by player and parallel against Inventory, because
 that is what a front shows: a card number lives on the back and is not worth a
 second photo per card just to confirm what the name already said. Anything
 matching two cards, or none, is reported and skipped rather than guessed --
 filing a picture onto the wrong SKU is a wrong picture in a listing.
+
+ADD is for a box nobody has typed in yet. It creates the Inventory row first,
+taking the SKU file_batch.py hands out, then files the photos onto it. What a
+whole box shares -- the year, the set, the shop, the lot -- is written once in
+a "defaults" block rather than sixty times, and anything a card is unsure of
+still lands it on Review, so an uncertain card cannot reach an eBay export.
 """
 
 import argparse
@@ -40,6 +53,11 @@ from PIL import Image, ImageDraw, ImageOps
 from openpyxl import load_workbook
 
 WORKBOOK = "Card Run HQ - Master.xlsx"
+# The helper scripts sit beside this one, and they all work against the folder
+# the WORKBOOK is in -- photos/ is relative to it, and so is everything else.
+# Resolving both explicitly means this can be run from anywhere, which matters
+# because it usually is.
+HERE = os.path.dirname(os.path.abspath(__file__))
 WORK = "photos/_batch"          # converted working copies
 SHEET_COLS, SHEET_ROWS = 3, 3   # nine to a contact sheet
 CELL_W = 520                    # big enough to read a name band off
@@ -163,22 +181,47 @@ def do_prep(a):
     for i, (f, b) in enumerate(pairs, 1):
         print("   %2d  %-14s %s" % (i, f, b or "(no back)"))
 
-    fronts = [os.path.join(a.work, f + ".jpg") for f, _ in pairs]
-    labels = ["%d  %s" % (i, f) for i, (f, _) in enumerate(pairs, 1)]
-    sheets = []
     per = SHEET_COLS * SHEET_ROWS
-    for n, i in enumerate(range(0, len(fronts), per), 1):
-        out = os.path.join(a.work, "sheet-%02d.jpg" % n)
-        contact_sheet(fronts[i:i + per], labels[i:i + per], out)
-        sheets.append(out)
-    print("\n%d contact sheet(s):" % len(sheets))
-    for s in sheets:
-        print("   %s" % s)
+
+    def sheets_of(which, prefix):
+        paths, labels, out = [], [], []
+        for i, (f, b) in enumerate(pairs, 1):
+            name = f if which == "front" else b
+            if not name:
+                continue
+            paths.append(os.path.join(a.work, name + ".jpg"))
+            labels.append("%d  %s" % (i, name))
+        for n, i in enumerate(range(0, len(paths), per), 1):
+            dest = os.path.join(a.work, "%s-%02d.jpg" % (prefix, n))
+            contact_sheet(paths[i:i + per], labels[i:i + per], dest)
+            out.append(dest)
+        return out
+
+    made = sheets_of("front", "sheet")
+    print("\n%d contact sheet(s) of the fronts:" % len(made))
+    for x in made:
+        print("   %s" % x)
+
+    if a.backs:
+        backs = sheets_of("back", "back")
+        print("\n%d of the backs -- the card number is only printed there:"
+              % len(backs))
+        for x in backs:
+            print("   %s" % x)
+
+    defaults = {}
+    for pair in (a.defaults or "").split(","):
+        if "=" in pair:
+            k, v = pair.split("=", 1)
+            defaults[k.strip()] = v.strip()
 
     stub = [{"n": i, "front": f, "back": b, "name": "", "parallel": ""}
             for i, (f, b) in enumerate(pairs, 1)]
+    body = {"work": a.work, "cards": stub}
+    if defaults:
+        body = {"work": a.work, "defaults": defaults, "cards": stub}
     with open(a.out, "w", encoding="utf-8") as fh:
-        json.dump({"work": a.work, "cards": stub}, fh, indent=2)
+        json.dump(body, fh, indent=2)
     print("\nwrote %s -- fill in name and parallel from the sheets, then:"
           % a.out)
     print("   python photo_batch.py file %s" % a.out)
@@ -186,6 +229,14 @@ def do_prep(a):
 
 
 # --- file -------------------------------------------------------------------
+
+def helper(workbook, script, *args):
+    """Run a sibling script against the workbook's own folder."""
+    return subprocess.run(
+        [sys.executable, os.path.join(HERE, script)] + list(args),
+        capture_output=True, text=True,
+        cwd=os.path.dirname(os.path.abspath(workbook)) or ".")
+
 
 def inventory(path):
     ws = load_workbook(path)["Inventory"]
@@ -290,8 +341,7 @@ def do_file(a):
         if not shots:
             print("   %s: no converted photo found" % row["sku"])
             continue
-        r = subprocess.run([sys.executable, "add_photos.py", "--sku",
-                            row["sku"]] + shots, capture_output=True, text=True)
+        r = helper(a.workbook, "add_photos.py", "--sku", row["sku"], *shots)
         if r.returncode:
             print("   %s FAILED\n%s" % (row["sku"],
                                         (r.stdout + r.stderr)[:200]))
@@ -299,9 +349,103 @@ def do_file(a):
             done += 1
     print("\nfiled %d card(s)" % done)
 
-    for step in (["link_photos.py", "--go"], ["sport_tabs.py"]):
-        subprocess.run([sys.executable] + step, capture_output=True)
+    helper(a.workbook, "link_photos.py", "--go")
+    helper(a.workbook, "sport_tabs.py")
     print("links refreshed and the game tabs rebuilt.")
+    return 0
+
+
+def do_add(a):
+    """A box nobody has typed in: make the rows, then file the photos."""
+    import file_batch
+
+    with open(a.batch, encoding="utf-8") as fh:
+        data = json.load(fh)
+    work = data.get("work", WORK)
+    defaults = data.get("defaults", {})
+    cards = data["cards"]
+
+    named = [c for c in cards if str(c.get("name") or "").strip()]
+    if len(named) != len(cards):
+        print("%d card(s) have no name and will be skipped"
+              % (len(cards) - len(named)))
+    if not named:
+        sys.exit("nothing to add")
+
+    # what the whole box shares, written once
+    rows, shots = [], []
+    for c in named:
+        # Everything the card says overrides the box default -- a list of
+        # which fields may do so was a whitelist, and it silently dropped any
+        # field that happened not to be on it. A Pokemon card in a football
+        # box kept sport=Football and filed as Sports. file_batch.py rejects
+        # a field it does not know, loudly, which is the better guard.
+        rec = dict(defaults)
+        for k, v in c.items():
+            if k in ("n", "front", "back", "sku") or v in (None, ""):
+                continue
+            rec[k] = v
+        rec["player"] = rec.pop("name")
+        rows.append(rec)
+        shots.append([os.path.join(work, c[w] + ".jpg")
+                      for w in ("front", "back") if c.get(w)])
+
+    # a card already in the workbook is worth saying so about -- a second copy
+    # is normal out of a second box, but a repeat of the SAME batch is not
+    inv = inventory(a.workbook)
+    for r in rows:
+        same = [i for i in inv
+                if norm(i["name"]) == norm(r.get("player"))
+                and norm(i["parallel"]) == norm(r.get("parallel"))
+                and str(i["num"] or "").strip() == str(r.get("num") or "").strip()]
+        if same:
+            print("   note: %s %s #%s is already in the workbook as %s"
+                  % (r.get("player"), r.get("parallel") or "", r.get("num") or "",
+                     ", ".join(x["sku"] for x in same)))
+
+    print("\n%d card(s) to add" % len(rows))
+    if defaults:
+        print("shared: " + ", ".join("%s=%s" % kv for kv in sorted(defaults.items())))
+    for r in rows[:6]:
+        print("   %-22s %-10s #%-8s %s" % (r.get("player"), r.get("parallel") or "",
+                                           r.get("num") or "",
+                                           r.get("insert") or ""))
+    if len(rows) > 6:
+        print("   ... and %d more" % (len(rows) - 6))
+
+    if not a.go:
+        print("\nNothing added. Add --go.")
+        return 0
+
+    added = file_batch.add_rows(a.workbook, rows)
+    print("\nadded %d row(s): %s .. %s"
+          % (len(added), added[0]["sku"], added[-1]["sku"]))
+
+    filed = 0
+    for entry, pics in zip(added, shots):
+        pics = [p for p in pics if os.path.exists(p)]
+        if not pics:
+            continue
+        r = helper(a.workbook, "add_photos.py", "--sku", entry["sku"], *pics)
+        if r.returncode:
+            print("   %s photo FAILED: %s" % (entry["sku"],
+                                              (r.stdout + r.stderr)[:150]))
+        else:
+            filed += 1
+    print("photos filed for %d card(s)" % filed)
+
+    for script in ("autofill.py", "link_photos.py", "sport_tabs.py"):
+        helper(a.workbook, script, *(["--go"] if script != "sport_tabs.py"
+                                     else []))
+    print("SKUs, categories, photo links and the game tabs are up to date.")
+
+    review = [e for e in added if e.get("unsure")]
+    if review:
+        print("\n%d card(s) filed as Review -- settle the CHECK note in Notes, "
+              "then set Status to Unlisted:" % len(review))
+        for e in review:
+            print("   %-9s %-22s %s" % (e["sku"], e["player"],
+                                        ", ".join(e["unsure"])))
     return 0
 
 
@@ -316,6 +460,11 @@ def main():
     pr.add_argument("--singles", action="store_true",
                     help="fronts only; do not pair them")
     pr.add_argument("--skip", help="comma-separated basenames to ignore")
+    pr.add_argument("--backs", action="store_true",
+                    help="also sheet the backs; the card number is only there")
+    pr.add_argument("--defaults", metavar="k=v,k=v",
+                    help="what the whole box shares, e.g. "
+                         "lot=LOT-002,source=Big 5 Upland")
     pr.set_defaults(fn=do_prep)
 
     fi = sub.add_parser("file", help="file an identified batch onto its SKUs")
@@ -323,6 +472,13 @@ def main():
     fi.add_argument("--workbook", default=WORKBOOK)
     fi.add_argument("--go", action="store_true")
     fi.set_defaults(fn=do_file)
+
+    ad = sub.add_parser("add", help="a box not in the workbook yet: create the "
+                                    "rows, then file the photos")
+    ad.add_argument("batch")
+    ad.add_argument("--workbook", default=WORKBOOK)
+    ad.add_argument("--go", action="store_true")
+    ad.set_defaults(fn=do_add)
 
     a = p.parse_args()
     return a.fn(a)
