@@ -146,10 +146,20 @@ def build_title(c, limit=80):
     eBay's 80-character ceiling does anything get dropped, cheapest first.
     """
     def layout(brand):
+        # A sports title carries its maker -- "Panini Prizm Draft Picks" --
+        # and that is what people search. A TCG set name does not: "2026
+        # Pitch Black Secret Rare Misty's Vitality #111/084" never says
+        # Pokemon, so nobody looking for a Pokemon card finds it. Lead with
+        # the game, and never drop it.
+        game = c.get("sport", "") if c.get("cat") == "TCG" else ""
+        if game and game.lower() in ("%s %s" % (brand, c["player"])).lower():
+            game = ""
+
         # (text, how readily it can go; None = never). A parallel name, a
         # serial and an AUTO badge are what a buyer searches on, so they
         # outrank the year and the card number.
         p = [
+            (game, None),
             (c["year"], 50),
             (brand, None),
             (c["insert"], 20),
