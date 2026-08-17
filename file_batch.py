@@ -51,6 +51,8 @@ from datetime import date
 
 from openpyxl import load_workbook
 
+import autofill
+
 import add_photos
 
 import inuse
@@ -85,8 +87,25 @@ FIELDS = {
     "notes": "Notes",
 }
 FLAGS = {"rc": "RC", "auto": "Auto", "relic": "Relic"}
-DEFAULTS = {"sport": "Football", "category": "Sports",
+DEFAULTS = {"sport": "Football",
             "condition": "Near Mint or Better", "qty": 1}
+
+
+def category_for(card):
+    """Sports or TCG, worked out from the game rather than assumed.
+
+    This used to default to "Sports" whatever the card was, so a Pokemon card
+    filed from a batch arrived as Sports -- and Category is the column
+    make_ebay_csv.py picks the eBay category code from. The listing goes up
+    under the wrong category with nothing looking wrong in the sheet.
+
+    The map lives in autofill.py and is imported rather than repeated: two
+    copies of it would agree until the day somebody added a game to one.
+    """
+    if card.get("category"):
+        return card["category"]
+    sport = str(card.get("sport") or DEFAULTS["sport"]).strip().lower()
+    return autofill.CATEGORY_OF.get(sport)      # None rather than a guess
 
 # "photos" is how many pictures in the crops folder belong to this card: 1 for
 # a front only, 2 for front and back. Card desk writes it per card, because a
@@ -173,6 +192,9 @@ def add_rows(wb_path, cards, dry_run=False):
             put("Status", "Review" if unsure else "Unlisted")
             put("Date in", date.today())
             for key, header in FIELDS.items():
+                if key == "category":
+                    put(header, category_for(card))
+                    continue
                 put(header, card.get(key, DEFAULTS.get(key)))
             for key, header in FLAGS.items():
                 put(header, "Yes" if card.get(key) else "No")

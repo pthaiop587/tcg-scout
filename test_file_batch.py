@@ -230,3 +230,31 @@ def test_pairs_comes_through(tmp_path):
     p = write_batch(tmp_path, [dict(CARD)], pairs=True)
     pairs, _ = fb.load_batch(str(p))
     assert pairs is True
+
+
+# --- Category, which decides the eBay category code -------------------------
+
+def test_a_pokemon_card_is_filed_as_tcg_not_sports():
+    """Category is what make_ebay_csv.py picks the eBay category code from. It
+    used to default to "Sports" whatever the card was, so a Pokemon card filed
+    from a batch listed under the wrong category with nothing looking wrong in
+    the sheet."""
+    assert fb.category_for({"sport": "Pokemon"}) == "TCG"
+    assert fb.category_for({"sport": "One Piece"}) == "TCG"
+    assert fb.category_for({"sport": "Football"}) == "Sports"
+    assert fb.category_for({"sport": "Basketball"}) == "Sports"
+
+
+def test_a_category_you_gave_is_never_second_guessed():
+    assert fb.category_for({"sport": "Pokemon", "category": "Sports"}) == "Sports"
+
+
+def test_an_unknown_game_gets_no_category_rather_than_a_guess():
+    """Blank is visible and fixable. Wrong is neither."""
+    assert fb.category_for({"sport": "Cricket"}) is None
+
+
+def test_the_category_map_is_autofills_and_not_a_second_copy():
+    """Two copies would agree right up until somebody added a game to one."""
+    import autofill
+    assert fb.category_for({"sport": "Pokemon"}) == autofill.CATEGORY_OF["pokemon"]
