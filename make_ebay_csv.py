@@ -65,7 +65,10 @@ DEFAULTS = {
     "C:Language": "English",
     "C:Original/Licensed Reprint": "Original",
     "C:Card Size": "Standard",
-    "C:Type": "Sports Trading Card",
+    # C:Type is deliberately NOT here. As a default it is forced onto every
+    # row, and "Sports Trading Card" on a Pokemon card is a wrong answer to a
+    # question eBay's CCG category does not even ask. values_for sets it per
+    # card instead.
     "C:Country/Region of Manufacture": "United States",
 }
 
@@ -415,9 +418,23 @@ def values_for(c):
         "vintage": "No",
         "language": "English",
         "cardsize": "Standard",
-        "type": "Sports Trading Card",
         "originallicensedreprint": "Original",
     }
+
+    # A Pokemon card is not a sports card and eBay's CCG Singles category
+    # asks different questions: Game rather than Sport, Rarity rather than
+    # Parallel/Variety, Character rather than Player. Store both vocabularies
+    # and let the template take whichever it asks for. Type is the one that
+    # must NOT carry over -- a wrong specific is worse than an absent one,
+    # because eBay believes it.
+    if str(c.get("cat", "")).upper() == "TCG":
+        specs.update({
+            "game": c["sport"], "cardgame": c["sport"],
+            "rarity": c["parallel"], "character": c["player"],
+            "type": "",
+        })
+    else:
+        specs["type"] = "Sports Trading Card"
     for k, val in specs.items():
         v.setdefault("spec:" + k, val)
     # Also expose the C:-prefixed fallback names.

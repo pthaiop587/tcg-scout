@@ -149,3 +149,53 @@ def test_the_pricer_and_the_exporter_agree_on_the_postage():
     disagree. If they ever do, the margin in the sheet is fiction."""
     import price_listings
     assert m.SHIP_COST == price_listings.SHIP_CHARGE
+
+
+# --- a TCG card is not a sports card ----------------------------------------
+
+def test_a_pokemon_card_is_not_typed_as_a_sports_card():
+    """C:Type was a global default, so every Pokemon listing claimed to be a
+    Sports Trading Card. eBay believes item specifics."""
+    v = m.values_for(dict(card(cat="TCG", sport="Pokemon", player="Sinistcha",
+                               brand="Pitch Black", parallel="Uncommon"),
+                          sku="CRH-0136", title="t", graded=False, grader="",
+                          grade="", cert="", condition="Near Mint or Better",
+                          grade_txt="", qty="1", ask="2", league="",
+                          num="006/084",
+                          serial="", auto=False, relic=False, rc=False))
+    assert v.get("spec:type", "") == ""
+    assert v.get("C:Type", "") == "", "the default must not leak back in"
+
+
+def test_a_sports_card_still_is_one():
+    v = m.values_for(dict(card(), sku="CRH-0060", title="t", graded=False,
+                          grader="", grade="", cert="",
+                          grade_txt="",
+                          condition="Near Mint or Better", qty="1", ask="13",
+                          league="NCAA", serial="", relic=False))
+    assert v["spec:type"] == "Sports Trading Card"
+
+
+def test_a_tcg_card_answers_the_questions_that_category_asks():
+    """CCG Singles asks Game and Rarity; it has no Sport or Parallel field."""
+    v = m.values_for(dict(card(cat="TCG", sport="Pokemon",
+                               player="Misty's Vitality", brand="Pitch Black",
+                               parallel="Secret Rare"),
+                          sku="CRH-0122", title="t", graded=False, grader="",
+                          grade="", cert="", condition="Near Mint or Better",
+                          grade_txt="", qty="1", ask="19", league="",
+                          num="111/084",
+                          serial="", auto=False, relic=False, rc=False))
+    assert v["spec:game"] == "Pokemon"
+    assert v["spec:rarity"] == "Secret Rare"
+    assert v["spec:cardname"] == "Misty's Vitality"
+
+
+def test_a_sports_card_gains_no_game_or_rarity():
+    v = m.values_for(dict(card(), sku="CRH-0060", title="t", graded=False,
+                          grader="", grade="", cert="",
+                          grade_txt="",
+                          condition="Near Mint or Better", qty="1", ask="13",
+                          league="NCAA", serial="", relic=False))
+    assert v.get("spec:game", "") == ""
+    assert v["spec:parallelvariety"] == "Gold Ice"
