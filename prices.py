@@ -82,6 +82,28 @@ INSERT_SLUG = {
     "manga": SET_SLUG + "-manga",
 }
 
+# Two price guides, one company. sportscardspro carries the sports sets and
+# pricecharting carries the rest, Pokemon included. Which one a card belongs
+# to follows from its Brand / set, so one pass prices a mixed workbook.
+SITES = {"sportscardspro": "https://www.sportscardspro.com",
+         "pricecharting": "https://www.pricecharting.com"}
+
+POKEMON_SETS = {
+    "pitch black": "pokemon-pitch-black",
+}
+
+# The Parallel column holds two different kinds of thing for a Pokemon card.
+# "Reverse Holo" is a physically different card with its own page and its own
+# price -- often ten times the plain one -- and belongs in the URL. "Secret
+# Rare" only says how hard the card was to pull, and putting it in the URL
+# asks for a page that does not exist.
+RARITY_WORDS = {
+    "common", "uncommon", "rare", "double rare", "ultra rare", "secret rare",
+    "illustration rare", "special illustration rare", "hyper rare",
+    "shiny rare", "shiny ultra rare", "ace spec rare", "radiant rare",
+    "amazing rare", "promo",
+}
+
 # "Arch Manning [Gold Ice] #166", "Jaxson Dart #90 [RC]"
 LABEL = re.compile(
     r"^(?P<name>.+?)\s*(?:\[(?P<par>[^\]]+)\]\s*)?#(?P<num>[\w.-]+)\s*"
@@ -209,17 +231,72 @@ def slug(s):
     return re.sub(r"-+", "-", s).strip("-")
 
 
-def card_url(set_slug, name, parallel, num):
+def pokemon_num(num):
+    """013/084 is how a Pokemon card is printed; 13 is how it is addressed."""
+    n = str(num or "").strip().lstrip("#").split("/")[0].strip()
+    return n.lstrip("0") or n
+
+
+def name_forms(name, apostrophe_first):
+    """The ways a price guide might spell one name in a URL.
+
+    sportscardspro deletes the apostrophe (jamarr-chase); pricecharting keeps
+    it, url-encoded (misty%27s-vitality). Neither reliably accepts the other's
+    spelling, and which site wants which is not worth remembering at the call
+    site -- so offer both and put the likely one first.
+    """
+    n = str(name or "").strip().replace("\u2019", "'")
+    plain = [slug(n)]
+    if "'" not in n:
+        return plain
+    raw = re.sub(r"-+", "-", re.sub(r"[^a-z0-9']+", "-", n.lower())).strip("-")
+    both = [raw.replace("'", "%27"), raw.replace("'", "-")]
+    forms = both + plain if apostrophe_first else plain + both
+    return list(dict.fromkeys(forms))
+
+
+def on_default_set(brand):
+    """True when a card's Brand / set is the one the fallback set page covers.
+
+    An unrecognised brand still routes to the default set so that nothing
+    quietly stops working, but harvesting two thousand football rows to hunt
+    for a card that was never in that set costs two minutes and finds nothing.
+    """
+    b = norm(brand)
+    return not b or b == norm("Panini Prizm Draft Picks")
+
+
+def route(card):
+    """Where a card's prices live, and how it is addressed there.
+
+    Returns (site, set pages to try, number, parallel, is_pokemon).
+    """
+    brand = norm(card.get("brand", ""))
+    if brand in POKEMON_SETS:
+        par = card.get("parallel") or ""
+        if norm(par) in RARITY_WORDS:
+            par = ""
+        return (SITES["pricecharting"], [POKEMON_SETS[brand]],
+                pokemon_num(card.get("num")), par, True)
+    ins = (card.get("insert") or "").strip().lower()
+    first = INSERT_SLUG.get(ins, SET_SLUG) if ins else SET_SLUG
+    order = [first] + ([SET_SLUG] if first != SET_SLUG else [])
+    return (SITES["sportscardspro"], order,
+            str(card.get("num") or "").strip().lstrip("#").lower(),
+            card.get("parallel") or "", False)
+
+
+def card_url(set_slug, name, parallel, num, base=None, name_form=None):
     """The card page URL, built rather than looked up.
 
     The set page appends rows as you scroll and does not always finish, so an
     index built from it is missing a different handful every run. This does
     not depend on it."""
-    bits = [slug(name)]
+    bits = [name_form or slug(name)]
     if parallel:
         bits.append(slug(parallel))
     bits.append(str(num).strip().lstrip("#").lower())
-    return "%s/game/%s/%s" % (BASE, set_slug, "-".join(bits))
+    return "%s/game/%s/%s" % (base or BASE, set_slug, "-".join(bits))
 
 
 def card_page(pg, url, delay):
@@ -312,6 +389,12 @@ def wanted_skus(values):
 
 
 def read_cards(ws, hdr, sport):
+    """The cards to price.
+
+    sport may name several, comma separated, so that one daily run covers a
+    workbook holding football and Pokemon both.
+    """
+    want = {x.strip().lower() for x in str(sport or "").split(",") if x.strip()}
     g = {n: i for i, n in enumerate(hdr)}
     out = []
     for r in range(2, ws.max_row + 1):
@@ -320,14 +403,16 @@ def read_cards(ws, hdr, sport):
         name = vals[g["Player or card name"]]
         if not name or not str(name).strip():
             continue
-        if sport and str(vals[g.get("Sport or game", 0)] or "").strip().lower() \
-                != sport.lower():
+        if want and str(vals[g.get("Sport or game", 0)] or "").strip() \
+                .lower() not in want:
             continue
         out.append({
             "row": r, "name": str(name).strip(),
             "num": str(vals[g["Card #"]] or "").strip(),
             "parallel": str(vals[g["Parallel"]] or "").strip(),
             "insert": str(vals[g["Insert set"]] or "").strip(),
+            "brand": (str(vals[g["Brand / set"]] or "").strip()
+                      if "Brand / set" in g else ""),
             "sku": vals[g["SKU"]],
         })
     return out
@@ -337,7 +422,9 @@ def main():
     p = argparse.ArgumentParser(
         description="Fill raw / PSA 9 / PSA 10 prices and last-sold dates.")
     p.add_argument("--workbook", default=WORKBOOK)
-    p.add_argument("--sport", default="Football")
+    p.add_argument("--sport", default="Football,Pokemon",
+                   help="which sports/games to price; comma-separate for "
+                        "several (default Football,Pokemon)")
     p.add_argument("--sku", action="append", metavar="CRH-0062",
                    help="just this card. Repeat it, or comma-separate, for a "
                         "few. Skips the sport filter, so any card works.")
@@ -429,18 +516,10 @@ def main():
                       % (slug, len(consoles[slug].get("byname", {}))))
             return consoles[slug]
 
-        def all_slugs(first):
-            out = [first]
-            if first != SET_SLUG:
-                out.append(SET_SLUG)
-            return out
-
         for c in cards:
-            ins = (c["insert"] or "").strip().lower()
-            set_slug = INSERT_SLUG.get(ins, SET_SLUG) if ins else SET_SLUG
-            nk = key(c["name"], c["parallel"], c["num"])
-            numk = (norm(c["parallel"]), str(c["num"]).strip().lstrip("#"))
-            order = all_slugs(set_slug)
+            site, order, cnum, cpar, is_poke = route(c)
+            nk = key(c["name"], cpar, cnum)
+            numk = (norm(cpar), cnum)
 
             def find():
                 """The set page, consulted only because the URL did not work."""
@@ -483,8 +562,10 @@ def main():
             def usable(pr):
                 return bool(pr) and any(v is not None for v in pr.values())
 
-            urls = [card_url(s, c["name"], c["parallel"], c["num"])
-                    for s in order]
+            urls = [card_url(s, c["name"], cpar, cnum, base=site,
+                             name_form=nf)
+                    for s in order
+                    for nf in name_forms(c["name"], is_poke)]
 
             prices, dates, lasts, titles = None, {}, {}, []
             for u in urls:
@@ -492,13 +573,17 @@ def main():
                 if usable(prices):
                     break
 
-            if not usable(prices):
+            if not usable(prices) and not is_poke \
+                    and on_default_set(c.get("brand")):
                 # The built URL got nowhere. NOW the set page is worth its two
                 # minutes: the name is probably spelled differently there.
+                # Only for the sports sets -- harvest_console reaches for
+                # sportscardspro, so running it for a Pokemon card would
+                # search the wrong site and answer confidently.
                 hit = find()
                 if hit:
                     h = hit["href"]
-                    u = h if h.startswith("http") else BASE + h
+                    u = h if h.startswith("http") else site + h
                     prices, dates, lasts, titles = card_page(pg, u, a.delay)
             if not prices or not any(v is not None for v in prices.values()):
                 missed += 1
@@ -517,7 +602,7 @@ def main():
             # Only ever fills a blank. --overwrite is about prices, which move;
             # a player's college does not, so a daily run re-voting on 60
             # already-correct schools is noise that buries the prices.
-            if a.teams and "Team" in g:
+            if a.teams and not is_poke and "Team" in g:
                 cell = ws.cell(row=c["row"], column=g["Team"] + 1)
                 if blank_cell(cell.value):
                     school, n = colleges.vote(titles)

@@ -136,8 +136,11 @@ def test_a_school_is_never_overwritten_by_a_daily_run():
     """Prices move; a player's college does not. Re-voting on sixty correct
     schools every morning buries the prices in noise."""
     src = open("prices.py", encoding="utf-8").read()
-    i = src.index('if a.teams and "Team" in g:')
+    # anchored on "if a.teams" rather than the whole line: the condition has
+    # picked up a guard since (Pokemon cards have no college) and will again.
+    i = src.index("if a.teams")
     block = src[i:i + 260]
+    assert '"Team" in g' in block
     assert "blank_cell(cell.value)" in block
     assert "or a.overwrite" not in block
 
@@ -225,3 +228,117 @@ def test_daily_always_overwrites():
     src = open("prices.py", encoding="utf-8").read()
     i = src.index("if a.daily:")
     assert "a.overwrite" in src[i:i + 220]
+# --- the second price guide -------------------------------------------------
+
+
+def test_a_pokemon_number_loses_its_denominator():
+    """The card is printed 013/084 and addressed 13. Sending the printed form
+    asks for a page with a slash in its name."""
+    assert prices.pokemon_num("013/084") == "13"
+    assert prices.pokemon_num("111/084") == "111"
+    assert prices.pokemon_num("#006/084") == "6"
+    assert prices.pokemon_num("45") == "45"
+
+
+def test_a_pokemon_card_routes_to_the_other_site():
+    site, sets, num, par, poke = prices.route(
+        {"brand": "Pitch Black", "num": "013/084", "parallel": "",
+         "insert": ""})
+    assert site == prices.SITES["pricecharting"]
+    assert sets == ["pokemon-pitch-black"]
+    assert (num, poke) == ("13", True)
+
+
+def test_a_football_card_still_routes_where_it_did():
+    site, sets, num, par, poke = prices.route(
+        {"brand": "Panini Prizm Draft Picks", "num": "190",
+         "parallel": "Gold Ice", "insert": ""})
+    assert site == prices.SITES["sportscardspro"]
+    assert sets[0] == prices.SET_SLUG
+    assert (num, par, poke) == ("190", "Gold Ice", False)
+
+
+def test_a_football_insert_still_gets_its_own_set_page():
+    _site, sets, _n, _p, _k = prices.route(
+        {"brand": "Panini Prizm Draft Picks", "num": "21",
+         "parallel": "Gold Ice", "insert": "Student Orientation"})
+    assert sets[0] == prices.INSERT_SLUG["student orientation"]
+    assert prices.SET_SLUG in sets
+
+
+def test_a_rarity_is_not_a_variant_and_stays_out_of_the_url():
+    """Reverse Holo is a different card at ten times the price. Secret Rare is
+    a description of one. Only the first belongs in the URL."""
+    for rarity in ("Secret Rare", "Double Rare", "Uncommon", "Common"):
+        _s, _sets, _n, par, _k = prices.route(
+            {"brand": "Pitch Black", "num": "111/084", "parallel": rarity,
+             "insert": ""})
+        assert par == "", rarity
+
+
+def test_a_reverse_holo_does_reach_the_url():
+    _s, _sets, _n, par, _k = prices.route(
+        {"brand": "Pitch Black", "num": "013/084",
+         "parallel": "Reverse Holo", "insert": ""})
+    assert par == "Reverse Holo"
+    u = prices.card_url("pokemon-pitch-black", "Goldeen", par, "13",
+                        base=prices.SITES["pricecharting"])
+    assert u.endswith("/pokemon-pitch-black/goldeen-reverse-holo-13")
+
+
+def test_the_two_sites_spell_an_apostrophe_differently():
+    """sportscardspro drops it, pricecharting keeps it url-encoded. Guessing
+    one costs a card; offering both costs one extra request."""
+    poke = prices.name_forms("Misty's Vitality", True)
+    assert poke[0] == "misty%27s-vitality"
+    sport = prices.name_forms("Ja'Marr Chase", False)
+    assert sport[0] == prices.slug("Ja'Marr Chase")
+    assert "ja%27marr-chase" in sport
+    assert prices.name_forms("Goldeen", True) == ["goldeen"]
+
+
+def test_a_url_can_be_built_against_either_site():
+    poke = prices.card_url("pokemon-pitch-black", "Rampardos ex", "", "45",
+                           base=prices.SITES["pricecharting"])
+    assert poke == ("https://www.pricecharting.com/game/pokemon-pitch-black"
+                    "/rampardos-ex-45")
+    # unchanged when nobody asks for a different site
+    assert prices.card_url("s", "Arch Manning", "", "166").startswith(
+        prices.BASE)
+
+
+def test_one_run_can_cover_two_games(tmp_path):
+    """The 8am job runs once. If the sport filter took a single name, half the
+    workbook would silently never be priced."""
+    wb = tmp_path / "b.xlsx"
+    subprocess.run([sys.executable, "make_workbook.py", "--out", str(wb)],
+                   check=True, capture_output=True)
+    book = load_workbook(wb)
+    ws = book["Inventory"]
+    hdr = [c.value for c in ws[1]]
+    g = {n: i + 1 for i, n in enumerate(hdr) if n}
+    for r, (nm, sport) in enumerate([("Cam Ward", "Football"),
+                                     ("Goldeen", "Pokemon"),
+                                     ("Pikachu", "Palworld")], start=2):
+        ws.cell(row=r, column=g["Player or card name"]).value = nm
+        ws.cell(row=r, column=g["Sport or game"]).value = sport
+        ws.cell(row=r, column=g["SKU"]).value = "CRH-000%d" % r
+    book.save(wb)
+
+    ws2 = load_workbook(wb)["Inventory"]
+    hdr2 = [c.value for c in ws2[1]]
+    got = [c["name"] for c in prices.read_cards(ws2, hdr2, "Football,Pokemon")]
+    assert got == ["Cam Ward", "Goldeen"]
+    assert len(prices.read_cards(ws2, hdr2, None)) == 3
+
+
+def test_an_unknown_set_does_not_trigger_a_two_minute_harvest():
+    """A card from a set the football page never covered still routes there,
+    so nothing silently stops working -- but hunting two thousand rows for it
+    every morning finds nothing and costs two minutes."""
+    assert prices.on_default_set("Panini Prizm Draft Picks")
+    assert prices.on_default_set("")
+    assert not prices.on_default_set("MEE (set code -- confirm)")
+    src = open("prices.py", encoding="utf-8").read()
+    i = src.index("if not usable(prices)")
+    assert "on_default_set" in src[i:i + 160]
