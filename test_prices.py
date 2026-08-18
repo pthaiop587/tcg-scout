@@ -356,3 +356,61 @@ def test_a_missing_page_returns_the_same_shape_as_a_found_one():
     widths = {len(n.value.elts) for n in ast.walk(tree)
               if isinstance(n, ast.Return) and isinstance(n.value, ast.Tuple)}
     assert widths == {4}, "card_page returns tuples of %s" % sorted(widths)
+
+
+# --- the third game ---------------------------------------------------------
+
+def test_a_baseball_card_routes_to_its_own_set():
+    site, sets, num, par, poke = prices.route(
+        {"brand": "Topps Series 2", "num": "593", "parallel": "", "insert": ""})
+    assert site == prices.SITES["sportscardspro"]
+    assert sets[0] == prices.MLB_SET
+    assert (num, poke) == ("593", False)
+
+
+def test_a_baseball_insert_gets_its_own_page_and_keeps_the_base_as_fallback():
+    for insert, tail in (("Glove Work", "-glove-work"),
+                         ("Titans of the Game", "-titans-of-the-game"),
+                         ("Stars of MLB", "-stars-of-mlb"),
+                         ("1991 Topps All-Stars", "-1991-all-stars")):
+        _s, sets, _n, _p, _k = prices.route(
+            {"brand": "Topps Series 2", "num": "GW-32", "parallel": "",
+             "insert": insert})
+        assert sets[0] == prices.MLB_SET + tail, insert
+        assert prices.MLB_SET in sets, "the base page is still worth a try"
+
+
+def test_the_all_star_treatment_is_a_parallel_not_a_set():
+    """sportscardspro spells it inside the card name --
+    risen-sons-all-star-game-red-642 -- so it belongs in Parallel, and giving
+    it a set page of its own would send every one of them to a 404."""
+    # "1991 All-Stars" IS a set with its own page and belongs here. What must
+    # not be here is the bare All-Star Game treatment applied to base cards.
+    assert "all star game" not in prices.MLB_INSERTS
+    assert "all-star game" not in prices.MLB_INSERTS
+    assert all("1991" in k for k in prices.MLB_INSERTS if "all-star" in k)
+    u = prices.card_url(prices.MLB_SET, "Sal Frelick", "All-Star Game", "593")
+    assert u.endswith("/sal-frelick-all-star-game-593")
+
+
+def test_football_is_untouched_by_any_of_that():
+    _s, sets, num, par, _k = prices.route(
+        {"brand": "Panini Prizm Draft Picks", "num": "166",
+         "parallel": "Gold Ice", "insert": ""})
+    assert sets[0] == prices.SET_SLUG
+    assert (num, par) == ("166", "Gold Ice")
+
+
+def test_an_unknown_brand_still_falls_through_to_football():
+    """It is where every card went before there was more than one game;
+    changing that would break quietly rather than loudly."""
+    _s, sets, _n, _p, _k = prices.route(
+        {"brand": "Some Set Nobody Configured", "num": "1", "parallel": "",
+         "insert": ""})
+    assert sets[0] == prices.SET_SLUG
+    assert not prices.on_default_set("Some Set Nobody Configured")
+
+
+def test_every_configured_brand_is_spared_the_two_minute_harvest():
+    for brand in ("Panini Prizm Draft Picks", "Topps Series 2"):
+        assert prices.on_default_set(brand), brand

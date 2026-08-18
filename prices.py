@@ -92,6 +92,31 @@ POKEMON_SETS = {
     "pitch black": "pokemon-pitch-black",
 }
 
+# Baseball. 2026 Topps Series 2, which is also what the All-Star Game mega
+# box is filled with.
+MLB_SET = "baseball-cards-2026-topps-series-2"
+MLB_INSERTS = {
+    "stars of mlb": MLB_SET + "-stars-of-mlb",
+    "titans of the game": MLB_SET + "-titans-of-the-game",
+    "titans": MLB_SET + "-titans-of-the-game",
+    "glove work": MLB_SET + "-glove-work",
+    "1991 topps": MLB_SET + "-1991",
+    "1991": MLB_SET + "-1991",
+    "1991 topps all-stars": MLB_SET + "-1991-all-stars",
+    "1991 all-stars": MLB_SET + "-1991-all-stars",
+}
+
+# Brand / set -> (its base page, the insert pages hanging off it). Anything
+# unrecognised falls through to the football set, which is where every card
+# went before there was more than one game.
+# Keys are what norm() makes of the Brand / set cell. Spelled out rather than
+# written as norm("Panini Prizm Draft Picks"): norm is defined further down,
+# and calling it up here is a NameError at import.
+SETS = {
+    "panini prizm draft picks": (SET_SLUG, INSERT_SLUG),
+    "topps series 2": (MLB_SET, MLB_INSERTS),
+}
+
 # The Parallel column holds two different kinds of thing for a Pokemon card.
 # "Reverse Holo" is a physically different card with its own page and its own
 # price -- often ten times the plain one -- and belongs in the URL. "Secret
@@ -263,7 +288,7 @@ def on_default_set(brand):
     for a card that was never in that set costs two minutes and finds nothing.
     """
     b = norm(brand)
-    return not b or b == norm("Panini Prizm Draft Picks")
+    return not b or b in SETS
 
 
 def route(card):
@@ -278,9 +303,10 @@ def route(card):
             par = ""
         return (SITES["pricecharting"], [POKEMON_SETS[brand]],
                 pokemon_num(card.get("num")), par, True)
+    base, inserts = SETS.get(brand, (SET_SLUG, INSERT_SLUG))
     ins = (card.get("insert") or "").strip().lower()
-    first = INSERT_SLUG.get(ins, SET_SLUG) if ins else SET_SLUG
-    order = [first] + ([SET_SLUG] if first != SET_SLUG else [])
+    first = inserts.get(ins, base) if ins else base
+    order = [first] + ([base] if first != base else [])
     return (SITES["sportscardspro"], order,
             str(card.get("num") or "").strip().lstrip("#").lower(),
             card.get("parallel") or "", False)
