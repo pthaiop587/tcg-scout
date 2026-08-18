@@ -90,6 +90,9 @@ SITES = {"sportscardspro": "https://www.sportscardspro.com",
 
 POKEMON_SETS = {
     "pitch black": "pokemon-pitch-black",
+    # The eight basic energies that come with the Mega Evolution series.
+    "mega evolution energies": "pokemon-mega-evolution-energy",
+    "mega evolution energy": "pokemon-mega-evolution-energy",
 }
 
 # Baseball. 2026 Topps Series 2, which is also what the All-Star Game mega
@@ -104,6 +107,13 @@ MLB_INSERTS = {
     "1991": MLB_SET + "-1991",
     "1991 topps all-stars": MLB_SET + "-1991-all-stars",
     "1991 all-stars": MLB_SET + "-1991-all-stars",
+    # The back of the relic reads "MAJOR LEAGUE MATERIAL CARD"; the set is
+    # plural. Both spellings, because the singular is what is on the card.
+    "major league materials": MLB_SET + "-major-league-materials",
+    "major league material": MLB_SET + "-major-league-materials",
+    # CN-24. The back says "2025 MLB LEADERS", which is the card's subject,
+    # not its set -- the CN prefix was naming the set the whole time.
+    "crooked numbers": MLB_SET + "-crooked-numbers",
 }
 
 # Brand / set -> (its base page, the insert pages hanging off it). Anything
